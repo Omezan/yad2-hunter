@@ -9,23 +9,21 @@ function truncateTitle(title, maxLength = 70) {
   return `${title.slice(0, maxLength - 1)}…`;
 }
 
-function formatDigestMessage({ runUrl, newAds }) {
+function formatAdLine(ad, index) {
+  return `${index + 1}. ${truncateTitle(ad.title)}\n${ad.link}`;
+}
+
+function formatDigestMessage({ newAds }) {
   const districtSummary = Array.from(
     new Set(newAds.map((ad) => ad.districtLabel).filter(Boolean))
   ).join(', ');
 
-  const preview = newAds
-    .slice(0, 3)
-    .map((ad) => `- ${truncateTitle(ad.title)}`)
-    .join('\n');
-
-  const extraCount = newAds.length > 3 ? `\nועוד ${newAds.length - 3} מודעות חדשות.` : '';
+  const adLines = newAds.map(formatAdLine).join('\n\n');
 
   return [
     `🏠 נמצאו ${newAds.length} מודעות חדשות ב-Yad2`,
     districtSummary ? `אזורים: ${districtSummary}` : null,
-    preview ? `\nדוגמיות:\n${preview}${extraCount}` : null,
-    `\nלצפייה בכל המודעות החדשות:\n${runUrl}`
+    `\n${adLines}`
   ]
     .filter(Boolean)
     .join('\n');
@@ -52,8 +50,8 @@ async function sendTelegramMessage(text) {
   return response.data;
 }
 
-async function sendNewAdsDigest({ runId, newAds, runUrl }) {
-  const message = formatDigestMessage({ runId, newAds, runUrl });
+async function sendNewAdsDigest({ newAds }) {
+  const message = formatDigestMessage({ newAds });
   return sendTelegramMessage(message);
 }
 

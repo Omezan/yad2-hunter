@@ -1,11 +1,10 @@
 {
   "name": "yad2-hunter",
   "version": "1.0.0",
-  "description": "Automated Yad2 watcher with Telegram digests and dashboard history.",
-  "main": "src/index.js",
+  "description": "Minimal Yad2 watcher that sends Telegram digests for new ads.",
+  "main": "src/worker/run-once.js",
   "scripts": {
-    "start": "node src/index.js",
-    "scan": "node src/jobs/run-scan.js",
+    "scan": "node src/worker/run-once.js",
     "scrape:dry-run": "node scrape.js",
     "telegram:test": "node test-telegram.js",
     "test": "node --test test/*.test.js"
@@ -17,8 +16,6 @@
   "dependencies": {
     "axios": "^1.15.2",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1",
-    "node-cron": "^4.2.1",
     "pg": "^8.20.0",
     "playwright": "^1.59.1"
   }

@@ -1,30 +1,22 @@
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const {
-  attachAdsToRun,
   completeRun,
   createRun,
   ensureDatabaseReady,
   failRun,
+  listRecentRuns,
   markRunNotificationSent,
-  upsertRelevantAds
+  saveAndDetectNewAds
 } = require('../db/repository');
 const { closePool } = require('../db');
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds } = require('../services/relevance');
 const { sendNewAdsDigest } = require('../services/telegram');
 
-function buildRunUrl(runId) {
-  return new URL(`/runs/${runId}`, env.APP_BASE_URL).toString();
-}
-
-async function runScan(options = {}) {
-  const note = options.note || options.trigger || 'manual';
+async function runOnce(options = {}) {
   const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
-
-  await ensureDatabaseReady();
-
-  const run = await createRun(note);
+  const run = await createRun(options.note || options.trigger || 'manual');
 
   try {
     const scrapeResult = await scrapeAllSearches({
@@ -34,11 +26,7 @@ async function runScan(options = {}) {
     });
 
     const relevantAds = filterRelevantAds(scrapeResult.ads);
-    const newAds = await upsertRelevantAds(relevantAds);
-    await attachAdsToRun(
-      run.id,
-      newAds.map((ad) => ad.id)
-    );
+    const newAds = await saveAndDetectNewAds(relevantAds);
 
     await completeRun(run.id, {
       status: scrapeResult.errors.length ? 'partial' : 'completed',
@@ -51,11 +39,7 @@ async function runScan(options = {}) {
     let telegramResult = { skipped: true, reason: 'No new ads' };
 
     if (newAds.length > 0) {
-      telegramResult = await sendNewAdsDigest({
-        runId: run.id,
-        newAds,
-        runUrl: buildRunUrl(run.id)
-      });
+      telegramResult = await sendNewAdsDigest({ newAds });
 
       if (!telegramResult.skipped) {
         await markRunNotificationSent(run.id);
@@ -64,6 +48,7 @@ async function runScan(options = {}) {
 
     return {
       runId: run.id,
+      searches: searches.map((search) => search.id),
       totalAds: scrapeResult.ads.length,
       relevantAds: relevantAds.length,
       newAds: newAds.length,
@@ -78,8 +63,20 @@ async function runScan(options = {}) {
 
 async function main() {
   try {
-    const result = await runScan({ trigger: 'cli' });
-    console.log(JSON.stringify(result, null, 2));
+    await ensureDatabaseReady();
+    const result = await runOnce({ trigger: 'cli' });
+    const recentRuns = await listRecentRuns(5);
+
+    console.log(
+      JSON.stringify(
+        {
+          ...result,
+          recentRuns
+        },
+        null,
+        2
+      )
+    );
   } catch (error) {
     console.error(error);
     process.exitCode = 1;
@@ -93,5 +90,5 @@ if (require.main === module) {
 }
 
 module.exports = {
-  runScan
+  runOnce
 };

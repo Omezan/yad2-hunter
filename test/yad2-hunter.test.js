@@ -32,16 +32,16 @@ test('filterRelevantAds excludes ads with blocked keywords', () => {
 
 test('formatDigestMessage creates one digest with the run link', () => {
   const message = formatDigestMessage({
-    runUrl: 'https://hunter.example.com/runs/42',
     newAds: [
-      { title: 'בית ראשון', districtLabel: 'מרכז והשרון' },
-      { title: 'בית שני', districtLabel: 'דרום' },
-      { title: 'בית שלישי', districtLabel: 'דרום' },
-      { title: 'בית רביעי', districtLabel: 'ירושלים והסביבה' }
+      { title: 'בית ראשון', districtLabel: 'מרכז והשרון', link: 'https://www.yad2.co.il/item/1' },
+      { title: 'בית שני', districtLabel: 'דרום', link: 'https://www.yad2.co.il/item/2' },
+      { title: 'בית שלישי', districtLabel: 'דרום', link: 'https://www.yad2.co.il/item/3' },
+      { title: 'בית רביעי', districtLabel: 'ירושלים והסביבה', link: 'https://www.yad2.co.il/item/4' }
     ]
   });
 
   assert.match(message, /נמצאו 4 מודעות חדשות/);
   assert.match(message, /מרכז והשרון, דרום, ירושלים והסביבה/);
-  assert.match(message, /hunter\.example\.com\/runs\/42/);
+  assert.match(message, /www\.yad2\.co\.il\/item\/1/);
+  assert.match(message, /www\.yad2\.co\.il\/item\/4/);
 });

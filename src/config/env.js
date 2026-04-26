@@ -23,21 +23,9 @@ function parseInteger(value, defaultValue) {
   return Number.isNaN(parsed) ? defaultValue : parsed;
 }
 
-function normalizeBaseUrl(value, port) {
-  if (!value) {
-    return `http://localhost:${port}`;
-  }
-
-  return value.endsWith('/') ? value.slice(0, -1) : value;
-}
-
-const port = parseInteger(process.env.PORT, 3000);
-
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
-  PORT: port,
   DATABASE_URL: process.env.DATABASE_URL || '',
-  APP_BASE_URL: normalizeBaseUrl(process.env.APP_BASE_URL, port),
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || '',
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID || '',
   TELEGRAM_NOTIFICATIONS_ENABLED: parseBoolean(

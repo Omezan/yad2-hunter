@@ -10,6 +10,4 @@ COPY . .
 ENV NODE_ENV=production
 ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
-EXPOSE 3000
-
-CMD ["npm", "start"]
+CMD ["npm", "run", "scan"]
