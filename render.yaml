@@ -1,0 +1,56 @@
+databases:
+  - name: yad2-hunter-db
+    databaseName: yad2_hunter
+    user: yad2_hunter
+    plan: starter
+
+services:
+  - type: web
+    name: yad2-hunter-web
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    dockerCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: yad2-hunter-db
+          property: connectionString
+      - key: APP_BASE_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: TELEGRAM_NOTIFICATIONS_ENABLED
+        value: "true"
+      - key: PLAYWRIGHT_HEADLESS
+        value: "true"
+      - key: ENABLE_LOCAL_CRON
+        value: "false"
+
+  - type: cron
+    name: yad2-hunter-scan
+    runtime: docker
+    schedule: "*/5 * * * *"
+    plan: starter
+    dockerCommand: npm run scan
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: yad2-hunter-db
+          property: connectionString
+      - key: APP_BASE_URL
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: TELEGRAM_NOTIFICATIONS_ENABLED
+        value: "true"
+      - key: PLAYWRIGHT_HEADLESS
+        value: "true"
