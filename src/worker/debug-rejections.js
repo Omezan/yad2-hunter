@@ -60,7 +60,7 @@ async function main() {
   });
   console.log(`Enriched ads: ${enriched.length}`);
 
-  const finalOptions = { requireExplicitPrice: true, requireExplicitRooms: true };
+  const finalOptions = { requireExplicitRooms: true };
   summarize('FINAL FILTER (strict, after enrichment)', enriched, finalOptions);
 
   const finalAccepted = filterRelevantAds(enriched, finalOptions);

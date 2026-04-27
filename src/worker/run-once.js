@@ -57,7 +57,7 @@ async function runOnce(options = {}) {
 
     const droppedDueToBudget = candidatesToEnrich.length - enriched.length;
 
-    const finalOptions = { requireExplicitPrice: true, requireExplicitRooms: true };
+    const finalOptions = { requireExplicitRooms: true };
     const relevantNewAds = filterRelevantAds(enriched, finalOptions);
 
     const rejectionCounts = {

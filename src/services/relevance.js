@@ -119,6 +119,10 @@ function isItemUrl(link) {
   return typeof link === 'string' && /\/realestate\/item\//i.test(link);
 }
 
+function hasDistrictSegment(link) {
+  return typeof link === 'string' && /\/realestate\/item\/[a-z-]+\/[a-z0-9]+/i.test(link);
+}
+
 function getExcludedKeyword(haystack) {
   return EXCLUDED_KEYWORDS.find((keyword) => haystack.includes(normalize(keyword))) || null;
 }
@@ -136,6 +140,10 @@ function getRejection(ad, options = {}) {
     return 'non-item-url';
   }
 
+  if (!hasDistrictSegment(ad.link)) {
+    return 'cross-district-suggestion';
+  }
+
   const haystack = normalize(
     [ad.title, ad.rawText, ad.locationText, ad.searchLabel, ad.city, ad.propertyType]
       .filter(Boolean)
@@ -145,15 +153,6 @@ function getRejection(ad, options = {}) {
   const blockedKeyword = getExcludedKeyword(haystack);
   if (blockedKeyword) {
     return `keyword:${blockedKeyword}`;
-  }
-
-  if (options.requireExplicitPrice) {
-    if (ad.hasExplicitPrice === false) {
-      return 'no-price';
-    }
-    if (typeof ad.price !== 'number') {
-      return 'no-price';
-    }
   }
 
   if (typeof ad.price === 'number' && ad.price > MAX_PRICE) {

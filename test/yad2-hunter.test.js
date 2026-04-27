@@ -81,19 +81,19 @@ test('isRelevant rejects ads with explicit promoted keywords', () => {
   assert.match(getRejection(ad) || '', /^keyword:(יד ראשונה|מקבלן)$/);
 });
 
-test('requireExplicitPrice rejects ads without an explicit price', () => {
+test('ads without an explicit price are still accepted', () => {
   const ad = makeAd({ price: null, hasExplicitPrice: false });
-  assert.equal(getRejection(ad, { requireExplicitPrice: true }), 'no-price');
-});
-
-test('requireExplicitPrice still accepts ads with a numeric price', () => {
-  const ad = makeAd();
-  assert.equal(getRejection(ad, { requireExplicitPrice: true }), null);
+  assert.equal(getRejection(ad), null);
 });
 
 test('requireExplicitRooms rejects ads without a numeric room count', () => {
   const ad = makeAd({ rooms: null });
   assert.equal(getRejection(ad, { requireExplicitRooms: true }), 'no-rooms');
+});
+
+test('cross-district suggestion URLs are rejected', () => {
+  const ad = makeAd({ link: 'https://www.yad2.co.il/realestate/item/wgub12o4' });
+  assert.equal(getRejection(ad), 'cross-district-suggestion');
 });
 
 test('formatDigestMessage includes title, rooms, price, and link', () => {
@@ -123,6 +123,24 @@ test('formatDigestMessage includes title, rooms, price, and link', () => {
   assert.match(message, /בית פרטי, לוטם/);
   assert.match(message, /5\.5 חדרים/);
   assert.match(message, /6,100 ₪/);
+});
+
+test('formatDigestMessage shows מחיר לא מצוין for ads with no explicit price', () => {
+  const message = formatDigestMessage({
+    newAds: [
+      {
+        title: 'בית, יישוב כלשהו',
+        districtLabel: 'דרום',
+        link: 'https://www.yad2.co.il/realestate/item/south/abc1',
+        rooms: 4,
+        price: null,
+        hasExplicitPrice: false
+      }
+    ]
+  });
+
+  assert.match(message, /מחיר לא מצוין/);
+  assert.doesNotMatch(message, /\d+\s*₪/);
 });
 
 test('formatDigestMessages splits long digests into chunks under the Telegram limit', () => {

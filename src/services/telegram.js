@@ -9,9 +9,11 @@ function truncateTitle(title, maxLength = 70) {
   return `${title.slice(0, maxLength - 1)}…`;
 }
 
-function formatPrice(price) {
-  if (typeof price !== 'number') return null;
-  return `${price.toLocaleString('he-IL')} ₪`;
+function formatPrice(price, hasExplicitPrice) {
+  if (typeof price === 'number' && hasExplicitPrice !== false) {
+    return `${price.toLocaleString('he-IL')} ₪`;
+  }
+  return 'מחיר לא מצוין';
 }
 
 function formatRooms(rooms) {
@@ -22,7 +24,9 @@ function formatRooms(rooms) {
 
 function formatAdLine(ad, index) {
   const heading = truncateTitle(ad.title || 'מודעה');
-  const facts = [formatRooms(ad.rooms), formatPrice(ad.price)].filter(Boolean).join(' · ');
+  const facts = [formatRooms(ad.rooms), formatPrice(ad.price, ad.hasExplicitPrice)]
+    .filter(Boolean)
+    .join(' · ');
   const factsLine = facts ? `\n${facts}` : '';
   return `${index + 1}. ${heading}${factsLine}\n${ad.link}`;
 }
