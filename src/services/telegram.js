@@ -9,8 +9,22 @@ function truncateTitle(title, maxLength = 70) {
   return `${title.slice(0, maxLength - 1)}…`;
 }
 
+function formatPrice(price) {
+  if (typeof price !== 'number') return null;
+  return `${price.toLocaleString('he-IL')} ₪`;
+}
+
+function formatRooms(rooms) {
+  if (typeof rooms !== 'number') return null;
+  const display = Number.isInteger(rooms) ? rooms.toString() : rooms.toFixed(1);
+  return `${display} חדרים`;
+}
+
 function formatAdLine(ad, index) {
-  return `${index + 1}. ${truncateTitle(ad.title)}\n${ad.link}`;
+  const heading = truncateTitle(ad.title || 'מודעה');
+  const facts = [formatRooms(ad.rooms), formatPrice(ad.price)].filter(Boolean).join(' · ');
+  const factsLine = facts ? `\n${facts}` : '';
+  return `${index + 1}. ${heading}${factsLine}\n${ad.link}`;
 }
 
 function formatDigestMessage({ newAds }) {

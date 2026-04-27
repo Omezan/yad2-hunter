@@ -131,13 +131,15 @@ function looksUrban(haystack) {
   return URBAN_BLOCKLIST.some((city) => haystack.includes(normalize(city)));
 }
 
-function getRejection(ad) {
+function getRejection(ad, options = {}) {
   if (!isItemUrl(ad.link)) {
     return 'non-item-url';
   }
 
   const haystack = normalize(
-    [ad.title, ad.rawText, ad.locationText, ad.searchLabel].filter(Boolean).join(' ')
+    [ad.title, ad.rawText, ad.locationText, ad.searchLabel, ad.city, ad.propertyType]
+      .filter(Boolean)
+      .join(' ')
   );
 
   const blockedKeyword = getExcludedKeyword(haystack);
@@ -145,8 +147,23 @@ function getRejection(ad) {
     return `keyword:${blockedKeyword}`;
   }
 
+  if (options.requireExplicitPrice) {
+    if (ad.hasExplicitPrice === false) {
+      return 'no-price';
+    }
+    if (typeof ad.price !== 'number') {
+      return 'no-price';
+    }
+  }
+
   if (typeof ad.price === 'number' && ad.price > MAX_PRICE) {
     return `price:${ad.price}`;
+  }
+
+  if (options.requireExplicitRooms) {
+    if (typeof ad.rooms !== 'number') {
+      return 'no-rooms';
+    }
   }
 
   if (typeof ad.rooms === 'number' && ad.rooms < MIN_ROOMS) {
@@ -164,12 +181,12 @@ function getRejection(ad) {
   return null;
 }
 
-function isRelevant(ad) {
-  return getRejection(ad) === null;
+function isRelevant(ad, options) {
+  return getRejection(ad, options) === null;
 }
 
-function filterRelevantAds(ads) {
-  return ads.filter(isRelevant);
+function filterRelevantAds(ads, options) {
+  return ads.filter((ad) => isRelevant(ad, options));
 }
 
 module.exports = {

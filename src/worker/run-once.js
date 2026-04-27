@@ -6,14 +6,14 @@ const {
   recordRun,
   saveAndDetectNewAds
 } = require('../store/file-store');
-const { scrapeAllSearches } = require('../scraper/yad2');
+const { enrichAdsWithDetails, scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const { sendNewAdsDigest } = require('../services/telegram');
 
-function summarizeRejections(ads) {
+function summarizeRejections(ads, options) {
   const counts = {};
   for (const ad of ads) {
-    const reason = getRejection(ad);
+    const reason = getRejection(ad, options);
     if (!reason) continue;
     const key = reason.split(':')[0];
     counts[key] = (counts[key] || 0) + 1;
@@ -35,8 +35,18 @@ async function runOnce(options = {}) {
       timeoutMs: env.SEARCH_TIMEOUT_MS
     });
 
-    const relevantAds = filterRelevantAds(scrapeResult.ads);
-    const rejectionCounts = summarizeRejections(scrapeResult.ads);
+    const preFiltered = filterRelevantAds(scrapeResult.ads);
+    const enriched = await enrichAdsWithDetails({
+      ads: preFiltered,
+      headless: env.PLAYWRIGHT_HEADLESS,
+      timeoutMs: env.SEARCH_TIMEOUT_MS
+    });
+    const finalOptions = { requireExplicitPrice: true, requireExplicitRooms: true };
+    const relevantAds = filterRelevantAds(enriched, finalOptions);
+    const rejectionCounts = {
+      preFilter: summarizeRejections(scrapeResult.ads),
+      finalFilter: summarizeRejections(enriched, finalOptions)
+    };
     const newAds = saveAndDetectNewAds(relevantAds);
 
     let telegramResult = { skipped: true, reason: 'No new ads' };

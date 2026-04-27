@@ -16,13 +16,13 @@ function normalizeItemUrl(rawUrl) {
 
 function extractExternalId(url) {
   const normalizedUrl = normalizeItemUrl(url);
-  const match = normalizedUrl.match(/\/item\/([^/?#]+)/i);
+  const match = normalizedUrl.match(/\/realestate\/item\/(.+)$/i);
   if (match) {
-    return match[1];
+    return match[1].replace(/\/$/, '');
   }
 
   const parsedUrl = new URL(normalizedUrl);
-  return parsedUrl.pathname.replace(/\//g, '-') || normalizedUrl;
+  return parsedUrl.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || normalizedUrl;
 }
 
 function parsePrice(text) {
@@ -127,6 +127,91 @@ async function scrapeSearch(page, search, timeoutMs) {
     .filter((ad) => ad.externalId && ad.link);
 }
 
+async function fetchListingDetails(page, url, timeoutMs) {
+  await page.goto(url, {
+    waitUntil: 'domcontentloaded',
+    timeout: timeoutMs
+  });
+
+  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => null);
+
+  const data = await page.evaluate(() => {
+    function textOf(selector) {
+      const el = document.querySelector(selector);
+      return el ? (el.innerText || el.textContent || '').trim() : '';
+    }
+
+    const titleHeading = textOf('h1') || textOf('h2');
+    const subTitle =
+      textOf('[class*="property-type"]') ||
+      textOf('[data-testid*="property-type"]') ||
+      '';
+    const allText =
+      document.body && (document.body.innerText || document.body.textContent)
+        ? document.body.innerText
+        : '';
+
+    return {
+      titleHeading,
+      subTitle,
+      allText
+    };
+  });
+
+  const text = String(data.allText || '');
+  const cleanText = text.replace(/[\u200e\u200f]/g, '');
+
+  const priceMatch = cleanText.match(/([\d.,]+)\s*₪/);
+  const priceNumeric = priceMatch
+    ? Number.parseInt(priceMatch[1].replace(/[^\d]/g, ''), 10)
+    : null;
+  const price = Number.isFinite(priceNumeric) ? priceNumeric : null;
+
+  const noPriceHint = /לא צוין מחיר/.test(cleanText);
+
+  const roomsMatch = cleanText.match(/(\d+(?:\.\d+)?)\s*חדרים/);
+  const rooms = roomsMatch ? Number.parseFloat(roomsMatch[1]) : null;
+
+  const propertyType = data.subTitle || guessPropertyType(cleanText);
+  const city = (data.titleHeading || '').split('\n')[0].trim() || null;
+
+  return {
+    url,
+    title: buildListingTitle({ propertyType, city }),
+    propertyType,
+    city,
+    rooms: Number.isFinite(rooms) ? rooms : null,
+    price,
+    hasExplicitPrice: !noPriceHint && price !== null
+  };
+}
+
+function guessPropertyType(text) {
+  const candidates = [
+    'בית פרטי/ קוטג\'',
+    'דירה',
+    'דירת גן',
+    'דירת גג',
+    'פנטהאוז',
+    'יחידת דיור',
+    'מיני פנטהאוז',
+    'דופלקס',
+    'טריפלקס',
+    'וילה'
+  ];
+  for (const candidate of candidates) {
+    if (text.includes(candidate)) {
+      return candidate;
+    }
+  }
+  return '';
+}
+
+function buildListingTitle({ propertyType, city }) {
+  const parts = [propertyType, city].filter(Boolean);
+  return parts.length > 0 ? parts.join(', ') : 'מודעה';
+}
+
 async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
   const browser = await chromium.launch({ headless });
   const context = await browser.newContext({
@@ -168,8 +253,52 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
   };
 }
 
+async function enrichAdsWithDetails({ ads, headless = true, timeoutMs = 30000, logger = console }) {
+  if (!ads.length) return ads;
+
+  const browser = await chromium.launch({ headless });
+  const context = await browser.newContext({
+    userAgent: DEFAULT_USER_AGENT,
+    locale: 'he-IL',
+    viewport: { width: 1440, height: 1200 },
+    extraHTTPHeaders: {
+      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'
+    }
+  });
+
+  const page = await context.newPage();
+  const enriched = [];
+
+  try {
+    for (const ad of ads) {
+      try {
+        const details = await fetchListingDetails(page, ad.link, timeoutMs);
+        enriched.push({
+          ...ad,
+          title: details.title || ad.title,
+          city: details.city,
+          propertyType: details.propertyType,
+          rooms: details.rooms ?? ad.rooms,
+          price: details.price ?? ad.price,
+          hasExplicitPrice: details.hasExplicitPrice
+        });
+      } catch (error) {
+        logger.error(`Failed fetching details for ${ad.link}: ${error.message}`);
+        enriched.push({ ...ad, hasExplicitPrice: false });
+      }
+    }
+  } finally {
+    await context.close();
+    await browser.close();
+  }
+
+  return enriched;
+}
+
 module.exports = {
+  enrichAdsWithDetails,
   extractExternalId,
+  fetchListingDetails,
   normalizeItemUrl,
   scrapeAllSearches
 };
