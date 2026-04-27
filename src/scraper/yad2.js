@@ -102,7 +102,7 @@ async function scrapeSearch(page, search, timeoutMs) {
   const scrapedAt = new Date().toISOString();
 
   return rawAds
-    .filter((entry) => entry.href)
+    .filter((entry) => entry.href && /\/realestate\/item\//i.test(entry.href))
     .map((entry) => {
       const normalizedLink = normalizeItemUrl(entry.href);
       const rawText = String(entry.containerText || entry.text || '').trim();
