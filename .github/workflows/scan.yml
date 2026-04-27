@@ -58,20 +58,25 @@ jobs:
 
       - name: Persist state to state branch
         if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: |
           if [ ! -d state ] || [ -z "$(ls -A state 2>/dev/null)" ]; then
             echo "No state to persist"
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           WORK_DIR="$(mktemp -d)"
           cp -R state/. "$WORK_DIR/"
 
           cd "$WORK_DIR"
           git init -q -b state
+          git config user.name  "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
           git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git add .
           if git diff --cached --quiet; then
@@ -80,5 +85,3 @@ jobs:
           fi
           git commit -q -m "Update Yad2 state ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
           git push -f origin state
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
