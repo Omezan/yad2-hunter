@@ -72,15 +72,12 @@ const URBAN_BLOCKLIST = [
   'קריית ים',
   'אילת',
   'דימונה',
-  'ערד',
   'נתיבות',
   'אופקים',
-  'שדרות',
   'קרית גת',
   'קריית גת',
   'קרית מלאכי',
   'קריית מלאכי',
-  'יבנה',
   'גן יבנה',
   'חדרה',
   'אור יהודה',
@@ -100,13 +97,10 @@ const URBAN_BLOCKLIST = [
   'טירת הכרמל',
   'אום אל פחם',
   'טייבה',
-  'טירה',
   'קלנסואה',
   'רהט',
-  'תמרה',
   'סחנין',
   'שפרעם',
-  'מגדים',
   'נשר',
   'קרית חיים'
 ];
@@ -127,12 +121,36 @@ function getExcludedKeyword(haystack) {
   return EXCLUDED_KEYWORDS.find((keyword) => haystack.includes(normalize(keyword))) || null;
 }
 
+function tokenizeForMatch(text) {
+  const tokens = String(text || '')
+    .replace(/[\u200e\u200f]/g, '')
+    .toLowerCase()
+    .split(/[^\u0590-\u05ffA-Za-z0-9'"]+/)
+    .filter(Boolean);
+  const phrases = new Set();
+  for (let i = 0; i < tokens.length; i += 1) {
+    phrases.add(tokens[i]);
+    if (i + 1 < tokens.length) {
+      phrases.add(`${tokens[i]} ${tokens[i + 1]}`);
+    }
+    if (i + 2 < tokens.length) {
+      phrases.add(`${tokens[i]} ${tokens[i + 1]} ${tokens[i + 2]}`);
+    }
+  }
+  return phrases;
+}
+
+function tokenizedMatches(text, terms) {
+  const phrases = tokenizeForMatch(text);
+  return terms.find((term) => phrases.has(normalize(term))) || null;
+}
+
 function looksRural(haystack) {
-  return RURAL_PREFIXES.some((prefix) => haystack.includes(normalize(prefix)));
+  return Boolean(tokenizedMatches(haystack, RURAL_PREFIXES));
 }
 
 function looksUrban(haystack) {
-  return URBAN_BLOCKLIST.some((city) => haystack.includes(normalize(city)));
+  return Boolean(tokenizedMatches(haystack, URBAN_BLOCKLIST));
 }
 
 function buildLocationHaystack(ad) {
