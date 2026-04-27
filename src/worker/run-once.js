@@ -13,7 +13,8 @@ const { sendNewAdsDigest } = require('../services/telegram');
 
 const ENRICH_TIMEOUT_MS = 12000;
 const ENRICH_CONCURRENCY = 4;
-const MAX_ENRICH = 20;
+const MAX_ENRICH = 100;
+const ENRICH_BUDGET_MS = 7 * 60 * 1000;
 
 function summarizeRejections(ads, options) {
   const counts = {};
@@ -44,14 +45,17 @@ async function runOnce(options = {}) {
     const { newAds: newCandidates, existingAds } = splitNewAndExisting(preFiltered);
 
     const candidatesToEnrich = newCandidates.slice(0, MAX_ENRICH);
-    const skippedDueToCap = newCandidates.length - candidatesToEnrich.length;
+    const cappedAtMaxEnrich = newCandidates.length - candidatesToEnrich.length;
 
     const enriched = await enrichAdsWithDetails({
       ads: candidatesToEnrich,
       headless: env.PLAYWRIGHT_HEADLESS,
       timeoutMs: ENRICH_TIMEOUT_MS,
-      concurrency: ENRICH_CONCURRENCY
+      concurrency: ENRICH_CONCURRENCY,
+      budgetMs: ENRICH_BUDGET_MS
     });
+
+    const droppedDueToBudget = candidatesToEnrich.length - enriched.length;
 
     const finalOptions = { requireExplicitPrice: true, requireExplicitRooms: true };
     const relevantNewAds = filterRelevantAds(enriched, finalOptions);
@@ -59,7 +63,8 @@ async function runOnce(options = {}) {
     const rejectionCounts = {
       preFilter: summarizeRejections(scrapeResult.ads),
       finalFilter: summarizeRejections(enriched, finalOptions),
-      skippedDueToCap
+      cappedAtMaxEnrich,
+      droppedDueToBudget
     };
 
     commitAds({ newAds: relevantNewAds, existingAds });

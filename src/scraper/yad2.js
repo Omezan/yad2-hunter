@@ -262,6 +262,7 @@ async function enrichAdsWithDetails({
   headless = true,
   timeoutMs = 12000,
   concurrency = 4,
+  budgetMs = 0,
   logger = console
 }) {
   if (!ads.length) return ads;
@@ -282,9 +283,14 @@ async function enrichAdsWithDetails({
 
   const queue = ads.slice();
   const enriched = [];
+  const deadline = budgetMs > 0 ? Date.now() + budgetMs : Infinity;
 
   async function worker(page) {
     while (queue.length) {
+      if (Date.now() >= deadline) {
+        logger.warn?.('Enrichment budget exhausted, stopping early');
+        break;
+      }
       const ad = queue.shift();
       if (!ad) break;
       try {
