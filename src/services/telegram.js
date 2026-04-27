@@ -27,20 +27,73 @@ function formatAdLine(ad, index) {
   return `${index + 1}. ${heading}${factsLine}\n${ad.link}`;
 }
 
-function formatDigestMessage({ newAds }) {
+const TELEGRAM_MAX_CHARS = 4000;
+
+function buildHeader({ totalAds, districtSummary, partIndex, totalParts }) {
+  const lines = [`🏠 נמצאו ${totalAds} מודעות חדשות ב-Yad2`];
+  if (districtSummary) {
+    lines.push(`אזורים: ${districtSummary}`);
+  }
+  if (totalParts > 1) {
+    lines.push(`חלק ${partIndex} מתוך ${totalParts}`);
+  }
+  return lines.join('\n');
+}
+
+function buildChunks({ newAds, districtSummary }) {
+  const lines = newAds.map(formatAdLine);
+  const chunks = [];
+  let current = [];
+  let currentLength = 0;
+  const headerOverhead = buildHeader({
+    totalAds: newAds.length,
+    districtSummary,
+    partIndex: 99,
+    totalParts: 99
+  }).length + 2;
+
+  for (const line of lines) {
+    const lineLength = line.length + 2;
+    if (current.length && currentLength + lineLength + headerOverhead > TELEGRAM_MAX_CHARS) {
+      chunks.push(current);
+      current = [];
+      currentLength = 0;
+    }
+    current.push(line);
+    currentLength += lineLength;
+  }
+
+  if (current.length) {
+    chunks.push(current);
+  }
+
+  return chunks;
+}
+
+function formatDigestMessages({ newAds }) {
+  if (!newAds.length) return [];
+
   const districtSummary = Array.from(
     new Set(newAds.map((ad) => ad.districtLabel).filter(Boolean))
   ).join(', ');
 
-  const adLines = newAds.map(formatAdLine).join('\n\n');
+  const chunks = buildChunks({ newAds, districtSummary });
+  const totalParts = chunks.length;
 
-  return [
-    `🏠 נמצאו ${newAds.length} מודעות חדשות ב-Yad2`,
-    districtSummary ? `אזורים: ${districtSummary}` : null,
-    `\n${adLines}`
-  ]
-    .filter(Boolean)
-    .join('\n');
+  return chunks.map((chunkLines, index) => {
+    const header = buildHeader({
+      totalAds: newAds.length,
+      districtSummary,
+      partIndex: index + 1,
+      totalParts
+    });
+    return `${header}\n\n${chunkLines.join('\n\n')}`;
+  });
+}
+
+function formatDigestMessage({ newAds }) {
+  const messages = formatDigestMessages({ newAds });
+  return messages[0] || '';
 }
 
 async function sendTelegramMessage(text) {
@@ -64,13 +117,34 @@ async function sendTelegramMessage(text) {
   return response.data;
 }
 
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function sendNewAdsDigest({ newAds }) {
-  const message = formatDigestMessage({ newAds });
-  return sendTelegramMessage(message);
+  const messages = formatDigestMessages({ newAds });
+  if (!messages.length) {
+    return { skipped: true, reason: 'No new ads' };
+  }
+
+  const results = [];
+  for (let i = 0; i < messages.length; i += 1) {
+    const result = await sendTelegramMessage(messages[i]);
+    results.push(result);
+    if (i < messages.length - 1) {
+      await sleep(800);
+    }
+  }
+
+  return {
+    parts: results.length,
+    results
+  };
 }
 
 module.exports = {
   formatDigestMessage,
+  formatDigestMessages,
   sendNewAdsDigest,
   sendTelegramMessage
 };

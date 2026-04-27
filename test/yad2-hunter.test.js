@@ -6,7 +6,7 @@ const {
   getRejection,
   isRelevant
 } = require('../src/services/relevance');
-const { formatDigestMessage } = require('../src/services/telegram');
+const { formatDigestMessage, formatDigestMessages } = require('../src/services/telegram');
 const { extractExternalId, normalizeItemUrl } = require('../src/scraper/yad2');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
@@ -123,6 +123,30 @@ test('formatDigestMessage includes title, rooms, price, and link', () => {
   assert.match(message, /בית פרטי, לוטם/);
   assert.match(message, /5\.5 חדרים/);
   assert.match(message, /6,100 ₪/);
+});
+
+test('formatDigestMessages splits long digests into chunks under the Telegram limit', () => {
+  const newAds = Array.from({ length: 80 }, (_, i) => ({
+    title: `דירה מס׳ ${i + 1} ביישוב הדגמה ארוך מאוד`,
+    districtLabel: 'מרכז והשרון',
+    link: `https://www.yad2.co.il/realestate/item/center-and-sharon/dummy${i + 1}`,
+    rooms: 4,
+    price: 7000 + i
+  }));
+
+  const messages = formatDigestMessages({ newAds });
+
+  assert.ok(messages.length > 1, 'Expected the digest to be split into multiple parts');
+  for (const msg of messages) {
+    assert.ok(msg.length <= 4096, `Message too long: ${msg.length}`);
+    assert.match(msg, /נמצאו 80 מודעות חדשות/);
+    assert.match(msg, /חלק \d+ מתוך \d+/);
+  }
+
+  for (let i = 1; i <= 80; i += 1) {
+    const found = messages.some((msg) => msg.includes(`/dummy${i}`));
+    assert.ok(found, `Ad #${i} missing from digest chunks`);
+  }
 });
 
 test('filterRelevantAds drops urban ads and keeps rural matches', () => {
