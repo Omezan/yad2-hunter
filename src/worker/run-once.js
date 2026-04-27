@@ -13,7 +13,7 @@ const { sendNewAdsDigest } = require('../services/telegram');
 
 const ENRICH_TIMEOUT_MS = 12000;
 const ENRICH_CONCURRENCY = 4;
-const MAX_ENRICH = 100;
+const MAX_ENRICH = 200;
 const ENRICH_BUDGET_MS = 7 * 60 * 1000;
 
 function summarizeRejections(ads, options) {
