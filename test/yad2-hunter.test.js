@@ -15,13 +15,16 @@ function makeAd(overrides) {
   return {
     title: 'דירה, בת חפר',
     rawText: 'דירה, בת חפר\n6 חדרים\n7,000 ₪',
+    descriptionText: 'דירה ביישוב כפרי, גינה גדולה ופרטיות מלאה',
     locationText: 'בת חפר',
+    city: 'בת חפר',
     searchLabel: 'מרכז ושרון',
     link: ITEM,
     price: 7000,
     rooms: 6,
     settlementsOnly: true,
     hasExplicitPrice: true,
+    enriched: true,
     ...overrides
   };
 }
@@ -68,17 +71,68 @@ test('isRelevant blocks urban ads even when search is settlements-only', () => {
   const ad = makeAd({
     title: 'דירה במרכז',
     rawText: 'דירה במרכז\nתל אביב\n4 חדרים\n8,500 ₪',
-    locationText: 'תל אביב'
+    locationText: 'תל אביב',
+    city: 'תל אביב',
+    descriptionText: 'דירה במרכז העיר'
   });
   assert.equal(getRejection(ad), 'urban-location');
 });
 
-test('isRelevant rejects ads with explicit promoted keywords', () => {
+test('isRelevant rejects ads with explicit promoted keywords in description', () => {
   const ad = makeAd({
     title: 'יד ראשונה מקבלן',
-    rawText: 'יד ראשונה מקבלן\nקיבוץ דוגמה\n4 חדרים\n8,000 ₪'
+    descriptionText: 'יד ראשונה מקבלן, קיבוץ דוגמה'
   });
   assert.match(getRejection(ad) || '', /^keyword:(יד ראשונה|מקבלן)$/);
+});
+
+test('un-enriched ads only get structural pre-filter checks', () => {
+  const ad = makeAd({
+    enriched: false,
+    rawText: 'מקבלן פרסומת\n4 חדרים\n8,500 ₪',
+    descriptionText: '',
+    locationText: 'תל אביב',
+    city: 'תל אביב'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('enriched ads ignore promo keywords found only in the wide rawText', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: 'מקבלן פרסומת מסיחת דעת',
+    descriptionText: 'בית יפה וגדול עם גינה'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('enriched ads still reject when the description itself mentions the keyword', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    descriptionText: 'דירת קבלן חדשה, מקבלן בלעדי'
+  });
+  assert.equal(getRejection(ad), 'keyword:מקבלן');
+});
+
+test('enriched ads do not match urban blocklist on noisy rawText', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: 'בנר חולה: דירות בנתניה',
+    descriptionText: 'דירה בקיבוץ דוגמה'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('enriched ads still reject urban listings when city says so', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    city: 'תל אביב',
+    locationText: 'תל אביב',
+    descriptionText: 'דירה במרכז העיר'
+  });
+  assert.equal(getRejection(ad), 'urban-location');
 });
 
 test('ads without an explicit price are still accepted', () => {
@@ -173,7 +227,9 @@ test('filterRelevantAds drops urban ads and keeps rural matches', () => {
     makeAd({
       title: 'מודעה בעיר',
       rawText: 'מודעה בעיר\nתל אביב\n5 חדרים\n8,000 ₪',
-      locationText: 'תל אביב'
+      locationText: 'תל אביב',
+      city: 'תל אביב',
+      descriptionText: 'דירה במרכז העיר'
     })
   ]);
 

@@ -135,6 +135,21 @@ function looksUrban(haystack) {
   return URBAN_BLOCKLIST.some((city) => haystack.includes(normalize(city)));
 }
 
+function buildLocationHaystack(ad) {
+  return normalize(
+    [ad.title, ad.locationText, ad.city, ad.addressText, ad.propertyType]
+      .filter(Boolean)
+      .join(' ')
+  );
+}
+
+function buildKeywordHaystack(ad) {
+  const fields = ad.enriched
+    ? [ad.title, ad.descriptionText, ad.propertyType]
+    : [ad.title, ad.rawText, ad.locationText, ad.propertyType];
+  return normalize(fields.filter(Boolean).join(' '));
+}
+
 function getRejection(ad, options = {}) {
   if (!isItemUrl(ad.link)) {
     return 'non-item-url';
@@ -144,37 +159,33 @@ function getRejection(ad, options = {}) {
     return 'cross-district-suggestion';
   }
 
-  const haystack = normalize(
-    [ad.title, ad.rawText, ad.locationText, ad.searchLabel, ad.city, ad.propertyType]
-      .filter(Boolean)
-      .join(' ')
-  );
-
-  const blockedKeyword = getExcludedKeyword(haystack);
-  if (blockedKeyword) {
-    return `keyword:${blockedKeyword}`;
-  }
-
   if (typeof ad.price === 'number' && ad.price > MAX_PRICE) {
     return `price:${ad.price}`;
-  }
-
-  if (options.requireExplicitRooms) {
-    if (typeof ad.rooms !== 'number') {
-      return 'no-rooms';
-    }
   }
 
   if (typeof ad.rooms === 'number' && ad.rooms < MIN_ROOMS) {
     return `rooms:${ad.rooms}`;
   }
 
-  if (looksUrban(haystack) && !looksRural(haystack)) {
-    return 'urban-location';
-  }
+  if (ad.enriched || options.useEnrichedFields) {
+    const keywordHaystack = buildKeywordHaystack(ad);
+    const blockedKeyword = getExcludedKeyword(keywordHaystack);
+    if (blockedKeyword) {
+      return `keyword:${blockedKeyword}`;
+    }
 
-  if (!ad.settlementsOnly && !looksRural(haystack)) {
-    return 'no-rural-marker';
+    if (options.requireExplicitRooms && typeof ad.rooms !== 'number') {
+      return 'no-rooms';
+    }
+
+    const locationHaystack = buildLocationHaystack(ad);
+    if (looksUrban(locationHaystack) && !looksRural(locationHaystack)) {
+      return 'urban-location';
+    }
+
+    if (!ad.settlementsOnly && !looksRural(locationHaystack)) {
+      return 'no-rural-marker';
+    }
   }
 
   return null;

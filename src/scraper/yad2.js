@@ -145,6 +145,45 @@ async function fetchListingDetails(page, url, timeoutMs) {
       return el ? (el.innerText || el.textContent || '').trim() : '';
     }
 
+    function findDescriptionText() {
+      const selectors = [
+        '[data-testid*="description"]',
+        '[data-testid*="Description"]',
+        '[class*="description"]',
+        '[class*="Description"]',
+        '[class*="property-text"]',
+        '[class*="propertyText"]',
+        '[itemprop="description"]'
+      ];
+      const blocks = new Set();
+      for (const selector of selectors) {
+        document.querySelectorAll(selector).forEach((el) => {
+          const text = (el.innerText || el.textContent || '').trim();
+          if (text && text.length >= 20 && text.length <= 4000) {
+            blocks.add(text);
+          }
+        });
+      }
+      return Array.from(blocks).join('\n').trim();
+    }
+
+    function findAddressText() {
+      const candidates = [
+        '[data-testid*="address"]',
+        '[class*="address"]',
+        '[class*="location"]',
+        '[itemprop="address"]'
+      ];
+      for (const selector of candidates) {
+        const el = document.querySelector(selector);
+        if (el) {
+          const text = (el.innerText || el.textContent || '').trim();
+          if (text) return text;
+        }
+      }
+      return '';
+    }
+
     const titleHeading = textOf('h1') || textOf('h2');
     const subTitle =
       textOf('[class*="property-type"]') ||
@@ -158,6 +197,8 @@ async function fetchListingDetails(page, url, timeoutMs) {
     return {
       titleHeading,
       subTitle,
+      addressText: findAddressText(),
+      descriptionText: findDescriptionText(),
       allText
     };
   });
@@ -178,12 +219,16 @@ async function fetchListingDetails(page, url, timeoutMs) {
 
   const propertyType = data.subTitle || guessPropertyType(cleanText);
   const city = (data.titleHeading || '').split('\n')[0].trim() || null;
+  const descriptionText = String(data.descriptionText || '').replace(/[\u200e\u200f]/g, '');
+  const addressText = String(data.addressText || '').replace(/[\u200e\u200f]/g, '');
 
   return {
     url,
     title: buildListingTitle({ propertyType, city }),
     propertyType,
     city,
+    addressText,
+    descriptionText,
     rooms: Number.isFinite(rooms) ? rooms : null,
     price,
     hasExplicitPrice: !noPriceHint && price !== null
@@ -300,13 +345,17 @@ async function enrichAdsWithDetails({
           title: details.title || ad.title,
           city: details.city,
           propertyType: details.propertyType,
+          addressText: details.addressText,
+          descriptionText: details.descriptionText,
+          rawText: '',
           rooms: details.rooms ?? ad.rooms,
           price: details.price ?? ad.price,
-          hasExplicitPrice: details.hasExplicitPrice
+          hasExplicitPrice: details.hasExplicitPrice,
+          enriched: true
         });
       } catch (error) {
         logger.error(`Failed fetching details for ${ad.link}: ${error.message}`);
-        enriched.push({ ...ad, hasExplicitPrice: false });
+        enriched.push({ ...ad, hasExplicitPrice: false, enriched: false });
       }
     }
   }
