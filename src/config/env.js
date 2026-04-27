@@ -25,7 +25,6 @@ function parseInteger(value, defaultValue) {
 
 const env = {
   NODE_ENV: process.env.NODE_ENV || 'development',
-  DATABASE_URL: process.env.DATABASE_URL || '',
   TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN || '',
   TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID || '',
   TELEGRAM_NOTIFICATIONS_ENABLED: parseBoolean(
@@ -34,9 +33,10 @@ const env = {
   ),
   PLAYWRIGHT_HEADLESS: parseBoolean(process.env.PLAYWRIGHT_HEADLESS, true),
   SEARCH_TIMEOUT_MS: parseInteger(process.env.SEARCH_TIMEOUT_MS, 60000),
-  SCAN_SCHEDULE: process.env.SCAN_SCHEDULE || '*/5 * * * *',
-  ENABLE_LOCAL_CRON: parseBoolean(process.env.ENABLE_LOCAL_CRON, false),
-  ENABLED_SEARCH_IDS: process.env.ENABLED_SEARCH_IDS || ''
+  ENABLED_SEARCH_IDS: process.env.ENABLED_SEARCH_IDS || '',
+  STATE_DIR: process.env.STATE_DIR || path.resolve(process.cwd(), 'state'),
+  HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
+  SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30)
 };
 
 module.exports = {

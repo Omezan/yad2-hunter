@@ -1,22 +1,21 @@
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const {
-  completeRun,
-  createRun,
-  ensureDatabaseReady,
-  failRun,
+  ensureStateDir,
   listRecentRuns,
-  markRunNotificationSent,
+  recordRun,
   saveAndDetectNewAds
-} = require('../db/repository');
-const { closePool } = require('../db');
+} = require('../store/file-store');
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds } = require('../services/relevance');
 const { sendNewAdsDigest } = require('../services/telegram');
 
 async function runOnce(options = {}) {
+  ensureStateDir();
+
   const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
-  const run = await createRun(options.note || options.trigger || 'manual');
+  const startedAt = new Date().toISOString();
+  const trigger = options.trigger || 'manual';
 
   try {
     const scrapeResult = await scrapeAllSearches({
@@ -26,46 +25,53 @@ async function runOnce(options = {}) {
     });
 
     const relevantAds = filterRelevantAds(scrapeResult.ads);
-    const newAds = await saveAndDetectNewAds(relevantAds);
-
-    await completeRun(run.id, {
-      status: scrapeResult.errors.length ? 'partial' : 'completed',
-      totalAds: scrapeResult.ads.length,
-      relevantAds: relevantAds.length,
-      newAds: newAds.length,
-      errors: scrapeResult.errors
-    });
+    const newAds = saveAndDetectNewAds(relevantAds);
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
 
     if (newAds.length > 0) {
       telegramResult = await sendNewAdsDigest({ newAds });
-
-      if (!telegramResult.skipped) {
-        await markRunNotificationSent(run.id);
-      }
     }
 
-    return {
-      runId: run.id,
-      searches: searches.map((search) => search.id),
+    const runEntry = {
+      startedAt,
+      completedAt: new Date().toISOString(),
+      status: scrapeResult.errors.length ? 'partial' : 'completed',
+      trigger,
       totalAds: scrapeResult.ads.length,
       relevantAds: relevantAds.length,
       newAds: newAds.length,
-      errors: scrapeResult.errors,
+      telegramSent: Boolean(telegramResult && !telegramResult.skipped),
+      errors: scrapeResult.errors
+    };
+
+    recordRun(runEntry);
+
+    return {
+      ...runEntry,
+      searches: searches.map((search) => search.id),
       telegramResult
     };
   } catch (error) {
-    await failRun(run.id, error);
+    recordRun({
+      startedAt,
+      completedAt: new Date().toISOString(),
+      status: 'failed',
+      trigger,
+      totalAds: 0,
+      relevantAds: 0,
+      newAds: 0,
+      telegramSent: false,
+      errors: [{ message: error.message }]
+    });
     throw error;
   }
 }
 
 async function main() {
   try {
-    await ensureDatabaseReady();
-    const result = await runOnce({ trigger: 'cli' });
-    const recentRuns = await listRecentRuns(5);
+    const result = await runOnce({ trigger: 'github-actions' });
+    const recentRuns = listRecentRuns(5);
 
     console.log(
       JSON.stringify(
@@ -80,8 +86,6 @@ async function main() {
   } catch (error) {
     console.error(error);
     process.exitCode = 1;
-  } finally {
-    await closePool();
   }
 }
 
