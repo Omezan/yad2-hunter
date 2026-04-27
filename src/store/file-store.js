@@ -84,27 +84,41 @@ function recordRun(runEntry) {
   saveRuns(runs);
 }
 
-function saveAndDetectNewAds(ads) {
+function splitNewAndExisting(ads) {
   const seen = loadSeenAds();
   const newAds = [];
-  const now = new Date().toISOString();
+  const existingAds = [];
 
   for (const ad of ads) {
-    const existing = seen.ads[ad.externalId];
-
-    if (existing) {
-      seen.ads[ad.externalId] = {
-        ...existing,
-        title: ad.title,
-        link: ad.link,
-        searchId: ad.searchId,
-        searchLabel: ad.searchLabel,
-        districtLabel: ad.districtLabel,
-        lastSeenAt: now
-      };
-      continue;
+    if (seen.ads[ad.externalId]) {
+      existingAds.push(ad);
+    } else {
+      newAds.push(ad);
     }
+  }
 
+  return { newAds, existingAds };
+}
+
+function commitAds({ newAds = [], existingAds = [] }) {
+  const seen = loadSeenAds();
+  const now = new Date().toISOString();
+
+  for (const ad of existingAds) {
+    const existing = seen.ads[ad.externalId];
+    seen.ads[ad.externalId] = {
+      ...(existing || {}),
+      externalId: ad.externalId,
+      title: ad.title,
+      link: ad.link,
+      searchId: ad.searchId,
+      searchLabel: ad.searchLabel,
+      districtLabel: ad.districtLabel,
+      lastSeenAt: now
+    };
+  }
+
+  for (const ad of newAds) {
     seen.ads[ad.externalId] = {
       externalId: ad.externalId,
       title: ad.title,
@@ -112,16 +126,21 @@ function saveAndDetectNewAds(ads) {
       searchId: ad.searchId,
       searchLabel: ad.searchLabel,
       districtLabel: ad.districtLabel,
+      price: ad.price,
+      rooms: ad.rooms,
+      city: ad.city,
       firstSeenAt: now,
       lastSeenAt: now
     };
-
-    newAds.push(ad);
   }
 
   const pruned = pruneSeenAds(seen, env.SEEN_RETENTION_DAYS);
   saveSeenAds(pruned);
+}
 
+function saveAndDetectNewAds(ads) {
+  const { newAds, existingAds } = splitNewAndExisting(ads);
+  commitAds({ newAds, existingAds });
   return newAds;
 }
 
@@ -131,8 +150,10 @@ function listRecentRuns(limit = 10) {
 }
 
 module.exports = {
+  commitAds,
   ensureStateDir,
   listRecentRuns,
   recordRun,
-  saveAndDetectNewAds
+  saveAndDetectNewAds,
+  splitNewAndExisting
 };

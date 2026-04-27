@@ -128,12 +128,16 @@ async function scrapeSearch(page, search, timeoutMs) {
 }
 
 async function fetchListingDetails(page, url, timeoutMs) {
-  await page.goto(url, {
+  const navigation = page.goto(url, {
     waitUntil: 'domcontentloaded',
     timeout: timeoutMs
   });
 
-  await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => null);
+  const timeoutPromise = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('detail fetch timeout')), timeoutMs)
+  );
+
+  await Promise.race([navigation, timeoutPromise]);
 
   const data = await page.evaluate(() => {
     function textOf(selector) {
@@ -253,7 +257,13 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
   };
 }
 
-async function enrichAdsWithDetails({ ads, headless = true, timeoutMs = 30000, logger = console }) {
+async function enrichAdsWithDetails({
+  ads,
+  headless = true,
+  timeoutMs = 12000,
+  concurrency = 4,
+  logger = console
+}) {
   if (!ads.length) return ads;
 
   const browser = await chromium.launch({ headless });
@@ -266,11 +276,17 @@ async function enrichAdsWithDetails({ ads, headless = true, timeoutMs = 30000, l
     }
   });
 
-  const page = await context.newPage();
+  const pages = await Promise.all(
+    Array.from({ length: Math.min(concurrency, ads.length) }, () => context.newPage())
+  );
+
+  const queue = ads.slice();
   const enriched = [];
 
-  try {
-    for (const ad of ads) {
+  async function worker(page) {
+    while (queue.length) {
+      const ad = queue.shift();
+      if (!ad) break;
       try {
         const details = await fetchListingDetails(page, ad.link, timeoutMs);
         enriched.push({
@@ -287,6 +303,10 @@ async function enrichAdsWithDetails({ ads, headless = true, timeoutMs = 30000, l
         enriched.push({ ...ad, hasExplicitPrice: false });
       }
     }
+  }
+
+  try {
+    await Promise.all(pages.map((page) => worker(page)));
   } finally {
     await context.close();
     await browser.close();

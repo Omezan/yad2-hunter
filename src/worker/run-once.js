@@ -1,14 +1,19 @@
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const {
+  commitAds,
   ensureStateDir,
   listRecentRuns,
   recordRun,
-  saveAndDetectNewAds
+  splitNewAndExisting
 } = require('../store/file-store');
 const { enrichAdsWithDetails, scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const { sendNewAdsDigest } = require('../services/telegram');
+
+const ENRICH_TIMEOUT_MS = 12000;
+const ENRICH_CONCURRENCY = 4;
+const MAX_ENRICH = 20;
 
 function summarizeRejections(ads, options) {
   const counts = {};
@@ -36,23 +41,32 @@ async function runOnce(options = {}) {
     });
 
     const preFiltered = filterRelevantAds(scrapeResult.ads);
+    const { newAds: newCandidates, existingAds } = splitNewAndExisting(preFiltered);
+
+    const candidatesToEnrich = newCandidates.slice(0, MAX_ENRICH);
+    const skippedDueToCap = newCandidates.length - candidatesToEnrich.length;
+
     const enriched = await enrichAdsWithDetails({
-      ads: preFiltered,
+      ads: candidatesToEnrich,
       headless: env.PLAYWRIGHT_HEADLESS,
-      timeoutMs: env.SEARCH_TIMEOUT_MS
+      timeoutMs: ENRICH_TIMEOUT_MS,
+      concurrency: ENRICH_CONCURRENCY
     });
+
     const finalOptions = { requireExplicitPrice: true, requireExplicitRooms: true };
-    const relevantAds = filterRelevantAds(enriched, finalOptions);
+    const relevantNewAds = filterRelevantAds(enriched, finalOptions);
+
     const rejectionCounts = {
       preFilter: summarizeRejections(scrapeResult.ads),
-      finalFilter: summarizeRejections(enriched, finalOptions)
+      finalFilter: summarizeRejections(enriched, finalOptions),
+      skippedDueToCap
     };
-    const newAds = saveAndDetectNewAds(relevantAds);
+
+    commitAds({ newAds: relevantNewAds, existingAds });
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
-
-    if (newAds.length > 0) {
-      telegramResult = await sendNewAdsDigest({ newAds });
+    if (relevantNewAds.length > 0) {
+      telegramResult = await sendNewAdsDigest({ newAds: relevantNewAds });
     }
 
     const runEntry = {
@@ -61,8 +75,10 @@ async function runOnce(options = {}) {
       status: scrapeResult.errors.length ? 'partial' : 'completed',
       trigger,
       totalAds: scrapeResult.ads.length,
-      relevantAds: relevantAds.length,
-      newAds: newAds.length,
+      preFilteredAds: preFiltered.length,
+      candidateNewAds: newCandidates.length,
+      enrichedAds: enriched.length,
+      relevantNewAds: relevantNewAds.length,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       errors: scrapeResult.errors
     };
@@ -82,8 +98,10 @@ async function runOnce(options = {}) {
       status: 'failed',
       trigger,
       totalAds: 0,
-      relevantAds: 0,
-      newAds: 0,
+      preFilteredAds: 0,
+      candidateNewAds: 0,
+      enrichedAds: 0,
+      relevantNewAds: 0,
       telegramSent: false,
       errors: [{ message: error.message }]
     });
