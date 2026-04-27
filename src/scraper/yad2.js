@@ -118,6 +118,7 @@ async function scrapeSearch(page, search, timeoutMs) {
         searchId: search.id,
         searchLabel: search.label,
         sourceUrl: search.url,
+        settlementsOnly: Boolean(search.settlementsOnly),
         price: parsePrice(rawText),
         rooms: parseRooms(rawText),
         scrapedAt

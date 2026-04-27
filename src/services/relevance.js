@@ -157,7 +157,7 @@ function getRejection(ad) {
     return 'urban-location';
   }
 
-  if (!looksRural(haystack)) {
+  if (!ad.settlementsOnly && !looksRural(haystack)) {
     return 'no-rural-marker';
   }
 

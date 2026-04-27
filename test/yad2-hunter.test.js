@@ -20,6 +20,7 @@ function makeAd(overrides) {
     link: ITEM,
     price: 8500,
     rooms: 4,
+    settlementsOnly: false,
     ...overrides
   };
 }
@@ -73,12 +74,33 @@ test('isRelevant rejects ads below the minimum rooms', () => {
   assert.equal(getRejection(ad), 'rooms:3');
 });
 
-test('isRelevant rejects ads when no rural marker is present', () => {
+test('isRelevant rejects ads when no rural marker is present and search is not settlements-only', () => {
   const ad = makeAd({
     rawText: 'דירה יפה\nשכונה חדשה\n4 חדרים\n8,500 ₪',
-    locationText: 'שכונה חדשה'
+    locationText: 'שכונה חדשה',
+    settlementsOnly: false
   });
   assert.equal(getRejection(ad), 'no-rural-marker');
+});
+
+test('isRelevant trusts settlements-only searches even without rural marker', () => {
+  const ad = makeAd({
+    title: 'בית משפחה',
+    rawText: 'בית משפחה\nמעגן מיכאל\n4 חדרים\n8,500 ₪',
+    locationText: 'מעגן מיכאל',
+    settlementsOnly: true
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('isRelevant blocks urban ads even when search is settlements-only', () => {
+  const ad = makeAd({
+    title: 'דירה במרכז',
+    rawText: 'דירה במרכז\nתל אביב\n4 חדרים\n8,500 ₪',
+    locationText: 'תל אביב',
+    settlementsOnly: true
+  });
+  assert.equal(getRejection(ad), 'urban-location');
 });
 
 test('filterRelevantAds keeps only the rural matching ads', () => {
