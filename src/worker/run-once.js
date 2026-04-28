@@ -40,6 +40,11 @@ function dumpRejectedNewCandidates(ads, options) {
       propertyType: ad.propertyType || null,
       title: ad.title || null,
       addressText: ad.addressText || null,
+      locationText: ad.locationText || null,
+      descriptionText: ad.descriptionText
+        ? ad.descriptionText.slice(0, 500)
+        : null,
+      rawTextSample: ad.rawText ? ad.rawText.slice(0, 500) : null,
       rooms: ad.rooms ?? null,
       price: ad.price ?? null,
       link: ad.link
