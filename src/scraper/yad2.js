@@ -73,22 +73,46 @@ function dedupeByExternalId(ads) {
   return Array.from(deduped.values());
 }
 
-async function scrapeSearch(page, search, timeoutMs) {
-  await page.goto(search.url, {
-    waitUntil: 'domcontentloaded',
-    timeout: timeoutMs
-  });
+function buildPageUrl(baseUrl, pageNumber) {
+  if (pageNumber <= 1) return baseUrl;
+  const url = new URL(baseUrl);
+  url.searchParams.set('page', String(pageNumber));
+  return url.toString();
+}
 
-  await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => null);
-  await page.waitForSelector('a[href*="/item/"]', { timeout: 15000 });
+async function autoScrollToLoadAll(page, { maxPasses = 25, idlePassLimit = 2 } = {}) {
+  let lastCount = 0;
+  let idlePasses = 0;
 
-  const rawAds = await page.$$eval('a[href*="/item/"]', (anchors) =>
+  for (let pass = 0; pass < maxPasses; pass += 1) {
+    const count = await page.evaluate(() => {
+      window.scrollTo(0, document.body.scrollHeight);
+      return document.querySelectorAll('a[href*="/realestate/item/"]').length;
+    });
+
+    if (count === lastCount) {
+      idlePasses += 1;
+      if (idlePasses >= idlePassLimit) {
+        break;
+      }
+    } else {
+      idlePasses = 0;
+      lastCount = count;
+    }
+
+    await page.waitForTimeout(450);
+  }
+}
+
+async function extractAnchorsFromPage(page) {
+  return page.$$eval('a[href*="/realestate/item/"]', (anchors) =>
     anchors.map((anchor) => {
       const container =
         anchor.closest('article') ||
         anchor.closest('li') ||
-        anchor.closest('[class*="feed"]') ||
-        anchor.closest('[class*="item"]');
+        anchor.closest('[class*="feed-item"]') ||
+        anchor.closest('[class*="feed_item"]') ||
+        anchor.closest('[class*="card"]');
 
       return {
         href: anchor.href || '',
@@ -98,17 +122,53 @@ async function scrapeSearch(page, search, timeoutMs) {
       };
     })
   );
+}
 
-  const scrapedAt = new Date().toISOString();
+async function scrapeSearchPage(page, url, timeoutMs) {
+  await page.goto(url, {
+    waitUntil: 'domcontentloaded',
+    timeout: timeoutMs
+  });
 
-  return rawAds
-    .filter((entry) => entry.href && /\/realestate\/item\//i.test(entry.href))
-    .map((entry) => {
+  await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+
+  const hasItems = await page
+    .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
+    .then(() => true)
+    .catch(() => false);
+
+  if (!hasItems) {
+    return [];
+  }
+
+  await autoScrollToLoadAll(page, { maxPasses: 12, idlePassLimit: 2 });
+
+  return extractAnchorsFromPage(page);
+}
+
+async function scrapeSearch(page, search, timeoutMs, { maxPages = 6 } = {}) {
+  const collected = new Map();
+  let consecutiveEmptyOrDuplicate = 0;
+
+  for (let pageNumber = 1; pageNumber <= maxPages; pageNumber += 1) {
+    const url = buildPageUrl(search.url, pageNumber);
+    const rawAds = await scrapeSearchPage(page, url, timeoutMs);
+
+    if (!rawAds.length) {
+      break;
+    }
+
+    const sizeBefore = collected.size;
+
+    for (const entry of rawAds) {
+      if (!entry.href || !/\/realestate\/item\//i.test(entry.href)) continue;
       const normalizedLink = normalizeItemUrl(entry.href);
-      const rawText = String(entry.containerText || entry.text || '').trim();
+      const externalId = extractExternalId(normalizedLink);
+      if (!externalId || collected.has(externalId)) continue;
 
-      return {
-        externalId: extractExternalId(normalizedLink),
+      const rawText = String(entry.containerText || entry.text || '').trim();
+      collected.set(externalId, {
+        externalId,
         title: extractTitle(rawText),
         link: normalizedLink,
         rawText,
@@ -121,10 +181,22 @@ async function scrapeSearch(page, search, timeoutMs) {
         settlementsOnly: Boolean(search.settlementsOnly),
         price: parsePrice(rawText),
         rooms: parseRooms(rawText),
-        scrapedAt
-      };
-    })
-    .filter((ad) => ad.externalId && ad.link);
+        scrapedAt: new Date().toISOString()
+      });
+    }
+
+    const newOnThisPage = collected.size - sizeBefore;
+    if (newOnThisPage === 0) {
+      consecutiveEmptyOrDuplicate += 1;
+      if (consecutiveEmptyOrDuplicate >= 2) {
+        break;
+      }
+    } else {
+      consecutiveEmptyOrDuplicate = 0;
+    }
+  }
+
+  return Array.from(collected.values());
 }
 
 async function fetchListingDetails(page, url, timeoutMs) {
