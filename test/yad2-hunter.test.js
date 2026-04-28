@@ -84,16 +84,16 @@ test('isRelevant blocks urban ads even when search is settlements-only', () => {
 
 test('isRelevant rejects ads with explicit promoted keywords in description', () => {
   const ad = makeAd({
-    title: 'יד ראשונה מקבלן',
-    descriptionText: 'יד ראשונה מקבלן, קיבוץ דוגמה'
+    title: 'פרויקט חדש',
+    descriptionText: 'פרויקט חדש בקיבוץ דוגמה'
   });
-  assert.match(getRejection(ad) || '', /^keyword:(יד ראשונה|מקבלן)$/);
+  assert.equal(getRejection(ad), 'keyword:פרויקט חדש');
 });
 
 test('un-enriched ads only get structural pre-filter checks', () => {
   const ad = makeAd({
     enriched: false,
-    rawText: 'מקבלן פרסומת\n4 חדרים\n8,500 ₪',
+    rawText: 'פרויקט חדש פרסומת\n4 חדרים\n8,500 ₪',
     descriptionText: '',
     locationText: 'תל אביב',
     city: 'תל אביב'
@@ -104,7 +104,7 @@ test('un-enriched ads only get structural pre-filter checks', () => {
 test('enriched ads ignore promo keywords found only in the wide rawText', () => {
   const ad = makeAd({
     enriched: true,
-    rawText: 'מקבלן פרסומת מסיחת דעת',
+    rawText: 'פרויקט חדש פרסומת מסיחת דעת',
     descriptionText: 'בית יפה וגדול עם גינה'
   });
   assert.equal(getRejection(ad), null);
@@ -114,9 +114,45 @@ test('enriched ads still reject when the description itself mentions the keyword
   const ad = makeAd({
     enriched: true,
     rawText: '',
-    descriptionText: 'דירת קבלן חדשה, מקבלן בלעדי'
+    descriptionText: 'בלעדי בפרויקט חדש בקיבוץ דוגמה'
   });
-  assert.equal(getRejection(ad), 'keyword:מקבלן');
+  assert.match(getRejection(ad) || '', /^keyword:(בלעדי בפרויקט|פרויקט חדש)$/);
+});
+
+test('enriched ads accept benign property tags like מתאים לשותפים', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    descriptionText: 'דירה יפה בקיבוץ דוגמה, מתאים לשותפים, ממ"ד, מרפסת'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('enriched ads accept חדש מקבלן property condition (newly built rental)', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    descriptionText: 'דירה חדשה מקבלן, לא גרו בה, בקיבוץ דוגמה'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('enriched ads still reject explicit roommate-search ads', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    descriptionText: 'מחפשים שותף לדירה בקיבוץ דוגמה'
+  });
+  assert.match(getRejection(ad) || '', /^keyword:(מחפשים שותפ|שותף לדירה)$/);
+});
+
+test('enriched ads still reject explicit basement units', () => {
+  const ad = makeAd({
+    enriched: true,
+    rawText: '',
+    descriptionText: 'יחידת מרתף נחמדה בקיבוץ דוגמה'
+  });
+  assert.equal(getRejection(ad), 'keyword:יחידת מרתף');
 });
 
 test('enriched ads do not match urban blocklist on noisy rawText', () => {

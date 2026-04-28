@@ -435,6 +435,10 @@ async function fetchListingDetails(page, url, timeoutMs) {
 
   await Promise.race([navigation, timeoutPromise]);
 
+  if (await detectCaptcha(page)) {
+    throw new Error('detail page returned captcha/anti-bot block');
+  }
+
   const data = await page.evaluate(() => {
     function textOf(selector) {
       const el = document.querySelector(selector);
