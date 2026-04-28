@@ -2,23 +2,10 @@ name: Yad2 Scan
 
 on:
   schedule:
-    # GitHub's free-tier scheduler often drops "*/5" runs when the queue is busy.
-    # Listing each minute as its own entry makes it less likely the whole hour
-    # gets dropped together (entries are scheduled independently). Some runs
-    # will still slip when GitHub is under load - that's a hard limit of the
-    # free tier.
+    # One job per hour; the job itself loops internally and scans every 5 min
+    # for ~55 minutes. This avoids GitHub's free-tier scheduler dropping
+    # individual cron fires under load.
     - cron: "0 * * * *"
-    - cron: "5 * * * *"
-    - cron: "10 * * * *"
-    - cron: "15 * * * *"
-    - cron: "20 * * * *"
-    - cron: "25 * * * *"
-    - cron: "30 * * * *"
-    - cron: "35 * * * *"
-    - cron: "40 * * * *"
-    - cron: "45 * * * *"
-    - cron: "50 * * * *"
-    - cron: "55 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -31,7 +18,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 60
 
     steps:
       - name: Checkout main
@@ -63,7 +50,7 @@ jobs:
             echo "No state branch yet, starting fresh"
           fi
 
-      - name: Run scan
+      - name: Run scan loop
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -71,34 +58,24 @@ jobs:
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
-        run: npm run scan
-
-      - name: Persist state to state branch
-        if: always()
-        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_AUTHOR_NAME: github-actions[bot]
           GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-        run: |
-          if [ ! -d state ] || [ -z "$(ls -A state 2>/dev/null)" ]; then
-            echo "No state to persist"
-            exit 0
-          fi
+          # Stop the loop ~55 min after start so the job can finish cleanly
+          # well before the 60-min runner timeout.
+          LOOP_BUDGET_MS: "3300000"
+          LOOP_INTERVAL_MS: "300000"
+        run: npm run scan:loop
 
-          WORK_DIR="$(mktemp -d)"
-          cp -R state/. "$WORK_DIR/"
-
-          cd "$WORK_DIR"
-          git init -q -b state
-          git config user.name  "$GIT_AUTHOR_NAME"
-          git config user.email "$GIT_AUTHOR_EMAIL"
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git add .
-          if git diff --cached --quiet; then
-            echo "No state changes to push"
-            exit 0
-          fi
-          git commit -q -m "Update Yad2 state ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
-          git push -f origin state
+      - name: Persist final state to state branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATE_DIR: ${{ github.workspace }}/state
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: bash scripts/persist-state.sh
