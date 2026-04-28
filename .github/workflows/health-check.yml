@@ -2,11 +2,9 @@ name: Yad2 Health Check
 
 on:
   schedule:
-    # 18:00 Asia/Jerusalem.
-    # 15:00 UTC handles IDT (summer, UTC+3); 16:00 UTC handles IST (winter, UTC+2).
-    # The "Verify local hour" step ensures only the entry matching 18:00 local actually runs.
-    - cron: "0 15 * * *"
-    - cron: "0 16 * * *"
+    # Top of every hour, offset by 5 minutes so we don't race the scan workflow
+    # which runs every 5 minutes starting at minute 0.
+    - cron: "5 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -22,42 +20,25 @@ jobs:
     timeout-minutes: 12
 
     steps:
-      - name: Verify local hour is 18:00 Asia/Jerusalem
-        if: github.event_name == 'schedule'
-        run: |
-          LOCAL_HOUR=$(TZ=Asia/Jerusalem date +%H)
-          echo "Local hour in Asia/Jerusalem: $LOCAL_HOUR"
-          if [ "$LOCAL_HOUR" != "18" ]; then
-            echo "Skipping run: local hour ($LOCAL_HOUR) is not 18."
-            echo "skip=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-        id: local_hour_check
-
       - name: Checkout main
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 1
 
       - name: Use Node.js 20
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         uses: actions/setup-node@v4
         with:
           node-version: "20"
           cache: npm
 
       - name: Install dependencies
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         run: npm ci
 
       - name: Install Playwright Chromium
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         run: npx playwright install --with-deps chromium
 
       - name: Restore state from state branch
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         run: |
           mkdir -p state
           if git ls-remote --exit-code --heads origin state >/dev/null 2>&1; then
@@ -69,7 +50,6 @@ jobs:
           fi
 
       - name: Run health check
-        if: github.event_name == 'workflow_dispatch' || steps.local_hour_check.outputs.skip != 'true'
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
