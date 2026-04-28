@@ -620,7 +620,15 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
           await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
         }
         logger.info(`Checking ${search.label}: ${search.url}`);
-        const result = await scrapeSearch(page, search, timeoutMs, { logger });
+        let result = await scrapeSearch(page, search, timeoutMs, { logger });
+        if (result.ads.length === 0) {
+          logger.warn?.(
+            `  ${search.id}: empty result on first attempt; warming up and retrying once`
+          );
+          await warmUpSession(page, timeoutMs, logger);
+          await page.waitForTimeout(3000 + Math.floor(Math.random() * 2000));
+          result = await scrapeSearch(page, search, timeoutMs, { logger });
+        }
         logger.info(`  ${search.id} total: ${result.ads.length}`);
         allAds.push(...result.ads);
       } catch (error) {
@@ -671,6 +679,25 @@ async function enrichAdsWithDetails({
   const enriched = [];
   const deadline = budgetMs > 0 ? Date.now() + budgetMs : Infinity;
 
+  async function fetchWithRetry(page, ad) {
+    const maxAttempts = 2;
+    let lastError = null;
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      try {
+        return await fetchListingDetails(page, ad.link, timeoutMs);
+      } catch (error) {
+        lastError = error;
+        if (attempt < maxAttempts) {
+          logger.warn?.(
+            `  detail fetch attempt ${attempt}/${maxAttempts} failed for ${ad.link}: ${error.message}`
+          );
+          await page.waitForTimeout(1200 + Math.floor(Math.random() * 800));
+        }
+      }
+    }
+    throw lastError;
+  }
+
   async function worker(page) {
     while (queue.length) {
       if (Date.now() >= deadline) {
@@ -680,7 +707,7 @@ async function enrichAdsWithDetails({
       const ad = queue.shift();
       if (!ad) break;
       try {
-        const details = await fetchListingDetails(page, ad.link, timeoutMs);
+        const details = await fetchWithRetry(page, ad);
         enriched.push({
           ...ad,
           title: details.title || ad.title,
