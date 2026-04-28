@@ -106,37 +106,55 @@ async function countDistrictItemAnchors(page) {
 
 async function autoScrollToLoadAll(
   page,
-  { maxPasses = 200, idlePassLimit = 8, targetCount = 0, logger = console } = {}
+  {
+    maxPasses = 250,
+    idlePassLimit = 8,
+    targetIdlePassLimit = 25,
+    targetCount = 0,
+    logger = console
+  } = {}
 ) {
-  let lastCount = 0;
+  let lastDistrictCount = 0;
   let idlePasses = 0;
 
   for (let pass = 0; pass < maxPasses; pass += 1) {
-    const count = await page.evaluate(() => {
+    await page.evaluate(() => {
       window.scrollBy(0, Math.max(window.innerHeight, 800));
       window.scrollTo(0, document.body.scrollHeight);
-      return document.querySelectorAll('a[href*="/realestate/item/"]').length;
     });
 
-    if (targetCount > 0) {
-      const districtCount = await countDistrictItemAnchors(page);
-      if (districtCount >= targetCount) {
-        logger.info?.(`    autoScroll: reached target ${districtCount}/${targetCount} after ${pass + 1} passes`);
-        return;
-      }
+    const districtCount = targetCount > 0 ? await countDistrictItemAnchors(page) : 0;
+
+    if (targetCount > 0 && districtCount >= targetCount) {
+      logger.info?.(
+        `    autoScroll: reached target ${districtCount}/${targetCount} after ${pass + 1} passes`
+      );
+      return;
     }
 
-    if (count === lastCount) {
+    const stalled = targetCount > 0
+      ? districtCount === lastDistrictCount
+      : (await page.evaluate(
+          () => document.querySelectorAll('a[href*="/realestate/item/"]').length
+        )) === lastDistrictCount;
+
+    if (stalled) {
       idlePasses += 1;
-      if (idlePasses >= idlePassLimit) {
-        break;
+      const limit = targetCount > 0 ? targetIdlePassLimit : idlePassLimit;
+      if (idlePasses >= limit) {
+        if (targetCount > 0) {
+          logger.warn?.(
+            `    autoScroll: gave up at ${districtCount}/${targetCount} after ${pass + 1} passes`
+          );
+        }
+        return;
       }
     } else {
       idlePasses = 0;
-      lastCount = count;
+      lastDistrictCount = districtCount;
     }
 
-    await page.waitForTimeout(900);
+    await page.waitForTimeout(targetCount > 0 ? 1500 : 900);
   }
 }
 
