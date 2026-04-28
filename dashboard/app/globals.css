@@ -209,7 +209,8 @@ input:focus {
 
 .empty,
 .loading,
-.error {
+.error,
+.success-banner {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -220,6 +221,23 @@ input:focus {
 
 .error {
   color: var(--danger);
+}
+
+.success-banner {
+  color: var(--accent);
+  border-color: var(--accent);
+  padding: 12px;
+  font-size: 13px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background: var(--surface-elev);
+  border-color: var(--border);
 }
 
 .results-count {

@@ -33,6 +33,19 @@ export default function DashboardPage() {
   const [lastVisitAt, setLastVisitAt] = useState<string | null>(null);
   const [freshness, setFreshness] = useState<FreshnessFilter>('all');
 
+  const [healthCheckStatus, setHealthCheckStatus] = useState<
+    'idle' | 'pending' | 'success' | 'error'
+  >('idle');
+  const [healthCheckMessage, setHealthCheckMessage] = useState<string | null>(null);
+  const [healthCheckCooldownUntil, setHealthCheckCooldownUntil] = useState<number>(0);
+  const [now, setNow] = useState<number>(() => Date.now());
+
+  useEffect(() => {
+    if (healthCheckCooldownUntil <= now) return;
+    const id = window.setInterval(() => setNow(Date.now()), 1000);
+    return () => window.clearInterval(id);
+  }, [healthCheckCooldownUntil, now]);
+
   useEffect(() => {
     setSearchParamSince(getQueryParam('since'));
     setLastVisitAt(readLastVisitAt());
@@ -143,6 +156,33 @@ export default function DashboardPage() {
     });
   };
 
+  const handleTriggerHealthCheck = async () => {
+    if (healthCheckStatus === 'pending') return;
+    if (healthCheckCooldownUntil > Date.now()) return;
+
+    setHealthCheckStatus('pending');
+    setHealthCheckMessage('מפעיל בדיקה…');
+    try {
+      const res = await fetch('/api/trigger/health-check', { method: 'POST' });
+      const json = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        message?: string;
+        error?: string;
+      };
+      if (res.ok && json.ok) {
+        setHealthCheckStatus('success');
+        setHealthCheckMessage(json.message || 'הופעל. הודעת Telegram תוך כ-3 דקות.');
+        setHealthCheckCooldownUntil(Date.now() + 60_000);
+      } else {
+        setHealthCheckStatus('error');
+        setHealthCheckMessage(json.error || `שגיאה (${res.status})`);
+      }
+    } catch (err) {
+      setHealthCheckStatus('error');
+      setHealthCheckMessage(err instanceof Error ? err.message : String(err));
+    }
+  };
+
   const handleMarkAllRead = () => {
     const now = new Date().toISOString();
     writeLastVisitAt(now);
@@ -159,6 +199,17 @@ export default function DashboardPage() {
   const sinceLabel = formatHebrewDateTime(effectiveSince);
   const totalCount = ads.length;
   const generatedAt = data?.generatedAt ? formatHebrewDateTime(data.generatedAt) : null;
+  const cooldownSecondsLeft = Math.max(
+    0,
+    Math.ceil((healthCheckCooldownUntil - now) / 1000)
+  );
+  const healthButtonDisabled =
+    healthCheckStatus === 'pending' || cooldownSecondsLeft > 0;
+  const healthButtonLabel = (() => {
+    if (healthCheckStatus === 'pending') return 'מפעיל…';
+    if (cooldownSecondsLeft > 0) return `המתן ${cooldownSecondsLeft}s`;
+    return 'הפעל בדיקה';
+  })();
 
   return (
     <main className="layout">
@@ -172,6 +223,14 @@ export default function DashboardPage() {
         ) : null}
         <div className="meta">
           {generatedAt ? <span>עודכן {generatedAt}</span> : null}
+          <button
+            type="button"
+            onClick={handleTriggerHealthCheck}
+            disabled={healthButtonDisabled}
+            title="מפעיל בדיקת תקינות מיידית; הודעת Telegram תגיע תוך כ-3 דקות"
+          >
+            {healthButtonLabel}
+          </button>
           {freshAds.length > 0 ? (
             <button type="button" onClick={handleMarkAllRead}>
               סמן הכל כנקרא
@@ -179,6 +238,21 @@ export default function DashboardPage() {
           ) : null}
         </div>
       </header>
+
+      {healthCheckMessage ? (
+        <div
+          className={
+            healthCheckStatus === 'error'
+              ? 'error'
+              : healthCheckStatus === 'success'
+                ? 'success-banner'
+                : 'loading'
+          }
+          style={{ marginBottom: 12 }}
+        >
+          {healthCheckMessage}
+        </div>
+      ) : null}
 
       {loading ? <div className="loading">טוען נתונים…</div> : null}
       {error ? <div className="error">שגיאה בטעינת הנתונים: {error}</div> : null}
