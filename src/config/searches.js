@@ -1,5 +1,13 @@
 const ALL_SEARCHES = [
   {
+    id: 'jerusalem',
+    label: 'ירושלים',
+    districtKey: 'jerusalem',
+    districtLabel: 'ירושלים והסביבה',
+    url: 'https://www.yad2.co.il/realestate/rent/jerusalem-area?maxPrice=9000&minRooms=4&settlements=1&zoom=9',
+    settlementsOnly: true
+  },
+  {
     id: 'center-sharon',
     label: 'מרכז ושרון',
     districtKey: 'center-sharon',
@@ -29,14 +37,6 @@ const ALL_SEARCHES = [
     districtKey: 'north-valleys',
     districtLabel: 'צפון והעמקים',
     url: 'https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9',
-    settlementsOnly: true
-  },
-  {
-    id: 'jerusalem',
-    label: 'ירושלים',
-    districtKey: 'jerusalem',
-    districtLabel: 'ירושלים והסביבה',
-    url: 'https://www.yad2.co.il/realestate/rent/jerusalem-area?maxPrice=9000&minRooms=4&settlements=1&zoom=9',
     settlementsOnly: true
   }
 ];

@@ -128,8 +128,11 @@ async function detectCaptcha(page) {
   return page.evaluate(() => {
     const title = (document.title || '').toLowerCase();
     if (title.includes('shieldsquare') || title.includes('captcha')) return true;
+    if (title.includes('radware') || title.includes('bot manager block')) return true;
     const body = (document.body && document.body.innerText) || '';
-    return /are you for real|אבטחת אתר|captcha digest/i.test(body);
+    return /are you for real|אבטחת אתר|captcha digest|radware|bot manager block|מסיבות אבטחה והגנה על האתר|incident id/i.test(
+      body
+    );
   });
 }
 
@@ -201,8 +204,30 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
       return seenDistrictIds.size < expectedCount;
     }
 
-    await scrollPageOnce(page);
-    await pushAnchorsFromCurrentPage();
+    async function safeScrollAndExtract() {
+      const maxAttempts = 2;
+      for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+        try {
+          await scrollPageOnce(page);
+          return await pushAnchorsFromCurrentPage();
+        } catch (error) {
+          const isNavRace = /Execution context was destroyed|Target closed|navigation/i.test(
+            error.message || ''
+          );
+          if (!isNavRace || attempt === maxAttempts) {
+            throw error;
+          }
+          logger.warn?.(
+            `    scroll/extract attempt ${attempt} hit navigation race: ${error.message}; settling and retrying`
+          );
+          await page.waitForLoadState('domcontentloaded', { timeout: 6000 }).catch(() => null);
+          await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+        }
+      }
+      return 0;
+    }
+
+    await safeScrollAndExtract();
     logger.info?.(
       `    page 1: ${seenAnchors.size} anchors (district=${seenDistrictIds.size}, expected=${expectedCount ?? '?'})`
     );
@@ -214,10 +239,10 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
       if (!advanced) break;
 
       pageIndex += 1;
+      await page.waitForLoadState('domcontentloaded', { timeout: 6000 }).catch(() => null);
       await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
-      await scrollPageOnce(page);
 
-      const added = await pushAnchorsFromCurrentPage();
+      const added = await safeScrollAndExtract();
       logger.info?.(
         `    page ${pageIndex}: +${added} anchors (total=${seenAnchors.size}, district=${seenDistrictIds.size})`
       );
@@ -588,12 +613,37 @@ async function warmUpSession(page, timeoutMs, logger) {
   }
 }
 
-async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
+const BROWSER_PROFILES = [
+  {
+    userAgent:
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    viewport: { width: 1440, height: 1200 }
+  },
+  {
+    userAgent:
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    viewport: { width: 1366, height: 768 }
+  },
+  {
+    userAgent:
+      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    viewport: { width: 1536, height: 864 }
+  }
+];
+
+async function scrapeBatchWithFreshBrowser({
+  searches,
+  headless,
+  timeoutMs,
+  logger,
+  profile,
+  extraWarmupMs = 0
+}) {
   const browser = await chromium.launch({ headless });
   const context = await browser.newContext({
-    userAgent: DEFAULT_USER_AGENT,
+    userAgent: profile.userAgent,
     locale: 'he-IL',
-    viewport: { width: 1440, height: 1200 },
+    viewport: profile.viewport,
     extraHTTPHeaders: {
       'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
       'Accept':
@@ -607,17 +657,21 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
   });
 
   const page = await context.newPage();
-  const allAds = [];
+  const ads = [];
   const errors = [];
+  const empty = [];
 
   try {
     await warmUpSession(page, timeoutMs, logger);
+    if (extraWarmupMs > 0) {
+      await page.waitForTimeout(extraWarmupMs + Math.floor(Math.random() * 2000));
+    }
 
     for (let i = 0; i < searches.length; i += 1) {
       const search = searches[i];
       try {
         if (i > 0) {
-          await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+          await page.waitForTimeout(2000 + Math.floor(Math.random() * 2500));
         }
         logger.info(`Checking ${search.label}: ${search.url}`);
         let result = await scrapeSearch(page, search, timeoutMs, { logger });
@@ -630,7 +684,11 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
           result = await scrapeSearch(page, search, timeoutMs, { logger });
         }
         logger.info(`  ${search.id} total: ${result.ads.length}`);
-        allAds.push(...result.ads);
+        if (result.ads.length === 0) {
+          empty.push(search);
+        } else {
+          ads.push(...result.ads);
+        }
       } catch (error) {
         logger.error(`Failed scraping ${search.id}: ${error.message}`);
         errors.push({
@@ -638,6 +696,7 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
           searchLabel: search.label,
           message: error.message
         });
+        empty.push(search);
       }
     }
   } finally {
@@ -645,9 +704,66 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
     await browser.close();
   }
 
+  return { ads, errors, empty };
+}
+
+async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
+  const allAds = [];
+  const allErrors = [];
+
+  const firstPass = await scrapeBatchWithFreshBrowser({
+    searches,
+    headless,
+    timeoutMs,
+    logger,
+    profile: BROWSER_PROFILES[0]
+  });
+
+  allAds.push(...firstPass.ads);
+  allErrors.push(...firstPass.errors);
+
+  let pendingEmpty = firstPass.empty;
+  let profileIndex = 1;
+
+  while (pendingEmpty.length > 0 && profileIndex < BROWSER_PROFILES.length) {
+    const profile = BROWSER_PROFILES[profileIndex];
+    logger.warn?.(
+      `Retrying ${pendingEmpty.length} blocked/empty searches (${pendingEmpty
+        .map((s) => s.id)
+        .join(', ')}) with fresh browser profile #${profileIndex + 1}`
+    );
+
+    const retryPass = await scrapeBatchWithFreshBrowser({
+      searches: pendingEmpty,
+      headless,
+      timeoutMs,
+      logger,
+      profile,
+      extraWarmupMs: 5000
+    });
+
+    allAds.push(...retryPass.ads);
+    allErrors.push(...retryPass.errors);
+    pendingEmpty = retryPass.empty;
+    profileIndex += 1;
+  }
+
+  if (pendingEmpty.length > 0) {
+    for (const search of pendingEmpty) {
+      logger.error(
+        `  ${search.id}: still blocked after ${profileIndex} fresh-browser retries; giving up for this run`
+      );
+      allErrors.push({
+        searchId: search.id,
+        searchLabel: search.label,
+        message: 'blocked by anti-bot after all retries'
+      });
+    }
+  }
+
   return {
     ads: dedupeByExternalId(allAds),
-    errors
+    errors: allErrors
   };
 }
 
