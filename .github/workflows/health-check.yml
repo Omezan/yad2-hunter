@@ -2,9 +2,10 @@ name: Yad2 Health Check
 
 on:
   schedule:
-    # Top of every hour, offset by 5 minutes so we don't race the scan workflow
-    # which runs every 5 minutes starting at minute 0.
-    - cron: "5 * * * *"
+    # Once an hour at minute 7 - chosen to fall between the staggered scan
+    # cron entries (at minutes 0, 5, 10, ...) so the health check doesn't
+    # race the scan workflow when both fire on the same minute.
+    - cron: "7 * * * *"
   workflow_dispatch:
 
 concurrency:
