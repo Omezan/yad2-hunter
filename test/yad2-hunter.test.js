@@ -10,6 +10,7 @@ const { formatDigestMessage, formatDigestMessages } = require('../src/services/t
 const {
   extractExternalId,
   normalizeItemUrl,
+  parseFloor,
   parsePublishedDate
 } = require('../src/scraper/yad2');
 
@@ -22,6 +23,7 @@ function makeAd(overrides) {
     descriptionText: 'דירה ביישוב כפרי, גינה גדולה ופרטיות מלאה',
     locationText: 'בת חפר',
     city: 'בת חפר',
+    propertyType: 'דירה',
     searchLabel: 'מרכז ושרון',
     link: ITEM,
     price: 7000,
@@ -52,7 +54,7 @@ test('extractExternalId returns the district + listing id segment', () => {
   );
 });
 
-test('isRelevant accepts settlements-only ads with valid rooms and price', () => {
+test('isRelevant accepts a normal feed ad', () => {
   assert.equal(isRelevant(makeAd()), true);
 });
 
@@ -61,28 +63,64 @@ test('isRelevant rejects non-item URLs', () => {
   assert.equal(getRejection(ad), 'non-item-url');
 });
 
-test('isRelevant rejects ads above the max price', () => {
+test('cross-district suggestion URLs are rejected', () => {
+  const ad = makeAd({ link: 'https://www.yad2.co.il/realestate/item/wgub12o4' });
+  assert.equal(getRejection(ad), 'cross-district-suggestion');
+});
+
+test('isRelevant accepts ads regardless of price (URL handles the cap)', () => {
   const ad = makeAd({ price: 12000 });
-  assert.equal(getRejection(ad), 'price:12000');
+  assert.equal(getRejection(ad), null);
 });
 
-test('isRelevant rejects ads below the minimum rooms', () => {
+test('isRelevant accepts ads regardless of rooms (URL handles the cap)', () => {
   const ad = makeAd({ rooms: 3 });
-  assert.equal(getRejection(ad), 'rooms:3');
+  assert.equal(getRejection(ad), null);
 });
 
-test('isRelevant blocks urban ads even when search is settlements-only', () => {
+test('isRelevant accepts urban-named ads (no urban filter anymore)', () => {
   const ad = makeAd({
     title: 'דירה במרכז',
-    rawText: 'דירה במרכז\nתל אביב\n4 חדרים\n8,500 ₪',
-    locationText: 'תל אביב',
     city: 'תל אביב',
+    locationText: 'תל אביב',
     descriptionText: 'דירה במרכז העיר'
   });
-  assert.equal(getRejection(ad), 'urban-location');
+  assert.equal(getRejection(ad), null);
 });
 
-test('isRelevant rejects ads with explicit promoted keywords in description', () => {
+test('isRelevant accepts יחידת דיור and high-floor דירה (no floor/type filters)', () => {
+  assert.equal(
+    getRejection(
+      makeAd({
+        propertyType: 'יחידת דיור',
+        addressText: 'יחידת דיור',
+        descriptionText: 'יחידת דיור עצמאית במושב'
+      })
+    ),
+    null
+  );
+
+  assert.equal(
+    getRejection(
+      makeAd({
+        propertyType: 'דירה',
+        floor: 3,
+        descriptionText: 'דירה מרווחת בקומה 3'
+      })
+    ),
+    null
+  );
+});
+
+test('isRelevant accepts a sponsored real listing (מודעה מקודמת is fine on its own)', () => {
+  const ad = makeAd({
+    rawText: 'מודעה מקודמת — דירה, בת חפר',
+    descriptionText: 'דירה במושב, מרפסת גדולה'
+  });
+  assert.equal(getRejection(ad), null);
+});
+
+test('isRelevant rejects פרויקט חדש promotions', () => {
   const ad = makeAd({
     title: 'פרויקט חדש',
     descriptionText: 'פרויקט חדש בקיבוץ דוגמה'
@@ -90,18 +128,14 @@ test('isRelevant rejects ads with explicit promoted keywords in description', ()
   assert.equal(getRejection(ad), 'keyword:פרויקט חדש');
 });
 
-test('un-enriched ads only get structural pre-filter checks', () => {
-  const ad = makeAd({
-    enriched: false,
-    rawText: 'פרויקט חדש פרסומת\n4 חדרים\n8,500 ₪',
-    descriptionText: '',
-    locationText: 'תל אביב',
-    city: 'תל אביב'
-  });
-  assert.equal(getRejection(ad), null);
+test('isRelevant rejects בלעדי בפרויקט / תמ"א / התחדשות עירונית promo descriptions', () => {
+  for (const kw of ['בלעדי בפרויקט', 'תמ"א', 'התחדשות עירונית']) {
+    const ad = makeAd({ descriptionText: `הזדמנות: ${kw} בלב היישוב` });
+    assert.equal(getRejection(ad), `keyword:${kw}`, `expected reject for ${kw}`);
+  }
 });
 
-test('enriched ads ignore promo keywords found only in the wide rawText', () => {
+test('promo keyword check ignores the noisy rawText for enriched ads', () => {
   const ad = makeAd({
     enriched: true,
     rawText: 'פרויקט חדש פרסומת מסיחת דעת',
@@ -110,122 +144,16 @@ test('enriched ads ignore promo keywords found only in the wide rawText', () => 
   assert.equal(getRejection(ad), null);
 });
 
-test('enriched ads still reject when the description itself mentions the keyword', () => {
+test('un-enriched ads still match promo keywords on rawText', () => {
   const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    descriptionText: 'בלעדי בפרויקט חדש בקיבוץ דוגמה'
+    enriched: false,
+    rawText: 'פרויקט חדש - הכל מקבלן',
+    descriptionText: ''
   });
-  assert.match(getRejection(ad) || '', /^keyword:(בלעדי בפרויקט|פרויקט חדש)$/);
-});
-
-test('enriched ads accept benign property tags like מתאים לשותפים', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    descriptionText: 'דירה יפה בקיבוץ דוגמה, מתאים לשותפים, ממ"ד, מרפסת'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test('enriched ads accept חדש מקבלן property condition (newly built rental)', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    descriptionText: 'דירה חדשה מקבלן, לא גרו בה, בקיבוץ דוגמה'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test('enriched ads still reject explicit roommate-search ads', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    descriptionText: 'מחפשים שותף לדירה בקיבוץ דוגמה'
-  });
-  assert.match(getRejection(ad) || '', /^keyword:(מחפשים שותפ|שותף לדירה)$/);
-});
-
-test('enriched ads still reject explicit basement units', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    descriptionText: 'יחידת מרתף נחמדה בקיבוץ דוגמה'
-  });
-  assert.equal(getRejection(ad), 'keyword:יחידת מרתף');
-});
-
-test('enriched ads do not match urban blocklist on noisy rawText', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: 'בנר חולה: דירות בנתניה',
-    descriptionText: 'דירה בקיבוץ דוגמה'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test('enriched ads still reject urban listings when city says so', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    city: 'תל אביב',
-    locationText: 'תל אביב',
-    descriptionText: 'דירה במרכז העיר'
-  });
-  assert.equal(getRejection(ad), 'urban-location');
-});
-
-test('enriched ads accept moshav with street name containing an urban token', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    title: 'דירה, משמר הירדן',
-    city: 'משמר הירדן',
-    addressText: 'דירה, משמר הירדן, משמר הירדן',
-    locationText: 'בני צפת 22',
-    propertyType: 'דירה',
-    descriptionText: 'דירה שתי קומות חדשה ומוארת'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test('enriched ads accept rural listing whose card mentions a city-named broker branch', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    title: 'דירה, אחוזת ברק',
-    city: 'אחוזת ברק',
-    addressText: 'יחידת דיור',
-    locationText: 'RE/MAX 770 עפולה',
-    propertyType: 'דירה',
-    descriptionText: 'דירה חדשה במושב'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test('accept דירה on any floor (filter does not consider floor)', () => {
-  const adFloor0 = makeAd({
-    enriched: true,
-    rawText: '',
-    title: 'דירה, אחוזת ברק',
-    city: 'אחוזת ברק',
-    addressText: '',
-    locationText: '',
-    propertyType: 'דירה',
-    floor: 0,
-    descriptionText: 'דירת קרקע במושב'
-  });
-  assert.equal(getRejection(adFloor0), null);
-
-  const adFloor1 = { ...adFloor0, floor: 1, descriptionText: 'דירה במפלס 1' };
-  assert.equal(getRejection(adFloor1), null);
-
-  const adUnknownFloor = { ...adFloor0, floor: null };
-  assert.equal(getRejection(adUnknownFloor), null);
+  assert.equal(getRejection(ad), 'keyword:פרויקט חדש');
 });
 
 test('parseFloor handles common Yad2 floor strings', () => {
-  const { parseFloor } = require('../src/scraper/yad2');
   assert.equal(parseFloor('קומה 1/1'), 1);
   assert.equal(parseFloor('קומה 3 מתוך 5'), 3);
   assert.equal(parseFloor('קומת קרקע'), 0);
@@ -234,21 +162,6 @@ test('parseFloor handles common Yad2 floor strings', () => {
   assert.equal(parseFloor(''), null);
   assert.equal(parseFloor('שום מילה רלוונטית'), null);
   assert.equal(parseFloor('קומה: 0'), 0);
-});
-
-test('ads without an explicit price are still accepted', () => {
-  const ad = makeAd({ price: null, hasExplicitPrice: false });
-  assert.equal(getRejection(ad), null);
-});
-
-test('requireExplicitRooms rejects ads without a numeric room count', () => {
-  const ad = makeAd({ rooms: null });
-  assert.equal(getRejection(ad, { requireExplicitRooms: true }), 'no-rooms');
-});
-
-test('cross-district suggestion URLs are rejected', () => {
-  const ad = makeAd({ link: 'https://www.yad2.co.il/realestate/item/wgub12o4' });
-  assert.equal(getRejection(ad), 'cross-district-suggestion');
 });
 
 test('formatDigestMessage includes title, rooms, price, and link', () => {
@@ -345,18 +258,17 @@ test('formatDigestMessages splits long digests into chunks under the Telegram li
   }
 });
 
-test('filterRelevantAds drops urban ads and keeps rural matches', () => {
+test('filterRelevantAds keeps city ads and drops only suggestion / promo entries', () => {
   const accepted = filterRelevantAds([
     makeAd(),
     makeAd({
       title: 'מודעה בעיר',
-      rawText: 'מודעה בעיר\nתל אביב\n5 חדרים\n8,000 ₪',
-      locationText: 'תל אביב',
       city: 'תל אביב',
+      locationText: 'תל אביב',
       descriptionText: 'דירה במרכז העיר'
-    })
+    }),
+    makeAd({ link: 'https://www.yad2.co.il/realestate/item/wgub12o4' }),
+    makeAd({ descriptionText: 'בלעדי בפרויקט חדש' })
   ]);
-
-  assert.equal(accepted.length, 1);
-  assert.equal(accepted[0].locationText, 'בת חפר');
+  assert.equal(accepted.length, 2);
 });
