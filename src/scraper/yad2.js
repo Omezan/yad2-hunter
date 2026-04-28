@@ -157,6 +157,17 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
       .catch(() => false);
 
     if (!hasItems) {
+      const diagnostics = await page.evaluate(() => ({
+        title: document.title,
+        hasItemAnchors: document.querySelectorAll('a[href*="/realestate/item/"]').length,
+        hasNoResults: /אין תוצאות|לא נמצאו/.test(
+          document.body && document.body.innerText ? document.body.innerText : ''
+        ),
+        firstBodySnippet: ((document.body && document.body.innerText) || '').slice(0, 200)
+      }));
+      logger.warn?.(
+        `  no items on ${url} (attempt ${attempt}/${attempts}): ${JSON.stringify(diagnostics)}`
+      );
       if (attempt < attempts) {
         await page.waitForTimeout(2000);
         continue;
