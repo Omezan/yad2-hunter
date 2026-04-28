@@ -100,7 +100,10 @@ async function runOnce(options = {}) {
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
     if (relevantNewAds.length > 0) {
-      telegramResult = await sendNewAdsDigest({ newAds: relevantNewAds });
+      telegramResult = await sendNewAdsDigest({
+        newAds: relevantNewAds,
+        runStartedAt: startedAt
+      });
     }
 
     const runEntry = {

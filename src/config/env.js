@@ -36,7 +36,8 @@ const env = {
   ENABLED_SEARCH_IDS: process.env.ENABLED_SEARCH_IDS || '',
   STATE_DIR: process.env.STATE_DIR || path.resolve(process.cwd(), 'state'),
   HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
-  SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30)
+  SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30),
+  DASHBOARD_URL: (process.env.DASHBOARD_URL || '').trim()
 };
 
 module.exports = {

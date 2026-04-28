@@ -85,8 +85,20 @@ function buildChunks({ newAds, districtSummary }) {
   return chunks;
 }
 
-function formatDigestMessages({ newAds }) {
-  if (!newAds.length) return [];
+function buildDashboardFooter({ runStartedAt } = {}) {
+  const baseUrl = (env.DASHBOARD_URL || '').trim();
+  if (!baseUrl) return null;
+
+  let url = baseUrl;
+  if (runStartedAt) {
+    const separator = baseUrl.includes('?') ? '&' : '?';
+    url = `${baseUrl}${separator}since=${encodeURIComponent(runStartedAt)}`;
+  }
+  return `לוח בקרה: ${url}`;
+}
+
+function formatDigestMessages({ newAds, runStartedAt } = {}) {
+  if (!newAds || !newAds.length) return [];
 
   const districtSummary = Array.from(
     new Set(newAds.map((ad) => ad.districtLabel).filter(Boolean))
@@ -94,6 +106,7 @@ function formatDigestMessages({ newAds }) {
 
   const chunks = buildChunks({ newAds, districtSummary });
   const totalParts = chunks.length;
+  const footer = buildDashboardFooter({ runStartedAt });
 
   return chunks.map((chunkLines, index) => {
     const header = buildHeader({
@@ -102,12 +115,17 @@ function formatDigestMessages({ newAds }) {
       partIndex: index + 1,
       totalParts
     });
-    return `${header}\n\n${chunkLines.join('\n\n')}`;
+    const isLastPart = index === totalParts - 1;
+    const body = chunkLines.join('\n\n');
+    if (isLastPart && footer) {
+      return `${header}\n\n${body}\n\n${footer}`;
+    }
+    return `${header}\n\n${body}`;
   });
 }
 
-function formatDigestMessage({ newAds }) {
-  const messages = formatDigestMessages({ newAds });
+function formatDigestMessage({ newAds, runStartedAt } = {}) {
+  const messages = formatDigestMessages({ newAds, runStartedAt });
   return messages[0] || '';
 }
 
@@ -147,8 +165,8 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function sendNewAdsDigest({ newAds }) {
-  const messages = formatDigestMessages({ newAds });
+async function sendNewAdsDigest({ newAds, runStartedAt } = {}) {
+  const messages = formatDigestMessages({ newAds, runStartedAt });
   if (!messages.length) {
     return { skipped: true, reason: 'No new ads' };
   }

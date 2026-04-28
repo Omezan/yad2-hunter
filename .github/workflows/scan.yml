@@ -54,6 +54,7 @@ jobs:
           TELEGRAM_NOTIFICATIONS_ENABLED: "true"
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
         run: npm run scan
 
       - name: Persist state to state branch
