@@ -41,6 +41,7 @@ function dumpRejectedNewCandidates(ads, options) {
       title: ad.title || null,
       addressText: ad.addressText || null,
       locationText: ad.locationText || null,
+      floor: ad.floor ?? null,
       descriptionText: ad.descriptionText
         ? ad.descriptionText.slice(0, 500)
         : null,

@@ -589,6 +589,7 @@ async function fetchListingDetails(page, url, timeoutMs) {
   const addressText = String(data.addressText || '').replace(/[\u200e\u200f]/g, '');
   const publishedText = String(data.publishedText || '').replace(/[\u200e\u200f]/g, '');
   const publishedAt = parsePublishedDate(publishedText) || parsePublishedDate(cleanText);
+  const floor = parseFloor(cleanText);
 
   return {
     url,
@@ -601,8 +602,27 @@ async function fetchListingDetails(page, url, timeoutMs) {
     publishedAt,
     rooms: Number.isFinite(rooms) ? rooms : null,
     price,
-    hasExplicitPrice: !noPriceHint && price !== null
+    hasExplicitPrice: !noPriceHint && price !== null,
+    floor
   };
+}
+
+function parseFloor(text) {
+  if (!text || typeof text !== 'string') return null;
+  const cleaned = text.replace(/[\u200e\u200f]/g, '');
+
+  if (/קומ(?:ת|ה)\s*קרקע/.test(cleaned)) return 0;
+  if (/\bקומה\s*[:\-]?\s*קרקע\b/.test(cleaned)) return 0;
+
+  const numericMatch = cleaned.match(/קומה\s*[:\-]?\s*(-?\d{1,2})\b/);
+  if (numericMatch) {
+    const value = Number.parseInt(numericMatch[1], 10);
+    if (Number.isFinite(value) && value >= -3 && value <= 50) {
+      return value;
+    }
+  }
+
+  return null;
 }
 
 function parsePublishedDate(text) {
@@ -908,6 +928,7 @@ async function enrichAdsWithDetails({
           rooms: details.rooms ?? ad.rooms,
           price: details.price ?? ad.price,
           hasExplicitPrice: details.hasExplicitPrice,
+          floor: details.floor ?? null,
           enriched: true
         });
       } catch (error) {
@@ -932,6 +953,7 @@ module.exports = {
   extractExternalId,
   fetchListingDetails,
   normalizeItemUrl,
+  parseFloor,
   parsePublishedDate,
   scrapeAllSearches
 };

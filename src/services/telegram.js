@@ -175,53 +175,20 @@ function padCell(value, width) {
   return str + ' '.repeat(width - visible);
 }
 
+const HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT = 10;
+
+function externalIdToLink(externalId) {
+  if (!externalId) return null;
+  return `https://www.yad2.co.il/realestate/item/${externalId}`;
+}
+
 function formatHealthCheckMessage({ rows, allMatch, generatedAt }) {
-  const headerLabel = '🩺 בדיקה יומית של Yad2 Hunter';
-  const statusLine = allMatch
-    ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
-    : '⚠️ נמצאו פערים — Real לא תואם ל-Expected';
+  return buildHealthCheckMessages({ rows, allMatch, generatedAt }).join('\n\n');
+}
 
-  const labels = ['District', ...rows.map((r) => r.label)];
-  const realCells = ['Real', ...rows.map((r) => formatRealCell(r))];
-  const expectedCells = ['Expected', ...rows.map((r) => formatExpectedCell(r))];
-
-  const labelWidth = Math.max(...labels.map((v) => Array.from(v).length));
-  const realWidth = Math.max(...realCells.map((v) => Array.from(v).length));
-  const expectedWidth = Math.max(...expectedCells.map((v) => Array.from(v).length));
-
-  const lines = [];
-  lines.push(
-    `${padCell(labels[0], labelWidth)}  ${padCell(realCells[0], realWidth)}  ${padCell(
-      expectedCells[0],
-      expectedWidth
-    )}`
-  );
-
-  for (let i = 0; i < rows.length; i += 1) {
-    lines.push(
-      `${padCell(labels[i + 1], labelWidth)}  ${padCell(
-        realCells[i + 1],
-        realWidth
-      )}  ${padCell(expectedCells[i + 1], expectedWidth)}`
-    );
-  }
-
-  const totalReal = rows.reduce((sum, r) => sum + (r.real ?? 0), 0);
-  const totalExpected = rows.reduce((sum, r) => sum + (r.expected ?? 0), 0);
-
-  lines.push(
-    `${padCell('Total', labelWidth)}  ${padCell(String(totalReal), realWidth)}  ${padCell(
-      String(totalExpected),
-      expectedWidth
-    )}`
-  );
-
-  const timestamp = generatedAt
-    ? new Date(generatedAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
-    : null;
-  const footer = timestamp ? `\nנבדק: ${timestamp}` : '';
-
-  return `${headerLabel}\n${statusLine}\n\n\`\`\`\n${lines.join('\n')}\n\`\`\`${footer}`;
+function formatHealthCheckDiffSection(rows) {
+  const messages = buildHealthCheckDiffMessages(rows);
+  return messages.length ? messages.join('\n\n') : null;
 }
 
 function formatRealCell(row) {
@@ -241,19 +208,152 @@ function formatExpectedCell(row) {
   return `${row.expected} (${sign}${delta})`;
 }
 
+function buildHealthCheckMessages({ rows, allMatch, generatedAt }) {
+  const summary = formatHealthCheckSummary({ rows, allMatch, generatedAt });
+  if (allMatch) {
+    return [summary];
+  }
+
+  const diffMessages = buildHealthCheckDiffMessages(rows);
+  return [summary, ...diffMessages];
+}
+
+function formatHealthCheckSummary({ rows, allMatch, generatedAt }) {
+  const headerLabel = '🩺 בדיקה יומית של Yad2 Hunter';
+  const statusLine = allMatch
+    ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
+    : '⚠️ נמצאו פערים — Real לא תואם ל-Expected';
+
+  const labels = ['District', ...rows.map((r) => r.label)];
+  const realCells = ['Real', ...rows.map((r) => formatRealCell(r))];
+  const expectedCells = ['Expected', ...rows.map((r) => formatExpectedCell(r))];
+
+  const labelWidth = Math.max(...labels.map((v) => Array.from(v).length));
+  const realWidth = Math.max(...realCells.map((v) => Array.from(v).length));
+  const expectedWidth = Math.max(...expectedCells.map((v) => Array.from(v).length));
+
+  const tableLines = [];
+  tableLines.push(
+    `${padCell(labels[0], labelWidth)}  ${padCell(realCells[0], realWidth)}  ${padCell(
+      expectedCells[0],
+      expectedWidth
+    )}`
+  );
+
+  for (let i = 0; i < rows.length; i += 1) {
+    tableLines.push(
+      `${padCell(labels[i + 1], labelWidth)}  ${padCell(
+        realCells[i + 1],
+        realWidth
+      )}  ${padCell(expectedCells[i + 1], expectedWidth)}`
+    );
+  }
+
+  const totalReal = rows.reduce((sum, r) => sum + (r.real ?? 0), 0);
+  const totalExpected = rows.reduce((sum, r) => sum + (r.expected ?? 0), 0);
+
+  tableLines.push(
+    `${padCell('Total', labelWidth)}  ${padCell(String(totalReal), realWidth)}  ${padCell(
+      String(totalExpected),
+      expectedWidth
+    )}`
+  );
+
+  const timestamp = generatedAt
+    ? new Date(generatedAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
+    : null;
+  const footer = timestamp ? `\nנבדק: ${timestamp}` : '';
+
+  return `${headerLabel}\n${statusLine}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\`${footer}`;
+}
+
+function buildHealthCheckDiffMessages(rows) {
+  const blocks = [];
+  for (const row of rows) {
+    const block = formatDiffBlockForRow(row);
+    if (block) blocks.push(block);
+  }
+  if (!blocks.length) return [];
+
+  const messages = [];
+  let current = '🔎 פרטי הפערים:';
+  for (const block of blocks) {
+    const candidate = current ? `${current}\n\n${block}` : block;
+    if (Array.from(candidate).length > 3500) {
+      if (current && current !== '🔎 פרטי הפערים:') {
+        messages.push(current);
+      }
+      current = `🔎 פרטי הפערים (המשך):\n\n${block}`;
+    } else {
+      current = candidate;
+    }
+  }
+  if (current && current !== '🔎 פרטי הפערים:') {
+    messages.push(current);
+  }
+  return messages;
+}
+
+function formatDiffBlockForRow(row) {
+  const missingIds = Array.isArray(row.missingIds) ? row.missingIds : [];
+  const extraIds = Array.isArray(row.extraIds) ? row.extraIds : [];
+  if (!missingIds.length && !extraIds.length && !row.error) return null;
+
+  const lines = [`📍 ${row.label}`];
+  if (row.error) {
+    lines.push(`  שגיאה: ${row.error}`);
+  }
+
+  if (missingIds.length) {
+    const shown = missingIds.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = missingIds.length - shown.length;
+    lines.push(`  חסר ב-seen (${missingIds.length}):`);
+    for (const id of shown) {
+      const link = externalIdToLink(id);
+      lines.push(`    • ${link || id}`);
+    }
+    if (omitted > 0) {
+      lines.push(`    … ועוד ${omitted}`);
+    }
+  }
+
+  if (extraIds.length) {
+    const shown = extraIds.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = extraIds.length - shown.length;
+    lines.push(`  ב-seen אך לא ב-Yad2 (${extraIds.length}):`);
+    for (const id of shown) {
+      const link = externalIdToLink(id);
+      lines.push(`    • ${link || id}`);
+    }
+    if (omitted > 0) {
+      lines.push(`    … ועוד ${omitted}`);
+    }
+  }
+
+  return lines.join('\n');
+}
+
 async function sendHealthCheckReport({ rows, allMatch, generatedAt }) {
-  const text = formatHealthCheckMessage({ rows, allMatch, generatedAt });
-  const result = await sendTelegramMessage({
-    text,
-    parseMode: 'Markdown',
-    disablePreview: true
-  });
-  return { text, result };
+  const messages = buildHealthCheckMessages({ rows, allMatch, generatedAt });
+  const results = [];
+  for (let i = 0; i < messages.length; i += 1) {
+    const result = await sendTelegramMessage({
+      text: messages[i],
+      parseMode: 'Markdown',
+      disablePreview: true
+    });
+    results.push(result);
+    if (i < messages.length - 1) {
+      await sleep(800);
+    }
+  }
+  return { messages, results };
 }
 
 module.exports = {
   formatDigestMessage,
   formatDigestMessages,
+  formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   sendHealthCheckReport,
   sendNewAdsDigest,

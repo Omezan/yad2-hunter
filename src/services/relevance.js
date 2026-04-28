@@ -28,6 +28,55 @@ const EXCLUDED_KEYWORDS = [
 
 const RURAL_PREFIXES = ['קיבוץ', 'מושב', 'יישוב', 'ישוב', 'מושבה'];
 
+const HOUSE_PROPERTY_TYPES = [
+  'בית פרטי',
+  "בית פרטי/ קוטג'",
+  'בית פרטי/ קוטג׳',
+  "קוטג'",
+  'קוטג׳',
+  "קוטג' טורי",
+  'קוטג׳ טורי',
+  'וילה',
+  'דו משפחתי',
+  'דו-משפחתי',
+  'מיני בית',
+  'מיני וילה',
+  'משק',
+  'משק חקלאי',
+  "מגרש"
+];
+
+const FLAT_PROPERTY_TYPES = [
+  'דירה',
+  'דירת גן',
+  'דירת גג',
+  'פנטהאוז',
+  'פנטהאוס',
+  'מיני פנטהאוז',
+  'מיני פנטהאוס',
+  'דופלקס',
+  'טריפלקס',
+  'יחידת דיור',
+  'סטודיו',
+  'לופט'
+];
+
+function isHouseType(propertyType) {
+  if (!propertyType) return false;
+  const normalized = normalize(propertyType);
+  return HOUSE_PROPERTY_TYPES.some(
+    (type) => normalized === normalize(type) || normalized.includes(normalize(type))
+  );
+}
+
+function isFlatType(propertyType) {
+  if (!propertyType) return false;
+  const normalized = normalize(propertyType);
+  return FLAT_PROPERTY_TYPES.some(
+    (type) => normalized === normalize(type) || normalized.includes(normalize(type))
+  );
+}
+
 const URBAN_BLOCKLIST = [
   'תל אביב',
   'תל-אביב',
@@ -163,11 +212,10 @@ function looksUrban(haystack) {
 }
 
 function buildLocationHaystack(ad) {
-  return normalize(
-    [ad.title, ad.locationText, ad.city, ad.addressText, ad.propertyType]
-      .filter(Boolean)
-      .join(' ')
-  );
+  const fields = ad.enriched
+    ? [ad.title, ad.city, ad.addressText, ad.propertyType]
+    : [ad.title, ad.locationText, ad.city, ad.addressText, ad.propertyType];
+  return normalize(fields.filter(Boolean).join(' '));
 }
 
 function buildKeywordHaystack(ad) {
@@ -213,6 +261,15 @@ function getRejection(ad, options = {}) {
     if (!ad.settlementsOnly && !looksRural(locationHaystack)) {
       return 'no-rural-marker';
     }
+
+    if (
+      isFlatType(ad.propertyType) &&
+      !isHouseType(ad.propertyType) &&
+      typeof ad.floor === 'number' &&
+      ad.floor >= 1
+    ) {
+      return `non-ground-floor:${ad.floor}`;
+    }
   }
 
   return null;
@@ -228,11 +285,15 @@ function filterRelevantAds(ads, options) {
 
 module.exports = {
   EXCLUDED_KEYWORDS,
+  HOUSE_PROPERTY_TYPES,
+  FLAT_PROPERTY_TYPES,
   MAX_PRICE,
   MIN_ROOMS,
   RURAL_PREFIXES,
   URBAN_BLOCKLIST,
   getRejection,
+  isFlatType,
+  isHouseType,
   isRelevant,
   filterRelevantAds
 };

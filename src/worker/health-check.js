@@ -5,19 +5,27 @@ const { scrapeAllSearches } = require('../scraper/yad2');
 const { sendHealthCheckReport } = require('../services/telegram');
 
 function buildExpectedBySearchId(seen) {
-  const counts = {};
+  const result = {};
   for (const record of Object.values(seen.ads || {})) {
     const id = record.searchId;
     if (!id) continue;
-    counts[id] = (counts[id] || 0) + 1;
+    if (!result[id]) {
+      result[id] = { count: 0, ids: new Set() };
+    }
+    result[id].count += 1;
+    if (record.externalId) {
+      result[id].ids.add(record.externalId);
+    }
   }
-  return counts;
+  return result;
 }
 
 function deriveRealForSearch(scrapedAds, search) {
   const districtAds = scrapedAds.filter((ad) => ad.searchId === search.id);
+  const scrapedIds = new Set(districtAds.map((ad) => ad.externalId).filter(Boolean));
+
   if (!districtAds.length) {
-    return { real: 0, headerCount: null };
+    return { real: 0, headerCount: null, scrapedIds };
   }
 
   const headerCount = districtAds.find(
@@ -25,10 +33,15 @@ function deriveRealForSearch(scrapedAds, search) {
   )?.expectedCount;
 
   if (typeof headerCount === 'number') {
-    return { real: headerCount, headerCount };
+    return { real: headerCount, headerCount, scrapedIds };
   }
 
-  return { real: districtAds.length, headerCount: null };
+  return { real: districtAds.length, headerCount: null, scrapedIds };
+}
+
+function externalIdToLink(externalId) {
+  if (!externalId) return null;
+  return `https://www.yad2.co.il/realestate/item/${externalId}`;
 }
 
 async function runHealthCheck() {
@@ -48,7 +61,9 @@ async function runHealthCheck() {
   );
 
   const rows = searches.map((search) => {
-    const expected = expectedBySearchId[search.id] || 0;
+    const expectedEntry = expectedBySearchId[search.id] || { count: 0, ids: new Set() };
+    const expected = expectedEntry.count;
+    const seenIds = expectedEntry.ids;
     const error = errorBySearchId.get(search.id) || null;
 
     if (error && (!scrapeResult.ads || !scrapeResult.ads.some((ad) => ad.searchId === search.id))) {
@@ -57,17 +72,32 @@ async function runHealthCheck() {
         label: search.label,
         real: null,
         expected,
+        scrapedIds: [],
+        seenIds: [...seenIds],
+        missingIds: [],
+        extraIds: [],
         error: error.message
       };
     }
 
-    const { real, headerCount } = deriveRealForSearch(scrapeResult.ads, search);
+    const { real, headerCount, scrapedIds } = deriveRealForSearch(
+      scrapeResult.ads,
+      search
+    );
+
+    const missingIds = [...scrapedIds].filter((id) => !seenIds.has(id));
+    const extraIds = [...seenIds].filter((id) => !scrapedIds.has(id));
+
     return {
       searchId: search.id,
       label: search.label,
       real,
       expected,
       headerCount,
+      scrapedIds: [...scrapedIds],
+      seenIds: [...seenIds],
+      missingIds,
+      extraIds,
       error: null
     };
   });
