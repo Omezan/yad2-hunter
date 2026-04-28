@@ -124,26 +124,50 @@ async function extractAnchorsFromPage(page) {
   );
 }
 
-async function scrapeSearchPage(page, url, timeoutMs) {
-  await page.goto(url, {
-    waitUntil: 'domcontentloaded',
-    timeout: timeoutMs
+async function detectCaptcha(page) {
+  return page.evaluate(() => {
+    const title = (document.title || '').toLowerCase();
+    if (title.includes('shieldsquare') || title.includes('captcha')) return true;
+    const body = (document.body && document.body.innerText) || '';
+    return /are you for real|אבטחת אתר|captcha digest/i.test(body);
   });
+}
 
-  await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = console } = {}) {
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    await page.goto(url, {
+      waitUntil: 'domcontentloaded',
+      timeout: timeoutMs
+    });
 
-  const hasItems = await page
-    .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
-    .then(() => true)
-    .catch(() => false);
+    await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
 
-  if (!hasItems) {
-    return [];
+    if (await detectCaptcha(page)) {
+      logger.warn?.(`  captcha challenge on ${url} (attempt ${attempt}/${attempts})`);
+      if (attempt < attempts) {
+        await page.waitForTimeout(4000 + Math.floor(Math.random() * 3000));
+        continue;
+      }
+      return [];
+    }
+
+    const hasItems = await page
+      .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
+      .then(() => true)
+      .catch(() => false);
+
+    if (!hasItems) {
+      if (attempt < attempts) {
+        await page.waitForTimeout(2000);
+        continue;
+      }
+      return [];
+    }
+
+    await autoScrollToLoadAll(page, { maxPasses: 12, idlePassLimit: 2 });
+    return extractAnchorsFromPage(page);
   }
-
-  await autoScrollToLoadAll(page, { maxPasses: 12, idlePassLimit: 2 });
-
-  return extractAnchorsFromPage(page);
+  return [];
 }
 
 async function scrapeSearch(page, search, timeoutMs, { maxPages = 6, logger = console } = {}) {
@@ -153,7 +177,7 @@ async function scrapeSearch(page, search, timeoutMs, { maxPages = 6, logger = co
 
   for (let pageNumber = 1; pageNumber <= maxPages; pageNumber += 1) {
     const url = buildPageUrl(search.url, pageNumber);
-    const rawAds = await scrapeSearchPage(page, url, timeoutMs);
+    const rawAds = await scrapeSearchPage(page, url, timeoutMs, { logger });
 
     const candidates = rawAds
       .filter((entry) => entry.href && /\/realestate\/item\//i.test(entry.href))
@@ -351,6 +375,18 @@ function buildListingTitle({ propertyType, city }) {
   return parts.length > 0 ? parts.join(', ') : 'מודעה';
 }
 
+async function warmUpSession(page, timeoutMs, logger) {
+  try {
+    await page.goto('https://www.yad2.co.il/', {
+      waitUntil: 'domcontentloaded',
+      timeout: timeoutMs
+    });
+    await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+  } catch (error) {
+    logger.warn?.(`Warm-up failed (continuing anyway): ${error.message}`);
+  }
+}
+
 async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
   const browser = await chromium.launch({ headless });
   const context = await browser.newContext({
@@ -358,7 +394,14 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
     locale: 'he-IL',
     viewport: { width: 1440, height: 1200 },
     extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'
+      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
+      'Accept':
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none',
+      'Sec-Fetch-User': '?1',
+      'Upgrade-Insecure-Requests': '1'
     }
   });
 
@@ -367,8 +410,14 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
   const errors = [];
 
   try {
-    for (const search of searches) {
+    await warmUpSession(page, timeoutMs, logger);
+
+    for (let i = 0; i < searches.length; i += 1) {
+      const search = searches[i];
       try {
+        if (i > 0) {
+          await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+        }
         logger.info(`Checking ${search.label}: ${search.url}`);
         const ads = await scrapeSearch(page, search, timeoutMs, { logger });
         logger.info(`  ${search.id} total: ${ads.length}`);
