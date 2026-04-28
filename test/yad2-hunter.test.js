@@ -13,6 +13,7 @@ const {
   parseFloor,
   parsePublishedDate
 } = require('../src/scraper/yad2');
+const { removeDeletedAds } = require('../src/store/file-store');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -271,4 +272,52 @@ test('filterRelevantAds keeps city ads and drops only suggestion / promo entries
     makeAd({ descriptionText: 'בלעדי בפרויקט חדש' })
   ]);
   assert.equal(accepted.length, 2);
+});
+
+test('removeDeletedAds drops seen ads that were not returned by the latest scrape of their district', () => {
+  const seen = {
+    ads: {
+      keep1: { externalId: 'keep1', searchId: 'south' },
+      drop1: { externalId: 'drop1', searchId: 'south' },
+      keep2: { externalId: 'keep2', searchId: 'north-valleys' }
+    }
+  };
+  const scraped = [
+    { externalId: 'keep1', searchId: 'south' },
+    { externalId: 'keep2', searchId: 'north-valleys' }
+  ];
+  const { seen: next, removed } = removeDeletedAds(seen, scraped, [
+    'south',
+    'north-valleys'
+  ]);
+
+  assert.deepEqual(Object.keys(next.ads).sort(), ['keep1', 'keep2']);
+  assert.equal(removed.length, 1);
+  assert.equal(removed[0].externalId, 'drop1');
+  assert.equal(removed[0].searchId, 'south');
+});
+
+test('removeDeletedAds keeps ads from districts whose scrape failed', () => {
+  const seen = {
+    ads: {
+      a: { externalId: 'a', searchId: 'south' },
+      b: { externalId: 'b', searchId: 'jerusalem' }
+    }
+  };
+  const scraped = [{ externalId: 'a', searchId: 'south' }];
+  const { seen: next, removed } = removeDeletedAds(seen, scraped, ['south']);
+
+  assert.deepEqual(Object.keys(next.ads).sort(), ['a', 'b']);
+  assert.equal(removed.length, 0);
+});
+
+test('removeDeletedAds is a no-op when no districts were successfully scraped', () => {
+  const seen = {
+    ads: {
+      a: { externalId: 'a', searchId: 'south' }
+    }
+  };
+  const { seen: next, removed } = removeDeletedAds(seen, [], []);
+  assert.deepEqual(next, seen);
+  assert.equal(removed.length, 0);
 });

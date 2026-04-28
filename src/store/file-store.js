@@ -100,9 +100,56 @@ function splitNewAndExisting(ads) {
   return { newAds, existingAds };
 }
 
-function commitAds({ newAds = [], existingAds = [] }) {
-  const seen = loadSeenAds();
+function removeDeletedAds(seen, scrapedAds = [], scrapedSearchIds = []) {
+  const successfulSearchIds = new Set(scrapedSearchIds);
+  if (!successfulSearchIds.size) {
+    return { seen, removed: [] };
+  }
+
+  const liveByDistrict = new Map();
+  for (const id of successfulSearchIds) {
+    liveByDistrict.set(id, new Set());
+  }
+  for (const ad of scrapedAds) {
+    if (!ad || !ad.externalId) continue;
+    const set = liveByDistrict.get(ad.searchId);
+    if (set) set.add(ad.externalId);
+  }
+
+  const removed = [];
+  const ads = { ...(seen.ads || {}) };
+  for (const [externalId, record] of Object.entries(ads)) {
+    if (!record || !successfulSearchIds.has(record.searchId)) continue;
+    const live = liveByDistrict.get(record.searchId);
+    if (live && !live.has(externalId)) {
+      removed.push({
+        externalId,
+        searchId: record.searchId,
+        title: record.title || null,
+        link: record.link || null
+      });
+      delete ads[externalId];
+    }
+  }
+
+  return { seen: { ...seen, ads }, removed };
+}
+
+function commitAds({
+  newAds = [],
+  existingAds = [],
+  allScrapedAds = null,
+  scrapedSearchIds = null
+}) {
+  let seen = loadSeenAds();
   const now = new Date().toISOString();
+  let removed = [];
+
+  if (Array.isArray(allScrapedAds) && Array.isArray(scrapedSearchIds)) {
+    const result = removeDeletedAds(seen, allScrapedAds, scrapedSearchIds);
+    seen = result.seen;
+    removed = result.removed;
+  }
 
   for (const ad of existingAds) {
     const existing = seen.ads[ad.externalId];
@@ -136,6 +183,8 @@ function commitAds({ newAds = [], existingAds = [] }) {
 
   const pruned = pruneSeenAds(seen, env.SEEN_RETENTION_DAYS);
   saveSeenAds(pruned);
+
+  return { removed };
 }
 
 function saveAndDetectNewAds(ads) {
@@ -155,6 +204,7 @@ module.exports = {
   listRecentRuns,
   loadSeenAds,
   recordRun,
+  removeDeletedAds,
   saveAndDetectNewAds,
   splitNewAndExisting
 };

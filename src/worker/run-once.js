@@ -96,7 +96,19 @@ async function runOnce(options = {}) {
 
     const droppedNewCandidates = dumpRejectedNewCandidates(enriched, finalOptions);
 
-    commitAds({ newAds: relevantNewAds, existingAds });
+    const erroredSearchIds = new Set(
+      (scrapeResult.errors || []).map((e) => e && e.searchId).filter(Boolean)
+    );
+    const scrapedSearchIds = searches
+      .map((s) => s.id)
+      .filter((id) => !erroredSearchIds.has(id));
+
+    const { removed: removedAds = [] } = commitAds({
+      newAds: relevantNewAds,
+      existingAds,
+      allScrapedAds: scrapeResult.ads,
+      scrapedSearchIds
+    });
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
     if (relevantNewAds.length > 0) {
@@ -116,6 +128,7 @@ async function runOnce(options = {}) {
       candidateNewAds: newCandidates.length,
       enrichedAds: enriched.length,
       relevantNewAds: relevantNewAds.length,
+      removedAds: removedAds.length,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       errors: scrapeResult.errors
     };
@@ -127,6 +140,7 @@ async function runOnce(options = {}) {
       searches: searches.map((search) => search.id),
       rejectionCounts,
       droppedNewCandidates,
+      removedAdSamples: removedAds.slice(0, 20),
       telegramResult
     };
   } catch (error) {
@@ -140,6 +154,7 @@ async function runOnce(options = {}) {
       candidateNewAds: 0,
       enrichedAds: 0,
       relevantNewAds: 0,
+      removedAds: 0,
       telegramSent: false,
       errors: [{ message: error.message }]
     });
