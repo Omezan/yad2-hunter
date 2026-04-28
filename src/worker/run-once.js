@@ -27,6 +27,27 @@ function summarizeRejections(ads, options) {
   return counts;
 }
 
+function dumpRejectedNewCandidates(ads, options) {
+  const dropped = [];
+  for (const ad of ads) {
+    const reason = getRejection(ad, options);
+    if (!reason) continue;
+    dropped.push({
+      reason,
+      enriched: Boolean(ad.enriched),
+      searchId: ad.searchId,
+      city: ad.city || null,
+      propertyType: ad.propertyType || null,
+      title: ad.title || null,
+      addressText: ad.addressText || null,
+      rooms: ad.rooms ?? null,
+      price: ad.price ?? null,
+      link: ad.link
+    });
+  }
+  return dropped;
+}
+
 async function runOnce(options = {}) {
   ensureStateDir();
 
@@ -67,6 +88,8 @@ async function runOnce(options = {}) {
       droppedDueToBudget
     };
 
+    const droppedNewCandidates = dumpRejectedNewCandidates(enriched, finalOptions);
+
     commitAds({ newAds: relevantNewAds, existingAds });
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
@@ -94,6 +117,7 @@ async function runOnce(options = {}) {
       ...runEntry,
       searches: searches.map((search) => search.id),
       rejectionCounts,
+      droppedNewCandidates,
       telegramResult
     };
   } catch (error) {
