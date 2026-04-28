@@ -146,31 +146,49 @@ async function scrapeSearchPage(page, url, timeoutMs) {
   return extractAnchorsFromPage(page);
 }
 
-async function scrapeSearch(page, search, timeoutMs, { maxPages = 6 } = {}) {
+async function scrapeSearch(page, search, timeoutMs, { maxPages = 6, logger = console } = {}) {
   const collected = new Map();
+  let firstPageFirstId = null;
   let consecutiveEmptyOrDuplicate = 0;
 
   for (let pageNumber = 1; pageNumber <= maxPages; pageNumber += 1) {
     const url = buildPageUrl(search.url, pageNumber);
     const rawAds = await scrapeSearchPage(page, url, timeoutMs);
 
-    if (!rawAds.length) {
+    const candidates = rawAds
+      .filter((entry) => entry.href && /\/realestate\/item\//i.test(entry.href))
+      .map((entry) => {
+        const normalizedLink = normalizeItemUrl(entry.href);
+        return {
+          ...entry,
+          normalizedLink,
+          externalId: extractExternalId(normalizedLink)
+        };
+      })
+      .filter((entry) => entry.externalId);
+
+    if (pageNumber === 1) {
+      firstPageFirstId = candidates[0]?.externalId || null;
+    } else if (firstPageFirstId && candidates[0]?.externalId === firstPageFirstId) {
+      logger.info?.(`  ${search.id} page ${pageNumber}: same as page 1, stopping`);
+      break;
+    }
+
+    logger.info?.(`  ${search.id} page ${pageNumber}: anchors=${candidates.length}`);
+
+    if (!candidates.length) {
       break;
     }
 
     const sizeBefore = collected.size;
 
-    for (const entry of rawAds) {
-      if (!entry.href || !/\/realestate\/item\//i.test(entry.href)) continue;
-      const normalizedLink = normalizeItemUrl(entry.href);
-      const externalId = extractExternalId(normalizedLink);
-      if (!externalId || collected.has(externalId)) continue;
-
+    for (const entry of candidates) {
+      if (collected.has(entry.externalId)) continue;
       const rawText = String(entry.containerText || entry.text || '').trim();
-      collected.set(externalId, {
-        externalId,
+      collected.set(entry.externalId, {
+        externalId: entry.externalId,
         title: extractTitle(rawText),
-        link: normalizedLink,
+        link: entry.normalizedLink,
         rawText,
         locationText: extractLocation(rawText),
         districtKey: search.districtKey,
@@ -188,7 +206,7 @@ async function scrapeSearch(page, search, timeoutMs, { maxPages = 6 } = {}) {
     const newOnThisPage = collected.size - sizeBefore;
     if (newOnThisPage === 0) {
       consecutiveEmptyOrDuplicate += 1;
-      if (consecutiveEmptyOrDuplicate >= 2) {
+      if (consecutiveEmptyOrDuplicate >= 1) {
         break;
       }
     } else {
@@ -352,7 +370,8 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
     for (const search of searches) {
       try {
         logger.info(`Checking ${search.label}: ${search.url}`);
-        const ads = await scrapeSearch(page, search, timeoutMs);
+        const ads = await scrapeSearch(page, search, timeoutMs, { logger });
+        logger.info(`  ${search.id} total: ${ads.length}`);
         allAds.push(...ads);
       } catch (error) {
         logger.error(`Failed scraping ${search.id}: ${error.message}`);
