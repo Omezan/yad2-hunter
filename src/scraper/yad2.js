@@ -136,6 +136,43 @@ async function detectCaptcha(page) {
   });
 }
 
+async function detectErrorPage(page) {
+  return page.evaluate(() => {
+    const title = ((document.title || '') + '').trim().toLowerCase();
+    const body = (document.body && document.body.innerText) || '';
+    const bodyText = body.trim();
+    if (!bodyText) return true;
+
+    const errorPatterns = [
+      /^bad request($|[\s:])/i,
+      /^400 bad request/i,
+      /^page not found/i,
+      /^not found/i,
+      /^404/,
+      /^500/,
+      /^internal server error/i,
+      /^service unavailable/i,
+      /^gateway timeout/i
+    ];
+    if (errorPatterns.some((re) => re.test(title))) {
+      return true;
+    }
+
+    if (/אופס\.\.\. תקלה|אופס\.{2,3}\s*תקלה/.test(bodyText)) {
+      return true;
+    }
+
+    if (
+      bodyText.length < 500 &&
+      /bad request|not found|internal server error|service unavailable/i.test(bodyText)
+    ) {
+      return true;
+    }
+
+    return false;
+  });
+}
+
 async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = console } = {}) {
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     await page.goto(url, {
@@ -439,6 +476,10 @@ async function fetchListingDetails(page, url, timeoutMs) {
     throw new Error('detail page returned captcha/anti-bot block');
   }
 
+  if (await detectErrorPage(page)) {
+    throw new Error('detail page returned error/empty page');
+  }
+
   const data = await page.evaluate(() => {
     function textOf(selector) {
       const el = document.querySelector(selector);
@@ -506,7 +547,8 @@ async function fetchListingDetails(page, url, timeoutMs) {
       return match ? match[0].trim() : '';
     }
 
-    const titleHeading = textOf('h1') || textOf('h2');
+    const titleHeading = textOf('h1');
+    const secondaryHeading = textOf('h2');
     const subTitle =
       textOf('[class*="property-type"]') ||
       textOf('[data-testid*="property-type"]') ||
@@ -518,6 +560,7 @@ async function fetchListingDetails(page, url, timeoutMs) {
 
     return {
       titleHeading,
+      secondaryHeading,
       subTitle,
       addressText: findAddressText(),
       descriptionText: findDescriptionText(),
@@ -541,7 +584,7 @@ async function fetchListingDetails(page, url, timeoutMs) {
   const rooms = roomsMatch ? Number.parseFloat(roomsMatch[1]) : null;
 
   const propertyType = data.subTitle || guessPropertyType(cleanText);
-  const city = (data.titleHeading || '').split('\n')[0].trim() || null;
+  const city = extractCityFromHeadings(data);
   const descriptionText = String(data.descriptionText || '').replace(/[\u200e\u200f]/g, '');
   const addressText = String(data.addressText || '').replace(/[\u200e\u200f]/g, '');
   const publishedText = String(data.publishedText || '').replace(/[\u200e\u200f]/g, '');
@@ -603,6 +646,28 @@ function guessPropertyType(text) {
 function buildListingTitle({ propertyType, city }) {
   const parts = [propertyType, city].filter(Boolean);
   return parts.length > 0 ? parts.join(', ') : 'מודעה';
+}
+
+function extractCityFromHeadings(data) {
+  const secondary = String(data.secondaryHeading || '').trim();
+  if (secondary) {
+    const parts = secondary.split(/[,،]/).map((part) => part.trim()).filter(Boolean);
+    if (parts.length >= 2) {
+      const last = parts[parts.length - 1];
+      const previous = parts[parts.length - 2];
+      if (last && previous && last === previous) {
+        return last;
+      }
+      if (last) {
+        return last;
+      }
+    }
+  }
+  const heading = String(data.titleHeading || '').trim();
+  if (heading) {
+    return heading.split('\n')[0].trim() || null;
+  }
+  return null;
 }
 
 async function warmUpSession(page, timeoutMs, logger) {
