@@ -631,8 +631,8 @@ const BROWSER_PROFILES = [
   }
 ];
 
-async function scrapeBatchWithFreshBrowser({
-  searches,
+async function scrapeOneSearchWithFreshBrowser({
+  search,
   headless,
   timeoutMs,
   logger,
@@ -656,109 +656,111 @@ async function scrapeBatchWithFreshBrowser({
     }
   });
 
-  const page = await context.newPage();
-  const ads = [];
-  const errors = [];
-  const empty = [];
-
   try {
+    const page = await context.newPage();
     await warmUpSession(page, timeoutMs, logger);
     if (extraWarmupMs > 0) {
       await page.waitForTimeout(extraWarmupMs + Math.floor(Math.random() * 2000));
     }
 
-    for (let i = 0; i < searches.length; i += 1) {
-      const search = searches[i];
-      try {
-        if (i > 0) {
-          await page.waitForTimeout(2000 + Math.floor(Math.random() * 2500));
-        }
-        logger.info(`Checking ${search.label}: ${search.url}`);
-        let result = await scrapeSearch(page, search, timeoutMs, { logger });
-        if (result.ads.length === 0) {
-          logger.warn?.(
-            `  ${search.id}: empty result on first attempt; warming up and retrying once`
-          );
-          await warmUpSession(page, timeoutMs, logger);
-          await page.waitForTimeout(3000 + Math.floor(Math.random() * 2000));
-          result = await scrapeSearch(page, search, timeoutMs, { logger });
-        }
-        logger.info(`  ${search.id} total: ${result.ads.length}`);
-        if (result.ads.length === 0) {
-          empty.push(search);
-        } else {
-          ads.push(...result.ads);
-        }
-      } catch (error) {
-        logger.error(`Failed scraping ${search.id}: ${error.message}`);
-        errors.push({
-          searchId: search.id,
-          searchLabel: search.label,
-          message: error.message
-        });
-        empty.push(search);
-      }
+    logger.info(`Checking ${search.label}: ${search.url}`);
+    let result = await scrapeSearch(page, search, timeoutMs, { logger });
+    if (result.ads.length === 0) {
+      logger.warn?.(
+        `  ${search.id}: empty result on first attempt; warming up and retrying once in same browser`
+      );
+      await warmUpSession(page, timeoutMs, logger);
+      await page.waitForTimeout(3000 + Math.floor(Math.random() * 2000));
+      result = await scrapeSearch(page, search, timeoutMs, { logger });
     }
+    logger.info(`  ${search.id} total: ${result.ads.length}`);
+    return { ads: result.ads, error: null };
+  } catch (error) {
+    logger.error(`Failed scraping ${search.id}: ${error.message}`);
+    return { ads: [], error: { searchId: search.id, searchLabel: search.label, message: error.message } };
   } finally {
     await context.close();
     await browser.close();
   }
-
-  return { ads, errors, empty };
 }
 
 async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
   const allAds = [];
   const allErrors = [];
+  const stillEmpty = [];
 
-  const firstPass = await scrapeBatchWithFreshBrowser({
-    searches,
-    headless,
-    timeoutMs,
-    logger,
-    profile: BROWSER_PROFILES[0]
-  });
+  for (let i = 0; i < searches.length; i += 1) {
+    const search = searches[i];
+    if (i > 0) {
+      const gapMs = 3000 + Math.floor(Math.random() * 4000);
+      logger.info?.(`  inter-district pause ${gapMs}ms before ${search.id}`);
+      await new Promise((resolve) => setTimeout(resolve, gapMs));
+    }
 
-  allAds.push(...firstPass.ads);
-  allErrors.push(...firstPass.errors);
+    const { ads, error } = await scrapeOneSearchWithFreshBrowser({
+      search,
+      headless,
+      timeoutMs,
+      logger,
+      profile: BROWSER_PROFILES[0]
+    });
 
-  let pendingEmpty = firstPass.empty;
+    if (error) {
+      allErrors.push(error);
+    }
+
+    if (ads.length > 0) {
+      allAds.push(...ads);
+    } else {
+      stillEmpty.push(search);
+    }
+  }
+
   let profileIndex = 1;
-
-  while (pendingEmpty.length > 0 && profileIndex < BROWSER_PROFILES.length) {
+  while (stillEmpty.length > 0 && profileIndex < BROWSER_PROFILES.length) {
     const profile = BROWSER_PROFILES[profileIndex];
+    const queue = stillEmpty.splice(0);
     logger.warn?.(
-      `Retrying ${pendingEmpty.length} blocked/empty searches (${pendingEmpty
+      `Retrying ${queue.length} blocked/empty searches (${queue
         .map((s) => s.id)
         .join(', ')}) with fresh browser profile #${profileIndex + 1}`
     );
 
-    const retryPass = await scrapeBatchWithFreshBrowser({
-      searches: pendingEmpty,
-      headless,
-      timeoutMs,
-      logger,
-      profile,
-      extraWarmupMs: 5000
-    });
+    for (const search of queue) {
+      const gapMs = 5000 + Math.floor(Math.random() * 4000);
+      await new Promise((resolve) => setTimeout(resolve, gapMs));
 
-    allAds.push(...retryPass.ads);
-    allErrors.push(...retryPass.errors);
-    pendingEmpty = retryPass.empty;
+      const { ads, error } = await scrapeOneSearchWithFreshBrowser({
+        search,
+        headless,
+        timeoutMs,
+        logger,
+        profile,
+        extraWarmupMs: 5000
+      });
+
+      if (error) {
+        allErrors.push(error);
+      }
+
+      if (ads.length > 0) {
+        allAds.push(...ads);
+      } else {
+        stillEmpty.push(search);
+      }
+    }
     profileIndex += 1;
   }
 
-  if (pendingEmpty.length > 0) {
-    for (const search of pendingEmpty) {
-      logger.error(
-        `  ${search.id}: still blocked after ${profileIndex} fresh-browser retries; giving up for this run`
-      );
-      allErrors.push({
-        searchId: search.id,
-        searchLabel: search.label,
-        message: 'blocked by anti-bot after all retries'
-      });
-    }
+  for (const search of stillEmpty) {
+    logger.error(
+      `  ${search.id}: still blocked after ${profileIndex} fresh-browser retries; giving up for this run`
+    );
+    allErrors.push({
+      searchId: search.id,
+      searchLabel: search.label,
+      message: 'blocked by anti-bot after all retries'
+    });
   }
 
   return {
