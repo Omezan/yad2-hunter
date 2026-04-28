@@ -261,15 +261,6 @@ function getRejection(ad, options = {}) {
     if (!ad.settlementsOnly && !looksRural(locationHaystack)) {
       return 'no-rural-marker';
     }
-
-    if (
-      isFlatType(ad.propertyType) &&
-      !isHouseType(ad.propertyType) &&
-      typeof ad.floor === 'number' &&
-      ad.floor >= 1
-    ) {
-      return `non-ground-floor:${ad.floor}`;
-    }
   }
 
   return null;

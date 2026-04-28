@@ -203,23 +203,8 @@ test('enriched ads accept rural listing whose card mentions a city-named broker 
   assert.equal(getRejection(ad), null);
 });
 
-test('reject דירה on floor 1+ in a moshav (non-ground-floor)', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    title: 'דירה, אחוזת ברק',
-    city: 'אחוזת ברק',
-    addressText: '',
-    locationText: '',
-    propertyType: 'דירה',
-    floor: 1,
-    descriptionText: 'דירה במפלס 1 מעל בית קרקע'
-  });
-  assert.equal(getRejection(ad), 'non-ground-floor:1');
-});
-
-test('accept דירה on floor 0 (ground floor)', () => {
-  const ad = makeAd({
+test('accept דירה on any floor (filter does not consider floor)', () => {
+  const adFloor0 = makeAd({
     enriched: true,
     rawText: '',
     title: 'דירה, אחוזת ברק',
@@ -230,43 +215,13 @@ test('accept דירה on floor 0 (ground floor)', () => {
     floor: 0,
     descriptionText: 'דירת קרקע במושב'
   });
-  assert.equal(getRejection(ad), null);
-});
+  assert.equal(getRejection(adFloor0), null);
 
-test('accept דירה when floor is unknown (do not penalize missing data)', () => {
-  const ad = makeAd({
-    enriched: true,
-    rawText: '',
-    title: 'דירה, אחוזת ברק',
-    city: 'אחוזת ברק',
-    addressText: '',
-    locationText: '',
-    propertyType: 'דירה',
-    floor: null,
-    descriptionText: 'דירה במושב, מרפסת גדולה'
-  });
-  assert.equal(getRejection(ad), null);
-});
-
-test("accept בית פרטי / קוטג' regardless of floor", () => {
-  const adGround = makeAd({
-    enriched: true,
-    rawText: '',
-    title: "בית פרטי/ קוטג', אחוזת ברק",
-    city: 'אחוזת ברק',
-    addressText: '',
-    locationText: '',
-    propertyType: "בית פרטי/ קוטג'",
-    floor: 0,
-    descriptionText: 'בית פרטי במושב'
-  });
-  assert.equal(getRejection(adGround), null);
-
-  const adFloor1 = { ...adGround, floor: 1 };
+  const adFloor1 = { ...adFloor0, floor: 1, descriptionText: 'דירה במפלס 1' };
   assert.equal(getRejection(adFloor1), null);
 
-  const adFloor2 = { ...adGround, floor: 2 };
-  assert.equal(getRejection(adFloor2), null);
+  const adUnknownFloor = { ...adFloor0, floor: null };
+  assert.equal(getRejection(adUnknownFloor), null);
 });
 
 test('parseFloor handles common Yad2 floor strings', () => {
