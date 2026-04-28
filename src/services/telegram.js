@@ -111,7 +111,13 @@ function formatDigestMessage({ newAds }) {
   return messages[0] || '';
 }
 
-async function sendTelegramMessage(text) {
+async function sendTelegramMessage(input) {
+  const {
+    text,
+    parseMode,
+    disablePreview = false
+  } = typeof input === 'string' ? { text: input } : input || {};
+
   if (!env.TELEGRAM_NOTIFICATIONS_ENABLED) {
     return { skipped: true, reason: 'Telegram notifications are disabled' };
   }
@@ -120,13 +126,18 @@ async function sendTelegramMessage(text) {
     return { skipped: true, reason: 'Missing Telegram credentials' };
   }
 
+  const payload = {
+    chat_id: env.TELEGRAM_CHAT_ID,
+    text,
+    disable_web_page_preview: disablePreview
+  };
+  if (parseMode) {
+    payload.parse_mode = parseMode;
+  }
+
   const response = await axios.post(
     `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-    {
-      chat_id: env.TELEGRAM_CHAT_ID,
-      text,
-      disable_web_page_preview: false
-    }
+    payload
   );
 
   return response.data;
@@ -157,9 +168,94 @@ async function sendNewAdsDigest({ newAds }) {
   };
 }
 
+function padCell(value, width) {
+  const str = String(value);
+  const visible = Array.from(str).length;
+  if (visible >= width) return str;
+  return str + ' '.repeat(width - visible);
+}
+
+function formatHealthCheckMessage({ rows, allMatch, generatedAt }) {
+  const headerLabel = '🩺 בדיקה יומית של Yad2 Hunter';
+  const statusLine = allMatch
+    ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
+    : '⚠️ נמצאו פערים — Real לא תואם ל-Expected';
+
+  const labels = ['District', ...rows.map((r) => r.label)];
+  const realCells = ['Real', ...rows.map((r) => formatRealCell(r))];
+  const expectedCells = ['Expected', ...rows.map((r) => formatExpectedCell(r))];
+
+  const labelWidth = Math.max(...labels.map((v) => Array.from(v).length));
+  const realWidth = Math.max(...realCells.map((v) => Array.from(v).length));
+  const expectedWidth = Math.max(...expectedCells.map((v) => Array.from(v).length));
+
+  const lines = [];
+  lines.push(
+    `${padCell(labels[0], labelWidth)}  ${padCell(realCells[0], realWidth)}  ${padCell(
+      expectedCells[0],
+      expectedWidth
+    )}`
+  );
+
+  for (let i = 0; i < rows.length; i += 1) {
+    lines.push(
+      `${padCell(labels[i + 1], labelWidth)}  ${padCell(
+        realCells[i + 1],
+        realWidth
+      )}  ${padCell(expectedCells[i + 1], expectedWidth)}`
+    );
+  }
+
+  const totalReal = rows.reduce((sum, r) => sum + (r.real ?? 0), 0);
+  const totalExpected = rows.reduce((sum, r) => sum + (r.expected ?? 0), 0);
+
+  lines.push(
+    `${padCell('Total', labelWidth)}  ${padCell(String(totalReal), realWidth)}  ${padCell(
+      String(totalExpected),
+      expectedWidth
+    )}`
+  );
+
+  const timestamp = generatedAt
+    ? new Date(generatedAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
+    : null;
+  const footer = timestamp ? `\nנבדק: ${timestamp}` : '';
+
+  return `${headerLabel}\n${statusLine}\n\n\`\`\`\n${lines.join('\n')}\n\`\`\`${footer}`;
+}
+
+function formatRealCell(row) {
+  if (row.error) return 'ERR';
+  if (row.real === null || row.real === undefined) return '?';
+  return String(row.real);
+}
+
+function formatExpectedCell(row) {
+  if (row.expected === null || row.expected === undefined) return '?';
+  if (row.error || row.real === null || row.real === undefined) {
+    return String(row.expected);
+  }
+  if (row.real === row.expected) return `${row.expected} ✓`;
+  const delta = row.real - row.expected;
+  const sign = delta > 0 ? '+' : '';
+  return `${row.expected} (${sign}${delta})`;
+}
+
+async function sendHealthCheckReport({ rows, allMatch, generatedAt }) {
+  const text = formatHealthCheckMessage({ rows, allMatch, generatedAt });
+  const result = await sendTelegramMessage({
+    text,
+    parseMode: 'Markdown',
+    disablePreview: true
+  });
+  return { text, result };
+}
+
 module.exports = {
   formatDigestMessage,
   formatDigestMessages,
+  formatHealthCheckMessage,
+  sendHealthCheckReport,
   sendNewAdsDigest,
   sendTelegramMessage
 };

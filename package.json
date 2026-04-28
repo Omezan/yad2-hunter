@@ -5,6 +5,7 @@
   "main": "src/worker/run-once.js",
   "scripts": {
     "scan": "node src/worker/run-once.js",
+    "health-check": "node src/worker/health-check.js",
     "scrape:dry-run": "node scrape.js",
     "telegram:test": "node test-telegram.js",
     "test": "node --test test/*.test.js"

@@ -153,6 +153,7 @@ module.exports = {
   commitAds,
   ensureStateDir,
   listRecentRuns,
+  loadSeenAds,
   recordRun,
   saveAndDetectNewAds,
   splitNewAndExisting
