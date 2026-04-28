@@ -65,20 +65,24 @@ async function main() {
 
   const finalAccepted = filterRelevantAds(enriched, finalOptions);
   console.log(`\nFinal accepted: ${finalAccepted.length}`);
-  console.log(
-    JSON.stringify(
-      finalAccepted.slice(0, 5).map((ad) => ({
-        title: ad.title,
-        city: ad.city,
-        propertyType: ad.propertyType,
-        rooms: ad.rooms,
-        price: ad.price,
-        link: ad.link
-      })),
-      null,
-      2
-    )
-  );
+
+  const byDistrict = {};
+  for (const ad of finalAccepted) {
+    const key = ad.searchLabel || ad.districtLabel || 'unknown';
+    if (!byDistrict[key]) byDistrict[key] = [];
+    byDistrict[key].push({
+      title: ad.title,
+      city: ad.city,
+      rooms: ad.rooms,
+      price: ad.price,
+      publishedAt: ad.publishedAt || null,
+      link: ad.link
+    });
+  }
+  for (const [district, ads] of Object.entries(byDistrict)) {
+    console.log(`\n--- ${district} (${ads.length}) ---`);
+    console.log(JSON.stringify(ads, null, 2));
+  }
 }
 
 main().catch((error) => {

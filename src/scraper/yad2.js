@@ -73,16 +73,58 @@ function dedupeByExternalId(ads) {
   return Array.from(deduped.values());
 }
 
-async function autoScrollToLoadAll(page, { maxPasses = 80, idlePassLimit = 4 } = {}) {
+async function readExpectedCount(page) {
+  return page.evaluate(() => {
+    const candidates = Array.from(
+      document.querySelectorAll('h1, h2, [class*="results"], [data-testid*="results"]')
+    );
+    for (const el of candidates) {
+      const text = (el.innerText || el.textContent || '').trim();
+      const match = text.match(/(\d{1,4})\s*תוצאות?/);
+      if (match) {
+        return Number.parseInt(match[1], 10);
+      }
+    }
+    const body = (document.body && document.body.innerText) || '';
+    const match = body.match(/(\d{1,4})\s*תוצאות?/);
+    return match ? Number.parseInt(match[1], 10) : null;
+  });
+}
+
+async function countDistrictItemAnchors(page) {
+  return page.evaluate(() => {
+    const seen = new Set();
+    document.querySelectorAll('a[href*="/realestate/item/"]').forEach((a) => {
+      const match = (a.href || '').match(
+        /\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i
+      );
+      if (match) seen.add(match[0]);
+    });
+    return seen.size;
+  });
+}
+
+async function autoScrollToLoadAll(
+  page,
+  { maxPasses = 200, idlePassLimit = 8, targetCount = 0, logger = console } = {}
+) {
   let lastCount = 0;
   let idlePasses = 0;
 
   for (let pass = 0; pass < maxPasses; pass += 1) {
     const count = await page.evaluate(() => {
-      window.scrollBy(0, Math.max(window.innerHeight - 50, 600));
+      window.scrollBy(0, Math.max(window.innerHeight, 800));
       window.scrollTo(0, document.body.scrollHeight);
       return document.querySelectorAll('a[href*="/realestate/item/"]').length;
     });
+
+    if (targetCount > 0) {
+      const districtCount = await countDistrictItemAnchors(page);
+      if (districtCount >= targetCount) {
+        logger.info?.(`    autoScroll: reached target ${districtCount}/${targetCount} after ${pass + 1} passes`);
+        return;
+      }
+    }
 
     if (count === lastCount) {
       idlePasses += 1;
@@ -94,7 +136,7 @@ async function autoScrollToLoadAll(page, { maxPasses = 80, idlePassLimit = 4 } =
       lastCount = count;
     }
 
-    await page.waitForTimeout(700);
+    await page.waitForTimeout(900);
   }
 }
 
@@ -142,7 +184,7 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
         await page.waitForTimeout(4000 + Math.floor(Math.random() * 3000));
         continue;
       }
-      return [];
+      return { anchors: [], expectedCount: null };
     }
 
     const hasItems = await page
@@ -166,21 +208,38 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
         await page.waitForTimeout(2000);
         continue;
       }
-      return [];
+      return { anchors: [], expectedCount: null };
     }
 
-    await autoScrollToLoadAll(page, { maxPasses: 12, idlePassLimit: 2 });
-    return extractAnchorsFromPage(page);
+    const expectedCount = await readExpectedCount(page);
+    await autoScrollToLoadAll(page, {
+      maxPasses: 200,
+      idlePassLimit: 8,
+      targetCount: expectedCount || 0,
+      logger
+    });
+    const anchors = await extractAnchorsFromPage(page);
+    return { anchors, expectedCount };
   }
-  return [];
+  return { anchors: [], expectedCount: null };
 }
 
+const DISTRICT_ITEM_URL_RE = /\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i;
+
 async function scrapeSearch(page, search, timeoutMs, { logger = console } = {}) {
-  const rawAds = await scrapeSearchPage(page, search.url, timeoutMs, { logger });
+  const { anchors, expectedCount } = await scrapeSearchPage(page, search.url, timeoutMs, {
+    logger
+  });
 
   const collected = new Map();
-  for (const entry of rawAds) {
+  let suggestionCount = 0;
+
+  for (const entry of anchors) {
     if (!entry.href || !/\/realestate\/item\//i.test(entry.href)) continue;
+    if (!DISTRICT_ITEM_URL_RE.test(entry.href)) {
+      suggestionCount += 1;
+      continue;
+    }
     const normalizedLink = normalizeItemUrl(entry.href);
     const externalId = extractExternalId(normalizedLink);
     if (!externalId || collected.has(externalId)) continue;
@@ -200,12 +259,28 @@ async function scrapeSearch(page, search, timeoutMs, { logger = console } = {}) 
       settlementsOnly: Boolean(search.settlementsOnly),
       price: parsePrice(rawText),
       rooms: parseRooms(rawText),
+      expectedCount,
       scrapedAt: new Date().toISOString()
     });
   }
 
-  logger.info?.(`  ${search.id}: anchors=${rawAds.length}, unique=${collected.size}`);
-  return Array.from(collected.values());
+  let ads = Array.from(collected.values());
+  if (typeof expectedCount === 'number' && ads.length > expectedCount) {
+    logger.warn?.(
+      `  ${search.id}: scraped ${ads.length} but expected ${expectedCount}, trimming to expected`
+    );
+    ads = ads.slice(0, expectedCount);
+  }
+
+  logger.info?.(
+    `  ${search.id}: real=${ads.length}, suggestions-skipped=${suggestionCount}, expected=${expectedCount ?? '?'}`
+  );
+
+  return {
+    ads,
+    expectedCount,
+    uniqueOnPage: collected.size
+  };
 }
 
 async function fetchListingDetails(page, url, timeoutMs) {
@@ -430,9 +505,9 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
           await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
         }
         logger.info(`Checking ${search.label}: ${search.url}`);
-        const ads = await scrapeSearch(page, search, timeoutMs, { logger });
-        logger.info(`  ${search.id} total: ${ads.length}`);
-        allAds.push(...ads);
+        const result = await scrapeSearch(page, search, timeoutMs, { logger });
+        logger.info(`  ${search.id} total: ${result.ads.length}`);
+        allAds.push(...result.ads);
       } catch (error) {
         logger.error(`Failed scraping ${search.id}: ${error.message}`);
         errors.push({
