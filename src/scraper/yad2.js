@@ -104,60 +104,6 @@ async function countDistrictItemAnchors(page) {
   });
 }
 
-async function autoScrollToLoadAll(
-  page,
-  {
-    maxPasses = 250,
-    idlePassLimit = 8,
-    targetIdlePassLimit = 25,
-    targetCount = 0,
-    logger = console
-  } = {}
-) {
-  let lastDistrictCount = 0;
-  let idlePasses = 0;
-
-  for (let pass = 0; pass < maxPasses; pass += 1) {
-    await page.evaluate(() => {
-      window.scrollBy(0, Math.max(window.innerHeight, 800));
-      window.scrollTo(0, document.body.scrollHeight);
-    });
-
-    const districtCount = targetCount > 0 ? await countDistrictItemAnchors(page) : 0;
-
-    if (targetCount > 0 && districtCount >= targetCount) {
-      logger.info?.(
-        `    autoScroll: reached target ${districtCount}/${targetCount} after ${pass + 1} passes`
-      );
-      return;
-    }
-
-    const stalled = targetCount > 0
-      ? districtCount === lastDistrictCount
-      : (await page.evaluate(
-          () => document.querySelectorAll('a[href*="/realestate/item/"]').length
-        )) === lastDistrictCount;
-
-    if (stalled) {
-      idlePasses += 1;
-      const limit = targetCount > 0 ? targetIdlePassLimit : idlePassLimit;
-      if (idlePasses >= limit) {
-        if (targetCount > 0) {
-          logger.warn?.(
-            `    autoScroll: gave up at ${districtCount}/${targetCount} after ${pass + 1} passes`
-          );
-        }
-        return;
-      }
-    } else {
-      idlePasses = 0;
-      lastDistrictCount = districtCount;
-    }
-
-    await page.waitForTimeout(targetCount > 0 ? 1500 : 900);
-  }
-}
-
 async function extractAnchorsFromPage(page) {
   return page.$$eval('a[href*="/realestate/item/"]', (anchors) =>
     anchors.map((anchor) => {
@@ -230,16 +176,167 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
     }
 
     const expectedCount = await readExpectedCount(page);
-    await autoScrollToLoadAll(page, {
-      maxPasses: 200,
-      idlePassLimit: 8,
-      targetCount: expectedCount || 0,
-      logger
-    });
-    const anchors = await extractAnchorsFromPage(page);
-    return { anchors, expectedCount };
+    const allAnchors = [];
+    const seenAnchors = new Set();
+    const seenDistrictIds = new Set();
+
+    async function pushAnchorsFromCurrentPage() {
+      const anchors = await extractAnchorsFromPage(page);
+      let added = 0;
+      for (const a of anchors) {
+        if (!a.href || seenAnchors.has(a.href)) continue;
+        seenAnchors.add(a.href);
+        allAnchors.push(a);
+        added += 1;
+        const districtMatch = a.href.match(/\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i);
+        if (districtMatch) {
+          seenDistrictIds.add(districtMatch[0]);
+        }
+      }
+      return added;
+    }
+
+    function cumulativeDistrictNeedsMore() {
+      if (typeof expectedCount !== 'number') return false;
+      return seenDistrictIds.size < expectedCount;
+    }
+
+    await scrollPageOnce(page);
+    await pushAnchorsFromCurrentPage();
+    logger.info?.(
+      `    page 1: ${seenAnchors.size} anchors (district=${seenDistrictIds.size}, expected=${expectedCount ?? '?'})`
+    );
+
+    let pageIndex = 1;
+    const maxPages = 10;
+    while (pageIndex < maxPages && cumulativeDistrictNeedsMore()) {
+      const advanced = await goToNextPage(page, pageIndex + 1, logger);
+      if (!advanced) break;
+
+      pageIndex += 1;
+      await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+      await scrollPageOnce(page);
+
+      const added = await pushAnchorsFromCurrentPage();
+      logger.info?.(
+        `    page ${pageIndex}: +${added} anchors (total=${seenAnchors.size}, district=${seenDistrictIds.size})`
+      );
+      if (added === 0) break;
+    }
+
+    return { anchors: allAnchors, expectedCount };
   }
   return { anchors: [], expectedCount: null };
+}
+
+async function scrollPageOnce(page) {
+  await page.evaluate(async () => {
+    const stepSize = Math.max(window.innerHeight, 600);
+    const steps = 10;
+    for (let i = 0; i < steps; i += 1) {
+      window.scrollBy(0, stepSize);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+    window.scrollTo(0, document.body.scrollHeight);
+    await new Promise((resolve) => setTimeout(resolve, 600));
+  });
+}
+
+async function goToNextPage(page, targetPageNumber, logger) {
+  const beforeFirstId = await page.evaluate(() => {
+    const a = document.querySelector('a[href*="/realestate/item/"]');
+    return a ? a.href : null;
+  });
+
+  const clickResult = await page.evaluate((target) => {
+    const all = Array.from(
+      document.querySelectorAll(
+        'a[aria-label*="עמוד"], button[aria-label*="עמוד"], a[aria-label*="הבא"], button[aria-label*="הבא"], [role="navigation"] a, [role="navigation"] button, nav a, nav button, [class*="pagination"] a, [class*="pagination"] button, [class*="pager"] a, [class*="pager"] button'
+      )
+    );
+    function getText(el) {
+      return ((el.innerText || el.textContent) || '').trim();
+    }
+    function isNumberAnchor(el, num) {
+      const text = getText(el);
+      return text === String(num);
+    }
+    const numericTarget = all.find((el) => isNumberAnchor(el, target));
+    if (numericTarget) {
+      numericTarget.scrollIntoView({ block: 'center' });
+      numericTarget.click();
+      return `numeric:${target}`;
+    }
+    const nextArrow = all.find((el) => {
+      const label = (el.getAttribute('aria-label') || '').trim();
+      return /הבא|next/i.test(label);
+    });
+    if (nextArrow && !nextArrow.disabled && nextArrow.getAttribute('aria-disabled') !== 'true') {
+      nextArrow.scrollIntoView({ block: 'center' });
+      nextArrow.click();
+      return 'next-arrow';
+    }
+    return null;
+  }, targetPageNumber);
+
+  let advancedVia = clickResult;
+
+  if (advancedVia) {
+    const changed = await page
+      .waitForFunction(
+        (prevId) => {
+          const a = document.querySelector('a[href*="/realestate/item/"]');
+          return a && a.href !== prevId;
+        },
+        beforeFirstId,
+        { timeout: 8000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+
+    if (!changed) {
+      logger.warn?.(`    pager: page ${targetPageNumber} did not change after click (${clickResult}); will fallback to direct navigation`);
+      advancedVia = null;
+    }
+  }
+
+  if (!advancedVia) {
+    const currentUrl = page.url();
+    const fallbackUrl = (() => {
+      try {
+        const u = new URL(currentUrl);
+        u.searchParams.set('page', String(targetPageNumber));
+        return u.toString();
+      } catch {
+        return null;
+      }
+    })();
+
+    if (!fallbackUrl) {
+      logger.warn?.(`    pager: could not build fallback URL for page ${targetPageNumber}`);
+      return false;
+    }
+
+    try {
+      await page.goto(fallbackUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+      const hasItems = await page
+        .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
+        .then(() => true)
+        .catch(() => false);
+      if (!hasItems) {
+        logger.warn?.(`    pager: fallback ${fallbackUrl} returned no items`);
+        return false;
+      }
+      advancedVia = `direct:${fallbackUrl}`;
+    } catch (error) {
+      logger.warn?.(`    pager: fallback to ${fallbackUrl} failed: ${error.message}`);
+      return false;
+    }
+  }
+
+  logger.info?.(`    pager: advanced to page ${targetPageNumber} via ${advancedVia}`);
+  return true;
 }
 
 const DISTRICT_ITEM_URL_RE = /\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i;
