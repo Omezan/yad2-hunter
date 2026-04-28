@@ -237,7 +237,7 @@ function buildHealthCheckMessages({ rows, allMatch, generatedAt }) {
 }
 
 function formatHealthCheckSummary({ rows, allMatch, generatedAt }) {
-  const headerLabel = '🩺 בדיקה יומית של Yad2 Hunter';
+  const headerLabel = '🩺 Yad2 Hunter — בדיקת תקינות';
   const statusLine = allMatch
     ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
     : '⚠️ נמצאו פערים — Real לא תואם ל-Expected';
@@ -280,7 +280,15 @@ function formatHealthCheckSummary({ rows, allMatch, generatedAt }) {
   const timestamp = generatedAt
     ? new Date(generatedAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
     : null;
-  const footer = timestamp ? `\nנבדק: ${timestamp}` : '';
+  const footerLines = [];
+  if (timestamp) {
+    footerLines.push(`נבדק: ${timestamp}`);
+  }
+  const dashboard = (env.DASHBOARD_URL || '').trim();
+  if (dashboard) {
+    footerLines.push(`לוח בקרה: ${dashboard}`);
+  }
+  const footer = footerLines.length ? `\n${footerLines.join('\n')}` : '';
 
   return `${headerLabel}\n${statusLine}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\`${footer}`;
 }
