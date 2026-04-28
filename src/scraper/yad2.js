@@ -73,19 +73,13 @@ function dedupeByExternalId(ads) {
   return Array.from(deduped.values());
 }
 
-function buildPageUrl(baseUrl, pageNumber) {
-  if (pageNumber <= 1) return baseUrl;
-  const url = new URL(baseUrl);
-  url.searchParams.set('page', String(pageNumber));
-  return url.toString();
-}
-
-async function autoScrollToLoadAll(page, { maxPasses = 25, idlePassLimit = 2 } = {}) {
+async function autoScrollToLoadAll(page, { maxPasses = 80, idlePassLimit = 4 } = {}) {
   let lastCount = 0;
   let idlePasses = 0;
 
   for (let pass = 0; pass < maxPasses; pass += 1) {
     const count = await page.evaluate(() => {
+      window.scrollBy(0, Math.max(window.innerHeight - 50, 600));
       window.scrollTo(0, document.body.scrollHeight);
       return document.querySelectorAll('a[href*="/realestate/item/"]').length;
     });
@@ -100,7 +94,7 @@ async function autoScrollToLoadAll(page, { maxPasses = 25, idlePassLimit = 2 } =
       lastCount = count;
     }
 
-    await page.waitForTimeout(450);
+    await page.waitForTimeout(700);
   }
 }
 
@@ -181,74 +175,36 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
   return [];
 }
 
-async function scrapeSearch(page, search, timeoutMs, { maxPages = 6, logger = console } = {}) {
+async function scrapeSearch(page, search, timeoutMs, { logger = console } = {}) {
+  const rawAds = await scrapeSearchPage(page, search.url, timeoutMs, { logger });
+
   const collected = new Map();
-  let firstPageFirstId = null;
-  let consecutiveEmptyOrDuplicate = 0;
+  for (const entry of rawAds) {
+    if (!entry.href || !/\/realestate\/item\//i.test(entry.href)) continue;
+    const normalizedLink = normalizeItemUrl(entry.href);
+    const externalId = extractExternalId(normalizedLink);
+    if (!externalId || collected.has(externalId)) continue;
 
-  for (let pageNumber = 1; pageNumber <= maxPages; pageNumber += 1) {
-    const url = buildPageUrl(search.url, pageNumber);
-    const rawAds = await scrapeSearchPage(page, url, timeoutMs, { logger });
-
-    const candidates = rawAds
-      .filter((entry) => entry.href && /\/realestate\/item\//i.test(entry.href))
-      .map((entry) => {
-        const normalizedLink = normalizeItemUrl(entry.href);
-        return {
-          ...entry,
-          normalizedLink,
-          externalId: extractExternalId(normalizedLink)
-        };
-      })
-      .filter((entry) => entry.externalId);
-
-    if (pageNumber === 1) {
-      firstPageFirstId = candidates[0]?.externalId || null;
-    } else if (firstPageFirstId && candidates[0]?.externalId === firstPageFirstId) {
-      logger.info?.(`  ${search.id} page ${pageNumber}: same as page 1, stopping`);
-      break;
-    }
-
-    logger.info?.(`  ${search.id} page ${pageNumber}: anchors=${candidates.length}`);
-
-    if (!candidates.length) {
-      break;
-    }
-
-    const sizeBefore = collected.size;
-
-    for (const entry of candidates) {
-      if (collected.has(entry.externalId)) continue;
-      const rawText = String(entry.containerText || entry.text || '').trim();
-      collected.set(entry.externalId, {
-        externalId: entry.externalId,
-        title: extractTitle(rawText),
-        link: entry.normalizedLink,
-        rawText,
-        locationText: extractLocation(rawText),
-        districtKey: search.districtKey,
-        districtLabel: search.districtLabel,
-        searchId: search.id,
-        searchLabel: search.label,
-        sourceUrl: search.url,
-        settlementsOnly: Boolean(search.settlementsOnly),
-        price: parsePrice(rawText),
-        rooms: parseRooms(rawText),
-        scrapedAt: new Date().toISOString()
-      });
-    }
-
-    const newOnThisPage = collected.size - sizeBefore;
-    if (newOnThisPage === 0) {
-      consecutiveEmptyOrDuplicate += 1;
-      if (consecutiveEmptyOrDuplicate >= 1) {
-        break;
-      }
-    } else {
-      consecutiveEmptyOrDuplicate = 0;
-    }
+    const rawText = String(entry.containerText || entry.text || '').trim();
+    collected.set(externalId, {
+      externalId,
+      title: extractTitle(rawText),
+      link: normalizedLink,
+      rawText,
+      locationText: extractLocation(rawText),
+      districtKey: search.districtKey,
+      districtLabel: search.districtLabel,
+      searchId: search.id,
+      searchLabel: search.label,
+      sourceUrl: search.url,
+      settlementsOnly: Boolean(search.settlementsOnly),
+      price: parsePrice(rawText),
+      rooms: parseRooms(rawText),
+      scrapedAt: new Date().toISOString()
+    });
   }
 
+  logger.info?.(`  ${search.id}: anchors=${rawAds.length}, unique=${collected.size}`);
   return Array.from(collected.values());
 }
 
@@ -309,6 +265,28 @@ async function fetchListingDetails(page, url, timeoutMs) {
       return '';
     }
 
+    function findPublishedText() {
+      const labelMatchers = [
+        '[data-testid*="updated"]',
+        '[data-testid*="published"]',
+        '[class*="updated"]',
+        '[class*="published"]',
+        '[class*="report-info"]'
+      ];
+      for (const selector of labelMatchers) {
+        const el = document.querySelector(selector);
+        if (el) {
+          const text = (el.innerText || el.textContent || '').trim();
+          if (/פורסם/.test(text) || /\d{1,2}\/\d{1,2}\/\d{2,4}/.test(text)) {
+            return text;
+          }
+        }
+      }
+      const all = (document.body && document.body.innerText) || '';
+      const match = all.match(/פורסם\s+ב[^\n]*\d{1,2}\/\d{1,2}\/\d{2,4}/);
+      return match ? match[0].trim() : '';
+    }
+
     const titleHeading = textOf('h1') || textOf('h2');
     const subTitle =
       textOf('[class*="property-type"]') ||
@@ -324,6 +302,7 @@ async function fetchListingDetails(page, url, timeoutMs) {
       subTitle,
       addressText: findAddressText(),
       descriptionText: findDescriptionText(),
+      publishedText: findPublishedText(),
       allText
     };
   });
@@ -346,6 +325,8 @@ async function fetchListingDetails(page, url, timeoutMs) {
   const city = (data.titleHeading || '').split('\n')[0].trim() || null;
   const descriptionText = String(data.descriptionText || '').replace(/[\u200e\u200f]/g, '');
   const addressText = String(data.addressText || '').replace(/[\u200e\u200f]/g, '');
+  const publishedText = String(data.publishedText || '').replace(/[\u200e\u200f]/g, '');
+  const publishedAt = parsePublishedDate(publishedText) || parsePublishedDate(cleanText);
 
   return {
     url,
@@ -354,10 +335,29 @@ async function fetchListingDetails(page, url, timeoutMs) {
     city,
     addressText,
     descriptionText,
+    publishedText,
+    publishedAt,
     rooms: Number.isFinite(rooms) ? rooms : null,
     price,
     hasExplicitPrice: !noPriceHint && price !== null
   };
+}
+
+function parsePublishedDate(text) {
+  if (!text) return null;
+  const match = String(text).match(/(\d{1,2})\/(\d{1,2})\/(\d{2,4})/);
+  if (!match) return null;
+
+  const day = Number.parseInt(match[1], 10);
+  const month = Number.parseInt(match[2], 10);
+  let year = Number.parseInt(match[3], 10);
+  if (year < 100) year += 2000;
+
+  if (!day || !month || !year || day > 31 || month > 12) return null;
+
+  const iso = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+  if (Number.isNaN(iso.getTime())) return null;
+  return iso.toISOString().slice(0, 10);
 }
 
 function guessPropertyType(text) {
@@ -498,6 +498,8 @@ async function enrichAdsWithDetails({
           propertyType: details.propertyType,
           addressText: details.addressText,
           descriptionText: details.descriptionText,
+          publishedText: details.publishedText,
+          publishedAt: details.publishedAt,
           rawText: '',
           rooms: details.rooms ?? ad.rooms,
           price: details.price ?? ad.price,
@@ -526,5 +528,6 @@ module.exports = {
   extractExternalId,
   fetchListingDetails,
   normalizeItemUrl,
+  parsePublishedDate,
   scrapeAllSearches
 };

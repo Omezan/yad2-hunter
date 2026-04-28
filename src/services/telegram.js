@@ -22,9 +22,20 @@ function formatRooms(rooms) {
   return `${display} חדרים`;
 }
 
+function formatPublished(ad) {
+  if (!ad.publishedAt) return null;
+  const [year, month, day] = ad.publishedAt.split('-');
+  if (!year || !month || !day) return null;
+  return `פורסם ${day}/${month}/${year.slice(-2)}`;
+}
+
 function formatAdLine(ad, index) {
   const heading = truncateTitle(ad.title || 'מודעה');
-  const facts = [formatRooms(ad.rooms), formatPrice(ad.price, ad.hasExplicitPrice)]
+  const facts = [
+    formatRooms(ad.rooms),
+    formatPrice(ad.price, ad.hasExplicitPrice),
+    formatPublished(ad)
+  ]
     .filter(Boolean)
     .join(' · ');
   const factsLine = facts ? `\n${facts}` : '';

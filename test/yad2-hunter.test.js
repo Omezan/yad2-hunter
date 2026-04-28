@@ -7,7 +7,11 @@ const {
   isRelevant
 } = require('../src/services/relevance');
 const { formatDigestMessage, formatDigestMessages } = require('../src/services/telegram');
-const { extractExternalId, normalizeItemUrl } = require('../src/scraper/yad2');
+const {
+  extractExternalId,
+  normalizeItemUrl,
+  parsePublishedDate
+} = require('../src/scraper/yad2');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -177,6 +181,29 @@ test('formatDigestMessage includes title, rooms, price, and link', () => {
   assert.match(message, /בית פרטי, לוטם/);
   assert.match(message, /5\.5 חדרים/);
   assert.match(message, /6,100 ₪/);
+});
+
+test('parsePublishedDate parses Yad2 פורסם dates', () => {
+  assert.equal(parsePublishedDate('פורסם ב 16/04/26'), '2026-04-16');
+  assert.equal(parsePublishedDate('עודכן ב 1/3/2026'), '2026-03-01');
+  assert.equal(parsePublishedDate('no date here'), null);
+  assert.equal(parsePublishedDate(''), null);
+});
+
+test('formatDigestMessage includes publishedAt when present', () => {
+  const message = formatDigestMessage({
+    newAds: [
+      {
+        title: 'דירה, בת חפר',
+        link: 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc1',
+        rooms: 6,
+        price: 7000,
+        hasExplicitPrice: true,
+        publishedAt: '2026-04-16'
+      }
+    ]
+  });
+  assert.match(message, /פורסם 16\/04\/26/);
 });
 
 test('formatDigestMessage shows מחיר לא מצוין for ads with no explicit price', () => {
