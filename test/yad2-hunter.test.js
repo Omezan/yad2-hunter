@@ -432,3 +432,116 @@ test('removeDeletedAds still cleans up the genuinely missing single ad', () => {
   assert.equal(removed[0].externalId, 'id0');
   assert.equal(skippedDistricts.length, 0);
 });
+
+const { mergeSeenAds, mergeRuns } = require('../scripts/merge-state');
+
+test('mergeSeenAds: local-only and remote-only keys are both kept', () => {
+  const local = {
+    ads: {
+      A: { externalId: 'A', firstSeenAt: '2026-04-29T10:00:00Z', lastSeenAt: '2026-04-29T11:00:00Z' }
+    }
+  };
+  const remote = {
+    ads: {
+      B: { externalId: 'B', firstSeenAt: '2026-04-29T09:00:00Z', lastSeenAt: '2026-04-29T09:30:00Z' }
+    }
+  };
+  const merged = mergeSeenAds(local, remote);
+  assert.equal(Object.keys(merged.ads).length, 2);
+  assert.ok(merged.ads.A);
+  assert.ok(merged.ads.B);
+});
+
+test('mergeSeenAds: shared keys keep earliest firstSeenAt and latest lastSeenAt', () => {
+  const local = {
+    ads: {
+      A: {
+        externalId: 'A',
+        title: 'newer enrichment',
+        firstSeenAt: '2026-04-29T12:00:00Z',
+        lastSeenAt: '2026-04-29T18:00:00Z',
+        rooms: 4
+      }
+    }
+  };
+  const remote = {
+    ads: {
+      A: {
+        externalId: 'A',
+        title: 'older enrichment',
+        firstSeenAt: '2026-04-28T08:00:00Z',
+        lastSeenAt: '2026-04-29T15:00:00Z'
+      }
+    }
+  };
+  const merged = mergeSeenAds(local, remote);
+  assert.equal(merged.ads.A.firstSeenAt, '2026-04-28T08:00:00Z');
+  assert.equal(merged.ads.A.lastSeenAt, '2026-04-29T18:00:00Z');
+  assert.equal(merged.ads.A.title, 'newer enrichment');
+  assert.equal(merged.ads.A.rooms, 4);
+});
+
+test('mergeSeenAds: regression — a manual run that just added an ad does not get wiped by a stale remote', () => {
+  const matanFromManual = {
+    externalId: 'center-and-sharon/MATAN1',
+    title: 'דירה, מתן',
+    city: 'מתן',
+    searchId: 'center-sharon',
+    firstSeenAt: '2026-04-29T22:00:00Z',
+    lastSeenAt: '2026-04-29T22:00:00Z'
+  };
+  const local = {
+    ads: {
+      'center-and-sharon/MATAN1': matanFromManual,
+      'shared-key': { externalId: 'shared-key', searchId: 'jerusalem' }
+    }
+  };
+  const remoteThatDoesNotKnowAboutMatan = {
+    ads: {
+      'shared-key': { externalId: 'shared-key', searchId: 'jerusalem' },
+      'concurrent-add': { externalId: 'concurrent-add', searchId: 'north-valleys' }
+    }
+  };
+  const merged = mergeSeenAds(local, remoteThatDoesNotKnowAboutMatan);
+  assert.ok(merged.ads['center-and-sharon/MATAN1'], 'מתן must survive the merge');
+  assert.ok(merged.ads['concurrent-add'], 'concurrent-add must survive the merge');
+  assert.ok(merged.ads['shared-key'], 'shared key must survive the merge');
+});
+
+test('mergeRuns: dedupes by startedAt, sorts newest first, caps to history limit', () => {
+  const local = {
+    runs: [
+      { startedAt: '2026-04-29T22:00:00Z', trigger: 'manual-dashboard' },
+      { startedAt: '2026-04-29T21:00:00Z', trigger: 'github-actions-loop' }
+    ]
+  };
+  const remote = {
+    runs: [
+      { startedAt: '2026-04-29T21:30:00Z', trigger: 'github-actions-loop' },
+      { startedAt: '2026-04-29T21:00:00Z', trigger: 'github-actions-loop' }
+    ]
+  };
+  const merged = mergeRuns(local, remote);
+  assert.equal(merged.runs.length, 3);
+  assert.equal(merged.runs[0].startedAt, '2026-04-29T22:00:00Z');
+  assert.equal(merged.runs[0].trigger, 'manual-dashboard');
+  assert.equal(merged.runs[1].startedAt, '2026-04-29T21:30:00Z');
+  assert.equal(merged.runs[2].startedAt, '2026-04-29T21:00:00Z');
+});
+
+test('mergeRuns: caps merged log at the configured history limit', () => {
+  const local = {
+    runs: Array.from({ length: 30 }, (_, i) => ({
+      startedAt: new Date(Date.UTC(2026, 3, 29, i, 0, 0)).toISOString(),
+      trigger: 'github-actions-loop'
+    }))
+  };
+  const remote = {
+    runs: Array.from({ length: 60 }, (_, i) => ({
+      startedAt: new Date(Date.UTC(2026, 3, 28, Math.floor(i / 2), (i % 2) * 30, 0)).toISOString(),
+      trigger: 'github-actions-loop'
+    }))
+  };
+  const merged = mergeRuns(local, remote);
+  assert.equal(merged.runs.length, 50, 'merged log should be capped at HISTORY_LIMIT (50)');
+});
