@@ -34,6 +34,11 @@ cd "$WORK_DIR"
 # Drop a Vercel guard onto the state branch so Vercel does not try to deploy
 # pushes to this branch (it has no app code, only JSON state). Without this
 # file Vercel keeps queuing failing builds on every state-branch push.
+#
+# We use ignoreCommand because Vercel reads vercel.json from the branch
+# being deployed. Returning exit 0 from this script tells Vercel to skip
+# the build, which marks the deploy as "Ignored" instead of "Error" and
+# avoids failure emails.
 cat > vercel.json <<'JSON'
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
@@ -41,7 +46,8 @@ cat > vercel.json <<'JSON'
     "deploymentEnabled": {
       "state": false
     }
-  }
+  },
+  "ignoreCommand": "exit 0"
 }
 JSON
 
