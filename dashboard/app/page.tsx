@@ -369,7 +369,17 @@ export default function DashboardPage() {
             </button>
           ) : null}
         </div>
-        {!loading && !error ? (
+      </header>
+
+      {banner ? <div className={`notice notice-${banner.tone}`}>{banner.text}</div> : null}
+
+      {loading ? <div className="notice notice-loading">טוען נתונים…</div> : null}
+      {error ? (
+        <div className="notice notice-error">שגיאה בטעינת הנתונים: {error}</div>
+      ) : null}
+
+      {!loading && !error ? (
+        <>
           <FilterBar
             freshness={freshness}
             onFreshnessChange={setFreshness}
@@ -383,18 +393,7 @@ export default function DashboardPage() {
             onClearDistricts={() => setSelectedDistricts(new Set())}
             hasFreshAds={freshAds.length > 0}
           />
-        ) : null}
-      </header>
 
-      {banner ? <div className={`notice notice-${banner.tone}`}>{banner.text}</div> : null}
-
-      {loading ? <div className="notice notice-loading">טוען נתונים…</div> : null}
-      {error ? (
-        <div className="notice notice-error">שגיאה בטעינת הנתונים: {error}</div>
-      ) : null}
-
-      {!loading && !error ? (
-        <>
           <div className="results-count">{filteredAds.length} תוצאות</div>
 
           {filteredAds.length === 0 ? (
