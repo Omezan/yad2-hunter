@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const WORKFLOW_FILE = 'health-check.yml';
+const WORKFLOW_FILE = 'scan-once.yml';
 
 export async function POST() {
   const repo = process.env.GITHUB_REPO;
@@ -34,7 +34,7 @@ export async function POST() {
     return NextResponse.json({
       ok: true,
       dispatchedAt,
-      message: 'הבדיקה הופעלה. תוצאות יופיעו תוך כ-3 דקות.'
+      message: 'הסריקה הופעלה. תוצאות יופיעו תוך כ-3 דקות.'
     });
   }
 

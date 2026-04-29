@@ -12,14 +12,16 @@ function formatRooms(rooms: number | null): string | null {
   return `${display} חדרים`;
 }
 
-function formatPrice(price: number | null): string {
-  if (typeof price !== 'number') return 'מחיר לא מצוין';
-  return `${price.toLocaleString('he-IL')} ₪`;
+function formatPriceHeadline(price: number | null): { value: string; muted: boolean } {
+  if (typeof price !== 'number') return { value: 'מחיר לא מצוין', muted: true };
+  return { value: `${price.toLocaleString('he-IL')} ₪`, muted: false };
 }
 
 export default function AdCard({ ad, isNew }: Props) {
-  const facts = [formatRooms(ad.rooms), formatPrice(ad.price)].filter(Boolean) as string[];
+  const price = formatPriceHeadline(ad.price);
+  const rooms = formatRooms(ad.rooms);
   const firstSeen = formatHebrewDateTime(ad.firstSeenAt);
+  const subtitle = ad.title || 'מודעה';
 
   return (
     <a
@@ -27,24 +29,30 @@ export default function AdCard({ ad, isNew }: Props) {
       target="_blank"
       rel="noopener noreferrer"
       className={`card ${isNew ? 'is-new' : ''}`}
+      aria-label={`${subtitle}${ad.city ? `, ${ad.city}` : ''}, ${price.value}`}
     >
-      {isNew ? <span className="new-tag">חדש</span> : null}
-      <div className="title">{ad.title || 'מודעה'}</div>
-      {ad.city ? <div className="facts"><span>{ad.city}</span></div> : null}
-      {facts.length ? (
-        <div className="facts">
-          {facts.map((fact, i) => (
-            <span key={i}>{fact}</span>
-          ))}
-        </div>
+      {isNew ? (
+        <span className="card-ribbon" aria-label="חדש">
+          חדש
+        </span>
       ) : null}
-      <div className="footer">
+
+      <div className="card-headline">
+        <span className={`card-price ${price.muted ? 'is-muted' : ''}`}>{price.value}</span>
+        {rooms ? <span className="card-rooms">{rooms}</span> : null}
+      </div>
+
+      <div className="card-subtitle">{subtitle}</div>
+
+      {ad.city ? <div className="card-city">{ad.city}</div> : null}
+
+      <div className="card-footer">
         {ad.districtLabel ? (
-          <span className="district-tag">{ad.districtLabel}</span>
+          <span className="card-chip">{ad.districtLabel}</span>
         ) : (
           <span />
         )}
-        {firstSeen ? <span>נקלט {firstSeen}</span> : null}
+        {firstSeen ? <span className="card-meta">נקלט {firstSeen}</span> : null}
       </div>
     </a>
   );

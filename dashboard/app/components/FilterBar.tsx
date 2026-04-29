@@ -38,57 +38,86 @@ export default function FilterBar({
 }: Props) {
   return (
     <div className="filter-bar">
-      <label>
-        טריות
-        <select
-          value={freshness}
-          onChange={(e) => onFreshnessChange(e.target.value as FreshnessFilter)}
-        >
-          <option value="all">הכל</option>
-          <option value="new" disabled={!hasFreshAds}>
-            חדשות בלבד {hasFreshAds ? '' : '(אין)'}
-          </option>
-        </select>
-      </label>
+      <div className="filter-row">
+        <div className="filter-field" role="group" aria-label="טריות">
+          <span className="filter-label">טריות</span>
+          <div className="segmented" role="tablist">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={freshness === 'all'}
+              className={`segmented-option ${freshness === 'all' ? 'is-active' : ''}`}
+              onClick={() => onFreshnessChange('all')}
+            >
+              הכל
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={freshness === 'new'}
+              disabled={!hasFreshAds}
+              className={`segmented-option ${freshness === 'new' ? 'is-active' : ''}`}
+              onClick={() => onFreshnessChange('new')}
+            >
+              חדשות {hasFreshAds ? '' : '(אין)'}
+            </button>
+          </div>
+        </div>
 
-      <label>
-        חיפוש
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="כותרת או עיר"
-        />
-      </label>
+        <div className="filter-field filter-search">
+          <label className="filter-label" htmlFor="filter-search">
+            חיפוש
+          </label>
+          <input
+            id="filter-search"
+            type="search"
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="כותרת או עיר"
+          />
+        </div>
 
-      <label>
-        מיון
-        <select value={sort} onChange={(e) => onSortChange(e.target.value as SortKey)}>
-          <option value="firstSeenDesc">חדשות יותר קודם</option>
-          <option value="priceAsc">מחיר: זול לקר</option>
-          <option value="roomsDesc">חדרים: הרבה לקצת</option>
-        </select>
-      </label>
+        <div className="filter-field">
+          <label className="filter-label" htmlFor="filter-sort">
+            מיון
+          </label>
+          <select
+            id="filter-sort"
+            value={sort}
+            onChange={(e) => onSortChange(e.target.value as SortKey)}
+          >
+            <option value="firstSeenDesc">חדשות יותר קודם</option>
+            <option value="priceAsc">מחיר: זול ליקר</option>
+            <option value="roomsDesc">חדרים: הרבה לקצת</option>
+          </select>
+        </div>
+      </div>
 
-      <div className="district-chips">
-        <span className="label">מחוז</span>
+      <div className="filter-chips" role="group" aria-label="מחוז">
+        <span className="filter-label">מחוז</span>
         <button
           type="button"
-          className={`chip ${selectedDistricts.size === 0 ? 'active' : ''}`}
+          className={`pill ${selectedDistricts.size === 0 ? 'is-active' : ''}`}
           onClick={onClearDistricts}
+          aria-pressed={selectedDistricts.size === 0}
         >
           הכל
         </button>
-        {districtOptions.map((option) => (
-          <button
-            type="button"
-            key={option.value}
-            className={`chip ${selectedDistricts.has(option.value) ? 'active' : ''}`}
-            onClick={() => onToggleDistrict(option.value)}
-          >
-            {option.label} ({option.count})
-          </button>
-        ))}
+        {districtOptions.map((option) => {
+          const active = selectedDistricts.has(option.value);
+          return (
+            <button
+              type="button"
+              key={option.value}
+              className={`pill ${active ? 'is-active' : ''}`}
+              aria-pressed={active}
+              onClick={() => onToggleDistrict(option.value)}
+            >
+              <span>{option.label}</span>
+              <span className="pill-count">{option.count}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

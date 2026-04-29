@@ -1,11 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import AdCard from './components/AdCard';
 import FilterBar, {
   type FreshnessFilter,
   type SortKey
 } from './components/FilterBar';
+import HealthCheckResultModal from './components/HealthCheckResultModal';
+import ScanResultModal from './components/ScanResultModal';
+import { useCompletionWatcher } from './hooks/useCompletionWatcher';
+import { useTriggerWorkflow } from './hooks/useTriggerWorkflow';
 import {
   formatHebrewDateTime,
   isAdFresh,
@@ -13,13 +17,28 @@ import {
   readLastVisitAt,
   writeLastVisitAt
 } from './lib/freshness';
-import type { AdRow, StateResponse } from './lib/types';
+import type { AdRow, LastRun, StateResponse } from './lib/types';
 
 function getQueryParam(name: string): string | null {
   if (typeof window === 'undefined') return null;
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
 }
+
+type ScanResult = {
+  open: boolean;
+  newAds: AdRow[];
+  dispatchedAt: string | null;
+  completedAt: string | null;
+  /** Snapshot of effectiveSince at dispatch time, so "פתח בדאשבורד" matches the modal. */
+  since: string | null;
+};
+
+type HealthResult = {
+  open: boolean;
+  dispatchedAt: string | null;
+  completedAt: string | null;
+};
 
 export default function DashboardPage() {
   const [data, setData] = useState<StateResponse | null>(null);
@@ -33,18 +52,25 @@ export default function DashboardPage() {
   const [lastVisitAt, setLastVisitAt] = useState<string | null>(null);
   const [freshness, setFreshness] = useState<FreshnessFilter>('all');
 
-  const [healthCheckStatus, setHealthCheckStatus] = useState<
-    'idle' | 'pending' | 'success' | 'error'
-  >('idle');
-  const [healthCheckMessage, setHealthCheckMessage] = useState<string | null>(null);
-  const [healthCheckCooldownUntil, setHealthCheckCooldownUntil] = useState<number>(0);
-  const [now, setNow] = useState<number>(() => Date.now());
+  // Pending dispatches (used by the completion watchers).
+  const [scanDispatch, setScanDispatch] = useState<{ at: string; since: string | null } | null>(
+    null
+  );
+  const [healthDispatch, setHealthDispatch] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (healthCheckCooldownUntil <= now) return;
-    const id = window.setInterval(() => setNow(Date.now()), 1000);
-    return () => window.clearInterval(id);
-  }, [healthCheckCooldownUntil, now]);
+  // Modal results.
+  const [scanResult, setScanResult] = useState<ScanResult>({
+    open: false,
+    newAds: [],
+    dispatchedAt: null,
+    completedAt: null,
+    since: null
+  });
+  const [healthResult, setHealthResult] = useState<HealthResult>({
+    open: false,
+    dispatchedAt: null,
+    completedAt: null
+  });
 
   useEffect(() => {
     setSearchParamSince(getQueryParam('since'));
@@ -144,7 +170,7 @@ export default function DashboardPage() {
     return result;
   }, [ads, freshness, effectiveSince, selectedDistricts, search, sort]);
 
-  const handleToggleDistrict = (value: string) => {
+  const handleToggleDistrict = useCallback((value: string) => {
     setSelectedDistricts((prev) => {
       const next = new Set(prev);
       if (next.has(value)) {
@@ -154,36 +180,9 @@ export default function DashboardPage() {
       }
       return next;
     });
-  };
+  }, []);
 
-  const handleTriggerHealthCheck = async () => {
-    if (healthCheckStatus === 'pending') return;
-    if (healthCheckCooldownUntil > Date.now()) return;
-
-    setHealthCheckStatus('pending');
-    setHealthCheckMessage('מפעיל בדיקה…');
-    try {
-      const res = await fetch('/api/trigger/health-check', { method: 'POST' });
-      const json = (await res.json().catch(() => ({}))) as {
-        ok?: boolean;
-        message?: string;
-        error?: string;
-      };
-      if (res.ok && json.ok) {
-        setHealthCheckStatus('success');
-        setHealthCheckMessage(json.message || 'הופעל. הודעת Telegram תוך כ-3 דקות.');
-        setHealthCheckCooldownUntil(Date.now() + 60_000);
-      } else {
-        setHealthCheckStatus('error');
-        setHealthCheckMessage(json.error || `שגיאה (${res.status})`);
-      }
-    } catch (err) {
-      setHealthCheckStatus('error');
-      setHealthCheckMessage(err instanceof Error ? err.message : String(err));
-    }
-  };
-
-  const handleMarkAllRead = () => {
+  const handleMarkAllRead = useCallback(() => {
     const now = new Date().toISOString();
     writeLastVisitAt(now);
     setLastVisitAt(now);
@@ -194,40 +193,172 @@ export default function DashboardPage() {
       window.history.replaceState({}, '', url.toString());
     }
     setFreshness('all');
-  };
+  }, []);
+
+  const onScanDispatched = useCallback(
+    (dispatchedAt: string) => {
+      setScanDispatch({ at: dispatchedAt, since: effectiveSince });
+    },
+    [effectiveSince]
+  );
+
+  const onHealthDispatched = useCallback((dispatchedAt: string) => {
+    setHealthDispatch(dispatchedAt);
+  }, []);
+
+  const scanTrigger = useTriggerWorkflow({
+    endpoint: '/api/trigger/scan',
+    onDispatched: onScanDispatched
+  });
+  const healthTrigger = useTriggerWorkflow({
+    endpoint: '/api/trigger/health-check',
+    onDispatched: onHealthDispatched
+  });
+
+  const onScanComplete = useCallback(
+    ({ state, lastRun }: { state: StateResponse; lastRun: NonNullable<LastRun> }) => {
+      const dispatch = scanDispatch;
+      setScanDispatch(null);
+      setData(state);
+      const dispatchedAt = dispatch?.at || null;
+      const since = dispatch?.since ?? null;
+      const dispatchedMs = dispatchedAt ? Date.parse(dispatchedAt) : NaN;
+      // Pick ads whose firstSeenAt advanced after the user clicked "הרץ סריקה",
+      // falling back to whatever was already considered "fresh" if dispatch parse fails.
+      const newAds = state.ads.filter((ad) => {
+        const t = Date.parse(ad.firstSeenAt);
+        if (Number.isNaN(t)) return false;
+        if (!Number.isNaN(dispatchedMs) && t >= dispatchedMs) return true;
+        return isAdFresh(ad.firstSeenAt, since);
+      });
+      newAds.sort((a, b) => {
+        const at = Date.parse(a.firstSeenAt) || 0;
+        const bt = Date.parse(b.firstSeenAt) || 0;
+        return bt - at;
+      });
+      setScanResult({
+        open: true,
+        newAds,
+        dispatchedAt,
+        completedAt: lastRun.completedAt || lastRun.startedAt,
+        since
+      });
+    },
+    [scanDispatch]
+  );
+
+  useCompletionWatcher({
+    dispatchedAt: scanDispatch?.at ?? null,
+    onComplete: onScanComplete,
+    onSnapshot: (snapshot) => setData(snapshot)
+  });
+
+  const onHealthComplete = useCallback(
+    ({ state, lastRun }: { state: StateResponse; lastRun: NonNullable<LastRun> }) => {
+      setHealthDispatch(null);
+      setData(state);
+      setHealthResult({
+        open: true,
+        dispatchedAt: healthDispatch,
+        completedAt: lastRun.completedAt || lastRun.startedAt
+      });
+    },
+    [healthDispatch]
+  );
+
+  useCompletionWatcher({
+    dispatchedAt: healthDispatch,
+    onComplete: onHealthComplete,
+    onSnapshot: (snapshot) => setData(snapshot)
+  });
+
+  const handleShowScanInDashboard = useCallback(() => {
+    const since = scanResult.since ?? scanResult.dispatchedAt;
+    if (since) {
+      setSearchParamSince(since);
+      if (typeof window !== 'undefined') {
+        const url = new URL(window.location.href);
+        url.searchParams.set('since', since);
+        window.history.replaceState({}, '', url.toString());
+      }
+    }
+    setSelectedDistricts(new Set());
+    setSearch('');
+    setFreshness('new');
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [scanResult.dispatchedAt, scanResult.since]);
 
   const sinceLabel = formatHebrewDateTime(effectiveSince);
   const totalCount = ads.length;
   const generatedAt = data?.generatedAt ? formatHebrewDateTime(data.generatedAt) : null;
-  const cooldownSecondsLeft = Math.max(
-    0,
-    Math.ceil((healthCheckCooldownUntil - now) / 1000)
-  );
-  const healthButtonDisabled =
-    healthCheckStatus === 'pending' || cooldownSecondsLeft > 0;
+
+  const scanButtonLabel = (() => {
+    if (scanTrigger.status === 'pending') return 'מפעיל…';
+    if (scanDispatch) return 'סורק…';
+    if (scanTrigger.cooldownSecondsLeft > 0) return `המתן ${scanTrigger.cooldownSecondsLeft}s`;
+    return 'הרץ סריקה';
+  })();
   const healthButtonLabel = (() => {
-    if (healthCheckStatus === 'pending') return 'מפעיל…';
-    if (cooldownSecondsLeft > 0) return `המתן ${cooldownSecondsLeft}s`;
-    return 'הפעל בדיקה';
+    if (healthTrigger.status === 'pending') return 'מפעיל…';
+    if (healthDispatch) return 'בודק…';
+    if (healthTrigger.cooldownSecondsLeft > 0) return `המתן ${healthTrigger.cooldownSecondsLeft}s`;
+    return 'ודא אמינות';
+  })();
+
+  const banner = (() => {
+    if (scanTrigger.status === 'error' && scanTrigger.message) {
+      return { tone: 'error' as const, text: `סריקה: ${scanTrigger.message}` };
+    }
+    if (healthTrigger.status === 'error' && healthTrigger.message) {
+      return { tone: 'error' as const, text: `בדיקה: ${healthTrigger.message}` };
+    }
+    if (scanDispatch) {
+      return { tone: 'info' as const, text: 'הסריקה רצה ברקע. נודיע לך כשתסתיים…' };
+    }
+    if (healthDispatch) {
+      return { tone: 'info' as const, text: 'הבדיקה רצה ברקע. נודיע לך כשתסתיים…' };
+    }
+    if (scanTrigger.status === 'success' && scanTrigger.message) {
+      return { tone: 'success' as const, text: scanTrigger.message };
+    }
+    if (healthTrigger.status === 'success' && healthTrigger.message) {
+      return { tone: 'success' as const, text: healthTrigger.message };
+    }
+    return null;
   })();
 
   return (
     <main className="layout">
       <header className="header">
-        <h1>Yad2 Hunter</h1>
-        {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
-        {freshAds.length > 0 ? (
-          <span className="badge" style={{ background: 'transparent' }}>
-            {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
-          </span>
-        ) : null}
-        <div className="meta">
-          {generatedAt ? <span>עודכן {generatedAt}</span> : null}
+        <div className="header-titles">
+          <h1>Yad2 Hunter</h1>
+          <div className="header-badges">
+            {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
+            {freshAds.length > 0 ? (
+              <span className="badge badge-soft">
+                {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
+              </span>
+            ) : null}
+          </div>
+          {generatedAt ? <span className="header-meta">עודכן {generatedAt}</span> : null}
+        </div>
+        <div className="header-actions">
           <button
             type="button"
-            onClick={handleTriggerHealthCheck}
-            disabled={healthButtonDisabled}
-            title="מפעיל בדיקת תקינות מיידית; הודעת Telegram תגיע תוך כ-3 דקות"
+            className="primary"
+            onClick={scanTrigger.trigger}
+            disabled={scanTrigger.isDisabled || Boolean(scanDispatch)}
+            title="מפעיל סריקה מיידית; תוצאות יופיעו כאן תוך כ-3 דקות"
+          >
+            {scanButtonLabel}
+          </button>
+          <button
+            type="button"
+            onClick={healthTrigger.trigger}
+            disabled={healthTrigger.isDisabled || Boolean(healthDispatch)}
+            title="מפעיל בדיקת תקינות; הודעת Telegram + תוצאות בדאשבורד תוך כ-3 דקות"
           >
             {healthButtonLabel}
           </button>
@@ -239,23 +370,12 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {healthCheckMessage ? (
-        <div
-          className={
-            healthCheckStatus === 'error'
-              ? 'error'
-              : healthCheckStatus === 'success'
-                ? 'success-banner'
-                : 'loading'
-          }
-          style={{ marginBottom: 12 }}
-        >
-          {healthCheckMessage}
-        </div>
-      ) : null}
+      {banner ? <div className={`notice notice-${banner.tone}`}>{banner.text}</div> : null}
 
-      {loading ? <div className="loading">טוען נתונים…</div> : null}
-      {error ? <div className="error">שגיאה בטעינת הנתונים: {error}</div> : null}
+      {loading ? <div className="notice notice-loading">טוען נתונים…</div> : null}
+      {error ? (
+        <div className="notice notice-error">שגיאה בטעינת הנתונים: {error}</div>
+      ) : null}
 
       {!loading && !error ? (
         <>
@@ -276,7 +396,7 @@ export default function DashboardPage() {
           <div className="results-count">{filteredAds.length} תוצאות</div>
 
           {filteredAds.length === 0 ? (
-            <div className="empty">לא נמצאו מודעות התואמות את הסינון</div>
+            <div className="notice notice-empty">לא נמצאו מודעות התואמות את הסינון</div>
           ) : (
             <div className="grid">
               {filteredAds.map((ad) => (
@@ -290,6 +410,22 @@ export default function DashboardPage() {
           )}
         </>
       ) : null}
+
+      <ScanResultModal
+        open={scanResult.open}
+        onClose={() => setScanResult((prev) => ({ ...prev, open: false }))}
+        newAds={scanResult.newAds}
+        dispatchedAt={scanResult.dispatchedAt}
+        completedAt={scanResult.completedAt}
+        onShowInDashboard={handleShowScanInDashboard}
+      />
+
+      <HealthCheckResultModal
+        open={healthResult.open}
+        onClose={() => setHealthResult((prev) => ({ ...prev, open: false }))}
+        dispatchedAt={healthResult.dispatchedAt}
+        completedAt={healthResult.completedAt}
+      />
     </main>
   );
 }

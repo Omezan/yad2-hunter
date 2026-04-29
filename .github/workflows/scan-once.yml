@@ -1,0 +1,73 @@
+name: Yad2 Scan (Once)
+
+# Single-iteration scan triggered manually (e.g. from the dashboard's
+# "הרץ סריקה" button). Uses a separate concurrency group so it does NOT
+# queue behind the hourly looping `scan` workflow.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: yad2-scan-once
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Restore state from state branch
+        run: |
+          mkdir -p state
+          if git ls-remote --exit-code --heads origin state >/dev/null 2>&1; then
+            git fetch origin state --depth=1
+            git --work-tree=state checkout origin/state -- .
+            echo "Restored state from origin/state"
+          else
+            echo "No state branch yet, starting fresh"
+          fi
+
+      - name: Run single scan
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_NOTIFICATIONS_ENABLED: "true"
+          PLAYWRIGHT_HEADLESS: "true"
+          STATE_DIR: ${{ github.workspace }}/state
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+          # Marks this run as a manual dashboard trigger so the worker
+          # sends a Telegram message even when zero new ads are found.
+          SCAN_TRIGGER_LABEL: manual-dashboard
+        run: npm run scan
+
+      - name: Persist state to state branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATE_DIR: ${{ github.workspace }}/state
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: bash scripts/persist-state.sh
