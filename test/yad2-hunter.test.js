@@ -6,7 +6,11 @@ const {
   getRejection,
   isRelevant
 } = require('../src/services/relevance');
-const { formatDigestMessage, formatDigestMessages } = require('../src/services/telegram');
+const {
+  formatDigestMessage,
+  formatDigestMessages,
+  formatManualScanNoNewAdsMessage
+} = require('../src/services/telegram');
 const {
   extractExternalId,
   normalizeItemUrl,
@@ -256,6 +260,44 @@ test('formatDigestMessages splits long digests into chunks under the Telegram li
   for (let i = 1; i <= 80; i += 1) {
     const found = messages.some((msg) => msg.includes(`/dummy${i}`));
     assert.ok(found, `Ad #${i} missing from digest chunks`);
+  }
+});
+
+test('formatManualScanNoNewAdsMessage announces a finished manual scan with zero results', () => {
+  const message = formatManualScanNoNewAdsMessage({
+    runStartedAt: '2026-04-29T19:30:00.000Z'
+  });
+
+  assert.match(message, /Yad2 Hunter — סריקה ידנית הסתיימה/);
+  assert.match(message, /לא נמצאו מודעות חדשות/);
+});
+
+test('formatManualScanNoNewAdsMessage works without a dashboard URL configured', () => {
+  const envModule = require('../src/config/env');
+  const previous = envModule.env.DASHBOARD_URL;
+  envModule.env.DASHBOARD_URL = '';
+  try {
+    const message = formatManualScanNoNewAdsMessage({
+      runStartedAt: '2026-04-29T19:30:00.000Z'
+    });
+    assert.match(message, /לא נמצאו מודעות חדשות/);
+    assert.doesNotMatch(message, /לוח בקרה:/);
+  } finally {
+    envModule.env.DASHBOARD_URL = previous;
+  }
+});
+
+test('formatManualScanNoNewAdsMessage includes the dashboard link with a since param when configured', () => {
+  const envModule = require('../src/config/env');
+  const previous = envModule.env.DASHBOARD_URL;
+  envModule.env.DASHBOARD_URL = 'https://yad2hunter.example.com';
+  try {
+    const message = formatManualScanNoNewAdsMessage({
+      runStartedAt: '2026-04-29T19:30:00.000Z'
+    });
+    assert.match(message, /לוח בקרה: https:\/\/yad2hunter\.example\.com\?since=/);
+  } finally {
+    envModule.env.DASHBOARD_URL = previous;
   }
 });
 

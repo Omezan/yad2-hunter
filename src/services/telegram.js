@@ -186,6 +186,22 @@ async function sendNewAdsDigest({ newAds, runStartedAt } = {}) {
   };
 }
 
+function formatManualScanNoNewAdsMessage({ runStartedAt } = {}) {
+  const lines = [
+    '🔍 Yad2 Hunter — סריקה ידנית הסתיימה',
+    'לא נמצאו מודעות חדשות מאז ההפעלה.'
+  ];
+  const footer = buildDashboardFooter({ runStartedAt });
+  if (footer) lines.push('', footer);
+  return lines.join('\n');
+}
+
+async function sendManualScanNoNewAdsNotice({ runStartedAt } = {}) {
+  const text = formatManualScanNoNewAdsMessage({ runStartedAt });
+  const result = await sendTelegramMessage({ text, disablePreview: true });
+  return { parts: 1, results: [result] };
+}
+
 function padCell(value, width) {
   const str = String(value);
   const visible = Array.from(str).length;
@@ -381,7 +397,9 @@ module.exports = {
   formatDigestMessages,
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
+  formatManualScanNoNewAdsMessage,
   sendHealthCheckReport,
+  sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
   sendTelegramMessage
 };

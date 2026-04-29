@@ -9,7 +9,12 @@ const {
 } = require('../store/file-store');
 const { enrichAdsWithDetails, scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
-const { sendNewAdsDigest } = require('../services/telegram');
+const {
+  sendManualScanNoNewAdsNotice,
+  sendNewAdsDigest
+} = require('../services/telegram');
+
+const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
 const ENRICH_TIMEOUT_MS = 12000;
 const ENRICH_CONCURRENCY = 4;
@@ -121,6 +126,10 @@ async function runOnce(options = {}) {
         newAds: relevantNewAds,
         runStartedAt: startedAt
       });
+    } else if (MANUAL_TRIGGERS.has(trigger)) {
+      telegramResult = await sendManualScanNoNewAdsNotice({
+        runStartedAt: startedAt
+      });
     }
 
     const runEntry = {
@@ -170,7 +179,8 @@ async function runOnce(options = {}) {
 
 async function main() {
   try {
-    const result = await runOnce({ trigger: 'github-actions' });
+    const trigger = (process.env.SCAN_TRIGGER_LABEL || 'github-actions').trim();
+    const result = await runOnce({ trigger: trigger || 'github-actions' });
     const recentRuns = listRecentRuns(5);
 
     console.log(
