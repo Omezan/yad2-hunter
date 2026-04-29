@@ -21,7 +21,7 @@ export default function AdCard({ ad, isNew }: Props) {
   const price = formatPriceHeadline(ad.price);
   const rooms = formatRooms(ad.rooms);
   const firstSeen = formatHebrewDateTime(ad.firstSeenAt);
-  const subtitle = ad.title || 'מודעה';
+  const headline = ad.city || ad.title || 'מודעה';
 
   return (
     <a
@@ -29,7 +29,7 @@ export default function AdCard({ ad, isNew }: Props) {
       target="_blank"
       rel="noopener noreferrer"
       className={`card ${isNew ? 'is-new' : ''}`}
-      aria-label={`${subtitle}${ad.city ? `, ${ad.city}` : ''}, ${price.value}`}
+      aria-label={`${headline}, ${price.value}${rooms ? `, ${rooms}` : ''}`}
     >
       {isNew ? (
         <span className="card-ribbon" aria-label="חדש">
@@ -37,14 +37,12 @@ export default function AdCard({ ad, isNew }: Props) {
         </span>
       ) : null}
 
-      <div className="card-headline">
+      <div className="card-headline">{headline}</div>
+
+      <div className="card-price-row">
         <span className={`card-price ${price.muted ? 'is-muted' : ''}`}>{price.value}</span>
         {rooms ? <span className="card-rooms">{rooms}</span> : null}
       </div>
-
-      <div className="card-subtitle">{subtitle}</div>
-
-      {ad.city ? <div className="card-city">{ad.city}</div> : null}
 
       <div className="card-footer">
         {ad.districtLabel ? (

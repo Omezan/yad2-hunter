@@ -356,6 +356,7 @@ export default function DashboardPage() {
           </button>
           <button
             type="button"
+            className="secondary"
             onClick={healthTrigger.trigger}
             disabled={healthTrigger.isDisabled || Boolean(healthDispatch)}
             title="מפעיל בדיקת תקינות; הודעת Telegram + תוצאות בדאשבורד תוך כ-3 דקות"

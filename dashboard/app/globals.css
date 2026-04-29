@@ -168,6 +168,19 @@ button.primary:hover:not(:disabled) {
   background: var(--accent-gradient);
 }
 
+button.secondary {
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+button.secondary:hover:not(:disabled) {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
 select,
 input[type='search'],
 input[type='text'] {
@@ -583,24 +596,30 @@ input:focus {
 }
 
 .card-headline {
+  font-size: var(--type-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  line-height: 1.25;
+  padding-inline-end: 60px;
+}
+
+.card-price-row {
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
   flex-wrap: wrap;
-  padding-inline-end: 60px;
 }
 
 .card-price {
-  font-size: var(--type-xl);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--type-md);
+  font-weight: 600;
   color: var(--text);
 }
 
 .card-price.is-muted {
   color: var(--text-muted);
   font-weight: 500;
-  font-size: var(--type-md);
 }
 
 .card-rooms {
@@ -611,18 +630,6 @@ input:focus {
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   padding: 2px 10px;
-}
-
-.card-subtitle {
-  font-size: var(--type-base);
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.35;
-}
-
-.card-city {
-  font-size: var(--type-sm);
-  color: var(--text-muted);
 }
 
 .card-footer {
