@@ -289,9 +289,10 @@ input:focus {
   }
   .header {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--space-4);
+    gap: var(--space-3) var(--space-4);
     margin-inline: calc(-1 * var(--space-5));
     padding: var(--space-4) var(--space-5);
   }
@@ -306,6 +307,10 @@ input:focus {
   }
   .header-actions button {
     min-width: 120px;
+  }
+  /* Force the toolbar onto its own row inside the sticky header. */
+  .filter-toolbar {
+    flex: 0 0 100%;
   }
 }
 
@@ -361,48 +366,40 @@ input:focus {
 }
 
 /* ================================
- * Filter bar
+ * Filter toolbar (single horizontal row inside the sticky header)
  * ================================ */
-.filter-bar {
-  background: var(--surface);
+.filter-toolbar {
+  width: 100%;
+  background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius-3);
-  padding: var(--space-4);
-  margin-bottom: var(--space-4);
+  padding: var(--space-2) var(--space-3);
   display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  box-shadow: var(--shadow-1);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.filter-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-}
-
-@media (min-width: 600px) {
-  .filter-row {
-    grid-template-columns: auto 1fr auto;
-    align-items: end;
-  }
-  .filter-search {
-    min-width: 220px;
-  }
-}
-
-.filter-field {
+.toolbar-search {
+  flex: 1 1 200px;
+  min-width: 180px;
   display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
 }
 
-.filter-label {
-  font-size: var(--type-xs);
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+.toolbar-search input {
+  width: 100%;
+  min-height: 38px;
+}
+
+.toolbar-sort {
+  flex: 0 1 auto;
+  display: flex;
+}
+
+.toolbar-sort select {
+  min-height: 38px;
+  width: auto;
+  padding-inline-end: var(--space-3);
 }
 
 .segmented {
@@ -412,7 +409,7 @@ input:focus {
   border-radius: var(--radius-pill);
   padding: 3px;
   gap: 2px;
-  align-self: flex-start;
+  flex: 0 0 auto;
 }
 
 .segmented-option {
@@ -441,16 +438,104 @@ input:focus {
   background: var(--accent);
 }
 
-.filter-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  align-items: center;
+/* District popover */
+.toolbar-district {
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.filter-chips .filter-label {
-  width: 100%;
-  margin-bottom: var(--space-1);
+.toolbar-district-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 0 12px;
+  min-height: 38px;
+  font-size: var(--type-sm);
+  color: var(--text);
+  font-weight: 500;
+}
+
+.toolbar-district-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.toolbar-district-button.has-selection {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.toolbar-district-count {
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--accent);
+  color: #fff;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  min-width: 18px;
+  text-align: center;
+}
+
+.toolbar-district-caret {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.toolbar-district-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  inset-inline-start: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-3);
+  padding: var(--space-3);
+  min-width: 260px;
+  max-width: min(360px, 90vw);
+  box-shadow: var(--shadow-3);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.toolbar-district-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.toolbar-district-link {
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  padding: 4px 8px;
+  min-height: auto;
+  font-size: var(--type-sm);
+  font-weight: 600;
+}
+
+.toolbar-district-link:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+
+.toolbar-district-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 600px) {
+  .toolbar-district-popover {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    min-width: min(320px, calc(100vw - 24px));
+  }
 }
 
 .pill {
