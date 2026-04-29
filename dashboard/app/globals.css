@@ -18,6 +18,11 @@
   --new: #ffb547;
   --new-soft: rgba(255, 181, 71, 0.18);
   --success: #34c38f;
+  --secondary: #2bbf7a;
+  --secondary-strong: #1c9b5e;
+  --secondary-soft: rgba(43, 191, 122, 0.18);
+  --secondary-gradient: linear-gradient(135deg, #2bbf7a 0%, #14a371 100%);
+  --shadow-secondary: 0 6px 18px rgba(20, 155, 94, 0.32);
   --danger: #ef5350;
   --danger-soft: rgba(239, 83, 80, 0.14);
 
@@ -70,6 +75,11 @@
     --new: #c97a00;
     --new-soft: rgba(201, 122, 0, 0.16);
     --success: #168f64;
+    --secondary: #168f64;
+    --secondary-strong: #0f6a4a;
+    --secondary-soft: rgba(22, 143, 100, 0.12);
+    --secondary-gradient: linear-gradient(135deg, #168f64 0%, #0f6a4a 100%);
+    --shadow-secondary: 0 6px 18px rgba(15, 106, 74, 0.22);
     --danger: #c2362e;
     --danger-soft: rgba(194, 54, 46, 0.1);
 
@@ -169,16 +179,18 @@ button.primary:hover:not(:disabled) {
 }
 
 button.secondary {
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  color: var(--accent);
+  background: var(--secondary-gradient);
+  border: 1px solid transparent;
+  color: #fff;
   font-weight: 600;
+  box-shadow: var(--shadow-secondary);
 }
 
 button.secondary:hover:not(:disabled) {
-  background: var(--accent);
+  filter: brightness(1.05);
+  background: var(--secondary-gradient);
   color: #fff;
-  border-color: var(--accent);
+  border-color: transparent;
 }
 
 select,
