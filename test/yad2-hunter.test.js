@@ -321,3 +321,72 @@ test('removeDeletedAds is a no-op when no districts were successfully scraped', 
   assert.deepEqual(next, seen);
   assert.equal(removed.length, 0);
 });
+
+test('removeDeletedAds refuses to wipe a district that returned ZERO ads', () => {
+  const seen = {
+    ads: {
+      a: { externalId: 'a', searchId: 'south' },
+      b: { externalId: 'b', searchId: 'south' }
+    }
+  };
+  const { seen: next, removed, skippedDistricts } = removeDeletedAds(
+    seen,
+    [],
+    ['south']
+  );
+
+  assert.deepEqual(Object.keys(next.ads).sort(), ['a', 'b']);
+  assert.equal(removed.length, 0);
+  assert.equal(skippedDistricts.length, 1);
+  assert.equal(skippedDistricts[0].searchId, 'south');
+  assert.equal(skippedDistricts[0].reason, 'no-live-ads');
+});
+
+test('removeDeletedAds refuses cleanup when live count is suspiciously low vs seen', () => {
+  const seen = {
+    ads: Object.fromEntries(
+      Array.from({ length: 100 }, (_, i) => [
+        `id${i}`,
+        { externalId: `id${i}`, searchId: 'north-valleys' }
+      ])
+    )
+  };
+  const scraped = Array.from({ length: 10 }, (_, i) => ({
+    externalId: `id${i}`,
+    searchId: 'north-valleys'
+  }));
+
+  const { seen: next, removed, skippedDistricts } = removeDeletedAds(
+    seen,
+    scraped,
+    ['north-valleys']
+  );
+
+  assert.equal(Object.keys(next.ads).length, 100);
+  assert.equal(removed.length, 0);
+  assert.equal(skippedDistricts.length, 1);
+  assert.equal(skippedDistricts[0].reason, 'live-too-low-vs-seen');
+});
+
+test('removeDeletedAds still cleans up the genuinely missing single ad', () => {
+  const seen = {
+    ads: Object.fromEntries(
+      Array.from({ length: 50 }, (_, i) => [
+        `id${i}`,
+        { externalId: `id${i}`, searchId: 'south' }
+      ])
+    )
+  };
+  const scraped = Array.from({ length: 49 }, (_, i) => ({
+    externalId: `id${i + 1}`,
+    searchId: 'south'
+  }));
+
+  const { removed, skippedDistricts } = removeDeletedAds(seen, scraped, [
+    'south'
+  ]);
+
+  assert.equal(removed.length, 1);
+  assert.equal(removed[0].externalId, 'id0');
+  assert.equal(skippedDistricts.length, 0);
+});

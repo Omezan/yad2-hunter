@@ -100,10 +100,13 @@ function splitNewAndExisting(ads) {
   return { newAds, existingAds };
 }
 
+const REMOVAL_TRUST_MIN_LIVE_COUNT = 1;
+const REMOVAL_TRUST_MIN_RATIO = 0.5;
+
 function removeDeletedAds(seen, scrapedAds = [], scrapedSearchIds = []) {
   const successfulSearchIds = new Set(scrapedSearchIds);
   if (!successfulSearchIds.size) {
-    return { seen, removed: [] };
+    return { seen, removed: [], skippedDistricts: [] };
   }
 
   const liveByDistrict = new Map();
@@ -116,10 +119,45 @@ function removeDeletedAds(seen, scrapedAds = [], scrapedSearchIds = []) {
     if (set) set.add(ad.externalId);
   }
 
+  const seenCountByDistrict = new Map();
+  for (const record of Object.values(seen.ads || {})) {
+    if (!record || !record.searchId) continue;
+    seenCountByDistrict.set(
+      record.searchId,
+      (seenCountByDistrict.get(record.searchId) || 0) + 1
+    );
+  }
+
+  const trustworthyDistricts = new Set();
+  const skippedDistricts = [];
+  for (const districtId of successfulSearchIds) {
+    const liveCount = liveByDistrict.get(districtId)?.size || 0;
+    const seenCount = seenCountByDistrict.get(districtId) || 0;
+
+    // Refuse to act when a successful scrape returned suspiciously few ads
+    // compared to what we have stored. This prevents anti-bot pages that
+    // return 0 (or near-zero) results from wiping the seen index.
+    if (liveCount < REMOVAL_TRUST_MIN_LIVE_COUNT) {
+      skippedDistricts.push({ searchId: districtId, reason: 'no-live-ads', liveCount, seenCount });
+      continue;
+    }
+    if (seenCount > 0 && liveCount / seenCount < REMOVAL_TRUST_MIN_RATIO) {
+      skippedDistricts.push({
+        searchId: districtId,
+        reason: 'live-too-low-vs-seen',
+        liveCount,
+        seenCount,
+        ratio: liveCount / seenCount
+      });
+      continue;
+    }
+    trustworthyDistricts.add(districtId);
+  }
+
   const removed = [];
   const ads = { ...(seen.ads || {}) };
   for (const [externalId, record] of Object.entries(ads)) {
-    if (!record || !successfulSearchIds.has(record.searchId)) continue;
+    if (!record || !trustworthyDistricts.has(record.searchId)) continue;
     const live = liveByDistrict.get(record.searchId);
     if (live && !live.has(externalId)) {
       removed.push({
@@ -132,7 +170,7 @@ function removeDeletedAds(seen, scrapedAds = [], scrapedSearchIds = []) {
     }
   }
 
-  return { seen: { ...seen, ads }, removed };
+  return { seen: { ...seen, ads }, removed, skippedDistricts };
 }
 
 function commitAds({
@@ -144,11 +182,13 @@ function commitAds({
   let seen = loadSeenAds();
   const now = new Date().toISOString();
   let removed = [];
+  let skippedDistricts = [];
 
   if (Array.isArray(allScrapedAds) && Array.isArray(scrapedSearchIds)) {
     const result = removeDeletedAds(seen, allScrapedAds, scrapedSearchIds);
     seen = result.seen;
     removed = result.removed;
+    skippedDistricts = result.skippedDistricts || [];
   }
 
   for (const ad of existingAds) {
@@ -184,7 +224,7 @@ function commitAds({
   const pruned = pruneSeenAds(seen, env.SEEN_RETENTION_DAYS);
   saveSeenAds(pruned);
 
-  return { removed };
+  return { removed, skippedDistricts };
 }
 
 function saveAndDetectNewAds(ads) {

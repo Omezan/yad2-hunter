@@ -103,12 +103,17 @@ async function runOnce(options = {}) {
       .map((s) => s.id)
       .filter((id) => !erroredSearchIds.has(id));
 
-    const { removed: removedAds = [] } = commitAds({
+    const { removed: removedAds = [], skippedDistricts = [] } = commitAds({
       newAds: relevantNewAds,
       existingAds,
       allScrapedAds: scrapeResult.ads,
       scrapedSearchIds
     });
+    if (skippedDistricts.length) {
+      console.warn(
+        `[run-once] skipped removal cleanup for ${skippedDistricts.length} suspicious district(s): ${JSON.stringify(skippedDistricts)}`
+      );
+    }
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
     if (relevantNewAds.length > 0) {
@@ -129,6 +134,7 @@ async function runOnce(options = {}) {
       enrichedAds: enriched.length,
       relevantNewAds: relevantNewAds.length,
       removedAds: removedAds.length,
+      skippedRemovalDistricts: skippedDistricts,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       errors: scrapeResult.errors
     };
