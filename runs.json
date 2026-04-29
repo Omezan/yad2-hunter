@@ -1,6 +1,52 @@
 {
   "runs": [
     {
+      "startedAt": "2026-04-29T21:06:57.966Z",
+      "completedAt": "2026-04-29T21:17:03.364Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "enrichedAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=c3ccc076-a31b-4110-a9c5-6b98b0970e1c&ssb=36429360146&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=be9fd206-bhmf-4819-abc0-bf1618917e88&ssk=support%40shieldsquare.com&ssm=40595101987517114101281754858924&ssn=d8341d8c79a9af087d4d9f52fd41b74d6abcaa671088-7e40-464d-8b516d&sso=e932925a-bed3d2485ae163c697125629f90f44ed0e42fc91cb68f539&ssp=94161193381777402516177741912909061&ssq=92070689686772515467296867278891630849016&ssr=NTcuMTUxLjEzOC4yNDE%3D&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJyZCI6InlhZDIuY28uaWwiLCJ1em14IjoiN2Y5MDAwNmYzNjM3ZWEtZDBhMS00MTViLWFkNDEtYzBmNjdkZGM5NmMxMS0xNzc3NDk2ODY0NjI4MjcxOS1lMWExNGM0YWNlMWQ2Y2I1MTMiLCJfX3V6bWYiOiI3ZjkwMDBhYTY3MTA4OC03ZTQwLTQ2NGQtODI1YS1iZWQzZDI0ODVhZTExLTE3Nzc0OTY4NjczNDcwLTAwMzQ5ZjY2ZTY5NzBiMDE2ZGUxMCJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-04-29T20:57:40.389Z",
       "completedAt": "2026-04-29T21:06:51.757Z",
       "status": "partial",
@@ -1698,46 +1744,6 @@
       "removedAds": 3,
       "telegramSent": false,
       "errors": []
-    },
-    {
-      "startedAt": "2026-04-29T00:28:14.364Z",
-      "completedAt": "2026-04-29T00:38:16.191Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "enrichedAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
