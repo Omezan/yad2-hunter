@@ -31,6 +31,26 @@ trap 'rm -rf "$WORK_DIR"' EXIT
 cp -R "$STATE_DIR/." "$WORK_DIR/"
 cd "$WORK_DIR"
 
+# Drop a Vercel guard onto the state branch so Vercel does not try to deploy
+# pushes to this branch (it has no app code, only JSON state). Without this
+# file Vercel keeps queuing failing builds on every state-branch push.
+cat > vercel.json <<'JSON'
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": {
+    "deploymentEnabled": {
+      "state": false
+    }
+  }
+}
+JSON
+
+# Belt-and-suspenders: keep Vercel from trying to find anything to deploy
+# even if it ignores the git.deploymentEnabled directive for any reason.
+cat > .vercelignore <<'IGNORE'
+*
+IGNORE
+
 git init -q -b state
 git config user.name  "$AUTHOR_NAME"
 git config user.email "$AUTHOR_EMAIL"
