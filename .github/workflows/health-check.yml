@@ -50,6 +50,17 @@ jobs:
             echo "No state branch yet, starting with empty state"
           fi
 
+      - name: Refresh state right before running
+        # The looping scan job keeps pushing to `state` every ~5 minutes.
+        # Refresh just before the live scrape so we start from the freshest
+        # possible seen-set, minimizing race conditions.
+        run: |
+          if git ls-remote --exit-code --heads origin state >/dev/null 2>&1; then
+            git fetch origin state --depth=1
+            git --work-tree=state checkout origin/state -- .
+            echo "Re-restored state from origin/state"
+          fi
+
       - name: Run health check
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}

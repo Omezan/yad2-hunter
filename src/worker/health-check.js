@@ -1,8 +1,39 @@
+const { spawnSync } = require('child_process');
+const path = require('path');
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const { ensureStateDir, loadSeenAds } = require('../store/file-store');
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { sendHealthCheckReport } = require('../services/telegram');
+
+function refreshStateFromBranch() {
+  // Pull whatever the looping scan has just pushed to the `state` branch.
+  // We do this AFTER the live scrape so any ad the scan added during the
+  // scrape window is visible to us before we compute diffs (which would
+  // otherwise show false "missing in seen" rows).
+  const stateDir = env.STATE_DIR;
+  if (!stateDir) return;
+  if (!process.env.GITHUB_ACTIONS) return;
+
+  const repoRoot = path.resolve(__dirname, '..', '..');
+  const fetchResult = spawnSync(
+    'git',
+    ['fetch', '--depth=1', 'origin', 'state'],
+    { cwd: repoRoot, stdio: 'inherit' }
+  );
+  if (fetchResult.status !== 0) {
+    console.warn('[health-check] could not fetch origin/state; using stale seen-set');
+    return;
+  }
+  const checkoutResult = spawnSync(
+    'git',
+    [`--work-tree=${stateDir}`, 'checkout', 'origin/state', '--', '.'],
+    { cwd: repoRoot, stdio: 'inherit' }
+  );
+  if (checkoutResult.status !== 0) {
+    console.warn('[health-check] could not checkout origin/state into state dir');
+  }
+}
 
 function buildExpectedBySearchId(seen) {
   const result = {};
@@ -53,6 +84,12 @@ async function runHealthCheck() {
     headless: env.PLAYWRIGHT_HEADLESS,
     timeoutMs: env.SEARCH_TIMEOUT_MS
   });
+
+  // The looping scan can push to the `state` branch while we are scraping.
+  // Re-pull it so any ad it added during our scrape window is reflected
+  // in the seen-set we diff against (otherwise we'd raise false-positive
+  // "diff" rows on freshly-recorded ads).
+  refreshStateFromBranch();
 
   const seen = loadSeenAds();
   const expectedBySearchId = buildExpectedBySearchId(seen);
