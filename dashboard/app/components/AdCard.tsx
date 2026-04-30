@@ -17,11 +17,25 @@ function formatPriceHeadline(price: number | null): { value: string; muted: bool
   return { value: `${price.toLocaleString('he-IL')} ₪`, muted: false };
 }
 
+function isPlaceholderText(value: string | null | undefined): boolean {
+  if (!value) return true;
+  const trimmed = value.trim();
+  return trimmed === 'מודעה' || trimmed === 'מודעה ללא כותרת';
+}
+
 export default function AdCard({ ad, isNew }: Props) {
   const price = formatPriceHeadline(ad.price);
   const rooms = formatRooms(ad.rooms);
   const firstSeen = formatHebrewDateTime(ad.firstSeenAt);
-  const headline = ad.city || ad.title || 'מודעה';
+  // Headline preference: real city -> non-placeholder title -> district.
+  // We never show "מודעה" - it's a backend-only sentinel meaning the
+  // detail-page enrichment hasn't succeeded yet, not something the
+  // user should see.
+  const headline =
+    (ad.city && ad.city.trim()) ||
+    (!isPlaceholderText(ad.title) ? ad.title : null) ||
+    ad.districtLabel ||
+    '—';
 
   return (
     <a

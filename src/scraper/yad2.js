@@ -517,12 +517,30 @@ async function fetchListingDetails(page, url, timeoutMs) {
 
   await Promise.race([navigation, timeoutPromise]);
 
-  if (await detectCaptcha(page)) {
-    throw new Error('detail page returned captcha/anti-bot block');
-  }
+  // Yad2's Next.js SSR ships the listing data in __NEXT_DATA__ before
+  // any anti-bot widget can mutate the DOM. If that script is present
+  // and parses, the listing is real - skip the captcha early-throw so
+  // we still extract the data even on a partially captcha'd page.
+  const hasNextData = await page
+    .evaluate(() => {
+      const el = document.getElementById('__NEXT_DATA__');
+      if (!el) return false;
+      try {
+        const parsed = JSON.parse(el.textContent || '');
+        return Boolean(parsed && typeof parsed === 'object');
+      } catch (_e) {
+        return false;
+      }
+    })
+    .catch(() => false);
 
-  if (await detectErrorPage(page)) {
-    throw new Error('detail page returned error/empty page');
+  if (!hasNextData) {
+    if (await detectCaptcha(page)) {
+      throw new Error('detail page returned captcha/anti-bot block');
+    }
+    if (await detectErrorPage(page)) {
+      throw new Error('detail page returned error/empty page');
+    }
   }
 
   const data = await page.evaluate(() => {
@@ -603,7 +621,123 @@ async function fetchListingDetails(page, url, timeoutMs) {
         ? document.body.innerText
         : '';
 
+    // Yad2 is a Next.js app and embeds the full listing data in
+    // __NEXT_DATA__. When the page renders normally, this script
+    // tag carries the city / address / price / rooms / propertyType
+    // - much more reliable than reading h1/h2 (which can be the
+    // captcha title or a sponsored agency name on some layouts).
+    function readNextData() {
+      const el = document.getElementById('__NEXT_DATA__');
+      if (!el) return null;
+      const txt = el.textContent || '';
+      try {
+        return JSON.parse(txt);
+      } catch (_e) {
+        return null;
+      }
+    }
+
+    function deepFindFirst(obj, predicate, depth = 0) {
+      if (!obj || typeof obj !== 'object' || depth > 8) return null;
+      if (Array.isArray(obj)) {
+        for (const item of obj) {
+          const found = deepFindFirst(item, predicate, depth + 1);
+          if (found) return found;
+        }
+        return null;
+      }
+      if (predicate(obj)) return obj;
+      for (const key of Object.keys(obj)) {
+        const found = deepFindFirst(obj[key], predicate, depth + 1);
+        if (found) return found;
+      }
+      return null;
+    }
+
+    function extractFromNextData() {
+      const data = readNextData();
+      if (!data) return null;
+      // Yad2's listing data lives somewhere under
+      // pageProps -> dehydratedState -> queries[*].state.data
+      // The exact shape varies; just walk and look for objects
+      // with a recognisable address structure.
+      const addressEntry = deepFindFirst(data, (o) => {
+        if (!o || typeof o !== 'object') return false;
+        // Newer SSR shape: { address: { city: { text }, ... } }
+        if (o.address && typeof o.address === 'object') {
+          const a = o.address;
+          if (a.city && (a.city.text || typeof a.city === 'string')) return true;
+          if (a.neighborhood || a.street || a.house) return true;
+        }
+        return false;
+      });
+      const itemEntry = deepFindFirst(data, (o) => {
+        if (!o || typeof o !== 'object') return false;
+        return (
+          (typeof o.token === 'string' || typeof o.orderId === 'string') &&
+          (o.address || o.price || o.additionalDetails)
+        );
+      });
+      const root = itemEntry || addressEntry || null;
+      if (!root) return null;
+
+      // Helpers to safely pull fields with multiple possible shapes.
+      const pickText = (v) => {
+        if (v == null) return null;
+        if (typeof v === 'string') return v.trim() || null;
+        if (typeof v === 'object') {
+          if (typeof v.text === 'string') return v.text.trim() || null;
+          if (typeof v.name === 'string') return v.name.trim() || null;
+          if (typeof v.title === 'string') return v.title.trim() || null;
+        }
+        return null;
+      };
+
+      const addr = root.address || (addressEntry && addressEntry.address) || {};
+      const city = pickText(addr.city);
+      const street = pickText(addr.street);
+      const houseNumber =
+        addr.house && (addr.house.number ?? addr.house.text ?? null);
+      const neighborhood = pickText(addr.neighborhood);
+      const area = pickText(addr.area);
+
+      const additional =
+        root.additionalDetails || (itemEntry && itemEntry.additionalDetails) || {};
+      const propertyType =
+        pickText(additional.propertyCondition && additional.propertyCondition.text) ||
+        pickText(root.realestateType) ||
+        pickText(root.propertyType) ||
+        pickText(additional.property);
+      const rooms =
+        typeof additional.roomsCount === 'number'
+          ? additional.roomsCount
+          : typeof root.roomsCount === 'number'
+            ? root.roomsCount
+            : null;
+
+      const price =
+        typeof root.price === 'number'
+          ? root.price
+          : typeof root.metaData?.price === 'number'
+            ? root.metaData.price
+            : null;
+
+      return {
+        city,
+        street,
+        houseNumber,
+        neighborhood,
+        area,
+        propertyType,
+        rooms,
+        price
+      };
+    }
+
+    const nextDataExtracted = extractFromNextData();
+
     return {
+      nextDataExtracted,
       titleHeading,
       secondaryHeading,
       subTitle,
@@ -621,20 +755,39 @@ async function fetchListingDetails(page, url, timeoutMs) {
   const priceNumeric = priceMatch
     ? Number.parseInt(priceMatch[1].replace(/[^\d]/g, ''), 10)
     : null;
-  const price = Number.isFinite(priceNumeric) ? priceNumeric : null;
+  const textPrice = Number.isFinite(priceNumeric) ? priceNumeric : null;
 
   const noPriceHint = /לא צוין מחיר/.test(cleanText);
 
   const roomsMatch = cleanText.match(/(\d+(?:\.\d+)?)\s*חדרים/);
-  const rooms = roomsMatch ? Number.parseFloat(roomsMatch[1]) : null;
+  const textRooms = roomsMatch ? Number.parseFloat(roomsMatch[1]) : null;
 
-  const propertyType = data.subTitle || guessPropertyType(cleanText);
-  const city = extractCityFromHeadings(data);
+  const headingPropertyType = data.subTitle || guessPropertyType(cleanText);
+  const headingCity = extractCityFromHeadings(data);
   const descriptionText = String(data.descriptionText || '').replace(/[\u200e\u200f]/g, '');
   const addressText = String(data.addressText || '').replace(/[\u200e\u200f]/g, '');
   const publishedText = String(data.publishedText || '').replace(/[\u200e\u200f]/g, '');
   const publishedAt = parsePublishedDate(publishedText) || parsePublishedDate(cleanText);
   const floor = parseFloor(cleanText);
+
+  // Yad2's __NEXT_DATA__ blob is the most reliable source - it
+  // carries the structured listing fields independent of how the
+  // visible DOM renders. Prefer it whenever available; fall back to
+  // the heading / body-text heuristics for the bits it doesn't carry.
+  const nx = data.nextDataExtracted || {};
+  const nxCityRaw = typeof nx.city === 'string' ? nx.city.trim() : '';
+  const nxCity = nxCityRaw && !isYad2ErrorText(nxCityRaw) ? nxCityRaw : null;
+  const nxPropertyType =
+    typeof nx.propertyType === 'string' && nx.propertyType.trim()
+      ? nx.propertyType.trim()
+      : null;
+  const nxPrice = typeof nx.price === 'number' && Number.isFinite(nx.price) ? nx.price : null;
+  const nxRooms = typeof nx.rooms === 'number' && Number.isFinite(nx.rooms) ? nx.rooms : null;
+
+  const city = nxCity || headingCity;
+  const propertyType = nxPropertyType || headingPropertyType;
+  const price = nxPrice ?? textPrice;
+  const rooms = nxRooms ?? textRooms;
 
   return {
     url,
