@@ -805,6 +805,37 @@ test('formatHealthCheckMessage falls back to legacy missingIds/extraIds when rec
 // Yad2 error-widget guard (אופס... תקלה!)
 // -----------------------------------------------------------------------------
 
+// -----------------------------------------------------------------------------
+// extractTitle (list-card title heuristics)
+// -----------------------------------------------------------------------------
+
+const { extractTitle } = require('../src/scraper/yad2');
+
+test('extractTitle skips price-only lines and picks the first descriptive line', () => {
+  const raw = '₪ 5,300\n4 חדרים\nדירה, מתן\nכתובת מלאה';
+  assert.equal(extractTitle(raw), 'דירה, מתן');
+});
+
+test('extractTitle skips rooms-only lines', () => {
+  const raw = '4 חדרים\n5,300 ₪\nדירה, יד נתן';
+  assert.equal(extractTitle(raw), 'דירה, יד נתן');
+});
+
+test('extractTitle skips Yad2 price-drop chrome ("ירד ב-500 ₪")', () => {
+  const raw = 'ירד ב-500 ₪\nדירה, יד נתן\n5,300 ₪';
+  assert.equal(extractTitle(raw), 'דירה, יד נתן');
+});
+
+test('extractTitle skips "אופס... תקלה!" widget text', () => {
+  const raw = 'אופס... תקלה!\nדירה, מתן';
+  assert.equal(extractTitle(raw), 'דירה, מתן');
+});
+
+test('extractTitle returns a placeholder when every line is non-descriptive', () => {
+  const raw = '₪ 5,300\n4 חדרים\nאופס... תקלה!';
+  assert.equal(extractTitle(raw), 'מודעה ללא כותרת');
+});
+
 test('isYad2ErrorText catches the canonical phrase + variants', () => {
   assert.equal(isYad2ErrorText('אופס... תקלה!'), true);
   assert.equal(isYad2ErrorText('אופס...תקלה'), true);

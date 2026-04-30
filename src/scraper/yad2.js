@@ -51,12 +51,18 @@ function extractTitle(rawText) {
     .map((line) => line.trim())
     .filter(Boolean);
 
-  // Skip lines that look like Yad2's error widget so a list-card whose
-  // body errored never persists "אופס... תקלה!" as the listing title.
   for (const line of lines) {
-    if (!/אופס\.{2,3}\s*תקלה/.test(line)) {
-      return line;
-    }
+    // Skip Yad2's error widget so a card that briefly rendered as the
+    // error placeholder doesn't persist "אופס... תקלה!" as the title.
+    if (/אופס\.{2,3}\s*תקלה/.test(line)) continue;
+    // Skip lines that are essentially just a price ("₪ 5,300", "5300 ₪",
+    // "ירד ב-500 ₪") - those should land in the structured `price`
+    // field via parsePrice(), not become the listing's title.
+    if (/^\s*[₪]?\s*[\d.,]+\s*[₪]?\s*$/.test(line)) continue;
+    if (/^\s*ירד\s+ב/.test(line) && /₪/.test(line)) continue;
+    // Skip lines that are just a rooms count ("4 חדרים", "4 חד׳").
+    if (/^\d+(?:\.\d+)?\s*(?:חד׳|חדר(?:ים)?)$/.test(line)) continue;
+    return line;
   }
   return 'מודעה ללא כותרת';
 }
@@ -1114,6 +1120,7 @@ async function probeListingsPresence({
 module.exports = {
   enrichAdsWithDetails,
   extractExternalId,
+  extractTitle,
   fetchListingDetails,
   isYad2ErrorText,
   normalizeItemUrl,
