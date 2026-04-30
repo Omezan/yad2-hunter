@@ -430,12 +430,24 @@ async function runHealthCheck() {
     searchById
   });
 
+  // Persist the reconciled seen-set. We deliberately swallow any error
+  // here so a persistence bug never blocks the Telegram report — the
+  // user has explicitly asked to always receive notice that the run
+  // happened, even if we could not close the diff this time.
   let persisted = { ok: false, reason: 'no-op (no diffs to reconcile)' };
   const didMutate =
     reconciliation.additions.length > 0 || reconciliation.removals.length > 0;
   if (didMutate) {
-    saveSeenAds(reconciliation.updatedSeen);
-    persisted = persistStateToBranch();
+    try {
+      saveSeenAds(reconciliation.updatedSeen);
+      persisted = persistStateToBranch();
+    } catch (error) {
+      console.error('[health-check] failed to persist reconciled seen-set:', error);
+      persisted = {
+        ok: false,
+        reason: `persist threw: ${error.message || 'unknown'}`
+      };
+    }
   }
 
   // Recompute table rows against the post-reconciliation seen-set so the

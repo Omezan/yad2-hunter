@@ -246,5 +246,6 @@ module.exports = {
   recordRun,
   removeDeletedAds,
   saveAndDetectNewAds,
+  saveSeenAds,
   splitNewAndExisting
 };
