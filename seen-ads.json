@@ -28,7 +28,7 @@
     },
     "jerusalem-area/iscure9h": {
       "externalId": "jerusalem-area/iscure9h",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/iscure9h",
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
@@ -132,7 +132,7 @@
     },
     "jerusalem-area/v6jano1v": {
       "externalId": "jerusalem-area/v6jano1v",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/v6jano1v",
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
@@ -171,7 +171,7 @@
     },
     "jerusalem-area/5jt73zq0": {
       "externalId": "jerusalem-area/5jt73zq0",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/5jt73zq0",
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
@@ -353,7 +353,7 @@
     },
     "center-and-sharon/zgrxqb2o": {
       "externalId": "center-and-sharon/zgrxqb2o",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/zgrxqb2o",
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
@@ -691,7 +691,7 @@
     },
     "center-and-sharon/fix1im1e": {
       "externalId": "center-and-sharon/fix1im1e",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/fix1im1e",
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
@@ -990,7 +990,7 @@
     },
     "south/za2oq31y": {
       "externalId": "south/za2oq31y",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/south/za2oq31y",
       "searchId": "south",
       "searchLabel": "דרום",
@@ -1016,7 +1016,7 @@
     },
     "south/xjll8477": {
       "externalId": "south/xjll8477",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/south/xjll8477",
       "searchId": "south",
       "searchLabel": "דרום",
@@ -1185,7 +1185,7 @@
     },
     "coastal-north/thk6eyv4": {
       "externalId": "coastal-north/thk6eyv4",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/coastal-north/thk6eyv4",
       "searchId": "coastal-north",
       "searchLabel": "חוף צפוני",
@@ -1276,7 +1276,7 @@
     },
     "coastal-north/xj8vu9mm": {
       "externalId": "coastal-north/xj8vu9mm",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/coastal-north/xj8vu9mm",
       "searchId": "coastal-north",
       "searchLabel": "חוף צפוני",
@@ -1335,7 +1335,7 @@
       "districtLabel": "חוף צפוני",
       "price": 6000,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1348,7 +1348,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1361,7 +1361,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1374,7 +1374,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1387,7 +1387,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1400,7 +1400,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 500,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1413,7 +1413,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1426,7 +1426,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1439,7 +1439,7 @@
       "districtLabel": "חוף צפוני",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1452,7 +1452,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 7,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1465,7 +1465,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1478,7 +1478,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1491,7 +1491,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5400,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1504,20 +1504,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/0spql7lx": {
       "externalId": "north-and-valleys/0spql7lx",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/0spql7lx",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1530,7 +1530,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4800,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1543,7 +1543,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1556,7 +1556,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1569,7 +1569,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4100,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1582,7 +1582,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1595,7 +1595,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6900,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1608,7 +1608,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1621,7 +1621,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 300,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1634,20 +1634,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 7600,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/crq08iej": {
       "externalId": "north-and-valleys/crq08iej",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/crq08iej",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1660,20 +1660,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 250,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/x1atdd3i": {
       "externalId": "north-and-valleys/x1atdd3i",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/x1atdd3i",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1686,7 +1686,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1699,7 +1699,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 7.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1712,7 +1712,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1725,7 +1725,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 6.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1738,7 +1738,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1751,7 +1751,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1764,7 +1764,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1777,7 +1777,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 8,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1790,7 +1790,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 7,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1803,7 +1803,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 7.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1816,7 +1816,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1829,7 +1829,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1842,7 +1842,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1855,7 +1855,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1868,7 +1868,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1881,7 +1881,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1894,7 +1894,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1907,7 +1907,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1920,7 +1920,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1933,7 +1933,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1946,7 +1946,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1959,7 +1959,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1972,7 +1972,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 1200,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1985,7 +1985,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -1998,7 +1998,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2011,7 +2011,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2024,7 +2024,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8000,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2037,7 +2037,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2050,7 +2050,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2063,33 +2063,33 @@
       "districtLabel": "צפון והעמקים",
       "price": 150,
       "rooms": 8,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/q26kexn8": {
       "externalId": "north-and-valleys/q26kexn8",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/q26kexn8",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/kbdhcvc6": {
       "externalId": "north-and-valleys/kbdhcvc6",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/kbdhcvc6",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2102,7 +2102,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2115,20 +2115,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 4800,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/lcs5vi47": {
       "externalId": "north-and-valleys/lcs5vi47",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/lcs5vi47",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2141,7 +2141,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6750,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2154,7 +2154,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7800,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2167,7 +2167,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2180,7 +2180,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2193,7 +2193,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2206,7 +2206,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 1950,
       "rooms": 6.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2219,7 +2219,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2232,7 +2232,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2245,7 +2245,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2258,7 +2258,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2271,7 +2271,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2284,7 +2284,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2297,7 +2297,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2310,7 +2310,7 @@
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2323,7 +2323,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2336,7 +2336,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2349,7 +2349,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7000,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2362,7 +2362,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2375,7 +2375,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4700,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2388,7 +2388,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2401,20 +2401,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/4uwyzt4l": {
       "externalId": "north-and-valleys/4uwyzt4l",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/4uwyzt4l",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2427,7 +2427,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2440,7 +2440,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2453,7 +2453,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4200,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2466,7 +2466,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2479,7 +2479,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2492,7 +2492,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 200,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2505,7 +2505,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6900,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2518,7 +2518,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8700,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2531,7 +2531,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5300,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2544,7 +2544,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7000,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2557,7 +2557,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7200,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2570,20 +2570,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/iqcrug55": {
       "externalId": "north-and-valleys/iqcrug55",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/iqcrug55",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2596,7 +2596,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 3750,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2609,20 +2609,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 5500,
       "rooms": 8,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/c9sjvo64": {
       "externalId": "north-and-valleys/c9sjvo64",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/c9sjvo64",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 7,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2635,7 +2635,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2648,7 +2648,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2661,20 +2661,20 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
     "north-and-valleys/hex7me57": {
       "externalId": "north-and-valleys/hex7me57",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/hex7me57",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
       "price": null,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2687,7 +2687,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5800,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2700,7 +2700,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2713,7 +2713,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4000,
       "rooms": 4.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2726,7 +2726,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5000,
       "rooms": 4,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2739,7 +2739,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 8500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2752,7 +2752,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6000,
       "rooms": 8,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2765,7 +2765,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 4500,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2778,7 +2778,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 6700,
       "rooms": 5.5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2791,7 +2791,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7500,
       "rooms": 5,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2804,7 +2804,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 7300,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2817,7 +2817,7 @@
       "districtLabel": "צפון והעמקים",
       "price": 5900,
       "rooms": 6,
-      "city": "?Are you for real",
+      "city": null,
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-04-30T08:06:42.450Z"
     },
@@ -2914,7 +2914,7 @@
     },
     "north-and-valleys/dm681wk4": {
       "externalId": "north-and-valleys/dm681wk4",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/dm681wk4",
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
@@ -3031,7 +3031,7 @@
     },
     "south/ev72y34d": {
       "externalId": "south/ev72y34d",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/south/ev72y34d",
       "searchId": "south",
       "searchLabel": "דרום",
@@ -3083,7 +3083,7 @@
     },
     "south/6ls1aog3": {
       "externalId": "south/6ls1aog3",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/south/6ls1aog3",
       "searchId": "south",
       "searchLabel": "דרום",
@@ -3278,7 +3278,7 @@
     },
     "jerusalem-area/gm36wgsw": {
       "externalId": "jerusalem-area/gm36wgsw",
-      "title": "לא צוין מחיר",
+      "title": "מודעה",
       "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/gm36wgsw",
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
