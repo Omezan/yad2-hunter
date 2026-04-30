@@ -254,6 +254,22 @@ function commitAds({
       //     the fresh title.
       //   - Otherwise keep the existing title - we don't want to
       //     overwrite a real city/property line with a list-card scrape.
+      // Title resolution rules:
+      //   1. If the heal step explicitly asked us to reset, use its
+      //      placeholder ("מודעה") and ignore the existing title.
+      //   2. If the fresh title is poison (error widget), discard it
+      //      and either keep a real existing title or fall back to
+      //      the placeholder.
+      //   3. If the fresh ad has a trustworthy city (detail-page
+      //      enrichment worked), prefer the fresh title - it was
+      //      built from the real heading.
+      //   4. Otherwise the fresh title came from an untrusted
+      //      list-card scrape. Only accept it if there is no real
+      //      existing title - meaning existing is poison. NEVER
+      //      overwrite the placeholder with a list-card scrape;
+      //      that lets the next heal-step run fill in the real
+      //      property heading from the detail page instead of
+      //      freezing in a partial value like "בית פרטי/ קוטג'".
       title: forceReset
         ? ad.title || 'מודעה'
         : isPoisonString(ad.title)
@@ -262,8 +278,8 @@ function commitAds({
             : 'מודעה'
           : freshCityIsTrustworthy && ad.title
             ? ad.title
-            : isPlaceholderTitle(existing.title) || isPoisonString(existing.title)
-              ? ad.title || existing.title || 'מודעה'
+            : isPoisonString(existing.title)
+              ? ad.title || 'מודעה'
               : existing.title || ad.title || 'מודעה',
       link: ad.link || existing.link,
       searchId: ad.searchId || existing.searchId,

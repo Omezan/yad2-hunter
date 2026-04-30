@@ -21,15 +21,17 @@ const {
 
 const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
-const ENRICH_TIMEOUT_MS = 12000;
+const ENRICH_TIMEOUT_MS = 15000;
 const ENRICH_CONCURRENCY = 4;
 const MAX_ENRICH = 400;
 const ENRICH_BUDGET_MS = 6 * 60 * 1000;
-// Per-run cap on how many already-seen ads with poison fields we re-enrich
-// to heal them. Keeps the loop's wall-clock predictable; remaining
-// poisoned records will heal on subsequent runs.
+// Heal step: smaller concurrency + longer per-request budget. Yad2's
+// anti-bot is more permissive when we space detail-page hits out and
+// don't open many parallel sessions; the cron runs every 5 min so
+// we trade throughput for reliability.
+const HEAL_CONCURRENCY = 2;
 const MAX_HEAL_PER_RUN = 25;
-const HEAL_BUDGET_MS = 90 * 1000;
+const HEAL_BUDGET_MS = 4 * 60 * 1000;
 
 function needsHealing(record) {
   if (!record) return false;
@@ -153,7 +155,7 @@ async function runOnce(options = {}) {
           ads: healToEnrich,
           headless: env.PLAYWRIGHT_HEADLESS,
           timeoutMs: ENRICH_TIMEOUT_MS,
-          concurrency: ENRICH_CONCURRENCY,
+          concurrency: HEAL_CONCURRENCY,
           budgetMs: HEAL_BUDGET_MS
         });
       } catch (err) {

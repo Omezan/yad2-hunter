@@ -1078,6 +1078,12 @@ async function enrichAdsWithDetails({
         logger.error(`Failed fetching details for ${ad.link}: ${error.message}`);
         enriched.push({ ...ad, hasExplicitPrice: false, enriched: false });
       }
+      // Small humanised pause between detail-page requests on the
+      // same Playwright page. Yad2's anti-bot is more permissive on
+      // sessions that don't fire requests back-to-back. Without this
+      // delay the second / third request after warmup tends to hit
+      // the captcha challenge again.
+      await page.waitForTimeout(800 + Math.floor(Math.random() * 1200));
     }
   }
 
