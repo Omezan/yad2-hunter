@@ -39,6 +39,25 @@ const PROPERTY_TYPE_WORDS = [
   'משק'
 ];
 
+const PROPERTY_TYPE_ONLY_TITLES = new Set([
+  'דירה',
+  "בית פרטי/ קוטג'",
+  "בית פרטי / קוטג'",
+  'דירת גן',
+  'דירת גג',
+  'גג/ פנטהאוז',
+  'גג / פנטהאוז',
+  'דו משפחתי',
+  'פנטהאוז',
+  'יחידת דיור',
+  'מיני פנטהאוז',
+  'דופלקס',
+  'טריפלקס',
+  'וילה',
+  'משק',
+  'סטודיו'
+]);
+
 function looksLikePropertyTitle(title) {
   if (typeof title !== 'string') return false;
   const trimmed = title.trim();
@@ -48,6 +67,11 @@ function looksLikePropertyTitle(title) {
   // Bare first word is a known property type.
   if (PROPERTY_TYPE_WORDS.some((w) => trimmed === w || trimmed.startsWith(`${w} `))) return true;
   return false;
+}
+
+function isPropertyTypeOnlyTitle(title) {
+  if (typeof title !== 'string') return false;
+  return PROPERTY_TYPE_ONLY_TITLES.has(title.trim());
 }
 
 function looksLikeAgencyTitle(title) {
@@ -224,6 +248,15 @@ function main() {
         scrubbedAgencyTitle += 1;
         touched = true;
       }
+    }
+
+    // Property-type-only titles ("דירה", "בית פרטי/ קוטג'") with no
+    // city are not informative; the heal step needs another shot.
+    const cityIsBlank2 = typeof record.city !== 'string' || record.city.trim().length === 0;
+    if (cityIsBlank2 && isPropertyTypeOnlyTitle(record.title)) {
+      record.title = 'מודעה';
+      scrubbedAgencyTitle += 1;
+      touched = true;
     }
 
     // City is missing AND the existing title is a street address
