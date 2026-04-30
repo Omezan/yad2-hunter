@@ -3288,6 +3288,32 @@
       "city": "צפרירים",
       "firstSeenAt": "2026-04-30T05:30:48.804Z",
       "lastSeenAt": "2026-04-30T05:42:16.638Z"
+    },
+    "center-and-sharon/44t4qbr5": {
+      "externalId": "center-and-sharon/44t4qbr5",
+      "title": "דירה, פתחיה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/44t4qbr5",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8000,
+      "rooms": 4,
+      "city": "פתחיה",
+      "firstSeenAt": "2026-04-30T07:21:06.262Z",
+      "lastSeenAt": "2026-04-30T07:21:06.262Z"
+    },
+    "center-and-sharon/f7ym9xu4": {
+      "externalId": "center-and-sharon/f7ym9xu4",
+      "title": "דירה, יגל",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/f7ym9xu4",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 5,
+      "city": "יגל",
+      "firstSeenAt": "2026-04-30T07:21:06.262Z",
+      "lastSeenAt": "2026-04-30T07:21:06.262Z"
     }
   }
 }
