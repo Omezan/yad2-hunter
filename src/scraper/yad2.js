@@ -48,6 +48,8 @@ function parseRooms(text) {
 // Hebrew property-type prefixes Yad2 uses on the "PROPERTY_TYPE, CITY"
 // heading line of every list card. A line that starts with one of
 // these AND contains a comma is the canonical heading we want.
+// Order matters: list more-specific phrases BEFORE their substrings
+// so "בית פרטי/ קוטג'" matches before "בית פרטי".
 const PROPERTY_TYPE_PREFIXES = [
   'בית פרטי/ קוטג\'',
   'בית פרטי / קוטג\'',
@@ -61,11 +63,21 @@ const PROPERTY_TYPE_PREFIXES = [
   'טריפלקס',
   'יחידת דיור',
   'וילה',
+  'משק חקלאי',
+  'משק עזר',
   'משק',
   'סטודיו',
+  'סאבלט',
   'גג/ פנטהאוז',
   'גג / פנטהאוז',
-  'דו משפחתי'
+  'דו משפחתי',
+  'דו-משפחתי',
+  'מרתף',
+  'חניון',
+  'מסחרי',
+  'נחלה',
+  'מגרשים',
+  'מגרש'
 ];
 
 function startsWithPropertyType(line) {

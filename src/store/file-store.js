@@ -5,12 +5,79 @@ const { isYad2ErrorText } = require('../scraper/yad2');
 
 const PLACEHOLDER_TITLES = new Set(['מודעה', 'מודעה ללא כותרת']);
 
+// Bare property type strings ("דירה", "בית פרטי/ קוטג'") that we
+// treat as low-quality titles - if a fresh scan offers a canonical
+// "PROPERTY_TYPE, CITY" heading, we prefer that.
+const PROPERTY_TYPE_ONLY_TITLES = new Set([
+  'דירה',
+  "בית פרטי",
+  "בית פרטי/ קוטג'",
+  "בית פרטי / קוטג'",
+  'דירת גן',
+  'דירת גג',
+  'גג/ פנטהאוז',
+  'גג / פנטהאוז',
+  'דו משפחתי',
+  'פנטהאוז',
+  'יחידת דיור',
+  'מיני פנטהאוז',
+  'דופלקס',
+  'טריפלקס',
+  'וילה',
+  'משק',
+  'משק חקלאי',
+  'סטודיו',
+  'סאבלט'
+]);
+
 function isPoisonString(value) {
   return typeof value === 'string' && isYad2ErrorText(value);
 }
 
 function isPlaceholderTitle(value) {
   return typeof value === 'string' && PLACEHOLDER_TITLES.has(value.trim());
+}
+
+function isPropertyTypeOnlyTitle(value) {
+  return typeof value === 'string' && PROPERTY_TYPE_ONLY_TITLES.has(value.trim());
+}
+
+// "Low-quality" titles we should overwrite whenever a fresh,
+// canonical "PROPERTY_TYPE, CITY" heading is available:
+//   - placeholder ("מודעה")
+//   - poison (error widget / anti-bot text)
+//   - bare property type ("בית פרטי/ קוטג'")
+//   - agency / brand strings ("TM Agassi GROUP", "RE/MAX Paradise")
+//   - street-address shapes (digits, no comma)
+function isLowQualityTitle(value) {
+  if (typeof value !== 'string') return true;
+  const trimmed = value.trim();
+  if (!trimmed) return true;
+  if (isPoisonString(trimmed)) return true;
+  if (isPlaceholderTitle(trimmed)) return true;
+  if (isPropertyTypeOnlyTitle(trimmed)) return true;
+  // Agency / realtor markers.
+  if (/נדל[״"']?ן/.test(trimmed)) return true;
+  if (/RE\/?MAX|UNISTATE|REAL\s+ESTATE|REALTY|REALITY/i.test(trimmed)) return true;
+  if (/תיווך|נכסים|יזמות|שיווק נדל|קפיטל/.test(trimmed)) return true;
+  // Mixed-case Latin brand strings ("TM Agassi GROUP", "Sky Realty"):
+  // any title that is mostly Latin letters with no Hebrew is suspect
+  // because real Yad2 headings are Hebrew.
+  if (/^[A-Za-z][A-Za-z0-9 +\-/.]{2,}$/.test(trimmed)) return true;
+  // Street-address shape: contains digits and no comma → it's an
+  // address line, not a property heading.
+  if (/\d/.test(trimmed) && !trimmed.includes(',')) return true;
+  return false;
+}
+
+// A "canonical" title is a Yad2 list-card heading: contains a comma
+// AND no digits (digits in a heading would mean a street number).
+function isCanonicalHeading(value) {
+  if (typeof value !== 'string') return false;
+  const trimmed = value.trim();
+  if (!trimmed.includes(',')) return false;
+  if (isPoisonString(trimmed)) return false;
+  return true;
 }
 
 // Pick the field we should keep on disk when refreshing an existing
@@ -238,17 +305,30 @@ function commitAds({
     const freshPrice = typeof ad.price === 'number' ? ad.price : null;
     const freshRooms = typeof ad.rooms === 'number' ? ad.rooms : null;
 
+    // Title resolution: prefer a canonical "PROPERTY_TYPE, CITY"
+    // heading whenever we have one. Only fall back to the existing
+    // title when the fresh title is also low-quality, so a stored
+    // "TM Agassi GROUP" / "בית פרטי/ קוטג'" / "ריח הדס 252" can be
+    // replaced by a fresh canonical heading from the next scan.
+    let resolvedTitle;
+    if (freshTitle && isCanonicalHeading(freshTitle)) {
+      resolvedTitle = freshTitle;
+    } else if (existing.title && !isLowQualityTitle(existing.title)) {
+      resolvedTitle = existing.title;
+    } else if (freshTitle && !isLowQualityTitle(freshTitle)) {
+      resolvedTitle = freshTitle;
+    } else if (freshTitle) {
+      // Only a low-quality fresh title is available; still prefer it
+      // over an even-worse existing one (poison, placeholder).
+      resolvedTitle = freshTitle;
+    } else {
+      resolvedTitle = existing.title || null;
+    }
+
     seen.ads[ad.externalId] = {
       ...existing,
       externalId: ad.externalId,
-      // Title preference: fresh non-placeholder > existing non-placeholder
-      // (and never the poison/error-widget text).
-      title:
-        freshTitle && !isPlaceholderTitle(freshTitle)
-          ? freshTitle
-          : existing.title && !isPoisonString(existing.title) && !isPlaceholderTitle(existing.title)
-            ? existing.title
-            : freshTitle || existing.title || 'מודעה',
+      title: resolvedTitle,
       link: ad.link || existing.link,
       searchId: ad.searchId || existing.searchId,
       searchLabel: ad.searchLabel || existing.searchLabel,
@@ -258,7 +338,10 @@ function commitAds({
       // exactly what we want to repopulate the previously-nulled
       // records without overwriting a clean city with a transient
       // scrape blank.
-      city: preferFreshField(existing.city, freshCity),
+      // City: trust the fresh list-card value when present and clean.
+      // Previous versions sometimes wrote a street name into city via
+      // a different layout; the canonical fresh value should win.
+      city: freshCity ? freshCity : preferFreshField(existing.city, freshCity),
       // Same logic for price and rooms - if the latest scrape has a
       // value, accept it; otherwise keep what we had.
       price: freshPrice !== null ? freshPrice : existing.price ?? null,

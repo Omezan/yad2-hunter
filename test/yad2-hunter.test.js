@@ -1085,3 +1085,15 @@ test('extractTitle falls back to the legacy first-line behaviour when no PROPERT
   const raw = '₪ 5,300\n4 חדרים\nדירה, מתן';
   assert.equal(extractTitle(raw), 'דירה, מתן');
 });
+
+test('extractTitle picks the canonical heading even when property type is "סאבלט"', () => {
+  // Real Yad2 list-card shape (jerusalem feed) — "סאבלט" was missing
+  // from the property-type prefix list, causing the street address to
+  // become the title.
+  const raw = 'לא צוין מחיר\nריח הדס 252\nסאבלט, גבעת יערים, גבעת יערים\n7 חדרים';
+  assert.equal(extractTitle(raw), 'סאבלט, גבעת יערים');
+});
+
+test('parseCityFromTitle handles "סאבלט" + duplicated city', () => {
+  assert.equal(parseCityFromTitle('סאבלט, גבעת יערים, גבעת יערים'), 'גבעת יערים');
+});
