@@ -3301,6 +3301,19 @@
       "city": "בלפוריה",
       "firstSeenAt": "2026-04-30T11:54:58.227Z",
       "lastSeenAt": "2026-04-30T12:11:41.311Z"
+    },
+    "north-and-valleys/d92vhnin": {
+      "externalId": "north-and-valleys/d92vhnin",
+      "title": "בית פרטי/ קוטג', נוב",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/d92vhnin",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 6,
+      "city": "נוב",
+      "firstSeenAt": "2026-04-30T13:47:31.020Z",
+      "lastSeenAt": "2026-04-30T13:47:31.020Z"
     }
   }
 }
