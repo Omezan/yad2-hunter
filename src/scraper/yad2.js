@@ -92,6 +92,31 @@ function extractLocation(rawText) {
   return lines[1] || '';
 }
 
+// Yad2 list cards put the property heading on a single line shaped
+// like "PROPERTY_TYPE, CITY" - e.g. "דירה, נחושה",
+// "בית פרטי/ קוטג', שדות מיכה". This helper pulls the city out of
+// such a title so we can populate the dashboard's headline directly
+// from list-card data, without ever needing to fetch the detail page.
+//
+// We only return a value that passes looksLikeCity() so we never
+// persist a street address, an agency name or anti-bot text as the
+// city.
+function parseCityFromTitle(title) {
+  if (typeof title !== 'string') return null;
+  const trimmed = title.trim();
+  if (!trimmed) return null;
+  if (isYad2ErrorText(trimmed)) return null;
+  // Split on the FIRST comma only - some property types contain a
+  // slash but no comma ("בית פרטי/ קוטג'") so a single comma
+  // reliably separates type from city.
+  const commaIdx = trimmed.indexOf(',');
+  if (commaIdx < 0) return null;
+  const candidate = trimmed.slice(commaIdx + 1).trim();
+  if (!candidate) return null;
+  if (!looksLikeCity(candidate)) return null;
+  return candidate;
+}
+
 function dedupeByExternalId(ads) {
   const deduped = new Map();
 
@@ -467,9 +492,12 @@ async function scrapeSearch(page, search, timeoutMs, { logger = console } = {}) 
     if (!externalId || collected.has(externalId)) continue;
 
     const rawText = String(entry.containerText || entry.text || '').trim();
+    const title = extractTitle(rawText);
+    const city = parseCityFromTitle(title);
     collected.set(externalId, {
       externalId,
-      title: extractTitle(rawText),
+      title,
+      city,
       link: normalizedLink,
       rawText,
       locationText: extractLocation(rawText),
@@ -1389,6 +1417,7 @@ module.exports = {
   isYad2ErrorText,
   looksLikeCity,
   normalizeItemUrl,
+  parseCityFromTitle,
   parseFloor,
   parsePublishedDate,
   probeListingsPresence,

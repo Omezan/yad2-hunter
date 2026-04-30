@@ -163,6 +163,8 @@ function main() {
   let healedPriceFromTitle = 0;
   let healedRoomsFromTitle = 0;
   let resetTitle = 0;
+  let recoveredCityFromTitle = 0;
+  let nulledForRescrape = 0;
   for (const [id, record] of Object.entries(data.ads)) {
     let touched = false;
 
@@ -308,6 +310,52 @@ function main() {
       touched = true;
     }
 
+    // Recover city from a "PROPERTY_TYPE, CITY" title when the record
+    // has a clean title but a missing city. Common shape:
+    //   { title: "דירה, נחושה", city: null } → city: "נחושה".
+    // We deliberately accept the recovered value only when it looks
+    // like a real city name (no digits, no agency words).
+    {
+      const cityBlank = typeof record.city !== 'string' || record.city.trim().length === 0;
+      if (
+        cityBlank &&
+        typeof record.title === 'string' &&
+        record.title.includes(',') &&
+        !isPoisonText(record.title) &&
+        !looksLikeAgencyTitle(record.title)
+      ) {
+        const candidate = record.title.slice(record.title.indexOf(',') + 1).trim();
+        const looksClean =
+          candidate.length > 0 &&
+          candidate.length <= 40 &&
+          !/\d/.test(candidate) &&
+          !looksLikeAgencyTitle(candidate);
+        if (looksClean) {
+          record.city = candidate;
+          recoveredCityFromTitle += 1;
+          touched = true;
+        }
+      }
+    }
+
+    // Final pass: if AFTER all the scrubbing the record still has
+    // `title === "מודעה"` AND `city === null`, the next live list-card
+    // scrape is the only source that can repair it. Setting both to
+    // null forces preferFreshField in commitAds to accept whatever
+    // the next scrape produces. We do NOT delete the record (it might
+    // already be a known new-ad we'd otherwise re-notify on).
+    {
+      const cityBlank = typeof record.city !== 'string' || record.city.trim().length === 0;
+      const titlePlaceholder =
+        record.title === 'מודעה' || record.title === 'מודעה ללא כותרת';
+      if (cityBlank && titlePlaceholder) {
+        record.city = null;
+        record.title = null;
+        nulledForRescrape += 1;
+        touched = true;
+      }
+    }
+
     if (touched) {
       data.ads[id] = record;
     }
@@ -322,7 +370,9 @@ function main() {
       `agency-title=${scrubbedAgencyTitle}`,
       `healed-price-from-title=${healedPriceFromTitle}`,
       `healed-rooms-from-title=${healedRoomsFromTitle}`,
-      `neutralised-titles=${resetTitle}`
+      `neutralised-titles=${resetTitle}`,
+      `recovered-city-from-title=${recoveredCityFromTitle}`,
+      `nulled-for-rescrape=${nulledForRescrape}`
     ].join(' ')
   );
 }

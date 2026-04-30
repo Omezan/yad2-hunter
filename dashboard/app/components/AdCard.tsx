@@ -28,9 +28,9 @@ export default function AdCard({ ad, isNew }: Props) {
   const rooms = formatRooms(ad.rooms);
   const firstSeen = formatHebrewDateTime(ad.firstSeenAt);
   // Headline preference: real city -> non-placeholder title -> district.
-  // We never show "מודעה" - it's a backend-only sentinel meaning the
-  // detail-page enrichment hasn't succeeded yet, not something the
-  // user should see.
+  // The list-card scrape captures `city` for almost every record; the
+  // fallback chain just covers the rare case where city is missing
+  // because Yad2's card layout was unusual on that listing.
   const headline =
     (ad.city && ad.city.trim()) ||
     (!isPlaceholderText(ad.title) ? ad.title : null) ||

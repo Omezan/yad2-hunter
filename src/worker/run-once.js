@@ -4,15 +4,10 @@ const {
   commitAds,
   ensureStateDir,
   listRecentRuns,
-  loadSeenAds,
   recordRun,
   splitNewAndExisting
 } = require('../store/file-store');
-const {
-  enrichAdsWithDetails,
-  isYad2ErrorText,
-  scrapeAllSearches
-} = require('../scraper/yad2');
+const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
   sendManualScanNoNewAdsNotice,
@@ -21,33 +16,12 @@ const {
 
 const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
-const ENRICH_TIMEOUT_MS = 15000;
-const ENRICH_CONCURRENCY = 4;
-const MAX_ENRICH = 400;
-const ENRICH_BUDGET_MS = 6 * 60 * 1000;
-// Heal step: smaller concurrency + longer per-request budget. Yad2's
-// anti-bot is more permissive when we space detail-page hits out and
-// don't open many parallel sessions; the cron runs every 5 min so
-// we trade throughput for reliability.
-const HEAL_CONCURRENCY = 2;
-const MAX_HEAL_PER_RUN = 25;
-const HEAL_BUDGET_MS = 4 * 60 * 1000;
-
-function needsHealing(record) {
-  if (!record) return false;
-  // Original error-widget text (covered by the previous fix).
-  if (typeof record.city === 'string' && isYad2ErrorText(record.city)) return true;
-  if (typeof record.title === 'string' && isYad2ErrorText(record.title)) return true;
-  // Records the migration neutralised but haven't been re-enriched yet:
-  // no city + a placeholder title means we never captured a real city.
-  // Also catch records whose `city` is missing entirely OR whose title
-  // is the neutral placeholder we wrote during migration. The detail
-  // page is the canonical source for those fields.
-  const hasCity = typeof record.city === 'string' && record.city.trim().length > 0;
-  if (!hasCity) return true;
-  if (record.title === 'מודעה' || record.title === 'מודעה ללא כותרת') return true;
-  return false;
-}
+// We deliberately do NOT enrich detail pages anymore: Yad2's anti-bot
+// rejects most direct detail-page GETs from GitHub-hosted Playwright
+// sessions, which used to leak captcha / agency / placeholder text
+// into the seen-set. The list-card scrape gives us everything we
+// actually need (title, city, rooms, price, district, link) and is
+// reliable because it warms up via the search page.
 
 function summarizeRejections(ads, options) {
   const counts = {};
@@ -104,30 +78,15 @@ async function runOnce(options = {}) {
     const preFiltered = filterRelevantAds(scrapeResult.ads);
     const { newAds: newCandidates, existingAds } = splitNewAndExisting(preFiltered);
 
-    const candidatesToEnrich = newCandidates.slice(0, MAX_ENRICH);
-    const cappedAtMaxEnrich = newCandidates.length - candidatesToEnrich.length;
-
-    const enriched = await enrichAdsWithDetails({
-      ads: candidatesToEnrich,
-      headless: env.PLAYWRIGHT_HEADLESS,
-      timeoutMs: ENRICH_TIMEOUT_MS,
-      concurrency: ENRICH_CONCURRENCY,
-      budgetMs: ENRICH_BUDGET_MS
-    });
-
-    const droppedDueToBudget = candidatesToEnrich.length - enriched.length;
-
     const finalOptions = { requireExplicitRooms: true };
-    const relevantNewAds = filterRelevantAds(enriched, finalOptions);
+    const relevantNewAds = filterRelevantAds(newCandidates, finalOptions);
 
     const rejectionCounts = {
       preFilter: summarizeRejections(scrapeResult.ads),
-      finalFilter: summarizeRejections(enriched, finalOptions),
-      cappedAtMaxEnrich,
-      droppedDueToBudget
+      finalFilter: summarizeRejections(newCandidates, finalOptions)
     };
 
-    const droppedNewCandidates = dumpRejectedNewCandidates(enriched, finalOptions);
+    const droppedNewCandidates = dumpRejectedNewCandidates(newCandidates, finalOptions);
 
     const erroredSearchIds = new Set(
       (scrapeResult.errors || []).map((e) => e && e.searchId).filter(Boolean)
@@ -136,65 +95,9 @@ async function runOnce(options = {}) {
       .map((s) => s.id)
       .filter((id) => !erroredSearchIds.has(id));
 
-    // Heal records whose previously-stored city/title looks like Yad2's
-    // error widget. We re-enrich a small batch each run; the resulting
-    // ads still travel through the existingAds path so commitAds can
-    // overwrite their poisoned fields with clean ones.
-    const seenForHeal = loadSeenAds();
-    const healCandidates = existingAds.filter((ad) =>
-      needsHealing(seenForHeal.ads?.[ad.externalId])
-    );
-    const healToEnrich = healCandidates.slice(0, MAX_HEAL_PER_RUN);
-    let healedAds = [];
-    if (healToEnrich.length) {
-      console.log(
-        `[run-once] healing ${healToEnrich.length} record(s) (missing/placeholder fields); will be refreshed via enrichment`
-      );
-      try {
-        healedAds = await enrichAdsWithDetails({
-          ads: healToEnrich,
-          headless: env.PLAYWRIGHT_HEADLESS,
-          timeoutMs: ENRICH_TIMEOUT_MS,
-          concurrency: HEAL_CONCURRENCY,
-          budgetMs: HEAL_BUDGET_MS
-        });
-      } catch (err) {
-        console.warn('[run-once] heal enrichment failed:', err && err.message);
-        healedAds = [];
-      }
-    }
-    // Replace poisoned existingAds entries with their healed counterpart.
-    // When enrichment succeeded (returned a city), trust that data over
-    // the list-card scrape - sponsored placements often have the
-    // agency's name as the first list-card line, which would otherwise
-    // get persisted as the title. When enrichment failed (no city
-    // came back), null out the existing city/title so the record
-    // remains flagged for re-healing on the next run instead of
-    // freezing a misleading agency name on disk.
-    const healedById = new Map(
-      healedAds.filter((a) => a && a.externalId).map((a) => [a.externalId, a])
-    );
-    const existingAdsForCommit = existingAds.map((ad) => {
-      const healed = healedById.get(ad.externalId);
-      if (!healed) return ad;
-      const healedHasCity =
-        typeof healed.city === 'string' && healed.city.trim().length > 0;
-      if (healedHasCity) {
-        // Detail page worked. Overwrite list-card scrape so the agency
-        // name from a sponsored card cannot survive to the dashboard.
-        return { ...ad, ...healed };
-      }
-      // Detail page failed (captcha / 5xx / timeout). Reset the
-      // record to a neutral state so commitAds clears the misleading
-      // agency-name title from disk and needsHealing keeps flagging
-      // the record next run. The __forceReset flag tells commitAds
-      // to ignore the existing title even when it isn't poison.
-      return { ...ad, ...healed, city: null, title: 'מודעה', __forceReset: true };
-    });
-
     const { removed: removedAds = [], skippedDistricts = [] } = commitAds({
       newAds: relevantNewAds,
-      existingAds: existingAdsForCommit,
+      existingAds,
       allScrapedAds: scrapeResult.ads,
       scrapedSearchIds
     });
@@ -224,7 +127,6 @@ async function runOnce(options = {}) {
       totalAds: scrapeResult.ads.length,
       preFilteredAds: preFiltered.length,
       candidateNewAds: newCandidates.length,
-      enrichedAds: enriched.length,
       relevantNewAds: relevantNewAds.length,
       removedAds: removedAds.length,
       skippedRemovalDistricts: skippedDistricts,
@@ -251,7 +153,6 @@ async function runOnce(options = {}) {
       totalAds: 0,
       preFilteredAds: 0,
       candidateNewAds: 0,
-      enrichedAds: 0,
       relevantNewAds: 0,
       removedAds: 0,
       telegramSent: false,
@@ -288,6 +189,5 @@ if (require.main === module) {
 }
 
 module.exports = {
-  runOnce,
-  needsHealing
+  runOnce
 };

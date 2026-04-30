@@ -1,10 +1,8 @@
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
-const { enrichAdsWithDetails, scrapeAllSearches } = require('../scraper/yad2');
+const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 
-const ENRICH_TIMEOUT_MS = 12000;
-const ENRICH_CONCURRENCY = 4;
 const SAMPLES_PER_REASON = 5;
 
 function summarize(label, ads, options) {
@@ -52,18 +50,10 @@ async function main() {
   const preFiltered = filterRelevantAds(scrapeResult.ads);
   console.log(`Pre-filtered ads (passed relaxed): ${preFiltered.length}`);
 
-  const enriched = await enrichAdsWithDetails({
-    ads: preFiltered,
-    headless: env.PLAYWRIGHT_HEADLESS,
-    timeoutMs: ENRICH_TIMEOUT_MS,
-    concurrency: ENRICH_CONCURRENCY
-  });
-  console.log(`Enriched ads: ${enriched.length}`);
-
   const finalOptions = { requireExplicitRooms: true };
-  summarize('FINAL FILTER (strict, after enrichment)', enriched, finalOptions);
+  summarize('FINAL FILTER (strict, on list-card data)', preFiltered, finalOptions);
 
-  const finalAccepted = filterRelevantAds(enriched, finalOptions);
+  const finalAccepted = filterRelevantAds(preFiltered, finalOptions);
   console.log(`\nFinal accepted: ${finalAccepted.length}`);
 
   const byDistrict = {};

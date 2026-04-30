@@ -222,85 +222,47 @@ function commitAds({
 
   for (const ad of existingAds) {
     const existing = seen.ads[ad.externalId] || {};
-    // Heal poison fields when we now have a clean value, but never
-    // downgrade a clean value to a blank one. The fresh `ad` object
-    // came either from a list-card scrape (untrusted title) or from
-    // the enriched detail page (trusted city/price/rooms).
-    // Trust the detail-page enrichment over the list-card scrape: a
-    // fresh `city` value means we successfully read the listing's
-    // real heading, and `ad.title` was rebuilt from it. List-card
-    // scrapes can show agency / sponsor names as the first line.
-    const freshCityIsTrustworthy =
-      typeof ad.city === 'string' &&
-      ad.city.trim().length > 0 &&
-      !isPoisonString(ad.city);
-    // run-once sets __forceReset on records whose detail-page heal
-    // failed: we must throw away any list-card-scraped title for
-    // those so the next run picks them up again.
-    const forceReset = ad.__forceReset === true;
+    // The fresh `ad` came from the latest list-card scrape and is the
+    // source of truth: we no longer fetch detail pages, so the only
+    // signal we have for city/title/price/rooms is the search-page
+    // card. Always prefer a clean fresh value over a stale existing
+    // one (in particular, this lets us heal the records that previous
+    // versions of the worker corrupted with `title: "מודעה"` /
+    // `city: null` after a failed detail-page enrichment).
+    const freshTitle =
+      typeof ad.title === 'string' && !isPoisonString(ad.title) ? ad.title : null;
+    const freshCity =
+      typeof ad.city === 'string' && !isPoisonString(ad.city) && ad.city.trim()
+        ? ad.city
+        : null;
+    const freshPrice = typeof ad.price === 'number' ? ad.price : null;
+    const freshRooms = typeof ad.rooms === 'number' ? ad.rooms : null;
+
     seen.ads[ad.externalId] = {
       ...existing,
       externalId: ad.externalId,
-      // Title:
-      //   - If the heal step explicitly asked us to reset, drop any
-      //     existing title and use the placeholder (agency names from
-      //     sponsored cards must not freeze on disk).
-      //   - If the fresh title is poison (error widget), discard it.
-      //   - If the fresh ad came with a real (non-poison) city, the
-      //     enrichment worked - prefer its title even when the existing
-      //     title is non-empty (it might be a stale agency name from
-      //     a sponsored list-card).
-      //   - If the existing title is a placeholder or poison, accept
-      //     the fresh title.
-      //   - Otherwise keep the existing title - we don't want to
-      //     overwrite a real city/property line with a list-card scrape.
-      // Title resolution rules:
-      //   1. If the heal step explicitly asked us to reset, use its
-      //      placeholder ("מודעה") and ignore the existing title.
-      //   2. If the fresh title is poison (error widget), discard it
-      //      and either keep a real existing title or fall back to
-      //      the placeholder.
-      //   3. If the fresh ad has a trustworthy city (detail-page
-      //      enrichment worked), prefer the fresh title - it was
-      //      built from the real heading.
-      //   4. Otherwise the fresh title came from an untrusted
-      //      list-card scrape. Only accept it if there is no real
-      //      existing title - meaning existing is poison. NEVER
-      //      overwrite the placeholder with a list-card scrape;
-      //      that lets the next heal-step run fill in the real
-      //      property heading from the detail page instead of
-      //      freezing in a partial value like "בית פרטי/ קוטג'".
-      title: forceReset
-        ? ad.title || 'מודעה'
-        : isPoisonString(ad.title)
-          ? existing.title && !isPoisonString(existing.title) && !isPlaceholderTitle(existing.title)
+      // Title preference: fresh non-placeholder > existing non-placeholder
+      // (and never the poison/error-widget text).
+      title:
+        freshTitle && !isPlaceholderTitle(freshTitle)
+          ? freshTitle
+          : existing.title && !isPoisonString(existing.title) && !isPlaceholderTitle(existing.title)
             ? existing.title
-            : 'מודעה'
-          : freshCityIsTrustworthy && ad.title
-            ? ad.title
-            : isPoisonString(existing.title)
-              ? ad.title || 'מודעה'
-              : existing.title || ad.title || 'מודעה',
+            : freshTitle || existing.title || 'מודעה',
       link: ad.link || existing.link,
       searchId: ad.searchId || existing.searchId,
       searchLabel: ad.searchLabel || existing.searchLabel,
       districtLabel: ad.districtLabel || existing.districtLabel,
-      // forceReset clears the city too so needsHealing keeps flagging
-      // this record on the next run instead of accepting whatever the
-      // list-card had.
-      city: forceReset ? (ad.city ?? null) : preferFreshField(existing.city, ad.city),
-      price:
-        existing.price === null || existing.price === undefined
-          ? typeof ad.price === 'number'
-            ? ad.price
-            : null
-          : existing.price,
-      rooms:
-        existing.rooms === null || existing.rooms === undefined
-          ? typeof ad.rooms === 'number'
-            ? ad.rooms
-            : null
-          : existing.rooms,
+      // City preference: fresh > existing-clean. preferFreshField only
+      // overrides existing when it is missing or poison, which is
+      // exactly what we want to repopulate the previously-nulled
+      // records without overwriting a clean city with a transient
+      // scrape blank.
+      city: preferFreshField(existing.city, freshCity),
+      // Same logic for price and rooms - if the latest scrape has a
+      // value, accept it; otherwise keep what we had.
+      price: freshPrice !== null ? freshPrice : existing.price ?? null,
+      rooms: freshRooms !== null ? freshRooms : existing.rooms ?? null,
       lastSeenAt: now
     };
   }

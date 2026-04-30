@@ -19,12 +19,12 @@ const {
   isYad2ErrorText,
   looksLikeCity,
   normalizeItemUrl,
+  parseCityFromTitle,
   parseFloor,
   parsePublishedDate
 } = require('../src/scraper/yad2');
 const { removeDeletedAds } = require('../src/store/file-store');
 const { reconcileSeen } = require('../src/worker/health-check');
-const { needsHealing } = require('../src/worker/run-once');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -1017,25 +1017,29 @@ test('formatHealthCheckMessage still emits the diff details after a successful r
   assert.match(text, /סיבה: HTTP 404/);
 });
 
-test('needsHealing flags missing-city and placeholder-title records', () => {
-  // Records left over from the migration: city was wiped, title was
-  // neutralised to "מודעה". Heal step must pick them up so they can
-  // be re-enriched from the detail page.
-  assert.equal(needsHealing({ externalId: 'a', city: null, title: 'מודעה' }), true);
-  assert.equal(needsHealing({ externalId: 'b', city: '', title: 'דירה, חדרה' }), true);
-  assert.equal(
-    needsHealing({ externalId: 'c', city: 'עוזה', title: 'מודעה ללא כותרת' }),
-    true
-  );
-  // The original error-widget case still gets flagged.
-  assert.equal(needsHealing({ externalId: 'd', city: 'אופס...תקלה!', title: 'דירה' }), true);
-  assert.equal(needsHealing({ externalId: 'e', city: 'עוזה', title: 'אופס...תקלה' }), true);
-  // A healthy record is left alone.
-  assert.equal(
-    needsHealing({ externalId: 'f', city: 'הרצליה', title: 'דירה, הרצליה' }),
-    false
-  );
-  // Edge cases.
-  assert.equal(needsHealing(null), false);
-  assert.equal(needsHealing(undefined), false);
+test('parseCityFromTitle pulls the city out of "PROPERTY_TYPE, CITY" titles', () => {
+  // Canonical Yad2 list-card titles - second comma-segment is the city.
+  assert.equal(parseCityFromTitle('דירה, נחושה'), 'נחושה');
+  assert.equal(parseCityFromTitle('בית פרטי/ קוטג\', שדות מיכה'), 'שדות מיכה');
+  assert.equal(parseCityFromTitle('דירה, תל אביב יפו'), 'תל אביב יפו');
+  assert.equal(parseCityFromTitle('בית פרטי, משמר הירדן'), 'משמר הירדן');
+  // Whitespace tolerated.
+  assert.equal(parseCityFromTitle('דירה,   רחובות '), 'רחובות');
+});
+
+test('parseCityFromTitle rejects values that do not look like a city', () => {
+  // Street numbers in the second segment - reject (it is an address).
+  assert.equal(parseCityFromTitle('דירה, הרקפת 162'), null);
+  // No comma at all.
+  assert.equal(parseCityFromTitle('דירה'), null);
+  assert.equal(parseCityFromTitle('בית פרטי'), null);
+  // Empty / placeholder titles.
+  assert.equal(parseCityFromTitle('מודעה'), null);
+  assert.equal(parseCityFromTitle(''), null);
+  assert.equal(parseCityFromTitle(null), null);
+  assert.equal(parseCityFromTitle(undefined), null);
+  // Anti-bot text leaking in.
+  assert.equal(parseCityFromTitle('?Are you for real, abc'), null);
+  // Agency names in the second segment.
+  assert.equal(parseCityFromTitle('דירה, RE/MAX Paradise'), null);
 });

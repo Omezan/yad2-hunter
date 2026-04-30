@@ -8,7 +8,6 @@ const {
   saveSeenAds
 } = require('../store/file-store');
 const {
-  enrichAdsWithDetails,
   probeListingsPresence,
   scrapeAllSearches
 } = require('../scraper/yad2');
@@ -17,9 +16,6 @@ const { sendHealthCheckReport } = require('../services/telegram');
 
 const RECONCILE_PROBE_TIMEOUT_MS = 12000;
 const RECONCILE_PROBE_CONCURRENCY = 4;
-const RECONCILE_ENRICH_TIMEOUT_MS = 12000;
-const RECONCILE_ENRICH_CONCURRENCY = 4;
-const RECONCILE_BUDGET_MS = 4 * 60 * 1000;
 
 function refreshStateFromBranch() {
   // Pull whatever the looping scan has just pushed to the `state` branch.
@@ -164,19 +160,18 @@ async function classifyExtraEntries(extraEntries, { headless }) {
   return byUrl;
 }
 
-async function enrichMissingEntries(missingEntries, { headless }) {
-  if (!missingEntries.length) return new Map();
-  const ads = missingEntries.map((entry) => entry.ad);
-  const enriched = await enrichAdsWithDetails({
-    ads,
-    headless,
-    timeoutMs: RECONCILE_ENRICH_TIMEOUT_MS,
-    concurrency: RECONCILE_ENRICH_CONCURRENCY,
-    budgetMs: RECONCILE_BUDGET_MS
-  });
+// We no longer enrich missing ads via the detail page. The list-card
+// scrape that produced `entry.ad` already carries title / city /
+// rooms / price / district / link - everything the dashboard renders.
+// Detail-page enrichment was the source of most "מחיר לא מצוין" /
+// "מודעה" leakage on the dashboard, because Yad2 anti-bot blocks the
+// majority of detail-page GETs from GitHub Actions.
+function buildMissingFromListCards(missingEntries) {
   const byId = new Map();
-  for (const ad of enriched) {
-    if (ad && ad.externalId) byId.set(ad.externalId, ad);
+  for (const entry of missingEntries) {
+    if (entry && entry.externalId && entry.ad) {
+      byId.set(entry.externalId, entry.ad);
+    }
   }
   return byId;
 }
@@ -386,40 +381,44 @@ async function runHealthCheck() {
   const missingEntries = buildMissingEntries(rows, scrapeResult.ads);
 
   const headless = env.PLAYWRIGHT_HEADLESS;
-  const [extraClassification, missingClassification] = await Promise.all([
-    classifyExtraEntries(extraEntries, { headless }),
-    enrichMissingEntries(missingEntries, { headless }).then((enrichedById) => {
-      // Pre-filter: only admit ads that the relevance filter would also
-      // accept on a regular run.
-      const enrichedAds = Array.from(enrichedById.values());
-      const accepted = new Set(
-        filterRelevantAds(enrichedAds, { requireExplicitRooms: true }).map(
-          (a) => a.externalId
-        )
-      );
-      const result = new Map();
-      for (const entry of missingEntries) {
-        const enriched = enrichedById.get(entry.externalId);
-        if (!enriched) {
-          result.set(entry.externalId, {
-            kind: 'unenriched',
-            reason: 'לא הצלחנו לטעון את פרטי המודעה כרגע — תיבדק שוב בריצה הבאה'
-          });
-          continue;
-        }
-        if (accepted.has(entry.externalId)) {
-          result.set(entry.externalId, { kind: 'admit', enriched });
-        } else {
-          result.set(entry.externalId, {
-            kind: 'rejected',
-            reason: 'נדחתה על ידי סינון הרלוונטיות',
-            enriched
-          });
-        }
+  // We only probe the EXTRA ids (in seen but missing from latest scrape)
+  // because that needs a real http call to decide whether the listing
+  // was removed. MISSING ids (live on Yad2 but not yet in seen) just
+  // reuse the list-card data we already have - no detail-page fetch.
+  const extraClassification = await classifyExtraEntries(extraEntries, {
+    headless
+  });
+
+  const listCardAdsById = buildMissingFromListCards(missingEntries);
+  const missingClassification = (() => {
+    const enrichedAds = Array.from(listCardAdsById.values());
+    const accepted = new Set(
+      filterRelevantAds(enrichedAds, { requireExplicitRooms: true }).map(
+        (a) => a.externalId
+      )
+    );
+    const result = new Map();
+    for (const entry of missingEntries) {
+      const enriched = listCardAdsById.get(entry.externalId);
+      if (!enriched) {
+        result.set(entry.externalId, {
+          kind: 'unenriched',
+          reason: 'לא נמצאה ברשומות הסריקה החיה'
+        });
+        continue;
       }
-      return result;
-    })
-  ]);
+      if (accepted.has(entry.externalId)) {
+        result.set(entry.externalId, { kind: 'admit', enriched });
+      } else {
+        result.set(entry.externalId, {
+          kind: 'rejected',
+          reason: 'נדחתה על ידי סינון הרלוונטיות',
+          enriched
+        });
+      }
+    }
+    return result;
+  })();
 
   const reconciliation = reconcileSeen({
     rows,
