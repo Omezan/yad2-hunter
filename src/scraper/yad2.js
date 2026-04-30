@@ -69,6 +69,15 @@ function extractTitle(rawText) {
     if (/^\s*ירד\s+ב/.test(line) && /₪/.test(line)) continue;
     // Skip lines that are just a rooms count ("4 חדרים", "4 חד׳").
     if (/^\d+(?:\.\d+)?\s*(?:חד׳|חדר(?:ים)?)$/.test(line)) continue;
+    // Skip realtor / agency / sponsored brand lines. On Yad2's
+    // sponsored list cards the agency name appears as the first
+    // line of the container; without this skip, "יוניסטייט - UNISTATE",
+    // "RE/MAX Paradise" or "תיווך מעלות" become the listing title.
+    if (/נדל[״"']?ן/i.test(line)) continue;
+    if (/RE\/?MAX|UNISTATE|REAL\s+ESTATE|REALTY|REALITY/i.test(line)) continue;
+    if (/תיווך|נכסים|יזמות|שיווק נדל|קפיטל/.test(line)) continue;
+    // Pure Latin all-caps brand strings.
+    if (/^[A-Z][A-Z0-9 +\-/]{2,}$/.test(line)) continue;
     return line;
   }
   return 'מודעה ללא כותרת';
@@ -733,25 +742,53 @@ function buildListingTitle({ propertyType, city }) {
   return parts.length > 0 ? parts.join(', ') : 'מודעה';
 }
 
+// A "city-shaped" string is non-empty Hebrew/Arabic/Latin text that
+// does not look like a street address (no leading digit, no trailing
+// number) and is not an agency/realtor name.
+function looksLikeCity(value) {
+  if (typeof value !== 'string') return false;
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  if (isYad2ErrorText(trimmed)) return false;
+  // Street-address shapes:
+  //   "הרקפת 162", "383 1", "נחל איילון 20", "שדרות אילות 1"
+  // Reject anything containing standalone digits.
+  if (/\d/.test(trimmed)) return false;
+  // Reject obvious agency / realtor wording that sometimes ends up in
+  // h1/h2 on sponsored listings.
+  if (/נדל[״"']?ן/i.test(trimmed)) return false;
+  if (/RE\/?MAX|UNISTATE|REAL\s+ESTATE|REALTY/i.test(trimmed)) return false;
+  if (/תיווך|נכסים|יזמות|שיווק נדל|קפיטל/.test(trimmed)) return false;
+  // Pure Latin all-caps brands ("UNISTATE", "S+ REAL ESTATE").
+  if (/^[A-Z][A-Z0-9 +\-/]{2,}$/.test(trimmed)) return false;
+  // Reasonable length cap to avoid full descriptions.
+  if (trimmed.length > 40) return false;
+  return true;
+}
+
 function extractCityFromHeadings(data) {
+  // Prefer the breadcrumb-style secondary heading: "מחוז | עיר | שכונה"
+  // or "עיר, עיר". The last part is usually the city. We try every
+  // segment from the end backward and pick the first one that looks
+  // like a real city (no street numbers, no agency wording).
   const secondary = String(data.secondaryHeading || '').trim();
   if (secondary && !isYad2ErrorText(secondary)) {
-    const parts = secondary.split(/[,،]/).map((part) => part.trim()).filter(Boolean);
-    if (parts.length >= 2) {
-      const last = parts[parts.length - 1];
-      const previous = parts[parts.length - 2];
-      if (last && previous && last === previous && !isYad2ErrorText(last)) {
-        return last;
-      }
-      if (last && !isYad2ErrorText(last)) {
-        return last;
-      }
+    const parts = secondary
+      .split(/[,،|/]/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+    for (let i = parts.length - 1; i >= 0; i -= 1) {
+      if (looksLikeCity(parts[i])) return parts[i];
     }
   }
+  // Fallback: the listing's main heading. Only accept it if it
+  // actually looks like a city - the heading is often a street
+  // address ("הרקפת 162") or an agency name on sponsored listings,
+  // both of which we MUST NOT persist as the city.
   const heading = String(data.titleHeading || '').trim();
   if (heading && !isYad2ErrorText(heading)) {
     const firstLine = heading.split('\n')[0].trim();
-    return firstLine && !isYad2ErrorText(firstLine) ? firstLine : null;
+    if (looksLikeCity(firstLine)) return firstLine;
   }
   return null;
 }
@@ -940,9 +977,30 @@ async function enrichAdsWithDetails({
     locale: 'he-IL',
     viewport: { width: 1440, height: 1200 },
     extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'
+      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
+      Accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none'
     }
   });
+
+  // Warm the session by visiting Yad2's homepage first. Without this
+  // step Yad2 returns its Radware/ShieldSquare anti-bot challenge
+  // ("Are you for real?") for every direct detail-page GET, which
+  // poisons the heal step.
+  try {
+    const warmupPage = await context.newPage();
+    await warmupPage.goto('https://www.yad2.co.il/', {
+      waitUntil: 'domcontentloaded',
+      timeout: timeoutMs
+    });
+    await warmupPage.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+    await warmupPage.close();
+  } catch (warmupError) {
+    logger.warn?.(`Enrichment warmup failed (continuing anyway): ${warmupError.message}`);
+  }
 
   const pages = await Promise.all(
     Array.from({ length: Math.min(concurrency, ads.length) }, () => context.newPage())
@@ -952,19 +1010,38 @@ async function enrichAdsWithDetails({
   const enriched = [];
   const deadline = budgetMs > 0 ? Date.now() + budgetMs : Infinity;
 
+  async function reWarmupOn(page) {
+    try {
+      await page.goto('https://www.yad2.co.il/', {
+        waitUntil: 'domcontentloaded',
+        timeout: timeoutMs
+      });
+      await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+    } catch (warmupError) {
+      logger.warn?.(`  retry warmup failed: ${warmupError.message}`);
+    }
+  }
+
   async function fetchWithRetry(page, ad) {
-    const maxAttempts = 2;
+    const maxAttempts = 3;
     let lastError = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       try {
         return await fetchListingDetails(page, ad.link, timeoutMs);
       } catch (error) {
         lastError = error;
+        const isCaptcha = /captcha|anti-bot|are you for real/i.test(error.message || '');
         if (attempt < maxAttempts) {
           logger.warn?.(
-            `  detail fetch attempt ${attempt}/${maxAttempts} failed for ${ad.link}: ${error.message}`
+            `  detail fetch attempt ${attempt}/${maxAttempts} failed for ${ad.link}: ${error.message}${
+              isCaptcha ? ' - re-warming session' : ''
+            }`
           );
-          await page.waitForTimeout(1200 + Math.floor(Math.random() * 800));
+          if (isCaptcha) {
+            await reWarmupOn(page);
+          } else {
+            await page.waitForTimeout(1200 + Math.floor(Math.random() * 800));
+          }
         }
       }
     }
@@ -1146,10 +1223,12 @@ async function probeListingsPresence({
 
 module.exports = {
   enrichAdsWithDetails,
+  extractCityFromHeadings,
   extractExternalId,
   extractTitle,
   fetchListingDetails,
   isYad2ErrorText,
+  looksLikeCity,
   normalizeItemUrl,
   parseFloor,
   parsePublishedDate,

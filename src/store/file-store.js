@@ -226,27 +226,53 @@ function commitAds({
     // downgrade a clean value to a blank one. The fresh `ad` object
     // came either from a list-card scrape (untrusted title) or from
     // the enriched detail page (trusted city/price/rooms).
+    // Trust the detail-page enrichment over the list-card scrape: a
+    // fresh `city` value means we successfully read the listing's
+    // real heading, and `ad.title` was rebuilt from it. List-card
+    // scrapes can show agency / sponsor names as the first line.
+    const freshCityIsTrustworthy =
+      typeof ad.city === 'string' &&
+      ad.city.trim().length > 0 &&
+      !isPoisonString(ad.city);
+    // run-once sets __forceReset on records whose detail-page heal
+    // failed: we must throw away any list-card-scraped title for
+    // those so the next run picks them up again.
+    const forceReset = ad.__forceReset === true;
     seen.ads[ad.externalId] = {
       ...existing,
       externalId: ad.externalId,
       // Title:
+      //   - If the heal step explicitly asked us to reset, drop any
+      //     existing title and use the placeholder (agency names from
+      //     sponsored cards must not freeze on disk).
       //   - If the fresh title is poison (error widget), discard it.
-      //   - If the existing title is a placeholder OR poison, accept
-      //     the fresh title (it likely came from a real enrichment).
+      //   - If the fresh ad came with a real (non-poison) city, the
+      //     enrichment worked - prefer its title even when the existing
+      //     title is non-empty (it might be a stale agency name from
+      //     a sponsored list-card).
+      //   - If the existing title is a placeholder or poison, accept
+      //     the fresh title.
       //   - Otherwise keep the existing title - we don't want to
       //     overwrite a real city/property line with a list-card scrape.
-      title: isPoisonString(ad.title)
-        ? existing.title && !isPoisonString(existing.title)
-          ? existing.title
-          : 'מודעה'
-        : isPlaceholderTitle(existing.title) || isPoisonString(existing.title)
-          ? ad.title || existing.title || 'מודעה'
-          : existing.title || ad.title || 'מודעה',
+      title: forceReset
+        ? ad.title || 'מודעה'
+        : isPoisonString(ad.title)
+          ? existing.title && !isPoisonString(existing.title) && !isPlaceholderTitle(existing.title)
+            ? existing.title
+            : 'מודעה'
+          : freshCityIsTrustworthy && ad.title
+            ? ad.title
+            : isPlaceholderTitle(existing.title) || isPoisonString(existing.title)
+              ? ad.title || existing.title || 'מודעה'
+              : existing.title || ad.title || 'מודעה',
       link: ad.link || existing.link,
       searchId: ad.searchId || existing.searchId,
       searchLabel: ad.searchLabel || existing.searchLabel,
       districtLabel: ad.districtLabel || existing.districtLabel,
-      city: preferFreshField(existing.city, ad.city),
+      // forceReset clears the city too so needsHealing keeps flagging
+      // this record on the next run instead of accepting whatever the
+      // list-card had.
+      city: forceReset ? (ad.city ?? null) : preferFreshField(existing.city, ad.city),
       price:
         existing.price === null || existing.price === undefined
           ? typeof ad.price === 'number'

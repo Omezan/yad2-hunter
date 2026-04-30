@@ -14,8 +14,10 @@ const {
   formatReconciliationLine
 } = require('../src/services/telegram');
 const {
+  extractCityFromHeadings,
   extractExternalId,
   isYad2ErrorText,
+  looksLikeCity,
   normalizeItemUrl,
   parseFloor,
   parsePublishedDate
@@ -886,6 +888,83 @@ test('extractTitle skips the anti-bot challenge text', () => {
 test('extractTitle skips the "לא צוין מחיר" placeholder line', () => {
   const raw = 'לא צוין מחיר\nדירה, רחובות';
   assert.equal(extractTitle(raw), 'דירה, רחובות');
+});
+
+test('extractTitle skips realtor / agency lines on sponsored cards', () => {
+  // Sponsored Yad2 list cards put the agency name on the first line
+  // of the container above the actual property heading. Make sure
+  // that line never becomes the title.
+  assert.equal(extractTitle('יוניסטייט - UNISTATE\nדירה, נהריה\n4 חדרים\n5,300 ₪'), 'דירה, נהריה');
+  assert.equal(extractTitle('RE/MAX Paradise\nדירה, צפת'), 'דירה, צפת');
+  assert.equal(extractTitle('חן לוי קפיטל נדל"ן\nדירה, חיפה'), 'דירה, חיפה');
+  assert.equal(extractTitle('תיווך מעלות\nבית פרטי, מעלות'), 'בית פרטי, מעלות');
+  assert.equal(extractTitle('פנורמה נכסים\nדירה, נצרת עילית'), 'דירה, נצרת עילית');
+  assert.equal(extractTitle('המאירי נכסים\nדירה, עפולה'), 'דירה, עפולה');
+  // All-caps brand strings.
+  assert.equal(extractTitle('UNISTATE\nדירה, נהריה'), 'דירה, נהריה');
+  // Real property titles must not be skipped.
+  assert.equal(extractTitle('דירה, חדרה\n4 חדרים'), 'דירה, חדרה');
+});
+
+test('looksLikeCity accepts real city names and rejects addresses / agency strings', () => {
+  // Real cities pass.
+  assert.equal(looksLikeCity('חיפה'), true);
+  assert.equal(looksLikeCity('תל אביב'), true);
+  assert.equal(looksLikeCity('נצרת עילית'), true);
+  assert.equal(looksLikeCity('משמר הירדן'), true);
+  // Street addresses are rejected (digits = address, not city).
+  assert.equal(looksLikeCity('הרקפת 162'), false);
+  assert.equal(looksLikeCity('383 1'), false);
+  assert.equal(looksLikeCity('נחל איילון 20'), false);
+  assert.equal(looksLikeCity('שדרות אילות 1'), false);
+  // Agency / realtor names are rejected.
+  assert.equal(looksLikeCity('יוניסטייט - UNISTATE'), false);
+  assert.equal(looksLikeCity('חן לוי קפיטל נדל"ן'), false);
+  assert.equal(looksLikeCity('RE/MAX Paradise'), false);
+  assert.equal(looksLikeCity('UNISTATE'), false);
+  assert.equal(looksLikeCity('תיווך מעלות'), false);
+  assert.equal(looksLikeCity('פנורמה נכסים'), false);
+  // Anti-bot / error widget text rejected (via isYad2ErrorText).
+  assert.equal(looksLikeCity('Are you for real?'), false);
+  assert.equal(looksLikeCity('אופס... תקלה!'), false);
+  assert.equal(looksLikeCity('לא צוין מחיר'), false);
+  // Non-strings.
+  assert.equal(looksLikeCity(null), false);
+  assert.equal(looksLikeCity(undefined), false);
+  assert.equal(looksLikeCity(''), false);
+});
+
+test('extractCityFromHeadings prefers a city-shaped breadcrumb segment', () => {
+  // Yad2's most common breadcrumb: "<city>, <city>" duplicated or
+  // "<district> | <city>" - pick the last city-shaped segment.
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: 'רחובות, רחובות', titleHeading: '' }),
+    'רחובות'
+  );
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: 'מרכז | חיפה', titleHeading: 'הרקפת 162' }),
+    'חיפה'
+  );
+  // h2 has only an address - skip it, fall through to h1.
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: 'הרקפת 162', titleHeading: 'נהריה' }),
+    'נהריה'
+  );
+  // h1 is also an address - return null so the heal step retries.
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: '', titleHeading: 'הרקפת 162' }),
+    null
+  );
+  // h1 is an agency name - reject it.
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: '', titleHeading: 'יוניסטייט - UNISTATE' }),
+    null
+  );
+  // h1 / h2 are anti-bot text.
+  assert.equal(
+    extractCityFromHeadings({ secondaryHeading: '?Are you for real', titleHeading: 'Are you for real?' }),
+    null
+  );
 });
 
 test('formatHealthCheckMessage still emits the diff details after a successful reconciliation (allMatch=true)', () => {

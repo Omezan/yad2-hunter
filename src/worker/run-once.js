@@ -162,12 +162,32 @@ async function runOnce(options = {}) {
       }
     }
     // Replace poisoned existingAds entries with their healed counterpart.
+    // When enrichment succeeded (returned a city), trust that data over
+    // the list-card scrape - sponsored placements often have the
+    // agency's name as the first list-card line, which would otherwise
+    // get persisted as the title. When enrichment failed (no city
+    // came back), null out the existing city/title so the record
+    // remains flagged for re-healing on the next run instead of
+    // freezing a misleading agency name on disk.
     const healedById = new Map(
       healedAds.filter((a) => a && a.externalId).map((a) => [a.externalId, a])
     );
     const existingAdsForCommit = existingAds.map((ad) => {
       const healed = healedById.get(ad.externalId);
-      return healed ? { ...ad, ...healed } : ad;
+      if (!healed) return ad;
+      const healedHasCity =
+        typeof healed.city === 'string' && healed.city.trim().length > 0;
+      if (healedHasCity) {
+        // Detail page worked. Overwrite list-card scrape so the agency
+        // name from a sponsored card cannot survive to the dashboard.
+        return { ...ad, ...healed };
+      }
+      // Detail page failed (captcha / 5xx / timeout). Reset the
+      // record to a neutral state so commitAds clears the misleading
+      // agency-name title from disk and needsHealing keeps flagging
+      // the record next run. The __forceReset flag tells commitAds
+      // to ignore the existing title even when it isn't poison.
+      return { ...ad, ...healed, city: null, title: 'מודעה', __forceReset: true };
     });
 
     const { removed: removedAds = [], skippedDistricts = [] } = commitAds({

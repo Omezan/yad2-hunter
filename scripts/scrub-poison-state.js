@@ -23,6 +23,48 @@ function isErrorWidget(value) {
   return typeof value === 'string' && /אופס\.{2,3}\s*תקלה/.test(value);
 }
 
+const PROPERTY_TYPE_WORDS = [
+  'דירה',
+  'בית',
+  'קוטג',
+  'וילה',
+  'פנטהאוז',
+  'דופלקס',
+  'מיני פנטהאוז',
+  'מרתף',
+  'גג',
+  'סטודיו',
+  'יחידת דיור',
+  'דירת גן',
+  'משק'
+];
+
+function looksLikePropertyTitle(title) {
+  if (typeof title !== 'string') return false;
+  const trimmed = title.trim();
+  if (!trimmed) return false;
+  // "דירה, חיפה" / "בית פרטי, רחובות" - canonical built titles.
+  if (trimmed.includes(',')) return true;
+  // Bare first word is a known property type.
+  if (PROPERTY_TYPE_WORDS.some((w) => trimmed === w || trimmed.startsWith(`${w} `))) return true;
+  return false;
+}
+
+function looksLikeAgencyTitle(title) {
+  if (typeof title !== 'string') return false;
+  const trimmed = title.trim();
+  if (!trimmed) return false;
+  // Common agency / brand markers.
+  if (/נדל[״"']?ן/.test(trimmed)) return true;
+  if (/RE\/?MAX/i.test(trimmed)) return true;
+  if (/UNISTATE|RE\s*\/\s*MAX|REALTY|REAL\s+ESTATE/i.test(trimmed)) return true;
+  if (/תיווך|נכסים|שיווק נדל|יזמות|קפיטל/.test(trimmed)) return true;
+  // ALL-CAPS Latin words (e.g. "UNISTATE", "S+ REAL ESTATE") that
+  // didn't already pattern-match above.
+  if (/^[A-Z][A-Z0-9 +\-/]{2,}$/.test(trimmed)) return true;
+  return false;
+}
+
 function isAntiBotText(value) {
   if (typeof value !== 'string') return false;
   const trimmed = value.trim();
@@ -92,6 +134,8 @@ function main() {
   let scrubbedWidget = 0;
   let scrubbedAntiBot = 0;
   let scrubbedPricePlaceholder = 0;
+  let scrubbedAgencyTitle = 0;
+  let scrubbedAddressLikeCity = 0;
   let healedPriceFromTitle = 0;
   let healedRoomsFromTitle = 0;
   let resetTitle = 0;
@@ -131,6 +175,38 @@ function main() {
       touched = true;
     }
 
+    // Address-like value leaked into city: "383 1", "הרקפת 162",
+    // "נחל איילון 20" - these are streets, not cities. Wipe so the
+    // heal step re-enriches.
+    if (typeof record.city === 'string' && /\d/.test(record.city)) {
+      record.city = null;
+      scrubbedAddressLikeCity += 1;
+      touched = true;
+    }
+    // Agency / realtor wording inside the city field - same treatment.
+    if (looksLikeAgencyTitle(record.city)) {
+      record.city = null;
+      scrubbedAgencyTitle += 1;
+      touched = true;
+    }
+
+    // Agency / realtor name leaked into the title from a sponsored
+    // list-card. Only reset when the title clearly matches one of
+    // the agency wording patterns AND it doesn't ALSO look like a
+    // property heading (e.g. "דירה, חיפה"). Without this guardrail
+    // we'd risk wiping real titles that incidentally contain words
+    // like "תיווך" inside a longer phrase.
+    if (typeof record.title === 'string') {
+      const t = record.title;
+      const looksAgency = looksLikeAgencyTitle(t);
+      const looksProperty = looksLikePropertyTitle(t);
+      if (looksAgency && !looksProperty) {
+        record.title = 'מודעה';
+        scrubbedAgencyTitle += 1;
+        touched = true;
+      }
+    }
+
     // Heal a price hidden inside the title.
     if ((record.price === null || record.price === undefined) && looksPriceLikeTitle(record.title)) {
       const parsed = parsePriceFromTitle(record.title);
@@ -165,7 +241,16 @@ function main() {
   }
   fs.writeFileSync(target, `${JSON.stringify(data, null, 2)}\n`);
   console.log(
-    `scrubbed widget: ${scrubbedWidget}, scrubbed anti-bot: ${scrubbedAntiBot}, scrubbed price-placeholder: ${scrubbedPricePlaceholder}, healed price-from-title: ${healedPriceFromTitle}, healed rooms-from-title: ${healedRoomsFromTitle}, neutralised titles: ${resetTitle}`
+    [
+      `widget=${scrubbedWidget}`,
+      `anti-bot=${scrubbedAntiBot}`,
+      `price-placeholder=${scrubbedPricePlaceholder}`,
+      `address-like-city=${scrubbedAddressLikeCity}`,
+      `agency-title=${scrubbedAgencyTitle}`,
+      `healed-price-from-title=${healedPriceFromTitle}`,
+      `healed-rooms-from-title=${healedRoomsFromTitle}`,
+      `neutralised-titles=${resetTitle}`
+    ].join(' ')
   );
 }
 
