@@ -1,6 +1,47 @@
 {
   "runs": [
     {
+      "startedAt": "2026-04-30T02:31:04.873Z",
+      "completedAt": "2026-04-30T02:41:02.121Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "enrichedAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-04-30T02:21:07.467Z",
       "completedAt": "2026-04-30T02:30:58.887Z",
       "status": "partial",
@@ -1764,20 +1805,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "startedAt": "2026-04-29T12:11:02.181Z",
-      "completedAt": "2026-04-29T12:14:31.423Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 247,
-      "preFilteredAds": 247,
-      "candidateNewAds": 17,
-      "enrichedAds": 17,
-      "relevantNewAds": 17,
-      "removedAds": 1,
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
