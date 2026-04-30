@@ -310,11 +310,12 @@ function main() {
       touched = true;
     }
 
-    // Recover city from a "PROPERTY_TYPE, CITY" title when the record
-    // has a clean title but a missing city. Common shape:
-    //   { title: "דירה, נחושה", city: null } → city: "נחושה".
-    // We deliberately accept the recovered value only when it looks
-    // like a real city name (no digits, no agency words).
+    // Recover city from a "PROPERTY_TYPE, CITY[, CITY]" title when the
+    // record has a clean title but a missing city. Common shapes:
+    //   { title: "דירה, נחושה" } → city: "נחושה"
+    //   { title: "בית פרטי/ קוטג', אשלים, אשלים" } → city: "אשלים"
+    // We walk segments from the end and pick the first one that
+    // looks like a real city (no digits, no agency words).
     {
       const cityBlank = typeof record.city !== 'string' || record.city.trim().length === 0;
       if (
@@ -324,18 +325,53 @@ function main() {
         !isPoisonText(record.title) &&
         !looksLikeAgencyTitle(record.title)
       ) {
-        const candidate = record.title.slice(record.title.indexOf(',') + 1).trim();
-        const looksClean =
-          candidate.length > 0 &&
-          candidate.length <= 40 &&
-          !/\d/.test(candidate) &&
-          !looksLikeAgencyTitle(candidate);
-        if (looksClean) {
-          record.city = candidate;
-          recoveredCityFromTitle += 1;
-          touched = true;
+        const segments = record.title
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+        // Skip segment 0 (the property type) and walk back from the end.
+        for (let i = segments.length - 1; i >= 1; i -= 1) {
+          const candidate = segments[i];
+          const looksClean =
+            candidate.length > 0 &&
+            candidate.length <= 40 &&
+            !/\d/.test(candidate) &&
+            !looksLikeAgencyTitle(candidate);
+          if (looksClean) {
+            record.city = candidate;
+            recoveredCityFromTitle += 1;
+            touched = true;
+            break;
+          }
         }
       }
+    }
+
+    // Collapse duplicated trailing segment in the title:
+    //   "בית פרטי/ קוטג', אשלים, אשלים" → "בית פרטי/ קוטג', אשלים".
+    if (typeof record.title === 'string' && record.title.includes(',')) {
+      const parts = record.title.split(',').map((p) => p.trim());
+      if (parts.length >= 3 && parts[parts.length - 1] && parts[parts.length - 1] === parts[parts.length - 2]) {
+        record.title = parts.slice(0, -1).join(', ');
+        touched = true;
+      }
+    }
+
+    // Street-address-shaped titles ("דרך האתרוג 59") are no longer
+    // informative now that we capture a canonical title separately.
+    // Null the title so the next list-card scrape repopulates it
+    // with the correct "PROPERTY_TYPE, CITY" heading. The dashboard
+    // shows `city` first anyway, so a transient null title is fine.
+    if (
+      typeof record.title === 'string' &&
+      /\d/.test(record.title) &&
+      !record.title.includes(',') &&
+      !looksLikeAgencyTitle(record.title) &&
+      !isPoisonText(record.title)
+    ) {
+      record.title = null;
+      resetTitle += 1;
+      touched = true;
     }
 
     // Final pass: if AFTER all the scrubbing the record still has

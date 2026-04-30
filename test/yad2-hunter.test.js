@@ -1027,6 +1027,15 @@ test('parseCityFromTitle pulls the city out of "PROPERTY_TYPE, CITY" titles', ()
   assert.equal(parseCityFromTitle('דירה,   רחובות '), 'רחובות');
 });
 
+test('parseCityFromTitle handles Yad2 cards that repeat the city ("X, X")', () => {
+  // Real Yad2 list-card heading on sponsored / city-paired cards:
+  //   "בית פרטי/ קוטג', אשלים, אשלים"  →  "אשלים"
+  //   "דירה, נועם, נועם"                →  "נועם"
+  assert.equal(parseCityFromTitle('בית פרטי/ קוטג\', אשלים, אשלים'), 'אשלים');
+  assert.equal(parseCityFromTitle('דירה, נועם, נועם'), 'נועם');
+  assert.equal(parseCityFromTitle('בית פרטי/ קוטג\', אבן שמואל, אבן שמואל'), 'אבן שמואל');
+});
+
 test('parseCityFromTitle rejects values that do not look like a city', () => {
   // Street numbers in the second segment - reject (it is an address).
   assert.equal(parseCityFromTitle('דירה, הרקפת 162'), null);
@@ -1042,4 +1051,37 @@ test('parseCityFromTitle rejects values that do not look like a city', () => {
   assert.equal(parseCityFromTitle('?Are you for real, abc'), null);
   // Agency names in the second segment.
   assert.equal(parseCityFromTitle('דירה, RE/MAX Paradise'), null);
+});
+
+test('extractTitle prefers a "PROPERTY_TYPE, CITY" line over a street-address line', () => {
+  // Real Yad2 list-card raw text shape (price, street, type+city, rooms).
+  // Without the property-type preference, extractTitle would pick the
+  // street address ("דרך האתרוג 59") as the title.
+  const raw =
+    '₪ 5,600\nדרך האתרוג 59\nבית פרטי/ קוטג\', אשלים, אשלים\n4 חדרים • קומה ‎קרקע‏ • 500 מ״ר';
+  assert.equal(extractTitle(raw), 'בית פרטי/ קוטג\', אשלים');
+});
+
+test('extractTitle picks the property-type heading on sponsored cards (agency on line 1)', () => {
+  // Sponsored card shape: agency name, then placeholder price, then
+  // a property-type line WITHOUT a city, then the canonical
+  // "PROPERTY_TYPE, CITY, CITY" heading. We must pick the canonical
+  // line.
+  const raw =
+    'לוי נכסים ונדל"ן\nלא צוין מחיר\nבית פרטי/ קוטג\'\nבית פרטי/ קוטג\', זרחיה\n4 חדרים • קומה ‎1‏ • 330 מ״ר';
+  assert.equal(extractTitle(raw), 'בית פרטי/ קוטג\', זרחיה');
+});
+
+test('extractTitle still picks "PROPERTY_TYPE, CITY" when the price-drop chrome is present', () => {
+  // "ירד ב-X ₪" line at the top must not become the title; the
+  // canonical heading further down should win.
+  const raw =
+    'ירד ב-1,000 ₪\n₪ 9,000\nסמטת השיזף 8\nבית פרטי/ קוטג\', באר אורה, באר אורה\n5.5 חדרים • קומה ‎קרקע‏ • 475 מ״ר';
+  assert.equal(extractTitle(raw), 'בית פרטי/ קוטג\', באר אורה');
+});
+
+test('extractTitle falls back to the legacy first-line behaviour when no PROPERTY_TYPE line exists', () => {
+  // No canonical heading in the rawText - first non-skipped line wins.
+  const raw = '₪ 5,300\n4 חדרים\nדירה, מתן';
+  assert.equal(extractTitle(raw), 'דירה, מתן');
 });

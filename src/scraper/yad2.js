@@ -45,39 +45,98 @@ function parseRooms(text) {
   return Number.isNaN(rooms) ? null : rooms;
 }
 
+// Hebrew property-type prefixes Yad2 uses on the "PROPERTY_TYPE, CITY"
+// heading line of every list card. A line that starts with one of
+// these AND contains a comma is the canonical heading we want.
+const PROPERTY_TYPE_PREFIXES = [
+  'בית פרטי/ קוטג\'',
+  'בית פרטי / קוטג\'',
+  'בית פרטי',
+  'דירת גן',
+  'דירת גג',
+  'דירה',
+  'פנטהאוז',
+  'מיני פנטהאוז',
+  'דופלקס',
+  'טריפלקס',
+  'יחידת דיור',
+  'וילה',
+  'משק',
+  'סטודיו',
+  'גג/ פנטהאוז',
+  'גג / פנטהאוז',
+  'דו משפחתי'
+];
+
+function startsWithPropertyType(line) {
+  if (typeof line !== 'string') return false;
+  const trimmed = line.trim();
+  return PROPERTY_TYPE_PREFIXES.some(
+    (prefix) => trimmed === prefix || trimmed.startsWith(`${prefix},`) || trimmed.startsWith(`${prefix} `)
+  );
+}
+
+// Yad2 list cards repeat the city in the heading line:
+// "בית פרטי/ קוטג', אשלים, אשלים". Collapse "X, X" into "X" so
+// downstream consumers see a clean "PROPERTY_TYPE, CITY" string.
+function collapseDuplicatedTrailingSegment(line) {
+  if (typeof line !== 'string') return line;
+  const parts = line.split(',').map((p) => p.trim());
+  if (parts.length >= 3) {
+    const last = parts[parts.length - 1];
+    const secondToLast = parts[parts.length - 2];
+    if (last && last === secondToLast) {
+      return parts.slice(0, -1).join(', ');
+    }
+  }
+  return line;
+}
+
+function shouldSkipTitleLine(line) {
+  // Yad2 error widget.
+  if (/אופס\.{2,3}\s*תקלה/.test(line)) return true;
+  // Anti-bot / captcha challenge text.
+  if (/are\s+you\s+for\s+real/i.test(line)) return true;
+  if (/shieldsquare|radware|bot\s*manager\s*block/i.test(line)) return true;
+  // "לא צוין מחיר" - belongs in the structured price field.
+  if (/^\s*לא\s+צוין\s+מחיר\s*$/.test(line)) return true;
+  // Pure price strings ("₪ 5,300", "5300 ₪", "ירד ב-500 ₪").
+  if (/^\s*[₪]?\s*[\d.,]+\s*[₪]?\s*$/.test(line)) return true;
+  if (/^\s*ירד\s+ב/.test(line) && /₪/.test(line)) return true;
+  // Rooms-only line.
+  if (/^\d+(?:\.\d+)?\s*(?:חד׳|חדר(?:ים)?)$/.test(line)) return true;
+  // Realtor / agency / sponsored brand line.
+  if (/נדל[״"']?ן/i.test(line)) return true;
+  if (/RE\/?MAX|UNISTATE|REAL\s+ESTATE|REALTY|REALITY/i.test(line)) return true;
+  if (/תיווך|נכסים|יזמות|שיווק נדל|קפיטל/.test(line)) return true;
+  // Pure Latin all-caps brand strings.
+  if (/^[A-Z][A-Z0-9 +\-/]{2,}$/.test(line)) return true;
+  return false;
+}
+
 function extractTitle(rawText) {
   const lines = String(rawText || '')
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean);
 
+  // First pass: prefer a "PROPERTY_TYPE, CITY[, CITY]" line. Yad2's
+  // list cards always contain one of these and it's the only line
+  // that reliably carries the city. Without this preference we'd
+  // pick up the street-address line ("דרך האתרוג 59") or the
+  // rooms/floor line as the title.
   for (const line of lines) {
-    // Skip Yad2's error widget so a card that briefly rendered as the
-    // error placeholder doesn't persist "אופס... תקלה!" as the title.
-    if (/אופס\.{2,3}\s*תקלה/.test(line)) continue;
-    // Skip the anti-bot / captcha challenge text so a blocked detail
-    // page never leaks "Are you for real?" or similar into the title.
-    if (/are\s+you\s+for\s+real/i.test(line)) continue;
-    if (/shieldsquare|radware|bot\s*manager\s*block/i.test(line)) continue;
-    // Skip the "no price specified" placeholder that can appear in the
-    // price area of a listing - it's not a description/title.
-    if (/^\s*לא\s+צוין\s+מחיר\s*$/.test(line)) continue;
-    // Skip lines that are essentially just a price ("₪ 5,300", "5300 ₪",
-    // "ירד ב-500 ₪") - those should land in the structured `price`
-    // field via parsePrice(), not become the listing's title.
-    if (/^\s*[₪]?\s*[\d.,]+\s*[₪]?\s*$/.test(line)) continue;
-    if (/^\s*ירד\s+ב/.test(line) && /₪/.test(line)) continue;
-    // Skip lines that are just a rooms count ("4 חדרים", "4 חד׳").
-    if (/^\d+(?:\.\d+)?\s*(?:חד׳|חדר(?:ים)?)$/.test(line)) continue;
-    // Skip realtor / agency / sponsored brand lines. On Yad2's
-    // sponsored list cards the agency name appears as the first
-    // line of the container; without this skip, "יוניסטייט - UNISTATE",
-    // "RE/MAX Paradise" or "תיווך מעלות" become the listing title.
-    if (/נדל[״"']?ן/i.test(line)) continue;
-    if (/RE\/?MAX|UNISTATE|REAL\s+ESTATE|REALTY|REALITY/i.test(line)) continue;
-    if (/תיווך|נכסים|יזמות|שיווק נדל|קפיטל/.test(line)) continue;
-    // Pure Latin all-caps brand strings.
-    if (/^[A-Z][A-Z0-9 +\-/]{2,}$/.test(line)) continue;
+    if (shouldSkipTitleLine(line)) continue;
+    if (startsWithPropertyType(line) && line.includes(',')) {
+      return collapseDuplicatedTrailingSegment(line);
+    }
+  }
+
+  // Fallback: first non-skipped line (legacy behaviour). This
+  // covers cards whose heading line is unusual but is still the
+  // first descriptive content.
+  for (const line of lines) {
+    if (shouldSkipTitleLine(line)) continue;
     return line;
   }
   return 'מודעה ללא כותרת';
@@ -93,28 +152,30 @@ function extractLocation(rawText) {
 }
 
 // Yad2 list cards put the property heading on a single line shaped
-// like "PROPERTY_TYPE, CITY" - e.g. "דירה, נחושה",
-// "בית פרטי/ קוטג', שדות מיכה". This helper pulls the city out of
-// such a title so we can populate the dashboard's headline directly
-// from list-card data, without ever needing to fetch the detail page.
-//
-// We only return a value that passes looksLikeCity() so we never
-// persist a street address, an agency name or anti-bot text as the
-// city.
+// like "PROPERTY_TYPE, CITY" - e.g. "דירה, נחושה" - or with the
+// city duplicated on sponsored cards: "בית פרטי/ קוטג', אשלים, אשלים".
+// This helper walks the comma-separated segments from the END
+// backward and returns the FIRST one that looks like a real city,
+// so we accept both shapes uniformly without ever picking up the
+// property type as the city.
 function parseCityFromTitle(title) {
   if (typeof title !== 'string') return null;
   const trimmed = title.trim();
   if (!trimmed) return null;
   if (isYad2ErrorText(trimmed)) return null;
-  // Split on the FIRST comma only - some property types contain a
-  // slash but no comma ("בית פרטי/ קוטג'") so a single comma
-  // reliably separates type from city.
-  const commaIdx = trimmed.indexOf(',');
-  if (commaIdx < 0) return null;
-  const candidate = trimmed.slice(commaIdx + 1).trim();
-  if (!candidate) return null;
-  if (!looksLikeCity(candidate)) return null;
-  return candidate;
+  if (!trimmed.includes(',')) return null;
+  const segments = trimmed
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  // The first segment is always the property type ("דירה" /
+  // "בית פרטי/ קוטג'"). Walk segments 2..N and return the first
+  // city-shaped one (handles both "דירה, נחושה" and
+  // "בית פרטי/ קוטג', אשלים, אשלים").
+  for (let i = segments.length - 1; i >= 1; i -= 1) {
+    if (looksLikeCity(segments[i])) return segments[i];
+  }
+  return null;
 }
 
 function dedupeByExternalId(ads) {
