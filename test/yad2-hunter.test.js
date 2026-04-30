@@ -799,3 +799,53 @@ test('formatHealthCheckMessage falls back to legacy missingIds/extraIds when rec
   assert.match(text, /⏳ חסר ב-seen ולא נסגר \(1\)/);
   assert.match(text, /⏳ ב-seen אך לא ב-Yad2 ולא נסגר \(1\)/);
 });
+
+test('formatHealthCheckMessage still emits the diff details after a successful reconciliation (allMatch=true)', () => {
+  // After reconciliation closes every diff, allMatch becomes true. We
+  // still want the user to see WHICH links were affected so they can
+  // sanity-check on Yad2.
+  const rows = [
+    {
+      searchId: 'south',
+      label: 'דרום',
+      real: 5,
+      expected: 5,
+      missingIds: [],
+      extraIds: [],
+      reconciled: {
+        added: [
+          {
+            externalId: 'south/NEW',
+            link: 'https://www.yad2.co.il/realestate/item/south/NEW',
+            reason: 'מודעה חדשה שטרם נסרקה — נוספה ל-seen'
+          }
+        ],
+        removed: [
+          {
+            externalId: 'south/REMOVED',
+            link: 'https://www.yad2.co.il/realestate/item/south/REMOVED',
+            reason: 'HTTP 404'
+          }
+        ],
+        unresolvedExtra: [],
+        unresolvedMissing: []
+      }
+    }
+  ];
+  const text = formatHealthCheckMessage({
+    rows,
+    allMatch: true,
+    generatedAt: '2026-04-30T07:00:00Z',
+    reconciliation: {
+      additions: rows[0].reconciled.added,
+      removals: rows[0].reconciled.removed,
+      unresolvedExtras: [],
+      unresolvedMissing: [],
+      persisted: { ok: true }
+    }
+  });
+
+  assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/NEW/);
+  assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/REMOVED/);
+  assert.match(text, /סיבה: HTTP 404/);
+});

@@ -254,7 +254,25 @@ function buildHealthCheckMessages({ rows, allMatch, generatedAt, reconciliation 
     generatedAt,
     reconciliation
   });
-  if (allMatch) {
+
+  // Send diff details whenever any row has either an unresolved diff
+  // (extra / missing) OR a reconciled diff (added / removed). Even if
+  // we closed the gap automatically, the user wants the actual links
+  // so they can manually verify on Yad2.
+  const hasAnyDiff = rows.some((row) => {
+    const reconciled = row.reconciled || {};
+    return Boolean(
+      (Array.isArray(reconciled.added) && reconciled.added.length) ||
+        (Array.isArray(reconciled.removed) && reconciled.removed.length) ||
+        (Array.isArray(reconciled.unresolvedExtra) && reconciled.unresolvedExtra.length) ||
+        (Array.isArray(reconciled.unresolvedMissing) && reconciled.unresolvedMissing.length) ||
+        (Array.isArray(row.missingIds) && row.missingIds.length) ||
+        (Array.isArray(row.extraIds) && row.extraIds.length) ||
+        row.error
+    );
+  });
+
+  if (!hasAnyDiff) {
     return [summary];
   }
 

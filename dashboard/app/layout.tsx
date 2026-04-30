@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Yad2 Hunter Dashboard',
-  description: 'Tracker for Yad2 rental listings'
+  title: 'מציאת בית במושב',
+  description: 'מעקב אחר מודעות שכירות ביישובים כפריים ב-Yad2'
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

@@ -244,6 +244,24 @@ input:focus {
   letter-spacing: -0.01em;
 }
 
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: var(--accent-gradient);
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
 .header-badges {
   display: flex;
   gap: var(--space-2);
@@ -483,6 +501,12 @@ input:focus {
   color: var(--text-muted);
 }
 
+/* Mobile-only backdrop. Hidden on desktop (where the popover is anchored
+ * to the trigger button instead of being a bottom sheet). */
+.toolbar-district-backdrop {
+  display: none;
+}
+
 .toolbar-district-popover {
   position: absolute;
   top: calc(100% + 6px);
@@ -498,6 +522,13 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+}
+
+/* The header + footer + close button only show on mobile (bottom sheet).
+ * On desktop the popover stays compact. */
+.toolbar-district-header,
+.toolbar-district-footer {
+  display: none;
 }
 
 .toolbar-district-actions {
@@ -528,10 +559,317 @@ input:focus {
 }
 
 @media (max-width: 600px) {
+  /* On mobile the popover becomes a bottom sheet that fills the width
+   * of the viewport. This guarantees every district pill is reachable
+   * and not clipped by the toolbar's flex container. */
+  .toolbar-district-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 12, 22, 0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 60;
+    animation: fadeIn 0.18s ease;
+  }
+
   .toolbar-district-popover {
-    inset-inline-start: auto;
+    position: fixed;
+    inset: auto 0 0 0;
+    top: auto;
+    inset-inline-start: 0;
     inset-inline-end: 0;
-    min-width: min(320px, calc(100vw - 24px));
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
+    border-radius: var(--radius-3) var(--radius-3) 0 0;
+    padding: var(--space-3) var(--space-3) max(var(--space-3), env(safe-area-inset-bottom));
+    z-index: 70;
+    max-height: 80vh;
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.35);
+    animation: sheetIn 0.22s ease;
+  }
+
+  .toolbar-district-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .toolbar-district-title {
+    font-size: var(--type-base);
+    font-weight: 700;
+  }
+
+  .toolbar-district-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 0;
+  }
+
+  .toolbar-district-close:hover {
+    background: var(--surface-elev);
+    color: var(--text);
+  }
+
+  .toolbar-district-list {
+    /* Take the available space inside the sheet so the pills can scroll
+     * vertically without ever needing horizontal overflow. */
+    max-height: 56vh;
+    overflow-y: auto;
+    padding: var(--space-1) 0;
+  }
+
+  /* Bigger tap targets on mobile - the original 34px was just below
+   * Apple's 44px guideline, which is part of why some pills felt
+   * unhittable. */
+  .toolbar-district-list .pill {
+    min-height: 44px;
+    padding: 8px 14px;
+  }
+
+  .toolbar-district-footer {
+    display: flex;
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--border);
+  }
+
+  .toolbar-district-done {
+    flex: 1;
+    min-height: 44px;
+    border-radius: var(--radius-2);
+    background: var(--accent-gradient);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+  }
+}
+
+@keyframes sheetIn {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ================================
+ * Price filter popover
+ * ================================ */
+.toolbar-price-popover {
+  /* Slightly wider than the district popover on desktop because of the
+   * two text inputs side-by-side. */
+  min-width: 300px;
+  max-width: min(380px, 90vw);
+}
+
+.toolbar-price-inputs {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.toolbar-price-input {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  padding: 0 10px;
+  min-height: 38px;
+  font-size: var(--type-sm);
+  color: var(--text);
+}
+
+.toolbar-price-input:focus-within {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.toolbar-price-input > span:first-child {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: var(--type-xs);
+  letter-spacing: 0.02em;
+}
+
+.toolbar-price-input input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  min-height: 0;
+  font-size: var(--type-sm);
+  font-weight: 600;
+  color: var(--text);
+  text-align: end;
+}
+
+.toolbar-price-suffix {
+  color: var(--text-muted);
+  font-size: var(--type-xs);
+}
+
+/* Dual-thumb range slider:
+ *   - .toolbar-price-track is the visible bar.
+ *   - Two <input type="range"> overlap; only their thumbs are visible
+ *     and clickable. The track itself is rendered by the wrapper. */
+.toolbar-price-slider {
+  position: relative;
+  height: 36px;
+  margin: 4px 4px 0;
+}
+
+.toolbar-price-track {
+  position: absolute;
+  inset: 16px 0 16px 0;
+  background: var(--surface-elev);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+}
+
+.toolbar-price-track-fill {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-pill);
+}
+
+.toolbar-price-range {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  pointer-events: none; /* container is non-interactive; only thumbs are */
+}
+
+.toolbar-price-range:focus {
+  outline: none;
+}
+
+/* The min slider sits under the max slider in DOM. To keep both thumbs
+ * grabbable when they're close to each other we lift the active slider
+ * via :focus-visible / :hover. */
+.toolbar-price-range-min {
+  z-index: 2;
+}
+.toolbar-price-range-max {
+  z-index: 3;
+}
+.toolbar-price-range-min:focus-visible,
+.toolbar-price-range-min:hover {
+  z-index: 4;
+}
+
+.toolbar-price-range::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+.toolbar-price-range::-moz-range-track {
+  background: transparent;
+  height: 100%;
+}
+
+.toolbar-price-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  cursor: grab;
+  pointer-events: auto;
+  margin-top: 0;
+}
+.toolbar-price-range::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  background: var(--accent-soft);
+}
+.toolbar-price-range::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--accent);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  cursor: grab;
+  pointer-events: auto;
+}
+.toolbar-price-range::-moz-range-thumb:active {
+  cursor: grabbing;
+  background: var(--accent-soft);
+}
+
+.toolbar-price-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--type-xs);
+  color: var(--text-muted);
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+@media (max-width: 600px) {
+  .toolbar-price-popover {
+    /* Inherits the district bottom-sheet sizing — just remove the
+     * desktop max-width clamp so it can fill the screen. */
+    max-width: 100vw;
+    min-width: 0;
+  }
+
+  .toolbar-price-inputs .toolbar-price-input {
+    min-height: 44px;
+  }
+
+  .toolbar-price-slider {
+    height: 44px;
+    margin-top: 8px;
+  }
+
+  .toolbar-price-track {
+    inset: 20px 0 20px 0;
+  }
+
+  .toolbar-price-range::-webkit-slider-thumb {
+    width: 28px;
+    height: 28px;
+  }
+  .toolbar-price-range::-moz-range-thumb {
+    width: 28px;
+    height: 28px;
   }
 }
 

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import AdCard from './components/AdCard';
 import FilterBar, {
   type FreshnessFilter,
+  type PriceBounds,
   type SortKey
 } from './components/FilterBar';
 import HealthCheckResultModal from './components/HealthCheckResultModal';
@@ -51,6 +52,8 @@ export default function DashboardPage() {
   const [searchParamSince, setSearchParamSince] = useState<string | null>(null);
   const [lastVisitAt, setLastVisitAt] = useState<string | null>(null);
   const [freshness, setFreshness] = useState<FreshnessFilter>('all');
+  const [priceMin, setPriceMin] = useState<number | null>(null);
+  const [priceMax, setPriceMax] = useState<number | null>(null);
 
   // Pending dispatches (used by the completion watchers).
   const [scanDispatch, setScanDispatch] = useState<{ at: string; since: string | null } | null>(
@@ -136,14 +139,57 @@ export default function DashboardPage() {
       .sort((a, b) => a.label.localeCompare(b.label, 'he'));
   }, [ads]);
 
+  // Derive the [min, max] window from the actual prices we have on hand.
+  // Snap bounds outwards to the nearest 100 ₪ so the slider feels nice.
+  const priceBounds: PriceBounds | null = useMemo(() => {
+    const prices: number[] = [];
+    for (const ad of ads) {
+      if (typeof ad.price === 'number' && Number.isFinite(ad.price) && ad.price > 0) {
+        prices.push(ad.price);
+      }
+    }
+    if (!prices.length) return null;
+    const rawMin = Math.min(...prices);
+    const rawMax = Math.max(...prices);
+    const snappedMin = Math.floor(rawMin / 100) * 100;
+    const snappedMax = Math.ceil(rawMax / 100) * 100;
+    if (snappedMax <= snappedMin) {
+      return { min: snappedMin, max: snappedMin + 100, step: 100 };
+    }
+    const span = snappedMax - snappedMin;
+    // Keep the slider snappy on small ranges, coarser on large ones.
+    const step = span >= 4000 ? 250 : 100;
+    return { min: snappedMin, max: snappedMax, step };
+  }, [ads]);
+
+  // Re-clamp the user's chosen min/max when the dataset shifts (e.g. after
+  // a scan completes and brings in a cheaper or pricier ad).
+  useEffect(() => {
+    if (!priceBounds) return;
+    if (priceMin !== null && (priceMin < priceBounds.min || priceMin > priceBounds.max)) {
+      setPriceMin(null);
+    }
+    if (priceMax !== null && (priceMax < priceBounds.min || priceMax > priceBounds.max)) {
+      setPriceMax(null);
+    }
+  }, [priceBounds, priceMin, priceMax]);
+
   const filteredAds = useMemo(() => {
     const lowerSearch = search.trim().toLowerCase();
+    const effectiveMin = priceMin;
+    const effectiveMax = priceMax;
     let result = ads.filter((ad) => {
       if (freshness === 'new' && !isAdFresh(ad.firstSeenAt, effectiveSince)) {
         return false;
       }
       if (selectedDistricts.size > 0 && !selectedDistricts.has(ad.searchId)) {
         return false;
+      }
+      // Price filter: ads without an explicit price are ALWAYS kept
+      // visible (their price is unknown, not "outside the window").
+      if (typeof ad.price === 'number' && Number.isFinite(ad.price)) {
+        if (effectiveMin !== null && ad.price < effectiveMin) return false;
+        if (effectiveMax !== null && ad.price > effectiveMax) return false;
       }
       if (lowerSearch) {
         const haystack = `${ad.title || ''} ${ad.city || ''}`.toLowerCase();
@@ -168,7 +214,7 @@ export default function DashboardPage() {
     });
 
     return result;
-  }, [ads, freshness, effectiveSince, selectedDistricts, search, sort]);
+  }, [ads, freshness, effectiveSince, selectedDistricts, search, sort, priceMin, priceMax]);
 
   const handleToggleDistrict = useCallback((value: string) => {
     setSelectedDistricts((prev) => {
@@ -333,7 +379,10 @@ export default function DashboardPage() {
     <main className="layout">
       <header className="header">
         <div className="header-titles">
-          <h1>Yad2 Hunter</h1>
+          <h1 className="brand">
+            <span className="brand-icon" aria-hidden="true">🏡</span>
+            <span>מציאת בית במושב</span>
+          </h1>
           <div className="header-badges">
             {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
             {freshAds.length > 0 ? (
@@ -392,6 +441,15 @@ export default function DashboardPage() {
             onToggleDistrict={handleToggleDistrict}
             onClearDistricts={() => setSelectedDistricts(new Set())}
             hasFreshAds={freshAds.length > 0}
+            priceBounds={priceBounds}
+            priceMin={priceMin}
+            priceMax={priceMax}
+            onPriceMinChange={setPriceMin}
+            onPriceMaxChange={setPriceMax}
+            onPriceReset={() => {
+              setPriceMin(null);
+              setPriceMax(null);
+            }}
           />
 
           <div className="results-count">{filteredAds.length} תוצאות</div>
