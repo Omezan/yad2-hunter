@@ -55,6 +55,13 @@ function extractTitle(rawText) {
     // Skip Yad2's error widget so a card that briefly rendered as the
     // error placeholder doesn't persist "אופס... תקלה!" as the title.
     if (/אופס\.{2,3}\s*תקלה/.test(line)) continue;
+    // Skip the anti-bot / captcha challenge text so a blocked detail
+    // page never leaks "Are you for real?" or similar into the title.
+    if (/are\s+you\s+for\s+real/i.test(line)) continue;
+    if (/shieldsquare|radware|bot\s*manager\s*block/i.test(line)) continue;
+    // Skip the "no price specified" placeholder that can appear in the
+    // price area of a listing - it's not a description/title.
+    if (/^\s*לא\s+צוין\s+מחיר\s*$/.test(line)) continue;
     // Skip lines that are essentially just a price ("₪ 5,300", "5300 ₪",
     // "ירד ב-500 ₪") - those should land in the structured `price`
     // field via parsePrice(), not become the listing's title.
@@ -142,6 +149,11 @@ async function detectCaptcha(page) {
     const title = (document.title || '').toLowerCase();
     if (title.includes('shieldsquare') || title.includes('captcha')) return true;
     if (title.includes('radware') || title.includes('bot manager block')) return true;
+    // Yad2's anti-bot challenge sets the document title to literally
+    // "Are you for real?" while the body may not yet contain that text
+    // (challenge text is rendered later by JS). Catch it from the title
+    // alone so we never proceed to extract fields from a blocked page.
+    if (title.includes('are you for real')) return true;
     const body = (document.body && document.body.innerText) || '';
     return /are you for real|אבטחת אתר|captcha digest|radware|bot manager block|מסיבות אבטחה והגנה על האתר|incident id/i.test(
       body
@@ -687,11 +699,26 @@ function guessPropertyType(text) {
   return '';
 }
 
-// Anything that looks like Yad2's generic error widget MUST NOT be
-// stored as a real field. Used everywhere we derive city / title.
+// Anything that looks like Yad2's generic error widget, anti-bot
+// challenge page (Radware/ShieldSquare with "Are you for real?" title)
+// or a price-area placeholder ("לא צוין מחיר") MUST NOT be stored as
+// a real city / title. Used everywhere we derive those fields.
 function isYad2ErrorText(value) {
   if (!value || typeof value !== 'string') return false;
-  return /אופס\.{2,3}\s*תקלה/.test(value);
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  // Hebrew error widget.
+  if (/אופס\.{2,3}\s*תקלה/.test(trimmed)) return true;
+  // Anti-bot / captcha challenge wording.
+  if (/are\s+you\s+for\s+real/i.test(trimmed)) return true;
+  if (/^\??\s*are\s+you\s+for\s+real\s*\??$/i.test(trimmed)) return true;
+  if (/shieldsquare|radware|bot\s*manager\s*block|captcha\s*digest|incident\s*id/i.test(trimmed)) {
+    return true;
+  }
+  if (/אבטחת\s*אתר|מסיבות\s*אבטחה/i.test(trimmed)) return true;
+  // Yad2's "no price" placeholder leaking from the price area.
+  if (/^\s*לא\s+צוין\s+מחיר\s*$/.test(trimmed)) return true;
+  return false;
 }
 
 function safeCity(value) {

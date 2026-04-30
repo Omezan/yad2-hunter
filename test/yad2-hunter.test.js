@@ -853,6 +853,41 @@ test('isYad2ErrorText is robust on non-string and irrelevant inputs', () => {
   assert.equal(isYad2ErrorText('אופס משהו אחר'), false);
 });
 
+test('isYad2ErrorText flags the anti-bot challenge text in any casing', () => {
+  // The Yad2 anti-bot page uses "Are you for real?" as its document
+  // title - we must never persist that into city/title.
+  assert.equal(isYad2ErrorText('Are you for real?'), true);
+  assert.equal(isYad2ErrorText('?Are you for real'), true);
+  assert.equal(isYad2ErrorText('are you for real'), true);
+  assert.equal(isYad2ErrorText('ARE YOU FOR REAL?'), true);
+  assert.equal(isYad2ErrorText('Radware Bot Manager Block'), true);
+  assert.equal(isYad2ErrorText('shieldsquare captcha digest'), true);
+  assert.equal(isYad2ErrorText('אבטחת אתר'), true);
+});
+
+test('isYad2ErrorText flags the price-area placeholder "לא צוין מחיר"', () => {
+  // The "no price specified" label in the listing's price area must
+  // never become a city / title - the dashboard derives that from the
+  // structured `price` field instead.
+  assert.equal(isYad2ErrorText('לא צוין מחיר'), true);
+  assert.equal(isYad2ErrorText('  לא צוין מחיר  '), true);
+  // Real titles that happen to contain those words are not flagged.
+  assert.equal(isYad2ErrorText('דירה, מחיר אטרקטיבי'), false);
+});
+
+test('extractTitle skips the anti-bot challenge text', () => {
+  // If a detail page briefly returns the captcha challenge before the
+  // real listing renders, we must not pick "Are you for real?" as the
+  // listing title.
+  const raw = 'Are you for real?\nדירה, מתן';
+  assert.equal(extractTitle(raw), 'דירה, מתן');
+});
+
+test('extractTitle skips the "לא צוין מחיר" placeholder line', () => {
+  const raw = 'לא צוין מחיר\nדירה, רחובות';
+  assert.equal(extractTitle(raw), 'דירה, רחובות');
+});
+
 test('formatHealthCheckMessage still emits the diff details after a successful reconciliation (allMatch=true)', () => {
   // After reconciliation closes every diff, allMatch becomes true. We
   // still want the user to see WHICH links were affected so they can

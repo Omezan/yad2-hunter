@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 /**
- * One-shot migration script for `seen-ads.json`. Two responsibilities:
+ * One-shot migration script for `seen-ads.json`. Responsibilities:
  *
  *  1. Scrub Yad2 error-widget text ("אופס... תקלה!") from city/title.
- *  2. Heal records whose `title` is actually a price string or a rooms
+ *  2. Scrub Yad2 anti-bot challenge text ("Are you for real?", Radware
+ *     / ShieldSquare wording) accidentally written into city/title by
+ *     a previous heal pass that ran while Yad2 was returning a captcha.
+ *  3. Scrub the price-area placeholder "לא צוין מחיר" out of titles -
+ *     it should never be a headline; the dashboard already renders
+ *     "מחיר לא מצוין" via the structured `price` field.
+ *  4. Heal records whose `title` is actually a price string or a rooms
  *     count (legacy list-card scraping bug). When found, we parse the
  *     value out into the structured `price` / `rooms` fields and reset
  *     the title to a neutral placeholder so the dashboard does not
@@ -15,6 +21,27 @@ const fs = require('fs');
 
 function isErrorWidget(value) {
   return typeof value === 'string' && /אופס\.{2,3}\s*תקלה/.test(value);
+}
+
+function isAntiBotText(value) {
+  if (typeof value !== 'string') return false;
+  const trimmed = value.trim();
+  if (!trimmed) return false;
+  if (/are\s+you\s+for\s+real/i.test(trimmed)) return true;
+  if (/shieldsquare|radware|bot\s*manager\s*block|captcha\s*digest|incident\s*id/i.test(trimmed)) {
+    return true;
+  }
+  if (/אבטחת\s*אתר|מסיבות\s*אבטחה/i.test(trimmed)) return true;
+  return false;
+}
+
+function isPricePlaceholderText(value) {
+  if (typeof value !== 'string') return false;
+  return /^\s*לא\s+צוין\s+מחיר\s*$/.test(value.trim());
+}
+
+function isPoisonText(value) {
+  return isErrorWidget(value) || isAntiBotText(value) || isPricePlaceholderText(value);
 }
 
 function parsePriceFromTitle(title) {
@@ -63,6 +90,8 @@ function main() {
     process.exit(2);
   }
   let scrubbedWidget = 0;
+  let scrubbedAntiBot = 0;
+  let scrubbedPricePlaceholder = 0;
   let healedPriceFromTitle = 0;
   let healedRoomsFromTitle = 0;
   let resetTitle = 0;
@@ -76,6 +105,29 @@ function main() {
     }
     if (isErrorWidget(record.title)) {
       record.title = 'מודעה';
+      touched = true;
+    }
+
+    // Anti-bot challenge text leaked into city/title.
+    if (isAntiBotText(record.city)) {
+      record.city = null;
+      scrubbedAntiBot += 1;
+      touched = true;
+    }
+    if (isAntiBotText(record.title)) {
+      record.title = 'מודעה';
+      touched = true;
+    }
+
+    // "לא צוין מחיר" placeholder leaked into title from the price area.
+    if (isPricePlaceholderText(record.title)) {
+      record.title = 'מודעה';
+      scrubbedPricePlaceholder += 1;
+      touched = true;
+    }
+    if (isPricePlaceholderText(record.city)) {
+      record.city = null;
+      scrubbedPricePlaceholder += 1;
       touched = true;
     }
 
@@ -113,7 +165,7 @@ function main() {
   }
   fs.writeFileSync(target, `${JSON.stringify(data, null, 2)}\n`);
   console.log(
-    `scrubbed widget: ${scrubbedWidget}, healed price-from-title: ${healedPriceFromTitle}, healed rooms-from-title: ${healedRoomsFromTitle}, neutralised titles: ${resetTitle}`
+    `scrubbed widget: ${scrubbedWidget}, scrubbed anti-bot: ${scrubbedAntiBot}, scrubbed price-placeholder: ${scrubbedPricePlaceholder}, healed price-from-title: ${healedPriceFromTitle}, healed rooms-from-title: ${healedRoomsFromTitle}, neutralised titles: ${resetTitle}`
   );
 }
 
