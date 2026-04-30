@@ -25,14 +25,36 @@ function extractExternalId(url) {
   return parsedUrl.pathname.replace(/^\/+|\/+$/g, '').replace(/\//g, '-') || normalizedUrl;
 }
 
+// Yad2 list cards sometimes carry a "price drop" chrome line above
+// the real price, e.g.:
+//   "ירד ב-500 ₪"
+//   "₪ 9,000"
+// A naive first-match parse would extract 500 (the drop amount) as
+// the price. Scan all currency tokens and ignore those that appear
+// on a "ירד ב..." (price-drop) line; among the rest, pick the
+// LARGEST value (real rents are rarely under ~₪1,000 / month).
 function parsePrice(text) {
-  const match = String(text || '').match(/([\d,.]+)\s*[₪]/);
-  if (!match) {
-    return null;
-  }
+  const raw = String(text || '');
+  if (!raw.trim()) return null;
 
-  const numericValue = Number.parseInt(match[1].replace(/[^\d]/g, ''), 10);
-  return Number.isNaN(numericValue) ? null : numericValue;
+  const lines = raw.split('\n');
+  const candidates = [];
+  for (const line of lines) {
+    if (/^\s*ירד\s+ב/.test(line)) continue;
+    const matches = line.matchAll(/([\d,.]+)\s*₪|₪\s*([\d,.]+)/g);
+    for (const m of matches) {
+      const numericText = (m[1] || m[2] || '').replace(/[^\d]/g, '');
+      if (!numericText) continue;
+      const value = Number.parseInt(numericText, 10);
+      if (Number.isFinite(value) && value > 0) {
+        candidates.push(value);
+      }
+    }
+  }
+  if (!candidates.length) return null;
+  // Prefer the largest non-trivial value: the drop amount is always
+  // smaller than the actual rent.
+  return Math.max(...candidates);
 }
 
 function parseRooms(text) {
@@ -1492,6 +1514,7 @@ module.exports = {
   normalizeItemUrl,
   parseCityFromTitle,
   parseFloor,
+  parsePrice,
   parsePublishedDate,
   probeListingsPresence,
   scrapeAllSearches

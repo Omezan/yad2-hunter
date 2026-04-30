@@ -1097,3 +1097,16 @@ test('extractTitle picks the canonical heading even when property type is "סא�
 test('parseCityFromTitle handles "סאבלט" + duplicated city', () => {
   assert.equal(parseCityFromTitle('סאבלט, גבעת יערים, גבעת יערים'), 'גבעת יערים');
 });
+
+test('parsePrice ignores the "ירד ב-X ₪" price-drop chrome line', () => {
+  const { parsePrice } = require('../src/scraper/yad2');
+  // Real Yad2 list-card shape: drop line first, real price next.
+  assert.equal(parsePrice('ירד ב-500 ₪\n₪ 9,000\nסמטת השיזף 8'), 9000);
+  assert.equal(parsePrice('ירד ב-1,000 ₪\n₪ 7,500'), 7500);
+  // Single price line still works.
+  assert.equal(parsePrice('₪ 5,300\n4 חדרים'), 5300);
+  // No price at all.
+  assert.equal(parsePrice('לא צוין מחיר\nדירה, מתן'), null);
+  // "300 1" inside title shouldn't wrongly parse — no ₪ token, so null.
+  assert.equal(parsePrice('דירה, נועם\n300 1'), null);
+});
