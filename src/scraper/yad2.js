@@ -948,6 +948,136 @@ async function enrichAdsWithDetails({
   return enriched;
 }
 
+// Public-facing probe used by the health check to classify each ad URL.
+// Returns one of: 'live' | 'removed' | 'blocked' | 'error' along with a
+// human-readable reason. Never throws on its own — callers can rely on
+// the status field instead of try/catch.
+async function probeListingsPresence({
+  urls,
+  headless = true,
+  timeoutMs = 12000,
+  concurrency = 4,
+  logger = console
+} = {}) {
+  if (!Array.isArray(urls) || !urls.length) return [];
+
+  const browser = await chromium.launch({ headless });
+  const context = await browser.newContext({
+    userAgent: DEFAULT_USER_AGENT,
+    locale: 'he-IL',
+    viewport: { width: 1440, height: 1200 },
+    extraHTTPHeaders: {
+      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'
+    }
+  });
+
+  const pages = await Promise.all(
+    Array.from({ length: Math.min(concurrency, urls.length) }, () => context.newPage())
+  );
+
+  const queue = urls.slice();
+  const results = [];
+
+  async function classify(page, url) {
+    let response = null;
+    try {
+      response = await page.goto(url, {
+        waitUntil: 'domcontentloaded',
+        timeout: timeoutMs
+      });
+    } catch (error) {
+      return { url, status: 'error', reason: error.message || 'goto failed' };
+    }
+
+    const httpStatus = response ? response.status() : null;
+    if (httpStatus === 404 || httpStatus === 410) {
+      return { url, status: 'removed', reason: `HTTP ${httpStatus}`, httpStatus };
+    }
+    if (httpStatus && httpStatus >= 500) {
+      return { url, status: 'error', reason: `HTTP ${httpStatus}`, httpStatus };
+    }
+
+    try {
+      if (await detectCaptcha(page)) {
+        return { url, status: 'blocked', reason: 'captcha/anti-bot', httpStatus };
+      }
+    } catch {
+      // detectCaptcha can fail on torn-down pages; treat as error.
+      return { url, status: 'error', reason: 'captcha probe failed', httpStatus };
+    }
+
+    let pageSignals;
+    try {
+      pageSignals = await page.evaluate(() => {
+        const title = ((document.title || '') + '').toLowerCase();
+        const bodyText = ((document.body && document.body.innerText) || '').trim();
+        return { title, bodyText };
+      });
+    } catch (error) {
+      return { url, status: 'error', reason: error.message || 'evaluate failed', httpStatus };
+    }
+
+    const { title, bodyText } = pageSignals;
+
+    // Strong "ad was removed" signals from Yad2's own UX.
+    const removedPatterns = [
+      /המודעה (הוסרה|אינה זמינה|לא קיימת|נמחקה)/,
+      /מודעה (זו|הזו) (הוסרה|אינה|לא קיימת)/,
+      /המודעה כבר אינה פעילה/,
+      /the listing (was removed|is no longer available)/i
+    ];
+    if (removedPatterns.some((re) => re.test(bodyText))) {
+      return {
+        url,
+        status: 'removed',
+        reason: 'Yad2 says the listing was removed',
+        httpStatus
+      };
+    }
+
+    const notFoundPatterns = [/^404/, /^page not found/, /^not found/];
+    if (notFoundPatterns.some((re) => re.test(title))) {
+      return { url, status: 'removed', reason: `title=${title}`, httpStatus };
+    }
+
+    if (/אופס\.\.\.\s*תקלה|אופס\.{2,3}\s*תקלה/.test(bodyText)) {
+      // Generic Yad2 "oops, something went wrong" — could be transient,
+      // not a confirmed removal.
+      return { url, status: 'error', reason: 'Yad2 generic error page', httpStatus };
+    }
+
+    if (bodyText.length < 200) {
+      // Empty / shell page that did not 404 → ambiguous; do not delete.
+      return { url, status: 'error', reason: 'page body too short', httpStatus };
+    }
+
+    return { url, status: 'live', reason: null, httpStatus };
+  }
+
+  async function worker(page) {
+    while (queue.length) {
+      const url = queue.shift();
+      if (!url) break;
+      try {
+        const result = await classify(page, url);
+        results.push(result);
+      } catch (error) {
+        logger.error?.(`[probe] unexpected failure for ${url}: ${error.message}`);
+        results.push({ url, status: 'error', reason: error.message || 'unknown' });
+      }
+    }
+  }
+
+  try {
+    await Promise.all(pages.map((page) => worker(page)));
+  } finally {
+    await context.close();
+    await browser.close();
+  }
+
+  return results;
+}
+
 module.exports = {
   enrichAdsWithDetails,
   extractExternalId,
@@ -955,5 +1085,6 @@ module.exports = {
   normalizeItemUrl,
   parseFloor,
   parsePublishedDate,
+  probeListingsPresence,
   scrapeAllSearches
 };

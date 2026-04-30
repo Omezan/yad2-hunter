@@ -2,18 +2,31 @@ const { spawnSync } = require('child_process');
 const path = require('path');
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
-const { ensureStateDir, loadSeenAds } = require('../store/file-store');
-const { scrapeAllSearches } = require('../scraper/yad2');
+const {
+  ensureStateDir,
+  loadSeenAds,
+  saveSeenAds
+} = require('../store/file-store');
+const {
+  enrichAdsWithDetails,
+  probeListingsPresence,
+  scrapeAllSearches
+} = require('../scraper/yad2');
+const { filterRelevantAds } = require('../services/relevance');
 const { sendHealthCheckReport } = require('../services/telegram');
+
+const RECONCILE_PROBE_TIMEOUT_MS = 12000;
+const RECONCILE_PROBE_CONCURRENCY = 4;
+const RECONCILE_ENRICH_TIMEOUT_MS = 12000;
+const RECONCILE_ENRICH_CONCURRENCY = 4;
+const RECONCILE_BUDGET_MS = 4 * 60 * 1000;
 
 function refreshStateFromBranch() {
   // Pull whatever the looping scan has just pushed to the `state` branch.
-  // We do this AFTER the live scrape so any ad the scan added during the
-  // scrape window is visible to us before we compute diffs (which would
-  // otherwise show false "missing in seen" rows).
+  // Done both before and after the scrape to minimise the racing window.
   const stateDir = env.STATE_DIR;
-  if (!stateDir) return;
-  if (!process.env.GITHUB_ACTIONS) return;
+  if (!stateDir) return false;
+  if (!process.env.GITHUB_ACTIONS) return false;
 
   const repoRoot = path.resolve(__dirname, '..', '..');
   const fetchResult = spawnSync(
@@ -23,7 +36,7 @@ function refreshStateFromBranch() {
   );
   if (fetchResult.status !== 0) {
     console.warn('[health-check] could not fetch origin/state; using stale seen-set');
-    return;
+    return false;
   }
   const checkoutResult = spawnSync(
     'git',
@@ -32,7 +45,26 @@ function refreshStateFromBranch() {
   );
   if (checkoutResult.status !== 0) {
     console.warn('[health-check] could not checkout origin/state into state dir');
+    return false;
   }
+  return true;
+}
+
+function persistStateToBranch() {
+  if (!process.env.GITHUB_ACTIONS) {
+    return { ok: false, reason: 'not running in GitHub Actions' };
+  }
+  const repoRoot = path.resolve(__dirname, '..', '..');
+  const script = path.resolve(repoRoot, 'scripts', 'persist-state.sh');
+  const result = spawnSync('bash', [script], {
+    cwd: repoRoot,
+    stdio: 'inherit',
+    env: process.env
+  });
+  if (result.status !== 0) {
+    return { ok: false, reason: `persist-state.sh exited with ${result.status}` };
+  }
+  return { ok: true };
 }
 
 function buildExpectedBySearchId(seen) {
@@ -75,10 +107,220 @@ function externalIdToLink(externalId) {
   return `https://www.yad2.co.il/realestate/item/${externalId}`;
 }
 
+function buildExtraEntries(rows, seen) {
+  // For each extraId (in seen but not in latest scrape), pull the seen
+  // record so we can ask Yad2 directly whether the ad still exists.
+  const entries = [];
+  for (const row of rows) {
+    if (!Array.isArray(row.extraIds)) continue;
+    for (const externalId of row.extraIds) {
+      const record = (seen.ads || {})[externalId];
+      const link =
+        (record && record.link) || externalIdToLink(externalId);
+      entries.push({ externalId, searchId: row.searchId, link, record });
+    }
+  }
+  return entries;
+}
+
+function buildMissingEntries(rows, scrapedAds) {
+  // For each missingId (live but not in seen), pull the scraped record
+  // so we can enrich + admit it into seen.
+  const adsById = new Map();
+  for (const ad of scrapedAds) {
+    if (ad && ad.externalId) {
+      adsById.set(ad.externalId, ad);
+    }
+  }
+  const entries = [];
+  for (const row of rows) {
+    if (!Array.isArray(row.missingIds)) continue;
+    for (const externalId of row.missingIds) {
+      const ad = adsById.get(externalId);
+      if (ad) entries.push({ externalId, searchId: row.searchId, ad });
+    }
+  }
+  return entries;
+}
+
+async function classifyExtraEntries(extraEntries, { headless }) {
+  if (!extraEntries.length) return new Map();
+  const urls = extraEntries
+    .map((entry) => entry.link)
+    .filter((link) => typeof link === 'string' && link.length);
+  if (!urls.length) return new Map();
+
+  const probeResults = await probeListingsPresence({
+    urls,
+    headless,
+    timeoutMs: RECONCILE_PROBE_TIMEOUT_MS,
+    concurrency: RECONCILE_PROBE_CONCURRENCY
+  });
+
+  const byUrl = new Map();
+  for (const result of probeResults) {
+    byUrl.set(result.url, result);
+  }
+  return byUrl;
+}
+
+async function enrichMissingEntries(missingEntries, { headless }) {
+  if (!missingEntries.length) return new Map();
+  const ads = missingEntries.map((entry) => entry.ad);
+  const enriched = await enrichAdsWithDetails({
+    ads,
+    headless,
+    timeoutMs: RECONCILE_ENRICH_TIMEOUT_MS,
+    concurrency: RECONCILE_ENRICH_CONCURRENCY,
+    budgetMs: RECONCILE_BUDGET_MS
+  });
+  const byId = new Map();
+  for (const ad of enriched) {
+    if (ad && ad.externalId) byId.set(ad.externalId, ad);
+  }
+  return byId;
+}
+
+function adRecordFromEnriched(enriched, { searchId, label, generatedAt }) {
+  // Mirror the shape produced by store/file-store.js#commitAds so the
+  // dashboard renderer doesn't need to know we got here via reconciliation.
+  return {
+    externalId: enriched.externalId,
+    title: enriched.title || null,
+    link: enriched.link,
+    searchId,
+    searchLabel: enriched.searchLabel || label || null,
+    districtLabel: enriched.districtLabel || label || null,
+    price: typeof enriched.price === 'number' ? enriched.price : null,
+    rooms: typeof enriched.rooms === 'number' ? enriched.rooms : null,
+    city: enriched.city || null,
+    firstSeenAt: generatedAt,
+    lastSeenAt: generatedAt
+  };
+}
+
+function reconcileSeen({
+  rows,
+  seen,
+  extraClassification,
+  missingClassification,
+  generatedAt,
+  searchById
+}) {
+  const updatedSeen = { ...seen, ads: { ...(seen.ads || {}) } };
+  const additions = [];
+  const removals = [];
+  const unresolvedExtras = [];
+  const unresolvedMissing = [];
+
+  for (const row of rows) {
+    const search = searchById.get(row.searchId) || {
+      id: row.searchId,
+      label: row.label
+    };
+
+    const rowExtras = Array.isArray(row.extraIds) ? row.extraIds : [];
+    for (const externalId of rowExtras) {
+      const record = updatedSeen.ads[externalId];
+      const link = (record && record.link) || externalIdToLink(externalId);
+      const probe = link ? extraClassification.get(link) : null;
+
+      if (probe && probe.status === 'removed') {
+        delete updatedSeen.ads[externalId];
+        removals.push({
+          externalId,
+          link,
+          searchId: row.searchId,
+          reason: probe.reason || 'הוסרה מ-Yad2'
+        });
+      } else {
+        unresolvedExtras.push({
+          externalId,
+          link,
+          searchId: row.searchId,
+          status: probe ? probe.status : 'unknown',
+          reason:
+            (probe && probe.reason) ||
+            'לא נמצאה ב-Yad2 בסריקה האחרונה — נשמרת בינתיים, נבדק שוב בריצה הבאה'
+        });
+      }
+    }
+
+    const rowMissing = Array.isArray(row.missingIds) ? row.missingIds : [];
+    for (const externalId of rowMissing) {
+      const classification = missingClassification.get(externalId);
+      if (!classification) {
+        unresolvedMissing.push({
+          externalId,
+          searchId: row.searchId,
+          link: externalIdToLink(externalId),
+          reason: 'לא נמצאה ברשומות הסריקה החיה'
+        });
+        continue;
+      }
+      if (classification.kind === 'admit') {
+        const newRecord = adRecordFromEnriched(classification.enriched, {
+          searchId: row.searchId,
+          label: search.districtLabel || row.label,
+          generatedAt
+        });
+        updatedSeen.ads[newRecord.externalId] = newRecord;
+        additions.push({
+          externalId: newRecord.externalId,
+          link: newRecord.link,
+          searchId: row.searchId,
+          reason: 'מודעה חדשה שטרם נסרקה — נוספה ל-seen'
+        });
+      } else {
+        unresolvedMissing.push({
+          externalId,
+          searchId: row.searchId,
+          link: externalIdToLink(externalId),
+          reason: classification.reason
+        });
+      }
+    }
+  }
+
+  return { updatedSeen, additions, removals, unresolvedExtras, unresolvedMissing };
+}
+
+function annotateRowsWithReconciliation(
+  rows,
+  { additions, removals, unresolvedExtras, unresolvedMissing }
+) {
+  const additionsBySearch = groupBy(additions, 'searchId');
+  const removalsBySearch = groupBy(removals, 'searchId');
+  const unresolvedExtrasBySearch = groupBy(unresolvedExtras, 'searchId');
+  const unresolvedMissingBySearch = groupBy(unresolvedMissing, 'searchId');
+
+  return rows.map((row) => ({
+    ...row,
+    reconciled: {
+      added: additionsBySearch[row.searchId] || [],
+      removed: removalsBySearch[row.searchId] || [],
+      unresolvedExtra: unresolvedExtrasBySearch[row.searchId] || [],
+      unresolvedMissing: unresolvedMissingBySearch[row.searchId] || []
+    }
+  }));
+}
+
+function groupBy(list, key) {
+  const result = {};
+  for (const item of list || []) {
+    const k = item && item[key];
+    if (!k) continue;
+    if (!result[k]) result[k] = [];
+    result[k].push(item);
+  }
+  return result;
+}
+
 async function runHealthCheck() {
   ensureStateDir();
 
   const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
+  const searchById = new Map(searches.map((s) => [s.id, s]));
   const scrapeResult = await scrapeAllSearches({
     searches,
     headless: env.PLAYWRIGHT_HEADLESS,
@@ -91,8 +333,8 @@ async function runHealthCheck() {
   // "diff" rows on freshly-recorded ads).
   refreshStateFromBranch();
 
-  const seen = loadSeenAds();
-  const expectedBySearchId = buildExpectedBySearchId(seen);
+  const seenInitial = loadSeenAds();
+  const expectedBySearchId = buildExpectedBySearchId(seenInitial);
   const errorBySearchId = new Map(
     (scrapeResult.errors || []).map((err) => [err.searchId, err])
   );
@@ -139,12 +381,105 @@ async function runHealthCheck() {
     };
   });
 
-  const allMatch =
-    rows.every((row) => !row.error) && rows.every((row) => row.real === row.expected);
-
   const generatedAt = new Date().toISOString();
+  const extraEntries = buildExtraEntries(rows, seenInitial);
+  const missingEntries = buildMissingEntries(rows, scrapeResult.ads);
 
-  return { rows, allMatch, generatedAt, scrapeErrors: scrapeResult.errors || [] };
+  const headless = env.PLAYWRIGHT_HEADLESS;
+  const [extraClassification, missingClassification] = await Promise.all([
+    classifyExtraEntries(extraEntries, { headless }),
+    enrichMissingEntries(missingEntries, { headless }).then((enrichedById) => {
+      // Pre-filter: only admit ads that the relevance filter would also
+      // accept on a regular run.
+      const enrichedAds = Array.from(enrichedById.values());
+      const accepted = new Set(
+        filterRelevantAds(enrichedAds, { requireExplicitRooms: true }).map(
+          (a) => a.externalId
+        )
+      );
+      const result = new Map();
+      for (const entry of missingEntries) {
+        const enriched = enrichedById.get(entry.externalId);
+        if (!enriched) {
+          result.set(entry.externalId, {
+            kind: 'unenriched',
+            reason: 'לא הצלחנו לטעון את פרטי המודעה כרגע — תיבדק שוב בריצה הבאה'
+          });
+          continue;
+        }
+        if (accepted.has(entry.externalId)) {
+          result.set(entry.externalId, { kind: 'admit', enriched });
+        } else {
+          result.set(entry.externalId, {
+            kind: 'rejected',
+            reason: 'נדחתה על ידי סינון הרלוונטיות',
+            enriched
+          });
+        }
+      }
+      return result;
+    })
+  ]);
+
+  const reconciliation = reconcileSeen({
+    rows,
+    seen: seenInitial,
+    extraClassification,
+    missingClassification,
+    generatedAt,
+    searchById
+  });
+
+  let persisted = { ok: false, reason: 'no-op (no diffs to reconcile)' };
+  const didMutate =
+    reconciliation.additions.length > 0 || reconciliation.removals.length > 0;
+  if (didMutate) {
+    saveSeenAds(reconciliation.updatedSeen);
+    persisted = persistStateToBranch();
+  }
+
+  // Recompute table rows against the post-reconciliation seen-set so the
+  // Telegram message reflects the now-current state, not the pre-fix one.
+  const reconciledExpectedBySearchId = buildExpectedBySearchId(
+    reconciliation.updatedSeen
+  );
+
+  const finalRows = rows.map((row) => {
+    const seenIdSet = new Set(
+      reconciledExpectedBySearchId[row.searchId]?.ids || []
+    );
+    const expected = reconciledExpectedBySearchId[row.searchId]?.count || 0;
+    const scrapedIdSet = new Set(row.scrapedIds || []);
+
+    return {
+      ...row,
+      expected,
+      seenIds: [...seenIdSet],
+      missingIds: [...scrapedIdSet].filter((id) => !seenIdSet.has(id)),
+      extraIds: [...seenIdSet].filter((id) => !scrapedIdSet.has(id))
+    };
+  });
+
+  const annotatedRows = annotateRowsWithReconciliation(finalRows, reconciliation);
+
+  const allMatch =
+    annotatedRows.every((row) => !row.error) &&
+    annotatedRows.every((row) => row.real === row.expected);
+
+  return {
+    rows: annotatedRows,
+    allMatch,
+    generatedAt,
+    scrapeErrors: scrapeResult.errors || [],
+    reconciliation: {
+      additions: reconciliation.additions,
+      removals: reconciliation.removals,
+      unresolvedExtras: reconciliation.unresolvedExtras,
+      unresolvedMissing: reconciliation.unresolvedMissing,
+      didMutate,
+      persisted
+    }
+  };
 }
 
 async function main() {
@@ -153,7 +488,8 @@ async function main() {
     const telegram = await sendHealthCheckReport({
       rows: result.rows,
       allMatch: result.allMatch,
-      generatedAt: result.generatedAt
+      generatedAt: result.generatedAt,
+      reconciliation: result.reconciliation
     });
 
     console.log(
@@ -163,6 +499,7 @@ async function main() {
           generatedAt: result.generatedAt,
           rows: result.rows,
           scrapeErrors: result.scrapeErrors,
+          reconciliation: result.reconciliation,
           telegram
         },
         null,
@@ -180,5 +517,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  buildExpectedBySearchId,
+  reconcileSeen,
   runHealthCheck
 };

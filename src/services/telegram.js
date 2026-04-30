@@ -216,8 +216,13 @@ function externalIdToLink(externalId) {
   return `https://www.yad2.co.il/realestate/item/${externalId}`;
 }
 
-function formatHealthCheckMessage({ rows, allMatch, generatedAt }) {
-  return buildHealthCheckMessages({ rows, allMatch, generatedAt }).join('\n\n');
+function formatHealthCheckMessage({ rows, allMatch, generatedAt, reconciliation } = {}) {
+  return buildHealthCheckMessages({
+    rows,
+    allMatch,
+    generatedAt,
+    reconciliation
+  }).join('\n\n');
 }
 
 function formatHealthCheckDiffSection(rows) {
@@ -242,8 +247,13 @@ function formatExpectedCell(row) {
   return `${row.expected} (${sign}${delta})`;
 }
 
-function buildHealthCheckMessages({ rows, allMatch, generatedAt }) {
-  const summary = formatHealthCheckSummary({ rows, allMatch, generatedAt });
+function buildHealthCheckMessages({ rows, allMatch, generatedAt, reconciliation } = {}) {
+  const summary = formatHealthCheckSummary({
+    rows,
+    allMatch,
+    generatedAt,
+    reconciliation
+  });
   if (allMatch) {
     return [summary];
   }
@@ -252,11 +262,12 @@ function buildHealthCheckMessages({ rows, allMatch, generatedAt }) {
   return [summary, ...diffMessages];
 }
 
-function formatHealthCheckSummary({ rows, allMatch, generatedAt }) {
+function formatHealthCheckSummary({ rows, allMatch, generatedAt, reconciliation } = {}) {
   const headerLabel = '🩺 Yad2 Hunter — בדיקת תקינות';
   const statusLine = allMatch
     ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
     : '⚠️ נמצאו פערים — Real לא תואם ל-Expected';
+  const reconciliationLine = formatReconciliationLine(reconciliation);
 
   const labels = ['District', ...rows.map((r) => r.label)];
   const realCells = ['Real', ...rows.map((r) => formatRealCell(r))];
@@ -306,7 +317,34 @@ function formatHealthCheckSummary({ rows, allMatch, generatedAt }) {
   }
   const footer = footerLines.length ? `\n${footerLines.join('\n')}` : '';
 
-  return `${headerLabel}\n${statusLine}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\`${footer}`;
+  const reconciliationBlock = reconciliationLine ? `\n${reconciliationLine}` : '';
+
+  return `${headerLabel}\n${statusLine}${reconciliationBlock}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\`${footer}`;
+}
+
+function formatReconciliationLine(reconciliation) {
+  if (!reconciliation) return null;
+  const additions = (reconciliation.additions || []).length;
+  const removals = (reconciliation.removals || []).length;
+  const persisted = reconciliation.persisted;
+
+  const parts = [];
+  if (additions > 0) parts.push(`נוספו ${additions} מודעות חדשות`);
+  if (removals > 0) parts.push(`הוסרו ${removals} מודעות שנעלמו מ-Yad2`);
+  if (parts.length === 0) {
+    if (
+      reconciliation.unresolvedExtras?.length ||
+      reconciliation.unresolvedMissing?.length
+    ) {
+      return '⏳ פערים זוהו אך לא נסגרו אוטומטית — יבדקו שוב בריצה הבאה';
+    }
+    return null;
+  }
+  let line = `🔧 תוקן ב-seen: ${parts.join(', ')}`;
+  if (persisted && persisted.ok === false) {
+    line += ` (אזהרה: לא הצלחנו לשמור: ${persisted.reason || 'unknown'})`;
+  }
+  return line;
 }
 
 function buildHealthCheckDiffMessages(rows) {
@@ -337,46 +375,95 @@ function buildHealthCheckDiffMessages(rows) {
 }
 
 function formatDiffBlockForRow(row) {
-  const missingIds = Array.isArray(row.missingIds) ? row.missingIds : [];
-  const extraIds = Array.isArray(row.extraIds) ? row.extraIds : [];
-  if (!missingIds.length && !extraIds.length && !row.error) return null;
+  const reconciled = row.reconciled || {};
+  const added = Array.isArray(reconciled.added) ? reconciled.added : [];
+  const removed = Array.isArray(reconciled.removed) ? reconciled.removed : [];
+  const unresolvedExtra = Array.isArray(reconciled.unresolvedExtra)
+    ? reconciled.unresolvedExtra
+    : [];
+  const unresolvedMissing = Array.isArray(reconciled.unresolvedMissing)
+    ? reconciled.unresolvedMissing
+    : [];
+  // Backwards compatibility: if a caller still passes the old shape we
+  // treat raw extra/missing arrays as "unresolved".
+  const fallbackMissing = Array.isArray(row.missingIds) ? row.missingIds : [];
+  const fallbackExtra = Array.isArray(row.extraIds) ? row.extraIds : [];
+
+  const hasAnyDelta =
+    added.length ||
+    removed.length ||
+    unresolvedExtra.length ||
+    unresolvedMissing.length ||
+    fallbackMissing.length ||
+    fallbackExtra.length ||
+    row.error;
+  if (!hasAnyDelta) return null;
 
   const lines = [`📍 ${row.label}`];
   if (row.error) {
     lines.push(`  שגיאה: ${row.error}`);
   }
 
-  if (missingIds.length) {
-    const shown = missingIds.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = missingIds.length - shown.length;
-    lines.push(`  חסר ב-seen (${missingIds.length}):`);
-    for (const id of shown) {
-      const link = externalIdToLink(id);
-      lines.push(`    • ${link || id}`);
+  if (added.length) {
+    const shown = added.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = added.length - shown.length;
+    lines.push(`  ✅ נוספו ל-seen (${added.length}):`);
+    for (const item of shown) {
+      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
+      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
     }
-    if (omitted > 0) {
-      lines.push(`    … ועוד ${omitted}`);
-    }
+    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
   }
 
-  if (extraIds.length) {
-    const shown = extraIds.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = extraIds.length - shown.length;
-    lines.push(`  ב-seen אך לא ב-Yad2 (${extraIds.length}):`);
-    for (const id of shown) {
-      const link = externalIdToLink(id);
-      lines.push(`    • ${link || id}`);
+  if (removed.length) {
+    const shown = removed.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = removed.length - shown.length;
+    lines.push(`  🗑️ הוסרו מ-seen (${removed.length}):`);
+    for (const item of shown) {
+      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
+      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
     }
-    if (omitted > 0) {
-      lines.push(`    … ועוד ${omitted}`);
+    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
+  }
+
+  if (unresolvedMissing.length || (!added.length && fallbackMissing.length)) {
+    const list = unresolvedMissing.length
+      ? unresolvedMissing
+      : fallbackMissing.map((id) => ({ externalId: id, link: externalIdToLink(id) }));
+    const shown = list.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = list.length - shown.length;
+    lines.push(`  ⏳ חסר ב-seen ולא נסגר (${list.length}):`);
+    for (const item of shown) {
+      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
+      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
     }
+    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
+  }
+
+  if (unresolvedExtra.length || (!removed.length && fallbackExtra.length)) {
+    const list = unresolvedExtra.length
+      ? unresolvedExtra
+      : fallbackExtra.map((id) => ({ externalId: id, link: externalIdToLink(id) }));
+    const shown = list.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = list.length - shown.length;
+    lines.push(`  ⏳ ב-seen אך לא ב-Yad2 ולא נסגר (${list.length}):`);
+    for (const item of shown) {
+      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
+      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
+    }
+    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
   }
 
   return lines.join('\n');
 }
 
-async function sendHealthCheckReport({ rows, allMatch, generatedAt }) {
-  const messages = buildHealthCheckMessages({ rows, allMatch, generatedAt });
+async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliation } = {}) {
+  const messages = buildHealthCheckMessages({
+    rows,
+    allMatch,
+    generatedAt,
+    reconciliation
+  });
   const results = [];
   for (let i = 0; i < messages.length; i += 1) {
     const result = await sendTelegramMessage({
@@ -398,6 +485,7 @@ module.exports = {
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
+  formatReconciliationLine,
   sendHealthCheckReport,
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,

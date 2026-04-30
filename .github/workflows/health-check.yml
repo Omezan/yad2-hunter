@@ -13,7 +13,9 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: read
+  # Need write so that the health-check can push reconciled seen-ads.json
+  # back to the `state` branch immediately when it closes a diff.
+  contents: write
 
 jobs:
   health-check:
@@ -69,4 +71,11 @@ jobs:
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+          # Needed by scripts/persist-state.sh when the health-check decides
+          # to reconcile a diff back into seen-ads.json.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: npm run health-check
