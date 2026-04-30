@@ -207,6 +207,46 @@ function main() {
       }
     }
 
+    // Promotional / generic words that sometimes leak into titles.
+    if (typeof record.title === 'string') {
+      const t = record.title.trim();
+      const promoExact = new Set([
+        'בלעדי',
+        'מבצע',
+        'מקצועי',
+        'חדש',
+        'מומלץ',
+        'intact'
+      ]);
+      const promoContains = /^שדרת המתווכ|^שיל\"ת|^שיל״ת/;
+      if (promoExact.has(t) || promoContains.test(t)) {
+        record.title = 'מודעה';
+        scrubbedAgencyTitle += 1;
+        touched = true;
+      }
+    }
+
+    // City is missing AND the existing title is a street address
+    // (e.g. "הרקפת 162", "שדרות אילות 1"). Without a real city the
+    // dashboard would render the street as the headline. Reset to
+    // the neutral placeholder so the heal step (which now has the
+    // homepage warmup) can re-enrich it.
+    const cityIsBlank = typeof record.city !== 'string' || record.city.trim().length === 0;
+    if (
+      cityIsBlank &&
+      typeof record.title === 'string' &&
+      /\d/.test(record.title) &&
+      !looksLikePropertyTitle(record.title) &&
+      !isErrorWidget(record.title) &&
+      !isAntiBotText(record.title) &&
+      record.title !== 'מודעה' &&
+      record.title !== 'מודעה ללא כותרת'
+    ) {
+      record.title = 'מודעה';
+      resetTitle += 1;
+      touched = true;
+    }
+
     // Heal a price hidden inside the title.
     if ((record.price === null || record.price === undefined) && looksPriceLikeTitle(record.title)) {
       const parsed = parsePriceFromTitle(record.title);
