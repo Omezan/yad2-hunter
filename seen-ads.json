@@ -3366,6 +3366,19 @@
       "city": null,
       "firstSeenAt": "2026-04-30T10:14:06.588Z",
       "lastSeenAt": "2026-04-30T11:11:30.910Z"
+    },
+    "north-and-valleys/tffys912": {
+      "externalId": "north-and-valleys/tffys912",
+      "title": "בית פרטי/ קוטג', בלפוריה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/tffys912",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 5,
+      "city": "בלפוריה",
+      "firstSeenAt": "2026-04-30T11:54:58.227Z",
+      "lastSeenAt": "2026-04-30T11:54:58.227Z"
     }
   }
 }
