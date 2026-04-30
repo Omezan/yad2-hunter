@@ -51,7 +51,14 @@ function extractTitle(rawText) {
     .map((line) => line.trim())
     .filter(Boolean);
 
-  return lines[0] || 'מודעה ללא כותרת';
+  // Skip lines that look like Yad2's error widget so a list-card whose
+  // body errored never persists "אופס... תקלה!" as the listing title.
+  for (const line of lines) {
+    if (!/אופס\.{2,3}\s*תקלה/.test(line)) {
+      return line;
+    }
+  }
+  return 'מודעה ללא כותרת';
 }
 
 function extractLocation(rawText) {
@@ -158,7 +165,18 @@ async function detectErrorPage(page) {
       return true;
     }
 
-    if (/אופס\.\.\. תקלה|אופס\.{2,3}\s*תקלה/.test(bodyText)) {
+    // Yad2's "אופס... תקלה!" can show in two flavors:
+    //   (a) the full-page error placeholder (short body),
+    //   (b) a soft-error widget rendered INSIDE the listing layout
+    //       while the rest of the page chrome stays normal — body is
+    //       long, no 4xx/5xx status, but the listing data is missing.
+    // Treat any visible "אופס... תקלה" as a hard error so we never
+    // persist its text into the listing record.
+    const hasOopsWidget = /אופס\.{2,3}\s*תקלה/.test(bodyText);
+    if (hasOopsWidget) {
+      // If the page also has a real listing heading (an address or a
+      // price block), it's borderline — treat as error anyway because
+      // we can't safely tell which fields are real vs. placeholder.
       return true;
     }
 
@@ -663,29 +681,44 @@ function guessPropertyType(text) {
   return '';
 }
 
+// Anything that looks like Yad2's generic error widget MUST NOT be
+// stored as a real field. Used everywhere we derive city / title.
+function isYad2ErrorText(value) {
+  if (!value || typeof value !== 'string') return false;
+  return /אופס\.{2,3}\s*תקלה/.test(value);
+}
+
+function safeCity(value) {
+  if (!value || typeof value !== 'string') return null;
+  if (isYad2ErrorText(value)) return null;
+  return value;
+}
+
 function buildListingTitle({ propertyType, city }) {
-  const parts = [propertyType, city].filter(Boolean);
+  const safe = safeCity(city);
+  const parts = [propertyType, safe].filter(Boolean);
   return parts.length > 0 ? parts.join(', ') : 'מודעה';
 }
 
 function extractCityFromHeadings(data) {
   const secondary = String(data.secondaryHeading || '').trim();
-  if (secondary) {
+  if (secondary && !isYad2ErrorText(secondary)) {
     const parts = secondary.split(/[,،]/).map((part) => part.trim()).filter(Boolean);
     if (parts.length >= 2) {
       const last = parts[parts.length - 1];
       const previous = parts[parts.length - 2];
-      if (last && previous && last === previous) {
+      if (last && previous && last === previous && !isYad2ErrorText(last)) {
         return last;
       }
-      if (last) {
+      if (last && !isYad2ErrorText(last)) {
         return last;
       }
     }
   }
   const heading = String(data.titleHeading || '').trim();
-  if (heading) {
-    return heading.split('\n')[0].trim() || null;
+  if (heading && !isYad2ErrorText(heading)) {
+    const firstLine = heading.split('\n')[0].trim();
+    return firstLine && !isYad2ErrorText(firstLine) ? firstLine : null;
   }
   return null;
 }
@@ -1082,6 +1115,7 @@ module.exports = {
   enrichAdsWithDetails,
   extractExternalId,
   fetchListingDetails,
+  isYad2ErrorText,
   normalizeItemUrl,
   parseFloor,
   parsePublishedDate,

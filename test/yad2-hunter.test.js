@@ -15,6 +15,7 @@ const {
 } = require('../src/services/telegram');
 const {
   extractExternalId,
+  isYad2ErrorText,
   normalizeItemUrl,
   parseFloor,
   parsePublishedDate
@@ -798,6 +799,26 @@ test('formatHealthCheckMessage falls back to legacy missingIds/extraIds when rec
 
   assert.match(text, /⏳ חסר ב-seen ולא נסגר \(1\)/);
   assert.match(text, /⏳ ב-seen אך לא ב-Yad2 ולא נסגר \(1\)/);
+});
+
+// -----------------------------------------------------------------------------
+// Yad2 error-widget guard (אופס... תקלה!)
+// -----------------------------------------------------------------------------
+
+test('isYad2ErrorText catches the canonical phrase + variants', () => {
+  assert.equal(isYad2ErrorText('אופס... תקלה!'), true);
+  assert.equal(isYad2ErrorText('אופס...תקלה'), true);
+  assert.equal(isYad2ErrorText('אופס.. תקלה'), true);
+  assert.equal(isYad2ErrorText('אופס...    תקלה'), true);
+  assert.equal(isYad2ErrorText(' לפני אופס... תקלה אחרי '), true);
+});
+
+test('isYad2ErrorText is robust on non-string and irrelevant inputs', () => {
+  assert.equal(isYad2ErrorText(null), false);
+  assert.equal(isYad2ErrorText(undefined), false);
+  assert.equal(isYad2ErrorText(''), false);
+  assert.equal(isYad2ErrorText('בית פרטי, מתן'), false);
+  assert.equal(isYad2ErrorText('אופס משהו אחר'), false);
 });
 
 test('formatHealthCheckMessage still emits the diff details after a successful reconciliation (allMatch=true)', () => {

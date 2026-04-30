@@ -1,6 +1,29 @@
 const fs = require('fs');
 const path = require('path');
 const { env } = require('../config/env');
+const { isYad2ErrorText } = require('../scraper/yad2');
+
+function isPoisonString(value) {
+  return typeof value === 'string' && isYad2ErrorText(value);
+}
+
+// Pick the field we should keep on disk when refreshing an existing
+// record. Prefer the freshly-enriched value when:
+//   - the existing value is missing / blank, or
+//   - the existing value looks like the Yad2 error widget.
+// Otherwise keep what's already in seen so we don't overwrite a real
+// value with a (possibly transient) blank.
+function preferFreshField(existingValue, freshValue) {
+  if (
+    existingValue === null ||
+    existingValue === undefined ||
+    existingValue === '' ||
+    isPoisonString(existingValue)
+  ) {
+    return freshValue ?? null;
+  }
+  return existingValue;
+}
 
 const SEEN_FILE = 'seen-ads.json';
 const RUNS_FILE = 'runs.json';
@@ -192,15 +215,39 @@ function commitAds({
   }
 
   for (const ad of existingAds) {
-    const existing = seen.ads[ad.externalId];
+    const existing = seen.ads[ad.externalId] || {};
+    // Heal poison fields when we now have a clean value, but never
+    // downgrade a clean value to a blank one. The fresh `ad` object
+    // came either from a list-card scrape (untrusted title) or from
+    // the enriched detail page (trusted city/price/rooms).
     seen.ads[ad.externalId] = {
-      ...(existing || {}),
+      ...existing,
       externalId: ad.externalId,
-      title: ad.title,
-      link: ad.link,
-      searchId: ad.searchId,
-      searchLabel: ad.searchLabel,
-      districtLabel: ad.districtLabel,
+      // Title: prefer the fresh one unless it itself looks like the
+      // error widget; in that case keep whatever the existing record
+      // had (or fall back to a generic placeholder).
+      title: isPoisonString(ad.title)
+        ? existing.title && !isPoisonString(existing.title)
+          ? existing.title
+          : 'מודעה'
+        : ad.title || existing.title || 'מודעה',
+      link: ad.link || existing.link,
+      searchId: ad.searchId || existing.searchId,
+      searchLabel: ad.searchLabel || existing.searchLabel,
+      districtLabel: ad.districtLabel || existing.districtLabel,
+      city: preferFreshField(existing.city, ad.city),
+      price:
+        existing.price === null || existing.price === undefined
+          ? typeof ad.price === 'number'
+            ? ad.price
+            : null
+          : existing.price,
+      rooms:
+        existing.rooms === null || existing.rooms === undefined
+          ? typeof ad.rooms === 'number'
+            ? ad.rooms
+            : null
+          : existing.rooms,
       lastSeenAt: now
     };
   }

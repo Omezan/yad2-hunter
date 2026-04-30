@@ -4,10 +4,15 @@ const {
   commitAds,
   ensureStateDir,
   listRecentRuns,
+  loadSeenAds,
   recordRun,
   splitNewAndExisting
 } = require('../store/file-store');
-const { enrichAdsWithDetails, scrapeAllSearches } = require('../scraper/yad2');
+const {
+  enrichAdsWithDetails,
+  isYad2ErrorText,
+  scrapeAllSearches
+} = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
   sendManualScanNoNewAdsNotice,
@@ -20,6 +25,18 @@ const ENRICH_TIMEOUT_MS = 12000;
 const ENRICH_CONCURRENCY = 4;
 const MAX_ENRICH = 400;
 const ENRICH_BUDGET_MS = 6 * 60 * 1000;
+// Per-run cap on how many already-seen ads with poison fields we re-enrich
+// to heal them. Keeps the loop's wall-clock predictable; remaining
+// poisoned records will heal on subsequent runs.
+const MAX_HEAL_PER_RUN = 25;
+const HEAL_BUDGET_MS = 90 * 1000;
+
+function isPoisonRecord(record) {
+  if (!record) return false;
+  if (typeof record.city === 'string' && isYad2ErrorText(record.city)) return true;
+  if (typeof record.title === 'string' && isYad2ErrorText(record.title)) return true;
+  return false;
+}
 
 function summarizeRejections(ads, options) {
   const counts = {};
@@ -108,9 +125,45 @@ async function runOnce(options = {}) {
       .map((s) => s.id)
       .filter((id) => !erroredSearchIds.has(id));
 
+    // Heal records whose previously-stored city/title looks like Yad2's
+    // error widget. We re-enrich a small batch each run; the resulting
+    // ads still travel through the existingAds path so commitAds can
+    // overwrite their poisoned fields with clean ones.
+    const seenForHeal = loadSeenAds();
+    const healCandidates = existingAds.filter((ad) =>
+      isPoisonRecord(seenForHeal.ads?.[ad.externalId])
+    );
+    const healToEnrich = healCandidates.slice(0, MAX_HEAL_PER_RUN);
+    let healedAds = [];
+    if (healToEnrich.length) {
+      console.log(
+        `[run-once] healing ${healToEnrich.length} poison record(s); will be refreshed via enrichment`
+      );
+      try {
+        healedAds = await enrichAdsWithDetails({
+          ads: healToEnrich,
+          headless: env.PLAYWRIGHT_HEADLESS,
+          timeoutMs: ENRICH_TIMEOUT_MS,
+          concurrency: ENRICH_CONCURRENCY,
+          budgetMs: HEAL_BUDGET_MS
+        });
+      } catch (err) {
+        console.warn('[run-once] heal enrichment failed:', err && err.message);
+        healedAds = [];
+      }
+    }
+    // Replace poisoned existingAds entries with their healed counterpart.
+    const healedById = new Map(
+      healedAds.filter((a) => a && a.externalId).map((a) => [a.externalId, a])
+    );
+    const existingAdsForCommit = existingAds.map((ad) => {
+      const healed = healedById.get(ad.externalId);
+      return healed ? { ...ad, ...healed } : ad;
+    });
+
     const { removed: removedAds = [], skippedDistricts = [] } = commitAds({
       newAds: relevantNewAds,
-      existingAds,
+      existingAds: existingAdsForCommit,
       allScrapedAds: scrapeResult.ads,
       scrapedSearchIds
     });
