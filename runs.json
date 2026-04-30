@@ -1,6 +1,47 @@
 {
   "runs": [
     {
+      "startedAt": "2026-04-30T08:17:14.822Z",
+      "completedAt": "2026-04-30T08:27:28.072Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "enrichedAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-04-30T08:08:29.717Z",
       "completedAt": "2026-04-30T08:17:08.370Z",
       "status": "partial",
@@ -1711,51 +1752,6 @@
       "removedAds": 0,
       "telegramSent": false,
       "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "startedAt": "2026-04-29T15:39:06.762Z",
-      "completedAt": "2026-04-29T15:49:04.735Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "enrichedAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=ddcdfef8-fa2c-4ab1-b50b-9b648dde4fa4&ssb=21356372230&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=bc05d039-bhmf-4d91-a793-adbc25b9b00d&ssk=support%40shieldsquare.com&ssm=39561290334715581106694214735226&ssn=db6db4526154f9863f8506e7d71188ef01f5cdf88634-c097-493e-881565&sso=6a03e663-0061ec68a8364c7bcf2d7c9c7f47f00ef57748f81aae8d71&ssp=27335345051777409557177744478804849&ssq=29691107719186271948077191431997965025079&ssr=MTcyLjIwOC4xNTMuMjEx&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJyZCI6InlhZDIuY28uaWwiLCJfX3V6bWYiOiI3ZjkwMDBjZGY4ODYzNC1jMDk3LTQ5M2UtODY2My0wMDYxZWM2OGE4MzYxLTE3Nzc0NzcxOTE2NzIwLTAwM2M1ZDNhZmEyYzhhNTMwMjYxMCIsInV6bXgiOiI3ZjkwMDAyZTEyMTkwYy04ZTc3LTQxYWMtYTM3OS1kZTk2MzUxNjEwZjUxLTE3Nzc0NzcxODg3NDcyOTI1LWVjZGMzODU5N2RlMWMwMzkxMyJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        },
         {
           "searchId": "jerusalem",
           "searchLabel": "ירושלים",
