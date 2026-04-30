@@ -31,10 +31,19 @@ const ENRICH_BUDGET_MS = 6 * 60 * 1000;
 const MAX_HEAL_PER_RUN = 25;
 const HEAL_BUDGET_MS = 90 * 1000;
 
-function isPoisonRecord(record) {
+function needsHealing(record) {
   if (!record) return false;
+  // Original error-widget text (covered by the previous fix).
   if (typeof record.city === 'string' && isYad2ErrorText(record.city)) return true;
   if (typeof record.title === 'string' && isYad2ErrorText(record.title)) return true;
+  // Records the migration neutralised but haven't been re-enriched yet:
+  // no city + a placeholder title means we never captured a real city.
+  // Also catch records whose `city` is missing entirely OR whose title
+  // is the neutral placeholder we wrote during migration. The detail
+  // page is the canonical source for those fields.
+  const hasCity = typeof record.city === 'string' && record.city.trim().length > 0;
+  if (!hasCity) return true;
+  if (record.title === 'מודעה' || record.title === 'מודעה ללא כותרת') return true;
   return false;
 }
 
@@ -131,13 +140,13 @@ async function runOnce(options = {}) {
     // overwrite their poisoned fields with clean ones.
     const seenForHeal = loadSeenAds();
     const healCandidates = existingAds.filter((ad) =>
-      isPoisonRecord(seenForHeal.ads?.[ad.externalId])
+      needsHealing(seenForHeal.ads?.[ad.externalId])
     );
     const healToEnrich = healCandidates.slice(0, MAX_HEAL_PER_RUN);
     let healedAds = [];
     if (healToEnrich.length) {
       console.log(
-        `[run-once] healing ${healToEnrich.length} poison record(s); will be refreshed via enrichment`
+        `[run-once] healing ${healToEnrich.length} record(s) (missing/placeholder fields); will be refreshed via enrichment`
       );
       try {
         healedAds = await enrichAdsWithDetails({
@@ -257,5 +266,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-  runOnce
+  runOnce,
+  needsHealing
 };

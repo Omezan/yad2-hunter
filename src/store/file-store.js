@@ -3,8 +3,14 @@ const path = require('path');
 const { env } = require('../config/env');
 const { isYad2ErrorText } = require('../scraper/yad2');
 
+const PLACEHOLDER_TITLES = new Set(['מודעה', 'מודעה ללא כותרת']);
+
 function isPoisonString(value) {
   return typeof value === 'string' && isYad2ErrorText(value);
+}
+
+function isPlaceholderTitle(value) {
+  return typeof value === 'string' && PLACEHOLDER_TITLES.has(value.trim());
 }
 
 // Pick the field we should keep on disk when refreshing an existing
@@ -223,14 +229,19 @@ function commitAds({
     seen.ads[ad.externalId] = {
       ...existing,
       externalId: ad.externalId,
-      // Title: prefer the fresh one unless it itself looks like the
-      // error widget; in that case keep whatever the existing record
-      // had (or fall back to a generic placeholder).
+      // Title:
+      //   - If the fresh title is poison (error widget), discard it.
+      //   - If the existing title is a placeholder OR poison, accept
+      //     the fresh title (it likely came from a real enrichment).
+      //   - Otherwise keep the existing title - we don't want to
+      //     overwrite a real city/property line with a list-card scrape.
       title: isPoisonString(ad.title)
         ? existing.title && !isPoisonString(existing.title)
           ? existing.title
           : 'מודעה'
-        : ad.title || existing.title || 'מודעה',
+        : isPlaceholderTitle(existing.title) || isPoisonString(existing.title)
+          ? ad.title || existing.title || 'מודעה'
+          : existing.title || ad.title || 'מודעה',
       link: ad.link || existing.link,
       searchId: ad.searchId || existing.searchId,
       searchLabel: ad.searchLabel || existing.searchLabel,

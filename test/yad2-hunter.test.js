@@ -22,6 +22,7 @@ const {
 } = require('../src/scraper/yad2');
 const { removeDeletedAds } = require('../src/store/file-store');
 const { reconcileSeen } = require('../src/worker/health-check');
+const { needsHealing } = require('../src/worker/run-once');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -900,4 +901,27 @@ test('formatHealthCheckMessage still emits the diff details after a successful r
   assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/NEW/);
   assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/REMOVED/);
   assert.match(text, /סיבה: HTTP 404/);
+});
+
+test('needsHealing flags missing-city and placeholder-title records', () => {
+  // Records left over from the migration: city was wiped, title was
+  // neutralised to "מודעה". Heal step must pick them up so they can
+  // be re-enriched from the detail page.
+  assert.equal(needsHealing({ externalId: 'a', city: null, title: 'מודעה' }), true);
+  assert.equal(needsHealing({ externalId: 'b', city: '', title: 'דירה, חדרה' }), true);
+  assert.equal(
+    needsHealing({ externalId: 'c', city: 'עוזה', title: 'מודעה ללא כותרת' }),
+    true
+  );
+  // The original error-widget case still gets flagged.
+  assert.equal(needsHealing({ externalId: 'd', city: 'אופס...תקלה!', title: 'דירה' }), true);
+  assert.equal(needsHealing({ externalId: 'e', city: 'עוזה', title: 'אופס...תקלה' }), true);
+  // A healthy record is left alone.
+  assert.equal(
+    needsHealing({ externalId: 'f', city: 'הרצליה', title: 'דירה, הרצליה' }),
+    false
+  );
+  // Edge cases.
+  assert.equal(needsHealing(null), false);
+  assert.equal(needsHealing(undefined), false);
 });
