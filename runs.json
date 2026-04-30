@@ -1,6 +1,46 @@
 {
   "runs": [
     {
+      "startedAt": "2026-04-30T16:42:39.372Z",
+      "completedAt": "2026-04-30T16:52:24.906Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-04-30T16:32:32.219Z",
       "completedAt": "2026-04-30T16:42:33.293Z",
       "status": "partial",
@@ -1590,52 +1630,6 @@
           "searchId": "jerusalem",
           "searchLabel": "ירושלים",
           "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/jerusalem-area?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        },
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "startedAt": "2026-04-29T23:29:04.027Z",
-      "completedAt": "2026-04-29T23:39:10.828Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "enrichedAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=6f86e9c3-c0eb-47a4-bd61-8bca10922d7b&ssb=75257358079&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=a02b8229-bhmf-4045-930c-74b5d525b13a&ssk=support%40shieldsquare.com&ssm=92244460083926500103463495655376&ssn=2a1071caf446b079c83177e5abf2ed125d7c08a4646e-1b0d-4d89-80a324&sso=a75df675-4cc557300ba40055616b13884af0fb2d7361cd47d0687593&ssp=21610450771777533363177755275019209&ssq=41904410539405976336505394875479867096675&ssr=MTcyLjIwOC4xNTIuMjE1&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJyZCI6InlhZDIuY28uaWwiLCJfX3V6bWYiOiI3ZjkwMDAwOGE0NjQ2ZS0xYjBkLTRkODktODY3NS00Y2M1NTczMDBiYTQxLTE3Nzc1MDUzOTQ4MzMwLTAwMzE0NmU3NTg5YTQ3YjE4N2QxMCIsInV6bXgiOiI3ZjkwMDBlMjgxMzNjZi0xMGYxLTRhOTYtYmVjYy1jNDMxMTQ4ZmNjZWMxLTE3Nzc1MDUzOTE4NzgyOTU1LWE2NDJlY2U5OGMwODM0MDAxMyJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
         },
         {
           "searchId": "jerusalem",
