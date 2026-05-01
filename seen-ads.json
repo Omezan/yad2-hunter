@@ -3366,6 +3366,58 @@
       "city": "לבון",
       "firstSeenAt": "2026-05-01T05:45:53.788Z",
       "lastSeenAt": "2026-05-01T05:45:53.788Z"
+    },
+    "jerusalem-area/v6yezbsr": {
+      "externalId": "jerusalem-area/v6yezbsr",
+      "title": "בית פרטי/ קוטג', גפן",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/v6yezbsr",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 7200,
+      "rooms": 5,
+      "city": "גפן",
+      "firstSeenAt": "2026-05-01T07:38:15.503Z",
+      "lastSeenAt": "2026-05-01T07:38:15.503Z"
+    },
+    "center-and-sharon/5eex4oyn": {
+      "externalId": "center-and-sharon/5eex4oyn",
+      "title": "דירה, אחיטוב",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/5eex4oyn",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "אחיטוב",
+      "firstSeenAt": "2026-05-01T07:38:15.503Z",
+      "lastSeenAt": "2026-05-01T07:38:15.503Z"
+    },
+    "coastal-north/syttlspf": {
+      "externalId": "coastal-north/syttlspf",
+      "title": "דו משפחתי, עין המפרץ",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/syttlspf",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 6000,
+      "rooms": 4,
+      "city": "עין המפרץ",
+      "firstSeenAt": "2026-05-01T07:38:15.503Z",
+      "lastSeenAt": "2026-05-01T07:38:15.503Z"
+    },
+    "north-and-valleys/pyymfkow": {
+      "externalId": "north-and-valleys/pyymfkow",
+      "title": "בית פרטי/ קוטג', כליל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pyymfkow",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8500,
+      "rooms": 4,
+      "city": "כליל",
+      "firstSeenAt": "2026-05-01T07:38:15.503Z",
+      "lastSeenAt": "2026-05-01T07:38:15.503Z"
     }
   }
 }
