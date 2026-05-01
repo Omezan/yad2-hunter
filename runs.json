@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-01T10:15:15.123Z",
+      "completedAt": "2026-05-01T10:18:19.904Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 256,
+      "preFilteredAds": 256,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "removedAds": 9,
+      "skippedRemovalDistricts": [],
+      "telegramSent": true,
+      "errors": []
+    },
+    {
       "startedAt": "2026-05-01T08:44:41.151Z",
       "completedAt": "2026-05-01T08:54:02.854Z",
       "status": "partial",
@@ -1726,20 +1740,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "startedAt": "2026-04-30T14:59:19.852Z",
-      "completedAt": "2026-04-30T15:02:18.598Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 255,
-      "preFilteredAds": 255,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "removedAds": 1,
-      "skippedRemovalDistricts": [],
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
