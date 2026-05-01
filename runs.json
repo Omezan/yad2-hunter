@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-01T01:59:23.131Z",
+      "completedAt": "2026-05-01T02:02:30.737Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 253,
+      "preFilteredAds": 253,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 4,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": []
+    },
+    {
       "startedAt": "2026-04-30T23:28:29.991Z",
       "completedAt": "2026-04-30T23:39:05.083Z",
       "status": "partial",
@@ -1633,21 +1647,6 @@
     {
       "startedAt": "2026-04-30T09:21:59.214Z",
       "completedAt": "2026-04-30T09:25:49.032Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 254,
-      "preFilteredAds": 254,
-      "candidateNewAds": 0,
-      "enrichedAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 3,
-      "skippedRemovalDistricts": [],
-      "telegramSent": true,
-      "errors": []
-    },
-    {
-      "startedAt": "2026-04-30T09:16:37.442Z",
-      "completedAt": "2026-04-30T09:20:28.630Z",
       "status": "completed",
       "trigger": "manual-dashboard",
       "totalAds": 254,
