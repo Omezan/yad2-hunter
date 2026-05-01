@@ -1,6 +1,46 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-01T05:47:40.509Z",
+      "completedAt": "2026-05-01T05:57:16.575Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 15,
+      "preFilteredAds": 15,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-05-01T05:42:40.420Z",
       "completedAt": "2026-05-01T05:45:54.442Z",
       "status": "completed",
@@ -1695,20 +1735,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "startedAt": "2026-04-30T11:08:20.369Z",
-      "completedAt": "2026-04-30T11:11:31.470Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 256,
-      "preFilteredAds": 256,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 3,
-      "skippedRemovalDistricts": [],
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
