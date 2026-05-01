@@ -3483,6 +3483,19 @@
       "city": "נוגה",
       "firstSeenAt": "2026-05-01T12:57:48.432Z",
       "lastSeenAt": "2026-05-01T12:57:48.432Z"
+    },
+    "north-and-valleys/nqsslmub": {
+      "externalId": "north-and-valleys/nqsslmub",
+      "title": "בית פרטי/ קוטג', חפצי בה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/nqsslmub",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 4,
+      "city": "חפצי בה",
+      "firstSeenAt": "2026-05-01T13:54:15.776Z",
+      "lastSeenAt": "2026-05-01T13:54:15.776Z"
     }
   }
 }
