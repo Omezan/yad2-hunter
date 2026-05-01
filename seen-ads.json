@@ -3444,6 +3444,19 @@
       "city": "הררית",
       "firstSeenAt": "2026-05-01T10:18:19.545Z",
       "lastSeenAt": "2026-05-01T10:18:19.545Z"
+    },
+    "south/b5qfxzqf": {
+      "externalId": "south/b5qfxzqf",
+      "title": "בית פרטי/ קוטג', שובה",
+      "link": "https://www.yad2.co.il/realestate/item/south/b5qfxzqf",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 6800,
+      "rooms": 4,
+      "city": "שובה",
+      "firstSeenAt": "2026-05-01T11:23:32.924Z",
+      "lastSeenAt": "2026-05-01T11:23:32.924Z"
     }
   }
 }
