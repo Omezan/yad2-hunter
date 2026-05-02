@@ -3561,6 +3561,19 @@
       "city": "מגן שאול",
       "firstSeenAt": "2026-05-02T15:05:40.653Z",
       "lastSeenAt": "2026-05-02T15:41:18.243Z"
+    },
+    "coastal-north/s2eo3cha": {
+      "externalId": "coastal-north/s2eo3cha",
+      "title": "בית פרטי/ קוטג', כפר ראש הנקרה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/s2eo3cha",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 7800,
+      "rooms": 5,
+      "city": "כפר ראש הנקרה",
+      "firstSeenAt": "2026-05-02T16:01:49.906Z",
+      "lastSeenAt": "2026-05-02T16:01:49.906Z"
     }
   }
 }
