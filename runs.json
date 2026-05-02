@@ -1,6 +1,51 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-02T02:32:58.839Z",
+      "completedAt": "2026-05-02T02:43:38.162Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-05-02T02:22:48.427Z",
       "completedAt": "2026-05-02T02:32:52.596Z",
       "status": "partial",
@@ -1725,56 +1770,6 @@
       "skippedRemovalDistricts": [],
       "telegramSent": false,
       "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "startedAt": "2026-05-01T15:50:26.636Z",
-      "completedAt": "2026-05-01T16:00:49.284Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=6b80257b-dbfd-485b-acdd-14682d0a4224&ssb=57880363585&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=6eab4ccb-bhmf-4d6f-9945-045928d17542&ssk=support%40shieldsquare.com&ssm=37888612816682420109776756965114&ssn=cdd7b0e7d45bc6a5ee530d8b867abb6955293715e2f5-5724-40b7-828a9d&sso=73b239fc-b85981e255698c5d9d2ffbf8ce6a1ca10339635d817848cf&ssp=66862827801777678226177760689109865&ssq=48138165083848057029050838005528664582192&ssr=NTIuMTczLjE2Mi4xMDI%3D&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJ1em14IjoiN2Y5MDAwNTY5OTk5YzctZDQ5Ni00ZmMxLWJiMjItZmIzNjRkZjcyYTM4MS0xNzc3NjUwODM1MjI2MzAyOS01OWQ4Y2RhYzFhNmQzZWYzMTMiLCJyZCI6InlhZDIuY28uaWwiLCJfX3V6bWYiOiI3ZjkwMDAzNzE1ZTJmNS01NzI0LTQwYjctODlmYy1iODU5ODFlMjU1NjkxLTE3Nzc2NTA4MzgyNTUwLTAwM2JhNWIyNjljOWZlMTYwOGQxMCJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        },
         {
           "searchId": "jerusalem",
           "searchLabel": "ירושלים",
