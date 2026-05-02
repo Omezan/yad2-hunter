@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-02T01:48:07.574Z",
+      "completedAt": "2026-05-02T01:51:03.540Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 255,
+      "preFilteredAds": 255,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 15,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": []
+    },
+    {
       "startedAt": "2026-05-02T00:19:52.172Z",
       "completedAt": "2026-05-02T00:31:08.021Z",
       "status": "partial",
@@ -1740,41 +1754,6 @@
           "searchLabel": "ירושלים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "startedAt": "2026-05-01T14:18:52.310Z",
-      "completedAt": "2026-05-01T14:28:25.854Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 16,
-      "preFilteredAds": 16,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": [
         {
           "searchId": "center-sharon",
           "searchLabel": "מרכז ושרון",
