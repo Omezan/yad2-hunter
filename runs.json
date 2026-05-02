@@ -1,6 +1,51 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-02T22:10:14.984Z",
+      "completedAt": "2026-05-02T22:19:30.156Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=859948f2-de27-4cd8-9456-2676aeff5044&ssb=80928293932&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=e03b0459-bhmf-40c3-a899-1ddf2354dc3e&ssk=support%40shieldsquare.com&ssm=15805321019494971104077273340577&ssn=9312a9dcaa5250bb41b0cfad3def61e51ef1b47f6c05-876e-4e7d-9c5225&sso=3b29e2e8-9c16583a2c741610e5c8a9fba15f68d51ab5d2492e1bc21d&ssp=89286932511777732479177777996919042&ssq=12214615989850202528159898580354372496094&ssr=MjAuMTAyLjEwMi42NQ%3D%3D&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJfX3V6bWYiOiI3ZjkwMDBiNDdmNmMwNS04NzZlLTRlN2QtOTJlOC05YzE2NTgzYTJjNzQxLTE3Nzc3NTk4OTg5NTQwLTAwMzhjMDNmZjM4YzhiNmE0YjMxMCIsInJkIjoieWFkMi5jby5pbCIsInV6bXgiOiI3ZjkwMDA1OThjZjIxMC02NGU3LTQ0NzctODlkYy1hMDZlYWRjZDMxZDIxLTE3Nzc3NTk4OTcwMjAxOTM0LWUzMTRhZWYwZDFlNDE0M2MxMyJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-05-02T22:00:13.238Z",
       "completedAt": "2026-05-02T22:10:08.927Z",
       "status": "partial",
@@ -1782,20 +1827,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "startedAt": "2026-05-02T12:44:49.476Z",
-      "completedAt": "2026-05-02T12:47:56.894Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 259,
-      "preFilteredAds": 259,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 14,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": []
     }
   ]
 }
