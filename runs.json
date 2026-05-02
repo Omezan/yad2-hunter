@@ -1,6 +1,51 @@
 {
   "runs": [
     {
+      "startedAt": "2026-05-02T14:50:15.085Z",
+      "completedAt": "2026-05-02T15:01:06.084Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "startedAt": "2026-05-02T14:40:01.136Z",
       "completedAt": "2026-05-02T14:50:08.854Z",
       "status": "partial",
@@ -1497,20 +1542,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "startedAt": "2026-05-02T04:52:26.998Z",
-      "completedAt": "2026-05-02T04:55:37.265Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 256,
-      "preFilteredAds": 256,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 14,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": []
     }
   ]
 }
