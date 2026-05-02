@@ -3548,6 +3548,19 @@
       "city": "פקיעין חדשה",
       "firstSeenAt": "2026-05-02T09:56:43.034Z",
       "lastSeenAt": "2026-05-02T14:08:23.397Z"
+    },
+    "north-and-valleys/z2ban5jl": {
+      "externalId": "north-and-valleys/z2ban5jl",
+      "title": "בית פרטי/ קוטג', מגן שאול",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/z2ban5jl",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4800,
+      "rooms": 4,
+      "city": "מגן שאול",
+      "firstSeenAt": "2026-05-02T15:05:40.653Z",
+      "lastSeenAt": "2026-05-02T15:05:40.653Z"
     }
   }
 }
