@@ -11,7 +11,7 @@
       "rooms": 4,
       "city": "נחושה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/ggnzql9j": {
       "externalId": "jerusalem-area/ggnzql9j",
@@ -24,7 +24,7 @@
       "rooms": 5,
       "city": "לוזית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/30eu4xqn": {
       "externalId": "jerusalem-area/30eu4xqn",
@@ -37,7 +37,7 @@
       "rooms": 4,
       "city": "אורה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/vtlpns1j": {
       "externalId": "jerusalem-area/vtlpns1j",
@@ -50,7 +50,7 @@
       "rooms": 4,
       "city": "נווה מיכאל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/o0mpo352": {
       "externalId": "jerusalem-area/o0mpo352",
@@ -63,7 +63,7 @@
       "rooms": 5.5,
       "city": "שדות מיכה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/lek4shtw": {
       "externalId": "jerusalem-area/lek4shtw",
@@ -76,7 +76,7 @@
       "rooms": 4,
       "city": "שואבה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/5m60p83u": {
       "externalId": "jerusalem-area/5m60p83u",
@@ -89,7 +89,7 @@
       "rooms": 4,
       "city": "כסלון",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/v6jano1v": {
       "externalId": "jerusalem-area/v6jano1v",
@@ -102,7 +102,7 @@
       "rooms": 7,
       "city": "נווה מיכאל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/e8pzmf2h": {
       "externalId": "jerusalem-area/e8pzmf2h",
@@ -115,7 +115,7 @@
       "rooms": 6,
       "city": "לוזית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/42cmt6di": {
       "externalId": "jerusalem-area/42cmt6di",
@@ -128,7 +128,7 @@
       "rooms": 4,
       "city": "בית זית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "center-and-sharon/pnn4p1yx": {
       "externalId": "center-and-sharon/pnn4p1yx",
@@ -154,7 +154,7 @@
       "rooms": 4,
       "city": "עמינדב",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "center-and-sharon/8kqo7kil": {
       "externalId": "center-and-sharon/8kqo7kil",
@@ -2572,7 +2572,7 @@
       "rooms": 4,
       "city": "מוצא עילית",
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "south/ev72y34d": {
       "externalId": "south/ev72y34d",
@@ -2806,7 +2806,7 @@
       "rooms": 4.5,
       "city": "צפרירים",
       "firstSeenAt": "2026-04-30T05:30:48.804Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "center-and-sharon/44t4qbr5": {
       "externalId": "center-and-sharon/44t4qbr5",
@@ -2962,7 +2962,7 @@
       "rooms": 5,
       "city": "גפן",
       "firstSeenAt": "2026-05-01T07:38:15.503Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "center-and-sharon/5eex4oyn": {
       "externalId": "center-and-sharon/5eex4oyn",
@@ -3248,7 +3248,7 @@
       "rooms": 9,
       "city": "ישעי",
       "firstSeenAt": "2026-05-03T09:57:43.611Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "north-and-valleys/02ci2psk": {
       "externalId": "north-and-valleys/02ci2psk",
@@ -3287,7 +3287,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "jerusalem-area/8udbxrm5": {
       "externalId": "jerusalem-area/8udbxrm5",
@@ -3300,7 +3300,7 @@
       "rooms": 6,
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-05-03T17:41:26.770Z"
+      "lastSeenAt": "2026-05-03T17:52:02.294Z"
     },
     "north-and-valleys/normtgby": {
       "externalId": "north-and-valleys/normtgby",
