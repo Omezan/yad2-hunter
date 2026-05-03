@@ -460,6 +460,7 @@ export default function DashboardPage() {
           <h1 className="brand">
             <span className="brand-icon" aria-hidden="true">🏡</span>
             <span>מציאת בית במושב</span>
+            <span className="brand-icon" aria-hidden="true">🏡</span>
           </h1>
         </div>
         <div className="header-actions">
