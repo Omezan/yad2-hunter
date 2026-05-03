@@ -234,19 +234,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-03T12:47:22.144Z"
     },
-    "center-and-sharon/p54srzxo": {
-      "externalId": "center-and-sharon/p54srzxo",
-      "title": "בית פרטי/ קוטג', בחן",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p54srzxo",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7900,
-      "rooms": 5,
-      "city": "בחן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T12:47:22.144Z"
-    },
     "center-and-sharon/hh83goax": {
       "externalId": "center-and-sharon/hh83goax",
       "title": "גג/ פנטהאוז, בת חפר",
@@ -933,19 +920,6 @@
       "price": 9000,
       "rooms": 7,
       "city": "שדה יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T12:47:22.144Z"
-    },
-    "coastal-north/3wbwpp3a": {
-      "externalId": "coastal-north/3wbwpp3a",
-      "title": "בית פרטי/ קוטג', בוסתן הגליל",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/3wbwpp3a",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 8900,
-      "rooms": 4.5,
-      "city": "בוסתן הגליל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-03T12:47:22.144Z"
     },

@@ -185,6 +185,18 @@
       "removedAt": "2026-05-03T08:47:13.966Z",
       "reason": "removed-by-scan",
       "recordedBy": "commitAds"
+    },
+    "center-and-sharon/p54srzxo": {
+      "externalId": "center-and-sharon/p54srzxo",
+      "removedAt": "2026-05-03T13:47:36.709Z",
+      "reason": "removed-by-health-check",
+      "recordedBy": "health-check"
+    },
+    "coastal-north/3wbwpp3a": {
+      "externalId": "coastal-north/3wbwpp3a",
+      "removedAt": "2026-05-03T13:47:36.709Z",
+      "reason": "removed-by-health-check",
+      "recordedBy": "health-check"
     }
   }
 }
