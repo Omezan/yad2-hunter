@@ -93,7 +93,7 @@ async function main() {
       inconclusive.push({ id, status: 'no-result', reason: 'probe returned no entry' });
       continue;
     }
-    if (r.status === 'present') alive.push({ id, ...r });
+    if (r.status === 'live') alive.push({ id, ...r });
     else if (r.status === 'removed') removed.push({ id, ...r });
     else inconclusive.push({ id, status: r.status, reason: r.reason });
   }

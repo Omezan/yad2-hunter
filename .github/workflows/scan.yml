@@ -2,9 +2,10 @@ name: Yad2 Scan
 
 on:
   schedule:
-    # One job per hour; the job itself loops internally and scans every 5 min
-    # for ~55 minutes. This avoids GitHub's free-tier scheduler dropping
-    # individual cron fires under load.
+    # One job per hour; the job itself loops internally and scans every 30
+    # min for ~55 minutes. We keep the looping architecture (rather than
+    # a true 30-min cron) so we pay the runner setup cost (npm ci +
+    # playwright install ~90s) once per hour instead of twice.
     - cron: "0 * * * *"
   workflow_dispatch:
 
@@ -64,9 +65,11 @@ jobs:
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           # Stop the loop ~55 min after start so the job can finish cleanly
-          # well before the 60-min runner timeout.
+          # well before the 60-min runner timeout. With a 30-min interval
+          # this gives us 2 iterations per hourly job (roughly at :00 and
+          # :30), matching the user-requested cadence.
           LOOP_BUDGET_MS: "3300000"
-          LOOP_INTERVAL_MS: "300000"
+          LOOP_INTERVAL_MS: "1800000"
         run: npm run scan:loop
 
       - name: Persist final state to state branch
