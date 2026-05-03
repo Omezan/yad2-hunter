@@ -356,7 +356,6 @@ export default function DashboardPage() {
 
   const sinceLabel = formatHebrewDateTime(effectiveSince);
   const totalCount = ads.length;
-  const generatedAt = data?.generatedAt ? formatHebrewDateTime(data.generatedAt) : null;
 
   // Reads from runs.json (server-side projected). May be null on first
   // deploy or if the relevant run hasn't completed yet.
@@ -460,7 +459,6 @@ export default function DashboardPage() {
               ) : null}
             </span>
           </div>
-          {generatedAt ? <span className="header-meta">עודכן {generatedAt}</span> : null}
         </div>
         <div className="header-actions">
           <button
