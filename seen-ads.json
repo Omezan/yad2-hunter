@@ -3327,6 +3327,19 @@
       "city": "כוכב מיכאל",
       "firstSeenAt": "2026-05-03T17:32:20.026Z",
       "lastSeenAt": "2026-05-03T17:32:20.026Z"
+    },
+    "north-and-valleys/xoq7sqwi": {
+      "externalId": "north-and-valleys/xoq7sqwi",
+      "title": "בית פרטי/ קוטג', אומן",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xoq7sqwi",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6900,
+      "rooms": 4,
+      "city": "אומן",
+      "firstSeenAt": "2026-05-03T17:36:43.062Z",
+      "lastSeenAt": "2026-05-03T17:36:43.062Z"
     }
   }
 }
