@@ -3353,19 +3353,6 @@
       "city": "גבעת אבני",
       "firstSeenAt": "2026-05-03T18:45:27.424Z",
       "lastSeenAt": "2026-05-03T22:33:14.399Z"
-    },
-    "center-and-sharon/pnn4p1yx": {
-      "externalId": "center-and-sharon/pnn4p1yx",
-      "title": "בית פרטי/ קוטג', רינתיה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/pnn4p1yx",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4,
-      "city": "רינתיה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T19:48:33.983Z"
     }
   }
 }
