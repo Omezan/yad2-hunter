@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "kind": "health-check",
+      "startedAt": "2026-05-03T15:02:57.700Z",
+      "completedAt": "2026-05-03T15:05:33.521Z",
+      "status": "completed",
+      "trigger": "github-actions",
+      "allMatch": true,
+      "additions": 3,
+      "removals": 0,
+      "unresolvedExtras": 0,
+      "unresolvedMissing": 0,
+      "telegramSent": true,
+      "errors": []
+    },
+    {
       "kind": "scan",
       "startedAt": "2026-05-03T14:49:47.731Z",
       "completedAt": "2026-05-03T14:59:40.736Z",
@@ -1601,20 +1615,6 @@
       "removedAds": 31,
       "skippedRemovalDistricts": [],
       "telegramSent": false,
-      "errors": []
-    },
-    {
-      "startedAt": "2026-05-03T07:10:48.447Z",
-      "completedAt": "2026-05-03T07:13:22.121Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 254,
-      "preFilteredAds": 254,
-      "candidateNewAds": 5,
-      "relevantNewAds": 5,
-      "removedAds": 29,
-      "skippedRemovalDistricts": [],
-      "telegramSent": true,
       "errors": []
     }
   ]

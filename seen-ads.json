@@ -3288,6 +3288,32 @@
       "city": "חגלה",
       "firstSeenAt": "2026-05-03T12:47:22.144Z",
       "lastSeenAt": "2026-05-03T14:08:34.659Z"
+    },
+    "jerusalem-area/xfqk9lcm": {
+      "externalId": "jerusalem-area/xfqk9lcm",
+      "title": "בית פרטי/ קוטג', צור הדסה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/xfqk9lcm",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": null,
+      "rooms": 6,
+      "city": "צור הדסה",
+      "firstSeenAt": "2026-05-03T15:05:31.972Z",
+      "lastSeenAt": "2026-05-03T15:05:31.972Z"
+    },
+    "jerusalem-area/8udbxrm5": {
+      "externalId": "jerusalem-area/8udbxrm5",
+      "title": "בית פרטי/ קוטג', מבוא ביתר",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/8udbxrm5",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": null,
+      "rooms": 6,
+      "city": "מבוא ביתר",
+      "firstSeenAt": "2026-05-03T15:05:31.972Z",
+      "lastSeenAt": "2026-05-03T15:05:31.972Z"
     }
   }
 }
