@@ -3301,6 +3301,19 @@
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
       "lastSeenAt": "2026-05-03T16:49:45.805Z"
+    },
+    "north-and-valleys/normtgby": {
+      "externalId": "north-and-valleys/normtgby",
+      "title": null,
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/normtgby",
+      "searchId": "north-and-valleys",
+      "searchLabel": null,
+      "districtLabel": null,
+      "price": null,
+      "rooms": null,
+      "city": null,
+      "firstSeenAt": "2026-05-02T17:15:41.591Z",
+      "lastSeenAt": "2026-05-02T17:15:41.591Z"
     }
   }
 }
