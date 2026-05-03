@@ -197,6 +197,12 @@
       "removedAt": "2026-05-03T13:47:36.709Z",
       "reason": "removed-by-health-check",
       "recordedBy": "health-check"
+    },
+    "jerusalem-area/yh2kvbon": {
+      "externalId": "jerusalem-area/yh2kvbon",
+      "removedAt": "2026-05-03T15:40:32.024Z",
+      "reason": "removed-by-scan",
+      "recordedBy": "commitAds"
     }
   }
 }
