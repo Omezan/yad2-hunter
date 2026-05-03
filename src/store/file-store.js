@@ -100,6 +100,15 @@ function preferFreshField(existingValue, freshValue) {
 
 const SEEN_FILE = 'seen-ads.json';
 const RUNS_FILE = 'runs.json';
+const TOMBSTONES_FILE = 'tombstones.json';
+
+// How long a tombstone suppresses an externalId from being re-added by
+// the race-safe merge. After this window, if Yad2 re-publishes the
+// listing, the worker treats it as a brand-new ad (Telegram notice +
+// fresh firstSeenAt). 30 days of retention is plenty - well past any
+// "is this a repost?" window.
+const TOMBSTONE_SUPPRESS_MS = 24 * 60 * 60 * 1000;
+const TOMBSTONE_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
 
 function getStatePath(filename) {
   return path.join(env.STATE_DIR, filename);
@@ -151,6 +160,64 @@ function loadRuns() {
 
 function saveRuns(runs) {
   writeJson(RUNS_FILE, runs);
+}
+
+function loadTombstones() {
+  const data = readJsonSafe(TOMBSTONES_FILE, { tombstones: {} });
+  if (!data || typeof data !== 'object' || !data.tombstones) return { tombstones: {} };
+  return data;
+}
+
+function saveTombstones(file) {
+  writeJson(TOMBSTONES_FILE, file);
+}
+
+/**
+ * Append (or refresh) a set of tombstones for ads that were just
+ * deleted from seen-ads.json. Each tombstone records the externalId,
+ * the time of deletion, and which worker recorded it - all useful
+ * for debugging stale-merge bugs.
+ */
+function recordTombstones(externalIds, { reason = 'removed', recordedBy = 'worker' } = {}) {
+  if (!externalIds || !externalIds.length) return;
+  const file = loadTombstones();
+  const now = new Date().toISOString();
+  for (const id of externalIds) {
+    if (!id) continue;
+    file.tombstones[id] = {
+      externalId: id,
+      removedAt: now,
+      reason,
+      recordedBy
+    };
+  }
+  // Drop tombstones older than the retention window so this file
+  // can't grow unbounded.
+  const cutoff = Date.now() - TOMBSTONE_RETENTION_MS;
+  for (const [id, entry] of Object.entries(file.tombstones)) {
+    const ts = Date.parse(entry.removedAt || '');
+    if (Number.isFinite(ts) && ts < cutoff) {
+      delete file.tombstones[id];
+    }
+  }
+  saveTombstones(file);
+}
+
+/**
+ * True if `externalId` has a tombstone within the suppression window.
+ * The worker uses this to ignore a Yad2 result that matches a
+ * recently-deleted listing - which prevents the merge race from
+ * silently un-deleting it. After the suppression window expires the
+ * id is treated as a brand-new listing.
+ */
+function isTombstonedRecently(externalId, { now = Date.now() } = {}) {
+  if (!externalId) return false;
+  const file = loadTombstones();
+  const entry = file.tombstones[externalId];
+  if (!entry) return false;
+  const ts = Date.parse(entry.removedAt || '');
+  if (!Number.isFinite(ts)) return false;
+  return now - ts < TOMBSTONE_SUPPRESS_MS;
 }
 
 function pruneSeenAds(seen, retentionDays) {
@@ -285,7 +352,43 @@ function commitAds({
     seen = result.seen;
     removed = result.removed;
     skippedDistricts = result.skippedDistricts || [];
+
+    // Persist tombstones for the freshly-removed ids so the next
+    // race-safe merge cannot resurrect them.
+    if (removed.length) {
+      try {
+        recordTombstones(
+          removed.map((r) => r.externalId),
+          { reason: 'removed-by-scan', recordedBy: 'commitAds' }
+        );
+      } catch (err) {
+        console.warn(`recordTombstones failed: ${err.message}`);
+      }
+    }
   }
+
+  // Filter out any "new" ads whose externalId is still suppressed by a
+  // recent tombstone. Without this guard, the merge race could push a
+  // just-removed listing back into seen-ads via the next scan, before
+  // the suppression window is even up.
+  const tombstonesFile = loadTombstones();
+  const nowMs = Date.now();
+  const suppressedNewIds = [];
+  const acceptedNewAds = [];
+  for (const ad of newAds) {
+    const entry = tombstonesFile.tombstones[ad.externalId];
+    const ts = entry ? Date.parse(entry.removedAt || '') : NaN;
+    if (
+      entry &&
+      Number.isFinite(ts) &&
+      nowMs - ts < TOMBSTONE_SUPPRESS_MS
+    ) {
+      suppressedNewIds.push(ad.externalId);
+    } else {
+      acceptedNewAds.push(ad);
+    }
+  }
+  newAds = acceptedNewAds;
 
   for (const ad of existingAds) {
     const existing = seen.ads[ad.externalId] || {};
@@ -369,7 +472,7 @@ function commitAds({
   const pruned = pruneSeenAds(seen, env.SEEN_RETENTION_DAYS);
   saveSeenAds(pruned);
 
-  return { removed, skippedDistricts };
+  return { removed, skippedDistricts, suppressedNewIds };
 }
 
 function saveAndDetectNewAds(ads) {
@@ -384,13 +487,19 @@ function listRecentRuns(limit = 10) {
 }
 
 module.exports = {
+  TOMBSTONE_SUPPRESS_MS,
+  TOMBSTONE_RETENTION_MS,
   commitAds,
   ensureStateDir,
+  isTombstonedRecently,
   listRecentRuns,
   loadSeenAds,
+  loadTombstones,
   recordRun,
+  recordTombstones,
   removeDeletedAds,
   saveAndDetectNewAds,
   saveSeenAds,
+  saveTombstones,
   splitNewAndExisting
 };

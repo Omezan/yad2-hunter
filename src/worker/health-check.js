@@ -6,6 +6,7 @@ const {
   ensureStateDir,
   loadSeenAds,
   recordRun,
+  recordTombstones,
   saveSeenAds
 } = require('../store/file-store');
 const {
@@ -443,6 +444,18 @@ async function runHealthCheck() {
   if (didMutate) {
     try {
       saveSeenAds(reconciliation.updatedSeen);
+      // Record tombstones for the listings the health-check decided to
+      // remove. Without this, the merge race could resurrect them on
+      // the next push from another worker.
+      const removedIds = (reconciliation.removals || [])
+        .map((r) => r.externalId)
+        .filter(Boolean);
+      if (removedIds.length) {
+        recordTombstones(removedIds, {
+          reason: 'removed-by-health-check',
+          recordedBy: 'health-check'
+        });
+      }
     } catch (error) {
       console.error('[health-check] failed to save reconciled seen-set:', error);
       persisted = {
