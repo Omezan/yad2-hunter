@@ -518,7 +518,9 @@ input:focus {
   min-width: 260px;
   max-width: min(360px, 90vw);
   box-shadow: var(--shadow-3);
-  z-index: 20;
+  /* Must beat Leaflet panes (200..700) and Leaflet popup (1000),
+   * otherwise the map view paints on top of the popover. */
+  z-index: 1100;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
@@ -569,7 +571,7 @@ input:focus {
     background: rgba(8, 12, 22, 0.55);
     backdrop-filter: blur(2px);
     -webkit-backdrop-filter: blur(2px);
-    z-index: 60;
+    z-index: 1090;
     animation: fadeIn 0.18s ease;
   }
 
@@ -584,7 +586,7 @@ input:focus {
     min-width: 0;
     border-radius: var(--radius-3) var(--radius-3) 0 0;
     padding: var(--space-3) var(--space-3) max(var(--space-3), env(safe-area-inset-bottom));
-    z-index: 70;
+    z-index: 1100;
     max-height: 80vh;
     box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.35);
     animation: sheetIn 0.22s ease;
@@ -1097,7 +1099,9 @@ input:focus {
   background: rgba(7, 9, 14, 0.62);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 100;
+  /* Above the map (Leaflet popups go up to z-index: 1000)
+   * and above the filter popovers (1100). */
+  z-index: 1200;
   display: flex;
   align-items: stretch;
   justify-content: center;
@@ -1326,6 +1330,11 @@ input:focus {
   border: 1px solid var(--border);
   background: var(--surface);
   box-shadow: var(--shadow-2);
+  /* Confine Leaflet's high z-indexes (panes 200..700, popups 1000)
+   * to this container so popovers/modals rendered elsewhere on the
+   * page can sit on top of the map without being overridden. */
+  isolation: isolate;
+  z-index: 0;
 }
 
 .map-shell .leaflet-container {
