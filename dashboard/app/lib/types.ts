@@ -20,8 +20,17 @@ export type LastRun = {
   totalAds?: number;
 } | null;
 
+export type RunSummary = {
+  startedAt: string;
+  completedAt: string | null;
+  status: string | null;
+  trigger: string | null;
+} | null;
+
 export type StateResponse = {
   ads: AdRow[];
   lastRun: LastRun;
+  lastScan: RunSummary;
+  lastHealthCheck: RunSummary;
   generatedAt: string;
 };

@@ -22,12 +22,13 @@ import { useCompletionWatcher } from './hooks/useCompletionWatcher';
 import { useTriggerWorkflow } from './hooks/useTriggerWorkflow';
 import {
   formatHebrewDateTime,
+  formatHebrewRelative,
   isAdFresh,
   pickEffectiveSince,
   readLastVisitAt,
   writeLastVisitAt
 } from './lib/freshness';
-import type { AdRow, LastRun, StateResponse } from './lib/types';
+import type { AdRow, LastRun, RunSummary, StateResponse } from './lib/types';
 
 function getQueryParam(name: string): string | null {
   if (typeof window === 'undefined') return null;
@@ -64,6 +65,13 @@ export default function DashboardPage() {
   const [priceMin, setPriceMin] = useState<number | null>(null);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [view, setView] = useState<ViewMode>('list');
+  const [now, setNow] = useState<number>(() => Date.now());
+
+  useEffect(() => {
+    // Keep "X ago" labels accurate without forcing a full data refetch.
+    const id = setInterval(() => setNow(Date.now()), 30_000);
+    return () => clearInterval(id);
+  }, []);
 
   // Pending dispatches (used by the completion watchers).
   const [scanDispatch, setScanDispatch] = useState<{ at: string; since: string | null } | null>(
@@ -350,6 +358,17 @@ export default function DashboardPage() {
   const totalCount = ads.length;
   const generatedAt = data?.generatedAt ? formatHebrewDateTime(data.generatedAt) : null;
 
+  // Reads from runs.json (server-side projected). May be null on first
+  // deploy or if the relevant run hasn't completed yet.
+  const lastScan = data?.lastScan ?? null;
+  const lastHealthCheck = data?.lastHealthCheck ?? null;
+  const scanTimeRef = lastScan?.completedAt || lastScan?.startedAt || null;
+  const healthTimeRef = lastHealthCheck?.completedAt || lastHealthCheck?.startedAt || null;
+  const scanRelative = formatHebrewRelative(scanTimeRef, now);
+  const healthRelative = formatHebrewRelative(healthTimeRef, now);
+  const scanAbsolute = formatHebrewDateTime(scanTimeRef);
+  const healthAbsolute = formatHebrewDateTime(healthTimeRef);
+
   const scanButtonLabel = (() => {
     if (scanTrigger.status === 'pending') return 'מפעיל…';
     if (scanDispatch) return 'סורק…';
@@ -400,6 +419,40 @@ export default function DashboardPage() {
                 {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
               </span>
             ) : null}
+          </div>
+          <div className="runs-status" aria-label="סטטוס ריצות">
+            <span
+              className={`runs-status-pill${
+                lastScan?.status === 'failed' ? ' is-failed' : ''
+              }`}
+              title={
+                scanAbsolute
+                  ? `סריקה אחרונה: ${scanAbsolute}${
+                      lastScan?.trigger ? ` (${lastScan.trigger})` : ''
+                    }`
+                  : 'אין עדיין סריקה רשומה'
+              }
+            >
+              <span className="runs-status-dot" aria-hidden="true" />
+              <span className="runs-status-label">סריקה אחרונה:</span>
+              <span className="runs-status-value">{scanRelative ?? '—'}</span>
+            </span>
+            <span
+              className={`runs-status-pill${
+                lastHealthCheck?.status === 'failed' ? ' is-failed' : ''
+              }`}
+              title={
+                healthAbsolute
+                  ? `בדיקת אמינות אחרונה: ${healthAbsolute}${
+                      lastHealthCheck?.trigger ? ` (${lastHealthCheck.trigger})` : ''
+                    }`
+                  : 'אין עדיין בדיקת אמינות רשומה'
+              }
+            >
+              <span className="runs-status-dot is-secondary" aria-hidden="true" />
+              <span className="runs-status-label">בדיקת אמינות אחרונה:</span>
+              <span className="runs-status-value">{healthRelative ?? '—'}</span>
+            </span>
           </div>
           {generatedAt ? <span className="header-meta">עודכן {generatedAt}</span> : null}
         </div>

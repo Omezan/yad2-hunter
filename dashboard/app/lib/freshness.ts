@@ -60,3 +60,31 @@ export function formatHebrewDateTime(value: string | null | undefined): string |
     minute: '2-digit'
   });
 }
+
+/**
+ * Compact Hebrew "X ago" string anchored at a reference time. Falls
+ * back to formatHebrewDateTime once we cross 24h so the user always
+ * sees a real date rather than e.g. "לפני 73 שעות".
+ */
+export function formatHebrewRelative(
+  value: string | null | undefined,
+  now: number = Date.now()
+): string | null {
+  if (!value) return null;
+  const ts = Date.parse(value);
+  if (Number.isNaN(ts)) return null;
+  const diffSec = Math.max(0, Math.round((now - ts) / 1000));
+
+  if (diffSec < 30) return 'הרגע';
+  if (diffSec < 60) return `לפני ${diffSec} שניות`;
+
+  const diffMin = Math.round(diffSec / 60);
+  if (diffMin === 1) return 'לפני דקה';
+  if (diffMin < 60) return `לפני ${diffMin} דק׳`;
+
+  const diffHour = Math.round(diffMin / 60);
+  if (diffHour === 1) return 'לפני שעה';
+  if (diffHour < 24) return `לפני ${diffHour} שעות`;
+
+  return formatHebrewDateTime(value);
+}

@@ -120,6 +120,7 @@ async function runOnce(options = {}) {
     }
 
     const runEntry = {
+      kind: 'scan',
       startedAt,
       completedAt: new Date().toISOString(),
       status: scrapeResult.errors.length ? 'partial' : 'completed',
@@ -146,6 +147,7 @@ async function runOnce(options = {}) {
     };
   } catch (error) {
     recordRun({
+      kind: 'scan',
       startedAt,
       completedAt: new Date().toISOString(),
       status: 'failed',

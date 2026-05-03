@@ -5,6 +5,7 @@ const { getEnabledSearches } = require('../config/searches');
 const {
   ensureStateDir,
   loadSeenAds,
+  recordRun,
   saveSeenAds
 } = require('../store/file-store');
 const {
@@ -429,22 +430,24 @@ async function runHealthCheck() {
     searchById
   });
 
-  // Persist the reconciled seen-set. We deliberately swallow any error
-  // here so a persistence bug never blocks the Telegram report — the
-  // user has explicitly asked to always receive notice that the run
-  // happened, even if we could not close the diff this time.
-  let persisted = { ok: false, reason: 'no-op (no diffs to reconcile)' };
+  // Save the reconciled seen-set locally. The actual push to the `state`
+  // branch happens in main() AFTER we record the run entry, so runs.json
+  // is included in the same commit. We swallow save errors so a
+  // persistence bug never blocks the Telegram report.
   const didMutate =
     reconciliation.additions.length > 0 || reconciliation.removals.length > 0;
+  let persisted = {
+    ok: false,
+    reason: didMutate ? 'pending (will push from main)' : 'no diffs to reconcile'
+  };
   if (didMutate) {
     try {
       saveSeenAds(reconciliation.updatedSeen);
-      persisted = persistStateToBranch();
     } catch (error) {
-      console.error('[health-check] failed to persist reconciled seen-set:', error);
+      console.error('[health-check] failed to save reconciled seen-set:', error);
       persisted = {
         ok: false,
-        reason: `persist threw: ${error.message || 'unknown'}`
+        reason: `save threw: ${error.message || 'unknown'}`
       };
     }
   }
@@ -494,6 +497,8 @@ async function runHealthCheck() {
 }
 
 async function main() {
+  const startedAt = new Date().toISOString();
+  const trigger = (process.env.HEALTH_CHECK_TRIGGER_LABEL || 'github-actions').trim() || 'github-actions';
   try {
     const result = await runHealthCheck();
     const telegram = await sendHealthCheckReport({
@@ -503,6 +508,31 @@ async function main() {
       reconciliation: result.reconciliation
     });
 
+    recordRun({
+      kind: 'health-check',
+      startedAt,
+      completedAt: new Date().toISOString(),
+      status: result.allMatch ? 'completed' : 'partial',
+      trigger,
+      allMatch: result.allMatch,
+      additions: result.reconciliation?.additions?.length || 0,
+      removals: result.reconciliation?.removals?.length || 0,
+      unresolvedExtras: result.reconciliation?.unresolvedExtras?.length || 0,
+      unresolvedMissing: result.reconciliation?.unresolvedMissing?.length || 0,
+      telegramSent: Boolean(telegram && !telegram.skipped),
+      errors: result.scrapeErrors || []
+    });
+
+    // Push state branch AFTER recordRun so runs.json includes this run.
+    let persisted = result.reconciliation?.persisted;
+    try {
+      const pushResult = persistStateToBranch();
+      persisted = pushResult;
+    } catch (pushErr) {
+      console.error('[health-check] persistStateToBranch threw:', pushErr);
+      persisted = { ok: false, reason: pushErr.message };
+    }
+
     console.log(
       JSON.stringify(
         {
@@ -510,7 +540,7 @@ async function main() {
           generatedAt: result.generatedAt,
           rows: result.rows,
           scrapeErrors: result.scrapeErrors,
-          reconciliation: result.reconciliation,
+          reconciliation: { ...result.reconciliation, persisted },
           telegram
         },
         null,
@@ -518,6 +548,26 @@ async function main() {
       )
     );
   } catch (error) {
+    try {
+      recordRun({
+        kind: 'health-check',
+        startedAt,
+        completedAt: new Date().toISOString(),
+        status: 'failed',
+        trigger,
+        allMatch: false,
+        additions: 0,
+        removals: 0,
+        unresolvedExtras: 0,
+        unresolvedMissing: 0,
+        telegramSent: false,
+        errors: [{ message: error.message }]
+      });
+      // Still try to persist runs.json so the dashboard shows the failure.
+      persistStateToBranch();
+    } catch (recordErr) {
+      console.error('[health-check] failed to record run entry:', recordErr);
+    }
     console.error(error);
     process.exitCode = 1;
   }

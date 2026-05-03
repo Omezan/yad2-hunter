@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import type { AdRow, LastRun, StateResponse } from '../../lib/types';
+import type { AdRow, LastRun, RunSummary, StateResponse } from '../../lib/types';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -21,14 +21,45 @@ type SeenAdRecord = {
 type SeenAdsFile = { ads?: Record<string, SeenAdRecord> };
 
 type RunEntry = {
+  kind?: string;
   startedAt?: string;
   completedAt?: string;
   status?: string;
+  trigger?: string;
   relevantNewAds?: number;
   totalAds?: number;
+  allMatch?: boolean;
 };
 
 type RunsFile = { runs?: RunEntry[] };
+
+type RunKind = 'scan' | 'health-check';
+
+// Legacy runs.json entries (recorded before we tagged each run with
+// `kind`) carry health-check-only fields like `allMatch` or scan-only
+// fields like `relevantNewAds`. Use those as a fallback classifier so
+// the dashboard works against pre-existing data.
+function classifyRun(run: RunEntry): RunKind | null {
+  if (run.kind === 'scan' || run.kind === 'health-check') return run.kind;
+  if (typeof run.allMatch === 'boolean') return 'health-check';
+  if (
+    typeof run.relevantNewAds === 'number' ||
+    typeof run.totalAds === 'number'
+  ) {
+    return 'scan';
+  }
+  return null;
+}
+
+function summarizeRun(run: RunEntry | undefined): RunSummary {
+  if (!run || !run.startedAt) return null;
+  return {
+    startedAt: run.startedAt,
+    completedAt: run.completedAt || null,
+    status: run.status || null,
+    trigger: run.trigger || null
+  };
+}
 
 async function fetchJsonFromState<T>(filename: string): Promise<T | null> {
   const repo = process.env.GITHUB_REPO;
@@ -103,6 +134,16 @@ function pickLastRun(runsFile: RunsFile | null): LastRun {
   };
 }
 
+function pickLastByKind(runsFile: RunsFile | null, kind: RunKind): RunSummary {
+  if (!runsFile || !runsFile.runs) return null;
+  for (const run of runsFile.runs) {
+    if (classifyRun(run) === kind) {
+      return summarizeRun(run);
+    }
+  }
+  return null;
+}
+
 export async function GET() {
   try {
     const [seen, runs] = await Promise.all([
@@ -113,6 +154,8 @@ export async function GET() {
     const payload: StateResponse = {
       ads: normalizeAds(seen),
       lastRun: pickLastRun(runs),
+      lastScan: pickLastByKind(runs, 'scan'),
+      lastHealthCheck: pickLastByKind(runs, 'health-check'),
       generatedAt: new Date().toISOString()
     };
 
