@@ -3288,6 +3288,19 @@
       "city": "ישעי",
       "firstSeenAt": "2026-05-03T09:57:43.611Z",
       "lastSeenAt": "2026-05-03T11:47:04.816Z"
+    },
+    "north-and-valleys/02ci2psk": {
+      "externalId": "north-and-valleys/02ci2psk",
+      "title": "דירה, חמדיה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/02ci2psk",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4,
+      "city": "חמדיה",
+      "firstSeenAt": "2026-05-03T11:51:44.339Z",
+      "lastSeenAt": "2026-05-03T11:51:44.339Z"
     }
   }
 }
