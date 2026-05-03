@@ -95,7 +95,11 @@ async function runOnce(options = {}) {
       .map((s) => s.id)
       .filter((id) => !erroredSearchIds.has(id));
 
-    const { removed: removedAds = [], skippedDistricts = [] } = commitAds({
+    const {
+      removed: removedAds = [],
+      skippedDistricts = [],
+      suppressedNewIds = []
+    } = commitAds({
       newAds: relevantNewAds,
       existingAds,
       allScrapedAds: scrapeResult.ads,
@@ -107,10 +111,25 @@ async function runOnce(options = {}) {
       );
     }
 
+    // Drop any "new" ad whose externalId is still under tombstone
+    // suppression. Without this, an ad we deliberately removed earlier
+    // today keeps spamming the Telegram digest on every scan because
+    // the tombstone filter only stops it from being written into
+    // seen-ads, not from being announced.
+    const suppressedSet = new Set(suppressedNewIds);
+    const notifiableNewAds = relevantNewAds.filter(
+      (ad) => !suppressedSet.has(ad.externalId)
+    );
+    if (suppressedNewIds.length) {
+      console.warn(
+        `[run-once] suppressed ${suppressedNewIds.length} tombstoned new-ad(s) from Telegram: ${suppressedNewIds.join(', ')}`
+      );
+    }
+
     let telegramResult = { skipped: true, reason: 'No new ads' };
-    if (relevantNewAds.length > 0) {
+    if (notifiableNewAds.length > 0) {
       telegramResult = await sendNewAdsDigest({
-        newAds: relevantNewAds,
+        newAds: notifiableNewAds,
         runStartedAt: startedAt
       });
     } else if (MANUAL_TRIGGERS.has(trigger)) {
@@ -129,6 +148,8 @@ async function runOnce(options = {}) {
       preFilteredAds: preFiltered.length,
       candidateNewAds: newCandidates.length,
       relevantNewAds: relevantNewAds.length,
+      notifiedNewAds: notifiableNewAds.length,
+      suppressedByTombstones: suppressedNewIds.length,
       removedAds: removedAds.length,
       skippedRemovalDistricts: skippedDistricts,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),

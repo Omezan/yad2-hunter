@@ -623,7 +623,8 @@ function makeReconcileInputs(overrides = {}) {
     extraClassification,
     missingClassification,
     generatedAt: '2026-04-30T07:00:00Z',
-    searchById: new Map([['south', { id: 'south', label: 'דרום' }]])
+    searchById: new Map([['south', { id: 'south', label: 'דרום' }]]),
+    tombstones: overrides.tombstones || { tombstones: {} }
   };
 }
 
@@ -690,6 +691,56 @@ test('reconcileSeen does not admit a missing ad whose enrichment failed (transie
   const result = reconcileSeen(inputs);
   assert.equal(result.additions.length, 0);
   assert.equal(result.unresolvedMissing.length, 1);
+});
+
+test('reconcileSeen: refuses to re-admit a missing-id whose tombstone is still fresh', () => {
+  // Scenario: scan removed `south/NEW` earlier today (writing a tombstone).
+  // Later that day Yad2 still serves the listing on the search page, so
+  // the health-check sees it as "missing from seen". Without the
+  // tombstone gate, we'd re-admit and the next scan would announce it
+  // as "new" all over again.
+  const recentlyRemovedAt = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // 1h ago
+  const inputs = makeReconcileInputs({
+    tombstones: {
+      tombstones: {
+        'south/NEW': {
+          externalId: 'south/NEW',
+          removedAt: recentlyRemovedAt,
+          reason: 'removed-by-scan',
+          recordedBy: 'commitAds'
+        }
+      }
+    }
+  });
+  const result = reconcileSeen(inputs);
+  assert.equal(result.additions.length, 0, 'must NOT re-admit a freshly-tombstoned listing');
+  assert.equal(result.unresolvedMissing.length, 1);
+  assert.match(result.unresolvedMissing[0].reason, /tombstone/);
+  assert.equal(result.updatedSeen.ads['south/NEW'], undefined);
+});
+
+test('reconcileSeen: admits a missing-id whose tombstone has already expired', () => {
+  const expired = new Date(
+    Date.now() - TOMBSTONE_SUPPRESS_MS - 60 * 1000
+  ).toISOString();
+  const inputs = makeReconcileInputs({
+    tombstones: {
+      tombstones: {
+        'south/NEW': {
+          externalId: 'south/NEW',
+          removedAt: expired,
+          reason: 'removed-by-scan',
+          recordedBy: 'commitAds'
+        }
+      }
+    }
+  });
+  const result = reconcileSeen(inputs);
+  assert.deepEqual(
+    result.additions.map((a) => a.externalId),
+    ['south/NEW'],
+    'expired tombstone must NOT block a re-listed ad from coming back'
+  );
 });
 
 // -----------------------------------------------------------------------------

@@ -3,8 +3,10 @@ const path = require('path');
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const {
+  TOMBSTONE_SUPPRESS_MS,
   ensureStateDir,
   loadSeenAds,
+  loadTombstones,
   recordRun,
   recordTombstones,
   saveSeenAds
@@ -202,13 +204,23 @@ function reconcileSeen({
   extraClassification,
   missingClassification,
   generatedAt,
-  searchById
+  searchById,
+  tombstones = { tombstones: {} },
+  now = Date.now()
 }) {
   const updatedSeen = { ...seen, ads: { ...(seen.ads || {}) } };
   const additions = [];
   const removals = [];
   const unresolvedExtras = [];
   const unresolvedMissing = [];
+
+  function isFreshlyTombstoned(externalId) {
+    const entry = tombstones?.tombstones?.[externalId];
+    if (!entry) return false;
+    const ts = Date.parse(entry.removedAt || '');
+    if (!Number.isFinite(ts)) return false;
+    return now - ts < TOMBSTONE_SUPPRESS_MS;
+  }
 
   for (const row of rows) {
     const search = searchById.get(row.searchId) || {
@@ -256,6 +268,20 @@ function reconcileSeen({
         continue;
       }
       if (classification.kind === 'admit') {
+        // Don't re-admit an ad whose tombstone is still fresh. The
+        // worker deliberately removed it earlier and Telegram already
+        // notified the user once — re-adding it here would let the
+        // next scan announce it again as "new", causing duplicate
+        // notifications throughout the suppression window.
+        if (isFreshlyTombstoned(externalId)) {
+          unresolvedMissing.push({
+            externalId,
+            searchId: row.searchId,
+            link: externalIdToLink(externalId),
+            reason: 'מודעה הוסרה לאחרונה — דוכאה לפי tombstone (נשמרת מחוץ ל-seen עד פקיעת החלון)'
+          });
+          continue;
+        }
         const newRecord = adRecordFromEnriched(classification.enriched, {
           searchId: row.searchId,
           label: search.districtLabel || row.label,
@@ -422,13 +448,15 @@ async function runHealthCheck() {
     return result;
   })();
 
+  const tombstones = loadTombstones();
   const reconciliation = reconcileSeen({
     rows,
     seen: seenInitial,
     extraClassification,
     missingClassification,
     generatedAt,
-    searchById
+    searchById,
+    tombstones
   });
 
   // Save the reconciled seen-set locally. The actual push to the `state`
