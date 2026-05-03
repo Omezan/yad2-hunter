@@ -1269,3 +1269,243 @@ input:focus {
     transform: none;
   }
 }
+
+/* ================================
+ * View toggle (list / map)
+ * ================================ */
+.view-toggle {
+  display: inline-flex;
+  background: var(--surface-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 3px;
+  gap: 2px;
+}
+
+.view-toggle button {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: var(--type-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease, transform 120ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+}
+
+.view-toggle button:hover {
+  color: var(--text);
+}
+
+.view-toggle button.is-active {
+  background: var(--accent-gradient);
+  color: #fff;
+  box-shadow: var(--shadow-accent);
+}
+
+.view-toggle button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ================================
+ * Map view
+ * ================================ */
+.map-shell {
+  position: relative;
+  height: calc(100vh - 220px);
+  min-height: 480px;
+  width: 100%;
+  border-radius: var(--radius-3);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-2);
+}
+
+.map-shell .leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: var(--surface-elev);
+  font-family: inherit;
+}
+
+/* Recolor the OpenStreetMap tiles in dark mode for a more cohesive look. */
+@media (prefers-color-scheme: dark) {
+  .map-shell .leaflet-tile {
+    filter: brightness(0.72) saturate(0.78) hue-rotate(190deg) invert(1);
+  }
+}
+
+.map-shell .leaflet-control-zoom a {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.map-shell .leaflet-control-zoom a:hover {
+  background: var(--surface-elev);
+}
+
+/* Pin */
+.map-pin-wrapper {
+  background: transparent !important;
+  border: none !important;
+}
+
+.map-pin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--type-sm);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(91, 140, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  transition: transform 120ms ease;
+}
+
+.map-pin:hover {
+  transform: scale(1.08);
+}
+
+.map-pin-hot {
+  background: linear-gradient(135deg, #ffb547 0%, #ff7a45 100%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35), 0 0 0 3px rgba(255, 181, 71, 0.28);
+}
+
+/* Popup */
+.map-shell .leaflet-popup-content-wrapper {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-2);
+  box-shadow: var(--shadow-3);
+  padding: 0;
+}
+
+.map-shell .leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+  min-width: 220px;
+  font-family: inherit;
+}
+
+.map-shell .leaflet-popup-tip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.map-shell .leaflet-popup-close-button {
+  color: var(--text-muted);
+  font-size: 18px;
+  padding: 6px 8px 0 0;
+}
+
+.map-popup {
+  direction: rtl;
+  text-align: right;
+  padding: 12px 14px 10px;
+}
+
+.map-popup-title {
+  font-size: var(--type-md);
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.map-popup-count {
+  font-size: var(--type-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-elev);
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+}
+
+.map-popup-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.map-popup-list a {
+  display: block;
+  padding: 8px 10px;
+  border-radius: var(--radius-1);
+  text-decoration: none;
+  color: var(--text);
+  font-size: var(--type-sm);
+  transition: background 120ms ease;
+}
+
+.map-popup-list a:hover {
+  background: var(--accent-soft);
+}
+
+.map-popup-list li.is-fresh a {
+  background: var(--new-soft);
+}
+.map-popup-list li.is-fresh a:hover {
+  background: rgba(255, 181, 71, 0.28);
+}
+
+.map-popup-price {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.map-popup-rooms {
+  color: var(--text-muted);
+}
+
+.map-popup-new {
+  display: inline-block;
+  margin-inline-start: 8px;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  font-size: var(--type-xs);
+  font-weight: 700;
+  background: var(--new);
+  color: #1a1f2c;
+}
+
+.map-unmapped-note {
+  position: absolute;
+  bottom: 10px;
+  inset-inline-start: 10px;
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-glass);
+  color: var(--text-muted);
+  font-size: var(--type-xs);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  .map-shell {
+    height: calc(100vh - 260px);
+    min-height: 420px;
+  }
+}
+

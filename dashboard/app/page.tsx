@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import dynamic from 'next/dynamic';
 import AdCard from './components/AdCard';
 import FilterBar, {
   type FreshnessFilter,
@@ -9,6 +10,14 @@ import FilterBar, {
 } from './components/FilterBar';
 import HealthCheckResultModal from './components/HealthCheckResultModal';
 import ScanResultModal from './components/ScanResultModal';
+
+// Leaflet uses window/document on import — must be client-only.
+const MapView = dynamic(() => import('./components/MapView'), {
+  ssr: false,
+  loading: () => <div className="notice notice-loading">טוען מפה…</div>
+});
+
+type ViewMode = 'list' | 'map';
 import { useCompletionWatcher } from './hooks/useCompletionWatcher';
 import { useTriggerWorkflow } from './hooks/useTriggerWorkflow';
 import {
@@ -54,6 +63,7 @@ export default function DashboardPage() {
   const [freshness, setFreshness] = useState<FreshnessFilter>('all');
   const [priceMin, setPriceMin] = useState<number | null>(null);
   const [priceMax, setPriceMax] = useState<number | null>(null);
+  const [view, setView] = useState<ViewMode>('list');
 
   // Pending dispatches (used by the completion watchers).
   const [scanDispatch, setScanDispatch] = useState<{ at: string; since: string | null } | null>(
@@ -417,6 +427,26 @@ export default function DashboardPage() {
               סמן הכל כנקרא
             </button>
           ) : null}
+          <div className="view-toggle" role="tablist" aria-label="תצוגה">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'list'}
+              className={view === 'list' ? 'is-active' : ''}
+              onClick={() => setView('list')}
+            >
+              רשימה
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === 'map'}
+              className={view === 'map' ? 'is-active' : ''}
+              onClick={() => setView('map')}
+            >
+              מפה
+            </button>
+          </div>
         </div>
       </header>
 
@@ -454,7 +484,9 @@ export default function DashboardPage() {
 
           <div className="results-count">{filteredAds.length} תוצאות</div>
 
-          {filteredAds.length === 0 ? (
+          {view === 'map' ? (
+            <MapView ads={filteredAds} effectiveSince={effectiveSince} />
+          ) : filteredAds.length === 0 ? (
             <div className="notice notice-empty">לא נמצאו מודעות התואמות את הסינון</div>
           ) : (
             <div className="grid">
