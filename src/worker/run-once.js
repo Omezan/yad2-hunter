@@ -88,48 +88,20 @@ async function runOnce(options = {}) {
 
     const droppedNewCandidates = dumpRejectedNewCandidates(newCandidates, finalOptions);
 
-    const erroredSearchIds = new Set(
-      (scrapeResult.errors || []).map((e) => e && e.searchId).filter(Boolean)
-    );
-    const scrapedSearchIds = searches
-      .map((s) => s.id)
-      .filter((id) => !erroredSearchIds.has(id));
-
-    const {
-      removed: removedAds = [],
-      skippedDistricts = [],
-      suppressedNewIds = []
-    } = commitAds({
+    // Scan is additive only: we notify on relevantNewAds, write them
+    // into seen-ads (so the very next run won't re-announce them), and
+    // never delete anything here. Deletions are owned by the
+    // health-check, which actually probes each "missing" listing for a
+    // 404 before removing.
+    commitAds({
       newAds: relevantNewAds,
-      existingAds,
-      allScrapedAds: scrapeResult.ads,
-      scrapedSearchIds
+      existingAds
     });
-    if (skippedDistricts.length) {
-      console.warn(
-        `[run-once] skipped removal cleanup for ${skippedDistricts.length} suspicious district(s): ${JSON.stringify(skippedDistricts)}`
-      );
-    }
-
-    // Drop any "new" ad whose externalId is still under tombstone
-    // suppression. Without this, an ad we deliberately removed earlier
-    // today keeps spamming the Telegram digest on every scan because
-    // the tombstone filter only stops it from being written into
-    // seen-ads, not from being announced.
-    const suppressedSet = new Set(suppressedNewIds);
-    const notifiableNewAds = relevantNewAds.filter(
-      (ad) => !suppressedSet.has(ad.externalId)
-    );
-    if (suppressedNewIds.length) {
-      console.warn(
-        `[run-once] suppressed ${suppressedNewIds.length} tombstoned new-ad(s) from Telegram: ${suppressedNewIds.join(', ')}`
-      );
-    }
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
-    if (notifiableNewAds.length > 0) {
+    if (relevantNewAds.length > 0) {
       telegramResult = await sendNewAdsDigest({
-        newAds: notifiableNewAds,
+        newAds: relevantNewAds,
         runStartedAt: startedAt
       });
     } else if (MANUAL_TRIGGERS.has(trigger)) {
@@ -148,10 +120,7 @@ async function runOnce(options = {}) {
       preFilteredAds: preFiltered.length,
       candidateNewAds: newCandidates.length,
       relevantNewAds: relevantNewAds.length,
-      notifiedNewAds: notifiableNewAds.length,
-      suppressedByTombstones: suppressedNewIds.length,
-      removedAds: removedAds.length,
-      skippedRemovalDistricts: skippedDistricts,
+      notifiedNewAds: relevantNewAds.length,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       errors: scrapeResult.errors
     };
@@ -163,7 +132,6 @@ async function runOnce(options = {}) {
       searches: searches.map((search) => search.id),
       rejectionCounts,
       droppedNewCandidates,
-      removedAdSamples: removedAds.slice(0, 20),
       telegramResult
     };
   } catch (error) {
@@ -177,7 +145,6 @@ async function runOnce(options = {}) {
       preFilteredAds: 0,
       candidateNewAds: 0,
       relevantNewAds: 0,
-      removedAds: 0,
       telegramSent: false,
       errors: [{ message: error.message }]
     });

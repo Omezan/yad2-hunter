@@ -9,24 +9,21 @@
 // Strategy:
 //   - seen-ads.json → UNION of local ∪ remote, preferring local fields
 //     for keys that exist in both. firstSeenAt never regresses;
-//     lastSeenAt advances to the newest of the two. Any externalId
-//     with a fresh tombstone is REMOVED from the merged set so the
-//     race-safe merge doesn't silently un-delete what a worker
-//     deliberately removed.
+//     lastSeenAt advances to the newest of the two.
+//
+//     A worker that deliberately deleted keys can pass that intent in
+//     via the SEEN_ADS_FORCE_DELETE_IDS env var (comma-separated). The
+//     merge will subtract those keys from the union so that a
+//     concurrent scan's earlier remote snapshot can't resurrect them.
+//     Only the health-check sets this — the scan is additive only.
 //   - runs.json → merge by startedAt, dedupe, sort newest-first, cap
 //     to HISTORY_LIMIT.
-//   - tombstones.json → UNION of local ∪ remote tombstones, retaining
-//     the more recent removedAt for ids that appear in both. Old
-//     entries past TOMBSTONE_RETENTION_MS are pruned so the file
-//     stays bounded.
 //   - Any other JSON file → prefer the local copy.
 
 const fs = require('fs');
 const path = require('path');
 
 const HISTORY_LIMIT = 50;
-const TOMBSTONE_SUPPRESS_MS = 24 * 60 * 60 * 1000;
-const TOMBSTONE_RETENTION_MS = 30 * 24 * 60 * 60 * 1000;
 
 function readJsonSafe(filePath) {
   try {
@@ -56,26 +53,21 @@ function pickLater(a, b) {
   return a >= b ? a : b;
 }
 
-function mergeSeenAds(localFile, remoteFile, mergedTombstones = { tombstones: {} }, now = Date.now()) {
+function mergeSeenAds(localFile, remoteFile, forceDeleteIds = []) {
   const localAds = (localFile && typeof localFile === 'object' && localFile.ads) || {};
   const remoteAds = (remoteFile && typeof remoteFile === 'object' && remoteFile.ads) || {};
 
-  const tombstones = mergedTombstones?.tombstones || {};
-  function isSuppressed(externalId) {
-    const entry = tombstones[externalId];
-    if (!entry) return false;
-    const ts = Date.parse(entry.removedAt || '');
-    if (!Number.isFinite(ts)) return false;
-    return now - ts < TOMBSTONE_SUPPRESS_MS;
-  }
+  const forceDelete = new Set(
+    Array.isArray(forceDeleteIds) ? forceDeleteIds.filter(Boolean) : []
+  );
 
   const mergedAds = {};
   const allKeys = new Set([...Object.keys(remoteAds), ...Object.keys(localAds)]);
 
-  let suppressedCount = 0;
+  let forceDeletedCount = 0;
   for (const key of allKeys) {
-    if (isSuppressed(key)) {
-      suppressedCount += 1;
+    if (forceDelete.has(key)) {
+      forceDeletedCount += 1;
       continue;
     }
     const remote = remoteAds[key];
@@ -96,46 +88,16 @@ function mergeSeenAds(localFile, remoteFile, mergedTombstones = { tombstones: {}
     };
   }
 
-  if (suppressedCount) {
-    console.log(`[merge-state] tombstones suppressed ${suppressedCount} keys from merged seen-ads`);
+  if (forceDeletedCount) {
+    console.log(
+      `[merge-state] subtracted ${forceDeletedCount} forced-delete id(s) from merged seen-ads`
+    );
   }
 
   return {
     ...(remoteFile || {}),
     ...(localFile || {}),
     ads: mergedAds
-  };
-}
-
-function mergeTombstones(localFile, remoteFile, now = Date.now()) {
-  const local = (localFile && typeof localFile === 'object' && localFile.tombstones) || {};
-  const remote = (remoteFile && typeof remoteFile === 'object' && remoteFile.tombstones) || {};
-
-  const merged = {};
-  const allKeys = new Set([...Object.keys(remote), ...Object.keys(local)]);
-  const cutoff = now - TOMBSTONE_RETENTION_MS;
-
-  for (const key of allKeys) {
-    const r = remote[key];
-    const l = local[key];
-    let chosen;
-    if (r && l) {
-      const lTs = Date.parse(l.removedAt || '') || 0;
-      const rTs = Date.parse(r.removedAt || '') || 0;
-      chosen = lTs >= rTs ? l : r;
-    } else {
-      chosen = r || l;
-    }
-    if (!chosen) continue;
-    const ts = Date.parse(chosen.removedAt || '');
-    if (Number.isFinite(ts) && ts < cutoff) continue; // pruned
-    merged[key] = chosen;
-  }
-
-  return {
-    ...(remoteFile || {}),
-    ...(localFile || {}),
-    tombstones: merged
   };
 }
 
@@ -166,24 +128,22 @@ function mergeRuns(localFile, remoteFile) {
   };
 }
 
-function mergeStateDirs(stateDir, workDir) {
-  // Tombstones are merged first so seen-ads can consult them when
-  // deciding which keys to keep in the merged file.
-  const tombstoneLocal = readJsonSafe(path.join(stateDir, 'tombstones.json'));
-  const tombstoneRemote = readJsonSafe(path.join(workDir, 'tombstones.json'));
-  const mergedTombstones = mergeTombstones(tombstoneLocal, tombstoneRemote);
-  if (tombstoneLocal || tombstoneRemote) {
-    const localCount = tombstoneLocal?.tombstones
-      ? Object.keys(tombstoneLocal.tombstones).length
-      : 0;
-    const remoteCount = tombstoneRemote?.tombstones
-      ? Object.keys(tombstoneRemote.tombstones).length
-      : 0;
-    const mergedCount = Object.keys(mergedTombstones.tombstones || {}).length;
+function parseForceDeleteIds(envValue) {
+  if (!envValue || typeof envValue !== 'string') return [];
+  return envValue
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function mergeStateDirs(stateDir, workDir, options = {}) {
+  const forceDeleteIds = options.forceDeleteIds
+    ? options.forceDeleteIds
+    : parseForceDeleteIds(process.env.SEEN_ADS_FORCE_DELETE_IDS || '');
+  if (forceDeleteIds.length) {
     console.log(
-      `[merge-state] tombstones.json: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
+      `[merge-state] SEEN_ADS_FORCE_DELETE_IDS supplied ${forceDeleteIds.length} id(s) to subtract`
     );
-    writeJsonPretty(path.join(workDir, 'tombstones.json'), mergedTombstones);
   }
 
   for (const filename of ['seen-ads.json', 'runs.json']) {
@@ -196,7 +156,7 @@ function mergeStateDirs(stateDir, workDir) {
 
     let merged;
     if (filename === 'seen-ads.json') {
-      merged = mergeSeenAds(local, remote, mergedTombstones);
+      merged = mergeSeenAds(local, remote, forceDeleteIds);
       const localCount = local && local.ads ? Object.keys(local.ads).length : 0;
       const remoteCount = remote && remote.ads ? Object.keys(remote.ads).length : 0;
       const mergedCount = merged && merged.ads ? Object.keys(merged.ads).length : 0;
@@ -218,7 +178,7 @@ function mergeStateDirs(stateDir, workDir) {
 
   // Copy any other state files present locally (future-proofing).
   for (const entry of fs.readdirSync(stateDir)) {
-    if (entry === 'seen-ads.json' || entry === 'runs.json' || entry === 'tombstones.json') continue;
+    if (entry === 'seen-ads.json' || entry === 'runs.json') continue;
     const src = path.join(stateDir, entry);
     if (!fs.statSync(src).isFile()) continue;
     const dst = path.join(workDir, entry);
@@ -238,10 +198,7 @@ if (require.main === module) {
 
 module.exports = {
   HISTORY_LIMIT,
-  TOMBSTONE_RETENTION_MS,
-  TOMBSTONE_SUPPRESS_MS,
   mergeSeenAds,
   mergeRuns,
-  mergeStateDirs,
-  mergeTombstones
+  mergeStateDirs
 };

@@ -25,13 +25,7 @@ const {
 } = require('../src/scraper/yad2');
 const { removeDeletedAds } = require('../src/store/file-store');
 const { reconcileSeen } = require('../src/worker/health-check');
-const {
-  mergeRuns,
-  mergeSeenAds,
-  mergeTombstones,
-  TOMBSTONE_RETENTION_MS,
-  TOMBSTONE_SUPPRESS_MS
-} = require('../scripts/merge-state');
+const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -623,8 +617,7 @@ function makeReconcileInputs(overrides = {}) {
     extraClassification,
     missingClassification,
     generatedAt: '2026-04-30T07:00:00Z',
-    searchById: new Map([['south', { id: 'south', label: 'דרום' }]]),
-    tombstones: overrides.tombstones || { tombstones: {} }
+    searchById: new Map([['south', { id: 'south', label: 'דרום' }]])
   };
 }
 
@@ -691,56 +684,6 @@ test('reconcileSeen does not admit a missing ad whose enrichment failed (transie
   const result = reconcileSeen(inputs);
   assert.equal(result.additions.length, 0);
   assert.equal(result.unresolvedMissing.length, 1);
-});
-
-test('reconcileSeen: refuses to re-admit a missing-id whose tombstone is still fresh', () => {
-  // Scenario: scan removed `south/NEW` earlier today (writing a tombstone).
-  // Later that day Yad2 still serves the listing on the search page, so
-  // the health-check sees it as "missing from seen". Without the
-  // tombstone gate, we'd re-admit and the next scan would announce it
-  // as "new" all over again.
-  const recentlyRemovedAt = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // 1h ago
-  const inputs = makeReconcileInputs({
-    tombstones: {
-      tombstones: {
-        'south/NEW': {
-          externalId: 'south/NEW',
-          removedAt: recentlyRemovedAt,
-          reason: 'removed-by-scan',
-          recordedBy: 'commitAds'
-        }
-      }
-    }
-  });
-  const result = reconcileSeen(inputs);
-  assert.equal(result.additions.length, 0, 'must NOT re-admit a freshly-tombstoned listing');
-  assert.equal(result.unresolvedMissing.length, 1);
-  assert.match(result.unresolvedMissing[0].reason, /tombstone/);
-  assert.equal(result.updatedSeen.ads['south/NEW'], undefined);
-});
-
-test('reconcileSeen: admits a missing-id whose tombstone has already expired', () => {
-  const expired = new Date(
-    Date.now() - TOMBSTONE_SUPPRESS_MS - 60 * 1000
-  ).toISOString();
-  const inputs = makeReconcileInputs({
-    tombstones: {
-      tombstones: {
-        'south/NEW': {
-          externalId: 'south/NEW',
-          removedAt: expired,
-          reason: 'removed-by-scan',
-          recordedBy: 'commitAds'
-        }
-      }
-    }
-  });
-  const result = reconcileSeen(inputs);
-  assert.deepEqual(
-    result.additions.map((a) => a.externalId),
-    ['south/NEW'],
-    'expired tombstone must NOT block a re-listed ad from coming back'
-  );
 });
 
 // -----------------------------------------------------------------------------
@@ -1167,55 +1110,30 @@ test('parsePrice ignores the "ירד ב-X ₪" price-drop chrome line', () => {
   assert.equal(parsePrice('דירה, נועם\n300 1'), null);
 });
 
-test('mergeSeenAds: a fresh tombstone removes a key even if the remote has it', () => {
+test('mergeSeenAds: union of local and remote when no force-deletes', () => {
+  const local = { ads: { a: { externalId: 'a' } } };
+  const remote = { ads: { b: { externalId: 'b' } } };
+  const merged = mergeSeenAds(local, remote);
+  assert.deepEqual(Object.keys(merged.ads).sort(), ['a', 'b']);
+});
+
+test('mergeSeenAds: forceDeleteIds subtract keys from the union', () => {
+  // Health-check just removed `ghost` (404'd) and is pushing. Concurrent
+  // scan still has `ghost` in its remote snapshot. Without the
+  // force-delete hint, the union would resurrect it.
   const local = { ads: { keep: { externalId: 'keep' } } };
-  const remote = { ads: { keep: { externalId: 'keep' }, ghost: { externalId: 'ghost' } } };
-  const tombs = {
-    tombstones: {
-      ghost: { externalId: 'ghost', removedAt: new Date().toISOString() }
-    }
+  const remote = {
+    ads: { keep: { externalId: 'keep' }, ghost: { externalId: 'ghost' } }
   };
-  const merged = mergeSeenAds(local, remote, tombs);
+  const merged = mergeSeenAds(local, remote, ['ghost']);
   assert.deepEqual(Object.keys(merged.ads).sort(), ['keep']);
 });
 
-test('mergeSeenAds: an EXPIRED tombstone allows the key back in', () => {
-  const local = { ads: {} };
-  const remote = { ads: { revived: { externalId: 'revived' } } };
-  const expired = new Date(Date.now() - TOMBSTONE_SUPPRESS_MS - 60_000).toISOString();
-  const tombs = {
-    tombstones: {
-      revived: { externalId: 'revived', removedAt: expired }
-    }
-  };
-  const merged = mergeSeenAds(local, remote, tombs);
-  assert.deepEqual(Object.keys(merged.ads), ['revived']);
-});
-
-test('mergeTombstones: union local + remote, prefer the more recent removedAt', () => {
-  const older = new Date(Date.now() - 60_000).toISOString();
-  const newer = new Date().toISOString();
-  const local = { tombstones: { a: { externalId: 'a', removedAt: newer } } };
+test('mergeSeenAds: empty forceDeleteIds preserves everything', () => {
+  const local = { ads: { keep: { externalId: 'keep' } } };
   const remote = {
-    tombstones: {
-      a: { externalId: 'a', removedAt: older },
-      b: { externalId: 'b', removedAt: older }
-    }
+    ads: { keep: { externalId: 'keep' }, also: { externalId: 'also' } }
   };
-  const merged = mergeTombstones(local, remote);
-  assert.equal(merged.tombstones.a.removedAt, newer);
-  assert.equal(merged.tombstones.b.removedAt, older);
-});
-
-test('mergeTombstones: prunes entries older than TOMBSTONE_RETENTION_MS', () => {
-  const veryOld = new Date(Date.now() - TOMBSTONE_RETENTION_MS - 60_000).toISOString();
-  const fresh = new Date().toISOString();
-  const local = {
-    tombstones: {
-      stale: { externalId: 'stale', removedAt: veryOld },
-      keep: { externalId: 'keep', removedAt: fresh }
-    }
-  };
-  const merged = mergeTombstones(local, { tombstones: {} });
-  assert.deepEqual(Object.keys(merged.tombstones), ['keep']);
+  const merged = mergeSeenAds(local, remote, []);
+  assert.deepEqual(Object.keys(merged.ads).sort(), ['also', 'keep']);
 });

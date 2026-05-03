@@ -3,12 +3,9 @@ const path = require('path');
 const { env } = require('../config/env');
 const { getEnabledSearches } = require('../config/searches');
 const {
-  TOMBSTONE_SUPPRESS_MS,
   ensureStateDir,
   loadSeenAds,
-  loadTombstones,
   recordRun,
-  recordTombstones,
   saveSeenAds
 } = require('../store/file-store');
 const {
@@ -50,16 +47,28 @@ function refreshStateFromBranch() {
   return true;
 }
 
-function persistStateToBranch() {
+function persistStateToBranch({ forceDeleteIds = [] } = {}) {
   if (!process.env.GITHUB_ACTIONS) {
     return { ok: false, reason: 'not running in GitHub Actions' };
   }
   const repoRoot = path.resolve(__dirname, '..', '..');
   const script = path.resolve(repoRoot, 'scripts', 'persist-state.sh');
+  // The merge step (scripts/merge-state.js) reads
+  // SEEN_ADS_FORCE_DELETE_IDS to subtract specific keys from the
+  // merged seen-ads.json. Without this hint the merge would
+  // re-introduce a key we just deleted whenever the remote (fetched
+  // before our deletion landed) still has it - exactly the bug that
+  // caused ads to be repeatedly re-announced as "new".
+  const env = { ...process.env };
+  if (Array.isArray(forceDeleteIds) && forceDeleteIds.length) {
+    env.SEEN_ADS_FORCE_DELETE_IDS = forceDeleteIds.join(',');
+  } else {
+    delete env.SEEN_ADS_FORCE_DELETE_IDS;
+  }
   const result = spawnSync('bash', [script], {
     cwd: repoRoot,
     stdio: 'inherit',
-    env: process.env
+    env
   });
   if (result.status !== 0) {
     return { ok: false, reason: `persist-state.sh exited with ${result.status}` };
@@ -204,23 +213,13 @@ function reconcileSeen({
   extraClassification,
   missingClassification,
   generatedAt,
-  searchById,
-  tombstones = { tombstones: {} },
-  now = Date.now()
+  searchById
 }) {
   const updatedSeen = { ...seen, ads: { ...(seen.ads || {}) } };
   const additions = [];
   const removals = [];
   const unresolvedExtras = [];
   const unresolvedMissing = [];
-
-  function isFreshlyTombstoned(externalId) {
-    const entry = tombstones?.tombstones?.[externalId];
-    if (!entry) return false;
-    const ts = Date.parse(entry.removedAt || '');
-    if (!Number.isFinite(ts)) return false;
-    return now - ts < TOMBSTONE_SUPPRESS_MS;
-  }
 
   for (const row of rows) {
     const search = searchById.get(row.searchId) || {
@@ -268,20 +267,6 @@ function reconcileSeen({
         continue;
       }
       if (classification.kind === 'admit') {
-        // Don't re-admit an ad whose tombstone is still fresh. The
-        // worker deliberately removed it earlier and Telegram already
-        // notified the user once — re-adding it here would let the
-        // next scan announce it again as "new", causing duplicate
-        // notifications throughout the suppression window.
-        if (isFreshlyTombstoned(externalId)) {
-          unresolvedMissing.push({
-            externalId,
-            searchId: row.searchId,
-            link: externalIdToLink(externalId),
-            reason: 'מודעה הוסרה לאחרונה — דוכאה לפי tombstone (נשמרת מחוץ ל-seen עד פקיעת החלון)'
-          });
-          continue;
-        }
         const newRecord = adRecordFromEnriched(classification.enriched, {
           searchId: row.searchId,
           label: search.districtLabel || row.label,
@@ -448,15 +433,13 @@ async function runHealthCheck() {
     return result;
   })();
 
-  const tombstones = loadTombstones();
   const reconciliation = reconcileSeen({
     rows,
     seen: seenInitial,
     extraClassification,
     missingClassification,
     generatedAt,
-    searchById,
-    tombstones
+    searchById
   });
 
   // Save the reconciled seen-set locally. The actual push to the `state`
@@ -472,18 +455,6 @@ async function runHealthCheck() {
   if (didMutate) {
     try {
       saveSeenAds(reconciliation.updatedSeen);
-      // Record tombstones for the listings the health-check decided to
-      // remove. Without this, the merge race could resurrect them on
-      // the next push from another worker.
-      const removedIds = (reconciliation.removals || [])
-        .map((r) => r.externalId)
-        .filter(Boolean);
-      if (removedIds.length) {
-        recordTombstones(removedIds, {
-          reason: 'removed-by-health-check',
-          recordedBy: 'health-check'
-        });
-      }
     } catch (error) {
       console.error('[health-check] failed to save reconciled seen-set:', error);
       persisted = {
@@ -564,10 +535,15 @@ async function main() {
       errors: result.scrapeErrors || []
     });
 
-    // Push state branch AFTER recordRun so runs.json includes this run.
+    // Push state branch AFTER recordRun so runs.json includes this
+    // run. We pass the freshly-removed externalIds to the merge step
+    // so a concurrent scan's stale snapshot can't resurrect them.
+    const removedIds = (result.reconciliation?.removals || [])
+      .map((r) => r.externalId)
+      .filter(Boolean);
     let persisted = result.reconciliation?.persisted;
     try {
-      const pushResult = persistStateToBranch();
+      const pushResult = persistStateToBranch({ forceDeleteIds: removedIds });
       persisted = pushResult;
     } catch (pushErr) {
       console.error('[health-check] persistStateToBranch threw:', pushErr);
