@@ -330,6 +330,12 @@ input:focus {
   font-weight: 600;
 }
 
+.runs-status-relative {
+  color: var(--text-faint);
+  font-weight: 500;
+  font-size: 10px;
+}
+
 .header-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;

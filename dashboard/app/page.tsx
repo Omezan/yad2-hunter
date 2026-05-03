@@ -426,32 +426,38 @@ export default function DashboardPage() {
                 lastScan?.status === 'failed' ? ' is-failed' : ''
               }`}
               title={
-                scanAbsolute
-                  ? `סריקה אחרונה: ${scanAbsolute}${
-                      lastScan?.trigger ? ` (${lastScan.trigger})` : ''
-                    }`
-                  : 'אין עדיין סריקה רשומה'
+                lastScan?.trigger
+                  ? `מקור: ${lastScan.trigger}`
+                  : scanAbsolute
+                    ? 'סריקה אחרונה'
+                    : 'אין עדיין סריקה רשומה'
               }
             >
               <span className="runs-status-dot" aria-hidden="true" />
               <span className="runs-status-label">סריקה אחרונה:</span>
-              <span className="runs-status-value">{scanRelative ?? '—'}</span>
+              <span className="runs-status-value">{scanAbsolute ?? '—'}</span>
+              {scanRelative ? (
+                <span className="runs-status-relative">· {scanRelative}</span>
+              ) : null}
             </span>
             <span
               className={`runs-status-pill${
                 lastHealthCheck?.status === 'failed' ? ' is-failed' : ''
               }`}
               title={
-                healthAbsolute
-                  ? `בדיקת אמינות אחרונה: ${healthAbsolute}${
-                      lastHealthCheck?.trigger ? ` (${lastHealthCheck.trigger})` : ''
-                    }`
-                  : 'אין עדיין בדיקת אמינות רשומה'
+                lastHealthCheck?.trigger
+                  ? `מקור: ${lastHealthCheck.trigger}`
+                  : healthAbsolute
+                    ? 'בדיקת אמינות אחרונה'
+                    : 'אין עדיין בדיקת אמינות רשומה'
               }
             >
               <span className="runs-status-dot is-secondary" aria-hidden="true" />
               <span className="runs-status-label">בדיקת אמינות אחרונה:</span>
-              <span className="runs-status-value">{healthRelative ?? '—'}</span>
+              <span className="runs-status-value">{healthAbsolute ?? '—'}</span>
+              {healthRelative ? (
+                <span className="runs-status-relative">· {healthRelative}</span>
+              ) : null}
             </span>
           </div>
           {generatedAt ? <span className="header-meta">עודכן {generatedAt}</span> : null}
