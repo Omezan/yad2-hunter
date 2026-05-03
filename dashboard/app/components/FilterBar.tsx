@@ -8,6 +8,7 @@ import {
   useState,
   type ChangeEvent
 } from 'react';
+import { solidPillStyle } from '../lib/district-colors';
 
 export type FreshnessFilter = 'all' | 'new';
 export type SortKey = 'firstSeenDesc' | 'priceAsc' | 'roomsDesc';
@@ -443,7 +444,8 @@ export default function FilterBar({
                       key={option.value}
                       role="option"
                       aria-selected={active}
-                      className={`pill ${active ? 'is-active' : ''}`}
+                      className={`pill pill-district ${active ? 'is-active' : ''}`}
+                      style={solidPillStyle(option.value, active)}
                       onClick={() => onToggleDistrict(option.value)}
                     >
                       <span>{option.label}</span>

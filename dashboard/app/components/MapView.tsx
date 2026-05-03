@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 import cityCoords from '../lib/city-coords.json';
 import type { AdRow } from '../lib/types';
 import { isAdFresh } from '../lib/freshness';
+import { getDistrictColor } from '../lib/district-colors';
 
 type CityCoord = { lat: number; lng: number };
 const COORDS = cityCoords as Record<string, CityCoord>;
@@ -15,14 +16,27 @@ const COORDS = cityCoords as Record<string, CityCoord>;
 const DEFAULT_CENTER: [number, number] = [31.7, 35.0];
 const DEFAULT_ZOOM = 7;
 
-function buildCityIcon(count: number, isHot: boolean): L.DivIcon {
+function buildCityIcon(
+  count: number,
+  isHot: boolean,
+  districtId: string | null
+): L.DivIcon {
   const size = count >= 100 ? 44 : count >= 10 ? 38 : 32;
-  const tone = isHot ? 'hot' : 'normal';
+  const baseClass = isHot ? 'map-pin map-pin-hot' : 'map-pin';
+  // The "hot" treatment (a city with at least one fresh ad) keeps its
+  // amber/red glow so new ads remain visually loud on the map. Otherwise
+  // the pin takes its district's brand color so the user can see which
+  // district each settlement belongs to at a glance.
+  const districtColor = districtId ? getDistrictColor(districtId) : null;
+  const inlineStyle =
+    !isHot && districtColor
+      ? `width:${size}px;height:${size}px;background:linear-gradient(135deg, ${districtColor.solid} 0%, ${districtColor.solidStrong} 100%);box-shadow:0 2px 6px rgba(0,0,0,0.35), 0 0 0 3px ${districtColor.softBg}`
+      : `width:${size}px;height:${size}px`;
   return L.divIcon({
     className: 'map-pin-wrapper',
     iconSize: [size, size],
     iconAnchor: [size / 2, size / 2],
-    html: `<div class="map-pin map-pin-${tone}" style="width:${size}px;height:${size}px"><span>${count}</span></div>`
+    html: `<div class="${baseClass}" style="${inlineStyle}"><span>${count}</span></div>`
   });
 }
 
@@ -48,6 +62,10 @@ type CityGroup = {
   coord: CityCoord;
   ads: AdRow[];
   hasFresh: boolean;
+  // Most-common district for the city (used to color the pin). Cities
+  // virtually always sit in a single district but a few border towns
+  // could appear under two — we pick the majority.
+  districtId: string | null;
 };
 
 export default function MapView({ ads, effectiveSince }: MapViewProps) {
@@ -62,12 +80,29 @@ export default function MapView({ ads, effectiveSince }: MapViewProps) {
       else byCity.set(city, [ad]);
     }
     return Array.from(byCity.entries())
-      .map(([city, items]) => ({
-        city,
-        coord: COORDS[city],
-        ads: items,
-        hasFresh: items.some((ad) => isAdFresh(ad.firstSeenAt, effectiveSince))
-      }))
+      .map(([city, items]) => {
+        const counts = new Map<string, number>();
+        for (const ad of items) {
+          const id = ad.searchId || '';
+          if (!id) continue;
+          counts.set(id, (counts.get(id) || 0) + 1);
+        }
+        let districtId: string | null = null;
+        let best = 0;
+        for (const [id, n] of counts) {
+          if (n > best) {
+            best = n;
+            districtId = id;
+          }
+        }
+        return {
+          city,
+          coord: COORDS[city],
+          ads: items,
+          hasFresh: items.some((ad) => isAdFresh(ad.firstSeenAt, effectiveSince)),
+          districtId
+        };
+      })
       .sort((a, b) => b.ads.length - a.ads.length);
   }, [ads, effectiveSince]);
 
@@ -99,7 +134,7 @@ export default function MapView({ ads, effectiveSince }: MapViewProps) {
           <Marker
             key={g.city}
             position={[g.coord.lat, g.coord.lng]}
-            icon={buildCityIcon(g.ads.length, g.hasFresh)}
+            icon={buildCityIcon(g.ads.length, g.hasFresh, g.districtId)}
           >
             <Popup>
               <div className="map-popup">

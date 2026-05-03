@@ -406,19 +406,7 @@ export default function DashboardPage() {
   return (
     <main className="layout">
       <header className="header">
-        <div className="header-titles">
-          <h1 className="brand">
-            <span className="brand-icon" aria-hidden="true">🏡</span>
-            <span>מציאת בית במושב</span>
-          </h1>
-          <div className="header-badges">
-            {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
-            {freshAds.length > 0 ? (
-              <span className="badge badge-soft">
-                {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
-              </span>
-            ) : null}
-          </div>
+        <div className="header-info">
           <div className="runs-status" aria-label="סטטוס ריצות">
             <span
               className={`runs-status-pill${
@@ -459,6 +447,20 @@ export default function DashboardPage() {
               ) : null}
             </span>
           </div>
+          <div className="header-badges">
+            {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
+            {freshAds.length > 0 ? (
+              <span className="badge badge-soft">
+                {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
+              </span>
+            ) : null}
+          </div>
+        </div>
+        <div className="header-brand">
+          <h1 className="brand">
+            <span className="brand-icon" aria-hidden="true">🏡</span>
+            <span>מציאת בית במושב</span>
+          </h1>
         </div>
         <div className="header-actions">
           <button

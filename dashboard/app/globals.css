@@ -229,36 +229,47 @@ input:focus {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
+  align-items: stretch;
 }
 
-.header-titles {
+.header-info {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  min-width: 0;
 }
 
-.header-titles h1 {
+.header-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.header-brand h1 {
   margin: 0;
-  font-size: var(--type-xl);
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: var(--type-2xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .brand-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   background: var(--accent-gradient);
-  font-size: 20px;
+  font-size: 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
 
@@ -371,14 +382,15 @@ input:focus {
     margin-inline: calc(-1 * var(--space-5));
     padding: var(--space-4) var(--space-5);
   }
-  .header-titles {
-    flex: 1 1 auto;
+  .header-info {
+    flex: 0 1 auto;
   }
   .header-actions {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
     gap: var(--space-2);
+    flex: 0 1 auto;
   }
   .header-actions button {
     min-width: 120px;
@@ -393,10 +405,8 @@ input:focus {
     margin-inline: calc(-1 * var(--space-6));
     padding: var(--space-4) var(--space-6);
   }
-  .header-titles {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-4);
+  .header-brand h1 {
+    font-size: 32px;
   }
 }
 
@@ -1339,13 +1349,17 @@ input:focus {
 
 /* ================================
  * View toggle (list / map)
+ *
+ * Compact pill-pair with a warm orange active state — distinct from
+ * the blue/purple primary accent so it doesn't compete with the main
+ * action buttons.
  * ================================ */
 .view-toggle {
   display: inline-flex;
   background: var(--surface-elev);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
-  padding: 3px;
+  padding: 2px;
   gap: 2px;
 }
 
@@ -1353,26 +1367,29 @@ input:focus {
   border: none;
   background: transparent;
   color: var(--text-muted);
-  padding: 6px 14px;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
-  font-size: var(--type-sm);
+  font-size: var(--type-xs);
   font-weight: 600;
   cursor: pointer;
   transition: color 120ms ease, background 120ms ease, transform 120ms ease;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 30px;
+  min-height: 24px;
+  line-height: 1;
 }
 
 .view-toggle button:hover {
   color: var(--text);
+  background: transparent;
+  border: none;
 }
 
 .view-toggle button.is-active {
-  background: var(--accent-gradient);
+  background: linear-gradient(135deg, #ff8c3b 0%, #ff5e1f 100%);
   color: #fff;
-  box-shadow: var(--shadow-accent);
+  box-shadow: 0 4px 10px rgba(255, 94, 31, 0.3);
 }
 
 .view-toggle button:disabled {

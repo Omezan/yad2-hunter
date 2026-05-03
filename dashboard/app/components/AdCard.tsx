@@ -1,5 +1,6 @@
 import type { AdRow } from '../lib/types';
 import { formatHebrewDateTime } from '../lib/freshness';
+import { softChipStyle } from '../lib/district-colors';
 
 type Props = {
   ad: AdRow;
@@ -60,7 +61,9 @@ export default function AdCard({ ad, isNew }: Props) {
 
       <div className="card-footer">
         {ad.districtLabel ? (
-          <span className="card-chip">{ad.districtLabel}</span>
+          <span className="card-chip" style={softChipStyle(ad.searchId)}>
+            {ad.districtLabel}
+          </span>
         ) : (
           <span />
         )}
