@@ -1,6 +1,49 @@
 {
   "runs": [
     {
+      "kind": "scan",
+      "startedAt": "2026-05-03T16:42:10.805Z",
+      "completedAt": "2026-05-03T16:49:45.807Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 17,
+      "preFilteredAds": 17,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "suppressedByTombstones": 0,
+      "removedAds": 0,
+      "skippedRemovalDistricts": [],
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=127c2206-8a12-4c06-be05-6dfc11423461&ssb=46629271587&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=e820fcf3-bhmf-4eb1-bbca-8addfafa0a7f&ssk=support%40shieldsquare.com&ssm=67493172838960658137858718948489&ssn=b230aec8866f00fd6f70425806a4049321783dc77dc9-49b8-4719-8991c7&sso=1c9c6092-2aa84edfab4051ffc3185d9ff1a423e4fdac91ad5616a6e4&ssp=69855441711777859351177788413958521&ssq=42744762655447448866626553228609922786925&ssr=MjAuMTA5LjM4LjE3Ng%3D%3D&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJyZCI6InlhZDIuY28uaWwiLCJ1em14IjoiN2Y5MDAwMDQxMTM2YjUtODUwOC00NzVmLWI0MDQtN2FkMGNhYzZmYWY1MS0xNzc3ODI2NTUxOTEyMjY1OS02YTA1MzE2ZGU0ZTI1OGIzMTYiLCJfX3V6bWYiOiI3ZjkwMDAzZGM3N2RjOS00OWI4LTQ3MTktODA5Mi0yYWE4NGVkZmFiNDAxLTE3Nzc4MjY1NTM5ODc1ODQtMDAzY2JhNjc1M2FkNzRkOTRlNTEzIn0%3D\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "kind": "health-check",
       "startedAt": "2026-05-03T16:39:14.036Z",
       "completedAt": "2026-05-03T16:41:49.580Z",
@@ -1589,42 +1632,6 @@
           "searchLabel": "ירושלים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-03T09:06:23.103Z",
-      "completedAt": "2026-05-03T09:14:48.622Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 15,
-      "preFilteredAds": 15,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "removedAds": 0,
-      "skippedRemovalDistricts": [],
-      "telegramSent": false,
-      "errors": [
         {
           "searchId": "center-sharon",
           "searchLabel": "מרכז ושרון",
