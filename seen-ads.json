@@ -2808,19 +2808,6 @@
       "firstSeenAt": "2026-04-30T10:14:06.588Z",
       "lastSeenAt": "2026-05-04T05:28:17.905Z"
     },
-    "north-and-valleys/tffys912": {
-      "externalId": "north-and-valleys/tffys912",
-      "title": "בית פרטי/ קוטג', בלפוריה",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/tffys912",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 5,
-      "city": "בלפוריה",
-      "firstSeenAt": "2026-04-30T11:54:58.227Z",
-      "lastSeenAt": "2026-05-04T01:54:26.544Z"
-    },
     "north-and-valleys/d92vhnin": {
       "externalId": "north-and-valleys/d92vhnin",
       "title": "בית פרטי/ קוטג', נוב",
@@ -3314,6 +3301,32 @@
       "city": "לוזית",
       "firstSeenAt": "2026-05-04T06:03:58.184Z",
       "lastSeenAt": "2026-05-04T06:03:58.184Z"
+    },
+    "jerusalem-area/ibzrhexz": {
+      "externalId": "jerusalem-area/ibzrhexz",
+      "title": "בית פרטי/ קוטג', גבעות עדן",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/ibzrhexz",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8500,
+      "rooms": 6,
+      "city": "גבעות עדן",
+      "firstSeenAt": "2026-05-04T06:53:50.061Z",
+      "lastSeenAt": "2026-05-04T06:53:50.061Z"
+    },
+    "north-and-valleys/icvhu4zp": {
+      "externalId": "north-and-valleys/icvhu4zp",
+      "title": "בית פרטי/ קוטג', גבעת אלה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/icvhu4zp",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6000,
+      "rooms": 4,
+      "city": "גבעת אלה",
+      "firstSeenAt": "2026-05-04T06:53:50.061Z",
+      "lastSeenAt": "2026-05-04T06:53:50.061Z"
     }
   }
 }
