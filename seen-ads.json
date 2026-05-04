@@ -897,19 +897,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T12:20:37.197Z"
     },
-    "coastal-north/suf78m9k": {
-      "externalId": "coastal-north/suf78m9k",
-      "title": "בית פרטי/ קוטג', כפר המכבי",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/suf78m9k",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 6000,
-      "rooms": 4,
-      "city": "כפר המכבי",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-04T12:20:37.197Z"
-    },
     "coastal-north/l4ycersf": {
       "externalId": "coastal-north/l4ycersf",
       "title": "בית פרטי/ קוטג', שדה יצחק",
@@ -2197,19 +2184,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T12:20:37.197Z"
     },
-    "north-and-valleys/jcbp00f3": {
-      "externalId": "north-and-valleys/jcbp00f3",
-      "title": "בית פרטי/ קוטג', כרכום",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/jcbp00f3",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5500,
-      "rooms": 8,
-      "city": "כרכום",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-04T10:58:24.369Z"
-    },
     "north-and-valleys/c9sjvo64": {
       "externalId": "north-and-valleys/c9sjvo64",
       "title": "בית פרטי/ קוטג', מורשת",
@@ -3327,6 +3301,58 @@
       "city": "בצרה",
       "firstSeenAt": "2026-05-04T10:25:32.358Z",
       "lastSeenAt": "2026-05-04T12:20:37.197Z"
+    },
+    "jerusalem-area/rt87m3ih": {
+      "externalId": "jerusalem-area/rt87m3ih",
+      "title": "בית פרטי/ קוטג', ישעי",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/rt87m3ih",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": null,
+      "rooms": 5.5,
+      "city": "ישעי",
+      "firstSeenAt": "2026-05-04T14:28:57.420Z",
+      "lastSeenAt": "2026-05-04T14:28:57.420Z"
+    },
+    "center-and-sharon/mach5pga": {
+      "externalId": "center-and-sharon/mach5pga",
+      "title": "בית פרטי/ קוטג', חיבת ציון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/mach5pga",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 7,
+      "city": "חיבת ציון",
+      "firstSeenAt": "2026-05-04T14:28:57.420Z",
+      "lastSeenAt": "2026-05-04T14:28:57.420Z"
+    },
+    "center-and-sharon/f53i476g": {
+      "externalId": "center-and-sharon/f53i476g",
+      "title": "יחידת דיור, יציץ",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/f53i476g",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6000,
+      "rooms": 4,
+      "city": "יציץ",
+      "firstSeenAt": "2026-05-04T14:28:57.420Z",
+      "lastSeenAt": "2026-05-04T14:28:57.420Z"
+    },
+    "center-and-sharon/vci2htw3": {
+      "externalId": "center-and-sharon/vci2htw3",
+      "title": "בית פרטי/ קוטג', ניצני עוז",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/vci2htw3",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8800,
+      "rooms": 5,
+      "city": "ניצני עוז",
+      "firstSeenAt": "2026-05-04T14:28:57.420Z",
+      "lastSeenAt": "2026-05-04T14:28:57.420Z"
     }
   }
 }
