@@ -316,19 +316,12 @@ input:focus {
 }
 
 /* Standalone "run history" row that lives between the header and the
- * sticky filter bar. Right-aligned so it pairs with the new toolbar
- * layout, with a subtle bottom margin so it never visually merges
- * into the toolbar. */
+ * sticky filter bar. Items pack to the inline-start (right in RTL)
+ * so they line up above the toolbar's "הכל/חדשות" segmented control. */
 .runs-status-row {
   margin-top: 0;
   margin-bottom: var(--space-3);
-  justify-content: flex-end;
-}
-
-@media (max-width: 600px) {
-  .runs-status-row {
-    justify-content: flex-start;
-  }
+  justify-content: flex-start;
 }
 
 .runs-status-pill {
