@@ -1,6 +1,41 @@
 {
   "runs": [
     {
+      "kind": "scan",
+      "startedAt": "2026-05-04T17:51:38.189Z",
+      "completedAt": "2026-05-04T17:59:51.259Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 18,
+      "preFilteredAds": 18,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "kind": "health-check",
       "startedAt": "2026-05-04T17:49:27.400Z",
       "completedAt": "2026-05-04T17:52:06.088Z",
@@ -999,41 +1034,6 @@
           "searchLabel": "ירושלים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-03T17:43:46.957Z",
-      "completedAt": "2026-05-03T17:52:02.296Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 17,
-      "preFilteredAds": 17,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "telegramSent": false,
-      "errors": [
         {
           "searchId": "center-sharon",
           "searchLabel": "מרכז ושרון",
