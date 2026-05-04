@@ -1326,19 +1326,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T17:24:13.526Z"
     },
-    "north-and-valleys/187e5csx": {
-      "externalId": "north-and-valleys/187e5csx",
-      "title": "בית פרטי/ קוטג', לוטם",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/187e5csx",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 6100,
-      "rooms": 5.5,
-      "city": "לוטם",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-04T17:24:13.526Z"
-    },
     "north-and-valleys/x1atdd3i": {
       "externalId": "north-and-valleys/x1atdd3i",
       "title": "בית פרטי/ קוטג', פוריה נווה עובד",
@@ -2834,19 +2821,6 @@
       "firstSeenAt": "2026-05-01T05:45:53.788Z",
       "lastSeenAt": "2026-05-04T17:24:13.526Z"
     },
-    "jerusalem-area/v6yezbsr": {
-      "externalId": "jerusalem-area/v6yezbsr",
-      "title": "בית פרטי/ קוטג', גפן",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/v6yezbsr",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 7200,
-      "rooms": 5,
-      "city": "גפן",
-      "firstSeenAt": "2026-05-01T07:38:15.503Z",
-      "lastSeenAt": "2026-05-04T15:06:05.593Z"
-    },
     "center-and-sharon/5eex4oyn": {
       "externalId": "center-and-sharon/5eex4oyn",
       "title": "דירה, אחיטוב",
@@ -2951,19 +2925,6 @@
       "firstSeenAt": "2026-05-01T13:54:15.776Z",
       "lastSeenAt": "2026-05-04T17:24:13.526Z"
     },
-    "north-and-valleys/o0192b1z": {
-      "externalId": "north-and-valleys/o0192b1z",
-      "title": "בית פרטי/ קוטג', עין דור",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/o0192b1z",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 6,
-      "city": "עין דור",
-      "firstSeenAt": "2026-05-01T15:48:45.647Z",
-      "lastSeenAt": "2026-05-04T15:06:05.593Z"
-    },
     "north-and-valleys/trw2wx58": {
       "externalId": "north-and-valleys/trw2wx58",
       "title": "בית פרטי/ קוטג', שדה אליעזר",
@@ -3054,19 +3015,6 @@
       "city": "אחיעזר",
       "firstSeenAt": "2026-05-02T23:36:56.655Z",
       "lastSeenAt": "2026-05-04T17:24:13.526Z"
-    },
-    "center-and-sharon/lldz1xds": {
-      "externalId": "center-and-sharon/lldz1xds",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/lldz1xds",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5800,
-      "rooms": 5.5,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-05-03T07:13:21.691Z",
-      "lastSeenAt": "2026-05-04T15:06:05.593Z"
     },
     "coastal-north/edicztrw": {
       "externalId": "coastal-north/edicztrw",
