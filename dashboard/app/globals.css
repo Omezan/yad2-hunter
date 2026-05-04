@@ -1362,28 +1362,41 @@ input:focus {
  * ================================ */
 .view-toggle {
   display: inline-flex;
+  align-items: stretch;
   background: var(--surface-elev);
   border: 1px solid var(--border);
   border-radius: var(--radius-pill);
   padding: 2px;
-  gap: 2px;
+  gap: 0;
+  width: auto;
+  flex: 0 0 auto;
+  /* Clip the orange glow so it can't bleed past the wrapper as a "tail". */
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .view-toggle button {
   border: none;
   background: transparent;
   color: var(--text-muted);
-  padding: 5px 14px;
+  /* Equal padding on both sides so each button keeps its natural width
+   * regardless of which one is active — prevents one side looking
+   * stretched. */
+  padding: 4px 12px;
   border-radius: var(--radius-pill);
   font-size: var(--type-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: color 120ms ease, background 120ms ease, transform 120ms ease;
+  transition: color 120ms ease, background 120ms ease;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  min-height: 30px;
+  min-height: 26px;
+  min-width: 0;
   line-height: 1;
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .view-toggle button:hover {
@@ -1395,7 +1408,9 @@ input:focus {
 .view-toggle button.is-active {
   background: linear-gradient(135deg, #ff8c3b 0%, #ff5e1f 100%);
   color: #fff;
-  box-shadow: 0 4px 10px rgba(255, 94, 31, 0.3);
+  /* Subtle inner sheen instead of an outer glow so the active pill
+   * never extends visually past the wrapper. */
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
 .view-toggle button:disabled {
