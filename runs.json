@@ -2,6 +2,20 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-04T17:16:37.538Z",
+      "completedAt": "2026-05-04T17:19:16.798Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 257,
+      "preFilteredAds": 257,
+      "candidateNewAds": 2,
+      "relevantNewAds": 2,
+      "notifiedNewAds": 2,
+      "telegramSent": true,
+      "errors": []
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-04T15:33:29.169Z",
       "completedAt": "2026-05-04T15:41:58.123Z",
       "status": "partial",
@@ -1039,20 +1053,6 @@
       "removals": 0,
       "unresolvedExtras": 0,
       "unresolvedMissing": 0,
-      "telegramSent": true,
-      "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-03T17:29:41.638Z",
-      "completedAt": "2026-05-03T17:32:20.533Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 256,
-      "preFilteredAds": 256,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 1,
       "telegramSent": true,
       "errors": []
     }
