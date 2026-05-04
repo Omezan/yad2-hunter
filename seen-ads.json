@@ -104,19 +104,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T02:29:46.588Z"
     },
-    "jerusalem-area/e8pzmf2h": {
-      "externalId": "jerusalem-area/e8pzmf2h",
-      "title": "בית פרטי/ קוטג', לוזית",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/e8pzmf2h",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 8800,
-      "rooms": 6,
-      "city": "לוזית",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T23:37:21.771Z"
-    },
     "jerusalem-area/42cmt6di": {
       "externalId": "jerusalem-area/42cmt6di",
       "title": "דירה, בית זית",
@@ -1052,19 +1039,6 @@
       "city": "בצת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T01:54:26.544Z"
-    },
-    "coastal-north/hp5q3cm4": {
-      "externalId": "coastal-north/hp5q3cm4",
-      "title": "בית פרטי/ קוטג', אשרת",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/hp5q3cm4",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 6000,
-      "rooms": 5,
-      "city": "אשרת",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T23:37:21.771Z"
     },
     "coastal-north/op50rxx0": {
       "externalId": "coastal-north/op50rxx0",
@@ -2106,19 +2080,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T01:54:26.544Z"
     },
-    "north-and-valleys/35r9mrbi": {
-      "externalId": "north-and-valleys/35r9mrbi",
-      "title": "דירה, אביטל",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/35r9mrbi",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4200,
-      "rooms": 4,
-      "city": "אביטל",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T23:37:21.771Z"
-    },
     "north-and-valleys/1xgwivua": {
       "externalId": "north-and-valleys/1xgwivua",
       "title": "דירה, נווה זיו",
@@ -2365,19 +2326,6 @@
       "city": "גורנות הגליל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-04T01:54:26.544Z"
-    },
-    "north-and-valleys/ew674czp": {
-      "externalId": "north-and-valleys/ew674czp",
-      "title": "בית פרטי/ קוטג', אדמית",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ew674czp",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4500,
-      "rooms": 6,
-      "city": "אדמית",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T23:37:21.771Z"
     },
     "north-and-valleys/47nk4b6d": {
       "externalId": "north-and-valleys/47nk4b6d",
@@ -3353,19 +3301,6 @@
       "city": "גבעת אבני",
       "firstSeenAt": "2026-05-03T18:45:27.424Z",
       "lastSeenAt": "2026-05-04T01:54:26.544Z"
-    },
-    "center-and-sharon/pnn4p1yx": {
-      "externalId": "center-and-sharon/pnn4p1yx",
-      "title": "בית פרטי/ קוטג', רינתיה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/pnn4p1yx",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4,
-      "city": "רינתיה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-03T19:48:33.983Z"
     }
   }
 }
