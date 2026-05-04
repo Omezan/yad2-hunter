@@ -2743,19 +2743,6 @@
       "firstSeenAt": "2026-04-30T05:30:48.804Z",
       "lastSeenAt": "2026-05-04T08:55:40.341Z"
     },
-    "center-and-sharon/44t4qbr5": {
-      "externalId": "center-and-sharon/44t4qbr5",
-      "title": "דו משפחתי, פתחיה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/44t4qbr5",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 8000,
-      "rooms": 4,
-      "city": "פתחיה",
-      "firstSeenAt": "2026-04-30T07:21:06.262Z",
-      "lastSeenAt": "2026-05-04T08:19:08.830Z"
-    },
     "center-and-sharon/f7ym9xu4": {
       "externalId": "center-and-sharon/f7ym9xu4",
       "title": "דירה, יגל",
@@ -3327,6 +3314,19 @@
       "city": "גבעת אלה",
       "firstSeenAt": "2026-05-04T06:53:50.061Z",
       "lastSeenAt": "2026-05-04T08:19:08.830Z"
+    },
+    "center-and-sharon/ea3j2b4l": {
+      "externalId": "center-and-sharon/ea3j2b4l",
+      "title": "בית פרטי/ קוטג', בצרה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ea3j2b4l",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בצרה",
+      "firstSeenAt": "2026-05-04T10:25:32.358Z",
+      "lastSeenAt": "2026-05-04T10:25:32.358Z"
     }
   }
 }
