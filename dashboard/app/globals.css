@@ -315,6 +315,22 @@ input:focus {
   margin-top: 4px;
 }
 
+/* Standalone "run history" row that lives between the header and the
+ * sticky filter bar. Right-aligned so it pairs with the new toolbar
+ * layout, with a subtle bottom margin so it never visually merges
+ * into the toolbar. */
+.runs-status-row {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  .runs-status-row {
+    justify-content: flex-start;
+  }
+}
+
 .runs-status-pill {
   display: inline-flex;
   align-items: center;

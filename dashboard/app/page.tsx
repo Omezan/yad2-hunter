@@ -406,55 +406,17 @@ export default function DashboardPage() {
   return (
     <main className="layout">
       <header className="header">
-        <div className="header-info">
-          <div className="runs-status" aria-label="סטטוס ריצות">
-            <span
-              className={`runs-status-pill${
-                lastScan?.status === 'failed' ? ' is-failed' : ''
-              }`}
-              title={
-                lastScan?.trigger
-                  ? `מקור: ${lastScan.trigger}`
-                  : scanAbsolute
-                    ? 'סריקה אחרונה'
-                    : 'אין עדיין סריקה רשומה'
-              }
-            >
-              <span className="runs-status-dot" aria-hidden="true" />
-              <span className="runs-status-label">סריקה אחרונה:</span>
-              <span className="runs-status-value">{scanAbsolute ?? '—'}</span>
-              {scanRelative ? (
-                <span className="runs-status-relative">· {scanRelative}</span>
-              ) : null}
-            </span>
-            <span
-              className={`runs-status-pill${
-                lastHealthCheck?.status === 'failed' ? ' is-failed' : ''
-              }`}
-              title={
-                lastHealthCheck?.trigger
-                  ? `מקור: ${lastHealthCheck.trigger}`
-                  : healthAbsolute
-                    ? 'בדיקת אמינות אחרונה'
-                    : 'אין עדיין בדיקת אמינות רשומה'
-              }
-            >
-              <span className="runs-status-dot is-secondary" aria-hidden="true" />
-              <span className="runs-status-label">בדיקת אמינות אחרונה:</span>
-              <span className="runs-status-value">{healthAbsolute ?? '—'}</span>
-              {healthRelative ? (
-                <span className="runs-status-relative">· {healthRelative}</span>
-              ) : null}
-            </span>
-          </div>
-          {freshAds.length > 0 ? (
+        {freshAds.length > 0 ? (
+          <div className="header-info">
             <div className="header-badges">
               <span className="badge badge-soft">
                 {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
               </span>
             </div>
-          ) : null}
-        </div>
+          </div>
+        ) : (
+          <div className="header-info" aria-hidden="true" />
+        )}
         <div className="header-brand">
           <h1 className="brand">
             <span className="brand-icon" aria-hidden="true">🏡</span>
@@ -488,6 +450,47 @@ export default function DashboardPage() {
           ) : null}
         </div>
       </header>
+
+      <div className="runs-status runs-status-row" aria-label="סטטוס ריצות">
+        <span
+          className={`runs-status-pill${
+            lastScan?.status === 'failed' ? ' is-failed' : ''
+          }`}
+          title={
+            lastScan?.trigger
+              ? `מקור: ${lastScan.trigger}`
+              : scanAbsolute
+                ? 'סריקה אחרונה'
+                : 'אין עדיין סריקה רשומה'
+          }
+        >
+          <span className="runs-status-dot" aria-hidden="true" />
+          <span className="runs-status-label">סריקה אחרונה:</span>
+          <span className="runs-status-value">{scanAbsolute ?? '—'}</span>
+          {scanRelative ? (
+            <span className="runs-status-relative">· {scanRelative}</span>
+          ) : null}
+        </span>
+        <span
+          className={`runs-status-pill${
+            lastHealthCheck?.status === 'failed' ? ' is-failed' : ''
+          }`}
+          title={
+            lastHealthCheck?.trigger
+              ? `מקור: ${lastHealthCheck.trigger}`
+              : healthAbsolute
+                ? 'בדיקת אמינות אחרונה'
+                : 'אין עדיין בדיקת אמינות רשומה'
+          }
+        >
+          <span className="runs-status-dot is-secondary" aria-hidden="true" />
+          <span className="runs-status-label">בדיקת אמינות אחרונה:</span>
+          <span className="runs-status-value">{healthAbsolute ?? '—'}</span>
+          {healthRelative ? (
+            <span className="runs-status-relative">· {healthRelative}</span>
+          ) : null}
+        </span>
+      </div>
 
       {banner ? <div className={`notice notice-${banner.tone}`}>{banner.text}</div> : null}
 
