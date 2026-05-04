@@ -45,9 +45,12 @@ type Props = {
   onPriceMinChange: (value: number | null) => void;
   onPriceMaxChange: (value: number | null) => void;
   onPriceReset: () => void;
-  // List/Map view toggle (rendered centered inside the toolbar)
+  // List/Map view toggle (rendered inside the toolbar, next to the
+  // total-count badge, all packed to the right of the bar).
   view: ViewMode;
   onViewChange: (value: ViewMode) => void;
+  // Total ads tracked — shown as a compact badge inside the toolbar.
+  totalCount: number;
 };
 
 function formatShekel(value: number): string {
@@ -111,7 +114,8 @@ export default function FilterBar({
   onPriceMaxChange,
   onPriceReset,
   view,
-  onViewChange
+  onViewChange,
+  totalCount
 }: Props) {
   const districtPopover = usePopover();
   const pricePopover = usePopover();
@@ -487,6 +491,12 @@ export default function FilterBar({
           מפה
         </button>
       </div>
+
+      {totalCount > 0 ? (
+        <span className="toolbar-count-badge badge">
+          {totalCount} מודעות במעקב
+        </span>
+      ) : null}
 
       <div className="toolbar-search">
         <input

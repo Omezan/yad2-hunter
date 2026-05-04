@@ -447,14 +447,13 @@ export default function DashboardPage() {
               ) : null}
             </span>
           </div>
-          <div className="header-badges">
-            {totalCount > 0 ? <span className="badge">{totalCount} מודעות במעקב</span> : null}
-            {freshAds.length > 0 ? (
+          {freshAds.length > 0 ? (
+            <div className="header-badges">
               <span className="badge badge-soft">
                 {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
               </span>
-            ) : null}
-          </div>
+            </div>
+          ) : null}
         </div>
         <div className="header-brand">
           <h1 className="brand">
@@ -522,6 +521,7 @@ export default function DashboardPage() {
             }}
             view={view}
             onViewChange={setView}
+            totalCount={totalCount}
           />
 
           <div className="results-count">{filteredAds.length} תוצאות</div>

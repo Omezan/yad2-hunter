@@ -230,6 +230,10 @@ input:focus {
   flex-direction: column;
   gap: var(--space-3);
   align-items: stretch;
+  /* Anchor for the absolutely-positioned brand on desktop so it sits
+   * in the true center of the viewport rather than the center of its
+   * flex slot. */
+  position: relative;
 }
 
 .header-info {
@@ -246,6 +250,23 @@ input:focus {
   text-align: center;
   flex: 1 1 auto;
   min-width: 0;
+}
+
+@media (min-width: 600px) {
+  .header-brand {
+    /* Pulled out of the normal flow so its position no longer depends
+     * on the widths of .header-info / .header-actions — it always
+     * lands on the page's geometric center. transform/translate is
+     * direction-agnostic so the same rule centers the element in both
+     * LTR and RTL. pointer-events:none lets clicks pass through; the
+     * title itself doesn't need them. */
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    flex: 0 0 auto;
+  }
 }
 
 .header-brand h1 {
@@ -475,12 +496,8 @@ input:focus {
 }
 
 .toolbar-search {
-  /* Sits at the inline-end (left in RTL) of the toolbar. The auto
-   * margin combined with the auto margin on the view toggle splits
-   * the leftover space between them — that places the toggle roughly
-   * in the center of the bar and pins the search to the left. */
+  /* Packed against the right side after the toggle/count badge. */
   flex: 0 0 auto;
-  margin-inline-start: auto;
   display: flex;
   width: 200px;
   max-width: 100%;
@@ -492,24 +509,21 @@ input:focus {
   font-size: var(--type-sm);
 }
 
-/* List/map toggle inside the filter bar.
- *   margin-inline-start: auto + the same on .toolbar-search splits
- *   the remaining inline space evenly between the two, which places
- *   the toggle in (roughly) the center of the row. */
+/* List/map toggle and total-count badge inside the filter bar — each
+ * is just another inline element packed in the natural flex order
+ * (right-to-left in RTL). */
 .toolbar-view-toggle {
-  margin-inline-start: auto;
   flex: 0 0 auto;
+}
+
+.toolbar-count-badge {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 @media (max-width: 600px) {
   .toolbar-search {
-    /* On mobile drop the auto-margin so the search wraps to its own
-     * line cleanly and fills the row. */
-    margin-inline-start: 0;
     width: 100%;
-  }
-  .toolbar-view-toggle {
-    margin-inline-start: 0;
   }
 }
 
