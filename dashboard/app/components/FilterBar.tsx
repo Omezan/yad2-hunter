@@ -231,17 +231,6 @@ export default function FilterBar({
         </button>
       </div>
 
-      <div className="toolbar-search">
-        <input
-          id="filter-search"
-          type="search"
-          value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          placeholder="חיפוש: כותרת או עיר"
-          aria-label="חיפוש"
-        />
-      </div>
-
       <div className="toolbar-sort">
         <select
           id="filter-sort"
@@ -466,6 +455,17 @@ export default function FilterBar({
             </div>
           </>
         ) : null}
+      </div>
+
+      <div className="toolbar-search">
+        <input
+          id="filter-search"
+          type="search"
+          value={search}
+          onChange={(e) => onSearchChange(e.target.value)}
+          placeholder="חיפוש"
+          aria-label="חיפוש"
+        />
       </div>
     </div>
   );

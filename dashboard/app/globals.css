@@ -475,14 +475,28 @@ input:focus {
 }
 
 .toolbar-search {
-  flex: 1 1 200px;
-  min-width: 180px;
+  /* Sits at the inline-end (left in RTL) of the toolbar; the auto
+   * margin pushes it away from the dropdown cluster on the right. */
+  flex: 0 0 auto;
+  margin-inline-start: auto;
   display: flex;
+  width: 200px;
+  max-width: 100%;
 }
 
 .toolbar-search input {
   width: 100%;
   min-height: 38px;
+  font-size: var(--type-sm);
+}
+
+@media (max-width: 600px) {
+  .toolbar-search {
+    /* On mobile drop the auto-margin so the search wraps to its own
+     * line cleanly and fills the row. */
+    margin-inline-start: 0;
+    width: 100%;
+  }
 }
 
 .toolbar-sort {
