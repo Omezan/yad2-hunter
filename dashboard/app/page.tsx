@@ -6,7 +6,8 @@ import AdCard from './components/AdCard';
 import FilterBar, {
   type FreshnessFilter,
   type PriceBounds,
-  type SortKey
+  type SortKey,
+  type ViewMode
 } from './components/FilterBar';
 import HealthCheckResultModal from './components/HealthCheckResultModal';
 import ScanResultModal from './components/ScanResultModal';
@@ -17,7 +18,6 @@ const MapView = dynamic(() => import('./components/MapView'), {
   loading: () => <div className="notice notice-loading">טוען מפה…</div>
 });
 
-type ViewMode = 'list' | 'map';
 import { useCompletionWatcher } from './hooks/useCompletionWatcher';
 import { useTriggerWorkflow } from './hooks/useTriggerWorkflow';
 import {
@@ -487,26 +487,6 @@ export default function DashboardPage() {
               סמן הכל כנקרא
             </button>
           ) : null}
-          <div className="view-toggle" role="tablist" aria-label="תצוגה">
-            <button
-              type="button"
-              role="tab"
-              aria-selected={view === 'list'}
-              className={view === 'list' ? 'is-active' : ''}
-              onClick={() => setView('list')}
-            >
-              רשימה
-            </button>
-            <button
-              type="button"
-              role="tab"
-              aria-selected={view === 'map'}
-              className={view === 'map' ? 'is-active' : ''}
-              onClick={() => setView('map')}
-            >
-              מפה
-            </button>
-          </div>
         </div>
       </header>
 
@@ -540,6 +520,8 @@ export default function DashboardPage() {
               setPriceMin(null);
               setPriceMax(null);
             }}
+            view={view}
+            onViewChange={setView}
           />
 
           <div className="results-count">{filteredAds.length} תוצאות</div>

@@ -12,6 +12,7 @@ import { solidPillStyle } from '../lib/district-colors';
 
 export type FreshnessFilter = 'all' | 'new';
 export type SortKey = 'firstSeenDesc' | 'priceAsc' | 'roomsDesc';
+export type ViewMode = 'list' | 'map';
 
 type DistrictOption = {
   value: string;
@@ -44,6 +45,9 @@ type Props = {
   onPriceMinChange: (value: number | null) => void;
   onPriceMaxChange: (value: number | null) => void;
   onPriceReset: () => void;
+  // List/Map view toggle (rendered centered inside the toolbar)
+  view: ViewMode;
+  onViewChange: (value: ViewMode) => void;
 };
 
 function formatShekel(value: number): string {
@@ -105,7 +109,9 @@ export default function FilterBar({
   priceMax,
   onPriceMinChange,
   onPriceMaxChange,
-  onPriceReset
+  onPriceReset,
+  view,
+  onViewChange
 }: Props) {
   const districtPopover = usePopover();
   const pricePopover = usePopover();
@@ -455,6 +461,31 @@ export default function FilterBar({
             </div>
           </>
         ) : null}
+      </div>
+
+      <div
+        className="toolbar-view-toggle view-toggle"
+        role="tablist"
+        aria-label="תצוגה"
+      >
+        <button
+          type="button"
+          role="tab"
+          aria-selected={view === 'list'}
+          className={view === 'list' ? 'is-active' : ''}
+          onClick={() => onViewChange('list')}
+        >
+          רשימה
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={view === 'map'}
+          className={view === 'map' ? 'is-active' : ''}
+          onClick={() => onViewChange('map')}
+        >
+          מפה
+        </button>
       </div>
 
       <div className="toolbar-search">

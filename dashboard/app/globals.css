@@ -475,8 +475,10 @@ input:focus {
 }
 
 .toolbar-search {
-  /* Sits at the inline-end (left in RTL) of the toolbar; the auto
-   * margin pushes it away from the dropdown cluster on the right. */
+  /* Sits at the inline-end (left in RTL) of the toolbar. The auto
+   * margin combined with the auto margin on the view toggle splits
+   * the leftover space between them — that places the toggle roughly
+   * in the center of the bar and pins the search to the left. */
   flex: 0 0 auto;
   margin-inline-start: auto;
   display: flex;
@@ -490,12 +492,24 @@ input:focus {
   font-size: var(--type-sm);
 }
 
+/* List/map toggle inside the filter bar.
+ *   margin-inline-start: auto + the same on .toolbar-search splits
+ *   the remaining inline space evenly between the two, which places
+ *   the toggle in (roughly) the center of the row. */
+.toolbar-view-toggle {
+  margin-inline-start: auto;
+  flex: 0 0 auto;
+}
+
 @media (max-width: 600px) {
   .toolbar-search {
     /* On mobile drop the auto-margin so the search wraps to its own
      * line cleanly and fills the row. */
     margin-inline-start: 0;
     width: 100%;
+  }
+  .toolbar-view-toggle {
+    margin-inline-start: 0;
   }
 }
 
