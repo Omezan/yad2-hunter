@@ -1794,19 +1794,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-05T01:55:15.381Z"
     },
-    "north-and-valleys/o86y3yg9": {
-      "externalId": "north-and-valleys/o86y3yg9",
-      "title": "בית פרטי/ קוטג', שדה נחום",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/o86y3yg9",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 7800,
-      "rooms": 5,
-      "city": "שדה נחום",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-04T23:45:45.325Z"
-    },
     "north-and-valleys/8114grke": {
       "externalId": "north-and-valleys/8114grke",
       "title": "בית פרטי/ קוטג', מנות",
@@ -2443,19 +2430,6 @@
       "city": "עוזה",
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-05T01:55:15.381Z"
-    },
-    "south/97zirvga": {
-      "externalId": "south/97zirvga",
-      "title": "יחידת דיור, קלחים",
-      "link": "https://www.yad2.co.il/realestate/item/south/97zirvga",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4200,
-      "rooms": 4,
-      "city": "קלחים",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-04T23:45:45.325Z"
     },
     "jerusalem-area/edzhmq4u": {
       "externalId": "jerusalem-area/edzhmq4u",
