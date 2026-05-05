@@ -3289,18 +3289,18 @@
       "firstSeenAt": "2026-05-05T17:21:49.778Z",
       "lastSeenAt": "2026-05-05T19:07:59.831Z"
     },
-    "center-and-sharon/7nczo6cy": {
-      "externalId": "center-and-sharon/7nczo6cy",
-      "title": "בית פרטי/ קוטג', בת חפר",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7nczo6cy",
+    "center-and-sharon/a97twg2x": {
+      "externalId": "center-and-sharon/a97twg2x",
+      "title": "בית פרטי/ קוטג', מתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/a97twg2x",
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
       "districtLabel": "מרכז והשרון",
-      "price": 8900,
-      "rooms": 6,
-      "city": "בת חפר",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-05T17:21:49.778Z"
+      "price": null,
+      "rooms": 9,
+      "city": "מתן",
+      "firstSeenAt": "2026-05-05T19:53:20.087Z",
+      "lastSeenAt": "2026-05-05T19:53:20.087Z"
     }
   }
 }
