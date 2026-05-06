@@ -3301,6 +3301,19 @@
       "city": "כפר קיש",
       "firstSeenAt": "2026-05-06T05:23:39.074Z",
       "lastSeenAt": "2026-05-06T07:12:13.358Z"
+    },
+    "center-and-sharon/uq7zfsu9": {
+      "externalId": "center-and-sharon/uq7zfsu9",
+      "title": "בית פרטי/ קוטג', אחיעזר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/uq7zfsu9",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 5,
+      "city": "אחיעזר",
+      "firstSeenAt": "2026-05-06T07:20:06.780Z",
+      "lastSeenAt": "2026-05-06T07:20:06.780Z"
     }
   }
 }
