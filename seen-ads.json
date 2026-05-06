@@ -2977,19 +2977,6 @@
       "firstSeenAt": "2026-05-04T10:25:32.358Z",
       "lastSeenAt": "2026-05-06T19:54:04.101Z"
     },
-    "jerusalem-area/rt87m3ih": {
-      "externalId": "jerusalem-area/rt87m3ih",
-      "title": "בית פרטי/ קוטג', ישעי",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/rt87m3ih",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": null,
-      "rooms": 5.5,
-      "city": "ישעי",
-      "firstSeenAt": "2026-05-04T14:28:57.420Z",
-      "lastSeenAt": "2026-05-06T18:00:25.520Z"
-    },
     "center-and-sharon/f53i476g": {
       "externalId": "center-and-sharon/f53i476g",
       "title": "יחידת דיור, יציץ",
@@ -3224,19 +3211,6 @@
       "firstSeenAt": "2026-05-06T10:29:34.655Z",
       "lastSeenAt": "2026-05-06T19:54:04.101Z"
     },
-    "jerusalem-area/0su2nowb": {
-      "externalId": "jerusalem-area/0su2nowb",
-      "title": "דירה, סנסן, צור הדסה",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/0su2nowb",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 7455,
-      "rooms": 4,
-      "city": "צור הדסה",
-      "firstSeenAt": "2026-05-06T10:58:50.430Z",
-      "lastSeenAt": "2026-05-06T18:00:25.520Z"
-    },
     "north-and-valleys/ovl2wbwl": {
       "externalId": "north-and-valleys/ovl2wbwl",
       "title": "בית פרטי/ קוטג', חד נס",
@@ -3288,45 +3262,6 @@
       "city": "כמון",
       "firstSeenAt": "2026-05-06T14:43:54.015Z",
       "lastSeenAt": "2026-05-06T19:54:04.101Z"
-    },
-    "jerusalem-area/ggnzql9j": {
-      "externalId": "jerusalem-area/ggnzql9j",
-      "title": "בית פרטי/ קוטג', לוזית",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/ggnzql9j",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 7700,
-      "rooms": 5,
-      "city": "לוזית",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T16:00:51.314Z"
-    },
-    "jerusalem-area/30eu4xqn": {
-      "externalId": "jerusalem-area/30eu4xqn",
-      "title": "דירה, אורה",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/30eu4xqn",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 8900,
-      "rooms": 4,
-      "city": "אורה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T16:00:51.314Z"
-    },
-    "jerusalem-area/5m60p83u": {
-      "externalId": "jerusalem-area/5m60p83u",
-      "title": "בית פרטי/ קוטג', כסלון",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/5m60p83u",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 6000,
-      "rooms": 4,
-      "city": "כסלון",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T16:00:51.314Z"
     },
     "north-and-valleys/mowjeumi": {
       "externalId": "north-and-valleys/mowjeumi",
