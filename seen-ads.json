@@ -3055,19 +3055,6 @@
       "firstSeenAt": "2026-05-04T06:53:50.061Z",
       "lastSeenAt": "2026-05-06T08:45:18.185Z"
     },
-    "north-and-valleys/icvhu4zp": {
-      "externalId": "north-and-valleys/icvhu4zp",
-      "title": "בית פרטי/ קוטג', גבעת אלה",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/icvhu4zp",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 6000,
-      "rooms": 4,
-      "city": "גבעת אלה",
-      "firstSeenAt": "2026-05-04T06:53:50.061Z",
-      "lastSeenAt": "2026-05-06T08:09:19.674Z"
-    },
     "center-and-sharon/ea3j2b4l": {
       "externalId": "center-and-sharon/ea3j2b4l",
       "title": "בית פרטי/ קוטג', בצרה",
@@ -3314,6 +3301,19 @@
       "city": "בית השיטה",
       "firstSeenAt": "2026-05-06T08:09:19.674Z",
       "lastSeenAt": "2026-05-06T08:09:19.674Z"
+    },
+    "north-and-valleys/xr4axom0": {
+      "externalId": "north-and-valleys/xr4axom0",
+      "title": "בית פרטי/ קוטג', שורשים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xr4axom0",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8400,
+      "rooms": 6,
+      "city": "שורשים",
+      "firstSeenAt": "2026-05-06T10:29:34.655Z",
+      "lastSeenAt": "2026-05-06T10:29:34.655Z"
     }
   }
 }
