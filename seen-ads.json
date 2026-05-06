@@ -1560,19 +1560,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-06T07:12:13.358Z"
     },
-    "north-and-valleys/bcg1xo72": {
-      "externalId": "north-and-valleys/bcg1xo72",
-      "title": "דירת גן, חוסן",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/bcg1xo72",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4000,
-      "rooms": 4,
-      "city": "חוסן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T07:12:13.358Z"
-    },
     "north-and-valleys/4fhm8tbz": {
       "externalId": "north-and-valleys/4fhm8tbz",
       "title": "בית פרטי/ קוטג', בית אלפא",
@@ -3107,19 +3094,6 @@
       "firstSeenAt": "2026-05-04T14:28:57.420Z",
       "lastSeenAt": "2026-05-06T07:12:13.358Z"
     },
-    "center-and-sharon/mach5pga": {
-      "externalId": "center-and-sharon/mach5pga",
-      "title": "בית פרטי/ קוטג', חיבת ציון",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/mach5pga",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 7,
-      "city": "חיבת ציון",
-      "firstSeenAt": "2026-05-04T14:28:57.420Z",
-      "lastSeenAt": "2026-05-06T01:53:54.424Z"
-    },
     "center-and-sharon/f53i476g": {
       "externalId": "center-and-sharon/f53i476g",
       "title": "יחידת דיור, יציץ",
@@ -3314,6 +3288,19 @@
       "city": "אחיעזר",
       "firstSeenAt": "2026-05-06T07:20:06.780Z",
       "lastSeenAt": "2026-05-06T07:20:06.780Z"
+    },
+    "south/brfkrhr5": {
+      "externalId": "south/brfkrhr5",
+      "title": "דירה, ביצרון",
+      "link": "https://www.yad2.co.il/realestate/item/south/brfkrhr5",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 7500,
+      "rooms": 4,
+      "city": "ביצרון",
+      "firstSeenAt": "2026-05-06T07:36:29.876Z",
+      "lastSeenAt": "2026-05-06T07:36:29.876Z"
     }
   }
 }
