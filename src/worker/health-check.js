@@ -1,7 +1,10 @@
 const { spawnSync } = require('child_process');
 const path = require('path');
 const { env } = require('../config/env');
-const { getEnabledSearches } = require('../config/searches');
+const {
+  buildFilterLimitsMap,
+  getEnabledSearches
+} = require('../config/searches');
 const {
   ensureStateDir,
   loadSeenAds,
@@ -207,13 +210,57 @@ function adRecordFromEnriched(enriched, { searchId, label, generatedAt }) {
   };
 }
 
+// Decide whether a live but feed-missing ad still satisfies the
+// search's URL filters (maxPrice, minRooms). We prefer the values
+// the live probe just observed; if those are missing we fall back
+// to whatever we stored in seen at admission time. Returns either:
+//   { kind: 'pass' }                                  → keep as unresolved-extra
+//   { kind: 'fail', reason: 'price raised to ...', ... } → retire it
+function evaluateExtraAgainstFilters({ probe, record, limits }) {
+  if (!limits) return { kind: 'pass' };
+
+  const probePrice = probe && typeof probe.price === 'number' ? probe.price : null;
+  const probeRooms = probe && typeof probe.rooms === 'number' ? probe.rooms : null;
+  const seenPrice = record && typeof record.price === 'number' ? record.price : null;
+  const seenRooms = record && typeof record.rooms === 'number' ? record.rooms : null;
+
+  const effectivePrice = probePrice ?? seenPrice;
+  const effectiveRooms = probeRooms ?? seenRooms;
+
+  if (
+    typeof limits.maxPrice === 'number' &&
+    typeof effectivePrice === 'number' &&
+    effectivePrice > limits.maxPrice
+  ) {
+    const formatted = effectivePrice.toLocaleString('he-IL');
+    const cap = limits.maxPrice.toLocaleString('he-IL');
+    return {
+      kind: 'fail',
+      reason: `המחיר עודכן ל-${formatted} ₪ (מעבר לתקרה ${cap} ₪) — הוסרה`
+    };
+  }
+  if (
+    typeof limits.minRooms === 'number' &&
+    typeof effectiveRooms === 'number' &&
+    effectiveRooms < limits.minRooms
+  ) {
+    return {
+      kind: 'fail',
+      reason: `מספר החדרים עודכן ל-${effectiveRooms} (מתחת ל-${limits.minRooms}) — הוסרה`
+    };
+  }
+
+  return { kind: 'pass' };
+}
+
 function reconcileSeen({
   rows,
   seen,
   extraClassification,
   missingClassification,
   generatedAt,
-  searchById
+  searchById,
+  filterLimitsBySearchId = new Map()
 }) {
   const updatedSeen = { ...seen, ads: { ...(seen.ads || {}) } };
   const additions = [];
@@ -241,17 +288,40 @@ function reconcileSeen({
           searchId: row.searchId,
           reason: probe.reason || 'הוסרה מ-Yad2'
         });
-      } else {
-        unresolvedExtras.push({
-          externalId,
-          link,
-          searchId: row.searchId,
-          status: probe ? probe.status : 'unknown',
-          reason:
-            (probe && probe.reason) ||
-            'לא נמצאה ב-Yad2 בסריקה האחרונה — נשמרת בינתיים, נבדק שוב בריצה הבאה'
-        });
+        continue;
       }
+
+      // The listing is alive (or undecided). Before parking it in
+      // unresolved-extras we check whether it still satisfies the
+      // search's filters — an ad whose price was raised above
+      // maxPrice will keep showing up here forever otherwise, even
+      // though it should clearly be retired.
+      if (probe && probe.status === 'live') {
+        const limits = filterLimitsBySearchId.get(row.searchId) || null;
+        const verdict = evaluateExtraAgainstFilters({ probe, record, limits });
+        if (verdict.kind === 'fail') {
+          delete updatedSeen.ads[externalId];
+          removals.push({
+            externalId,
+            link,
+            searchId: row.searchId,
+            reason: verdict.reason
+          });
+          continue;
+        }
+      }
+
+      unresolvedExtras.push({
+        externalId,
+        link,
+        searchId: row.searchId,
+        status: probe ? probe.status : 'unknown',
+        reason:
+          (probe && probe.reason) ||
+          (probe && probe.status === 'live'
+            ? 'קיימת ב-Yad2 (לינק עובד) אך לא הופיעה בסריקת המחוז — נשמרת ונבדק שוב'
+            : 'לא נמצאה ב-Yad2 בסריקה האחרונה — נשמרת בינתיים, נבדק שוב בריצה הבאה')
+      });
     }
 
     const rowMissing = Array.isArray(row.missingIds) ? row.missingIds : [];
@@ -329,6 +399,7 @@ async function runHealthCheck() {
 
   const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
   const searchById = new Map(searches.map((s) => [s.id, s]));
+  const filterLimitsBySearchId = buildFilterLimitsMap(searches);
   const scrapeResult = await scrapeAllSearches({
     searches,
     headless: env.PLAYWRIGHT_HEADLESS,
@@ -439,7 +510,8 @@ async function runHealthCheck() {
     extraClassification,
     missingClassification,
     generatedAt,
-    searchById
+    searchById,
+    filterLimitsBySearchId
   });
 
   // Save the reconciled seen-set locally. The actual push to the `state`
@@ -596,6 +668,7 @@ if (require.main === module) {
 
 module.exports = {
   buildExpectedBySearchId,
+  evaluateExtraAgainstFilters,
   reconcileSeen,
   runHealthCheck
 };

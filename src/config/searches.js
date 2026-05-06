@@ -55,7 +55,40 @@ function getEnabledSearches(enabledIds = '') {
   return ALL_SEARCHES.filter((search) => enabledSet.has(search.id));
 }
 
+// Pulls the price/room ceiling-and-floor encoded in the search URL,
+// so other components (e.g. the health-check relevance filter) can
+// reuse the exact same constraints we sent to Yad2 — no risk of two
+// places drifting out of sync.
+function getFilterLimits(search) {
+  if (!search || typeof search.url !== 'string') return null;
+  let parsed;
+  try {
+    parsed = new URL(search.url);
+  } catch {
+    return null;
+  }
+  const maxPriceRaw = parsed.searchParams.get('maxPrice');
+  const minRoomsRaw = parsed.searchParams.get('minRooms');
+  const maxPrice = maxPriceRaw != null ? Number.parseFloat(maxPriceRaw) : null;
+  const minRooms = minRoomsRaw != null ? Number.parseFloat(minRoomsRaw) : null;
+  return {
+    maxPrice: Number.isFinite(maxPrice) ? maxPrice : null,
+    minRooms: Number.isFinite(minRooms) ? minRooms : null
+  };
+}
+
+function buildFilterLimitsMap(searches = ALL_SEARCHES) {
+  const map = new Map();
+  for (const search of searches) {
+    if (!search || !search.id) continue;
+    map.set(search.id, getFilterLimits(search));
+  }
+  return map;
+}
+
 module.exports = {
   ALL_SEARCHES,
-  getEnabledSearches
+  getEnabledSearches,
+  getFilterLimits,
+  buildFilterLimitsMap
 };

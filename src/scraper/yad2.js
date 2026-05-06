@@ -1476,7 +1476,22 @@ async function probeListingsPresence({
       return { url, status: 'error', reason: 'page body too short', httpStatus };
     }
 
-    return { url, status: 'live', reason: null, httpStatus };
+    // Live page — also pull the listing's current price/rooms so the
+    // health-check can decide whether the ad still satisfies the
+    // search filters (e.g. price was raised above maxPrice). The
+    // bodyText is what the user sees on the listing, so the same
+    // parsers we use elsewhere apply directly.
+    const livePrice = parsePrice(bodyText);
+    const liveRooms = parseRooms(bodyText);
+
+    return {
+      url,
+      status: 'live',
+      reason: null,
+      httpStatus,
+      price: typeof livePrice === 'number' ? livePrice : null,
+      rooms: typeof liveRooms === 'number' ? liveRooms : null
+    };
   }
 
   async function worker(page) {

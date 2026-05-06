@@ -686,6 +686,183 @@ test('reconcileSeen does not admit a missing ad whose enrichment failed (transie
   assert.equal(result.unresolvedMissing.length, 1);
 });
 
+test('reconcileSeen retires a live extra whose price was raised above maxPrice', () => {
+  const inputs = makeReconcileInputs({
+    seen: {
+      ads: {
+        'south/REMOVED': {
+          externalId: 'south/REMOVED',
+          searchId: 'south',
+          link: 'https://www.yad2.co.il/realestate/item/south/REMOVED',
+          firstSeenAt: '2026-04-28T10:00:00Z',
+          lastSeenAt: '2026-04-28T10:00:00Z',
+          price: 8500,
+          rooms: 5
+        }
+      }
+    },
+    rows: [
+      {
+        searchId: 'south',
+        label: 'דרום',
+        missingIds: [],
+        extraIds: ['south/REMOVED'],
+        scrapedIds: []
+      }
+    ],
+    extraClassification: new Map([
+      [
+        'https://www.yad2.co.il/realestate/item/south/REMOVED',
+        { status: 'live', reason: null, price: 15000, rooms: 5 }
+      ]
+    ]),
+    missingClassification: new Map()
+  });
+  const result = reconcileSeen({
+    ...inputs,
+    filterLimitsBySearchId: new Map([
+      ['south', { maxPrice: 9000, minRooms: 4 }]
+    ])
+  });
+  assert.equal(result.removals.length, 1, 'price-bumped ad should be retired');
+  assert.equal(result.removals[0].externalId, 'south/REMOVED');
+  assert.match(result.removals[0].reason, /15,000.*9,000/);
+  assert.equal(result.unresolvedExtras.length, 0);
+  assert.equal(result.updatedSeen.ads['south/REMOVED'], undefined);
+});
+
+test('reconcileSeen retires a live extra whose room count fell below minRooms', () => {
+  const inputs = makeReconcileInputs({
+    seen: {
+      ads: {
+        'south/REMOVED': {
+          externalId: 'south/REMOVED',
+          searchId: 'south',
+          link: 'https://www.yad2.co.il/realestate/item/south/REMOVED',
+          firstSeenAt: '2026-04-28T10:00:00Z',
+          lastSeenAt: '2026-04-28T10:00:00Z',
+          price: 7000,
+          rooms: 4
+        }
+      }
+    },
+    rows: [
+      {
+        searchId: 'south',
+        label: 'דרום',
+        missingIds: [],
+        extraIds: ['south/REMOVED'],
+        scrapedIds: []
+      }
+    ],
+    extraClassification: new Map([
+      [
+        'https://www.yad2.co.il/realestate/item/south/REMOVED',
+        { status: 'live', reason: null, price: 7000, rooms: 3 }
+      ]
+    ]),
+    missingClassification: new Map()
+  });
+  const result = reconcileSeen({
+    ...inputs,
+    filterLimitsBySearchId: new Map([
+      ['south', { maxPrice: 9000, minRooms: 4 }]
+    ])
+  });
+  assert.equal(result.removals.length, 1);
+  assert.match(result.removals[0].reason, /החדרים.*3.*4/);
+  assert.equal(result.updatedSeen.ads['south/REMOVED'], undefined);
+});
+
+test('reconcileSeen does NOT retire a live extra whose price/rooms are still within range', () => {
+  const inputs = makeReconcileInputs({
+    seen: {
+      ads: {
+        'south/STILL_OK': {
+          externalId: 'south/STILL_OK',
+          searchId: 'south',
+          link: 'https://www.yad2.co.il/realestate/item/south/STILL_OK',
+          firstSeenAt: '2026-04-28T10:00:00Z',
+          lastSeenAt: '2026-04-28T10:00:00Z',
+          price: 7000,
+          rooms: 5
+        }
+      }
+    },
+    rows: [
+      {
+        searchId: 'south',
+        label: 'דרום',
+        missingIds: [],
+        extraIds: ['south/STILL_OK'],
+        scrapedIds: []
+      }
+    ],
+    extraClassification: new Map([
+      [
+        'https://www.yad2.co.il/realestate/item/south/STILL_OK',
+        { status: 'live', reason: null, price: 7500, rooms: 5 }
+      ]
+    ]),
+    missingClassification: new Map()
+  });
+  const result = reconcileSeen({
+    ...inputs,
+    filterLimitsBySearchId: new Map([
+      ['south', { maxPrice: 9000, minRooms: 4 }]
+    ])
+  });
+  assert.equal(result.removals.length, 0);
+  assert.equal(result.unresolvedExtras.length, 1);
+  assert.equal(result.unresolvedExtras[0].status, 'live');
+  assert.ok(result.updatedSeen.ads['south/STILL_OK']);
+});
+
+test('reconcileSeen falls back to seen-stored price when probe price is missing', () => {
+  // Simulates a live probe whose page parser couldn't extract a number
+  // (e.g. price hidden behind "פנה לבעל המודעה"). We should rely on
+  // the value we stored at admission time rather than guessing.
+  const inputs = makeReconcileInputs({
+    seen: {
+      ads: {
+        'south/SEEN_OOR': {
+          externalId: 'south/SEEN_OOR',
+          searchId: 'south',
+          link: 'https://www.yad2.co.il/realestate/item/south/SEEN_OOR',
+          firstSeenAt: '2026-04-28T10:00:00Z',
+          lastSeenAt: '2026-04-28T10:00:00Z',
+          price: 12000,
+          rooms: 5
+        }
+      }
+    },
+    rows: [
+      {
+        searchId: 'south',
+        label: 'דרום',
+        missingIds: [],
+        extraIds: ['south/SEEN_OOR'],
+        scrapedIds: []
+      }
+    ],
+    extraClassification: new Map([
+      [
+        'https://www.yad2.co.il/realestate/item/south/SEEN_OOR',
+        { status: 'live', reason: null, price: null, rooms: null }
+      ]
+    ]),
+    missingClassification: new Map()
+  });
+  const result = reconcileSeen({
+    ...inputs,
+    filterLimitsBySearchId: new Map([
+      ['south', { maxPrice: 9000, minRooms: 4 }]
+    ])
+  });
+  assert.equal(result.removals.length, 1);
+  assert.match(result.removals[0].reason, /12,000.*9,000/);
+});
+
 // -----------------------------------------------------------------------------
 // formatReconciliationLine + formatHealthCheckMessage (Telegram with reasons)
 // -----------------------------------------------------------------------------
