@@ -1,18 +1,5 @@
 {
   "ads": {
-    "jerusalem-area/tx7ibi28": {
-      "externalId": "jerusalem-area/tx7ibi28",
-      "title": "דירת גן, נחושה",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/tx7ibi28",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 6500,
-      "rooms": 4,
-      "city": "נחושה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T11:28:37.825Z"
-    },
     "jerusalem-area/ggnzql9j": {
       "externalId": "jerusalem-area/ggnzql9j",
       "title": "בית פרטי/ קוטג', לוזית",
@@ -1755,19 +1742,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-06T12:26:41.972Z"
     },
-    "north-and-valleys/q10lxquw": {
-      "externalId": "north-and-valleys/q10lxquw",
-      "title": "בית פרטי/ קוטג', חוסן",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/q10lxquw",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5200,
-      "rooms": 4.5,
-      "city": "חוסן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-06T11:28:37.825Z"
-    },
     "north-and-valleys/e9r8qh6u": {
       "externalId": "north-and-valleys/e9r8qh6u",
       "title": "בית פרטי/ קוטג', לוטם",
@@ -2418,19 +2392,6 @@
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-06T12:26:41.972Z"
     },
-    "south/digs9vbt": {
-      "externalId": "south/digs9vbt",
-      "title": "דירה, ניר גלים",
-      "link": "https://www.yad2.co.il/realestate/item/south/digs9vbt",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 6000,
-      "rooms": 4,
-      "city": "ניר גלים",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-06T12:26:41.972Z"
-    },
     "south/nrqzg7es": {
       "externalId": "south/nrqzg7es",
       "title": "בית פרטי/ קוטג', עין תמר",
@@ -2820,19 +2781,6 @@
       "city": "פקיעין חדשה",
       "firstSeenAt": "2026-05-02T09:56:43.034Z",
       "lastSeenAt": "2026-05-06T12:26:41.972Z"
-    },
-    "north-and-valleys/z2ban5jl": {
-      "externalId": "north-and-valleys/z2ban5jl",
-      "title": "בית פרטי/ קוטג', מגן שאול",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/z2ban5jl",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4800,
-      "rooms": 4,
-      "city": "מגן שאול",
-      "firstSeenAt": "2026-05-02T15:05:40.653Z",
-      "lastSeenAt": "2026-05-06T11:28:37.825Z"
     },
     "coastal-north/s2eo3cha": {
       "externalId": "coastal-north/s2eo3cha",
@@ -3340,6 +3288,45 @@
       "city": "חד נס",
       "firstSeenAt": "2026-05-06T12:26:41.972Z",
       "lastSeenAt": "2026-05-06T12:26:41.972Z"
+    },
+    "center-and-sharon/65jxlxj1": {
+      "externalId": "center-and-sharon/65jxlxj1",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/65jxlxj1",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5800,
+      "rooms": 5.5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-05-06T14:43:54.015Z",
+      "lastSeenAt": "2026-05-06T14:43:54.015Z"
+    },
+    "center-and-sharon/p3bjicas": {
+      "externalId": "center-and-sharon/p3bjicas",
+      "title": "בית פרטי/ קוטג', עזריה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p3bjicas",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 6,
+      "city": "עזריה",
+      "firstSeenAt": "2026-05-06T14:43:54.015Z",
+      "lastSeenAt": "2026-05-06T14:43:54.015Z"
+    },
+    "north-and-valleys/1x7kga13": {
+      "externalId": "north-and-valleys/1x7kga13",
+      "title": "בית פרטי/ קוטג', כמון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/1x7kga13",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4,
+      "city": "כמון",
+      "firstSeenAt": "2026-05-06T14:43:54.015Z",
+      "lastSeenAt": "2026-05-06T14:43:54.015Z"
     }
   }
 }
