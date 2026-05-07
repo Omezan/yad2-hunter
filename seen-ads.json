@@ -2093,19 +2093,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-07T13:30:15.463Z"
     },
-    "north-and-valleys/4jvtsyxz": {
-      "externalId": "north-and-valleys/4jvtsyxz",
-      "title": "בית פרטי/ קוטג', לבנים",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/4jvtsyxz",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5900,
-      "rooms": 6,
-      "city": "לבנים",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T11:03:22.106Z"
-    },
     "center-and-sharon/gi70o0rk": {
       "externalId": "center-and-sharon/gi70o0rk",
       "title": "בית פרטי/ קוטג', חגלה",
@@ -2157,19 +2144,6 @@
       "city": "משמר הירדן",
       "firstSeenAt": "2026-04-28T12:20:21.026Z",
       "lastSeenAt": "2026-05-07T13:30:15.463Z"
-    },
-    "center-and-sharon/7v66uc4w": {
-      "externalId": "center-and-sharon/7v66uc4w",
-      "title": "דירת גן, משמר השבעה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7v66uc4w",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 9000,
-      "rooms": 4.5,
-      "city": "משמר השבעה",
-      "firstSeenAt": "2026-04-28T13:18:14.859Z",
-      "lastSeenAt": "2026-05-07T11:03:22.106Z"
     },
     "north-and-valleys/dm681wk4": {
       "externalId": "north-and-valleys/dm681wk4",
@@ -3327,6 +3301,32 @@
       "city": "ביכורה",
       "firstSeenAt": "2026-05-07T13:30:15.463Z",
       "lastSeenAt": "2026-05-07T13:30:15.463Z"
+    },
+    "center-and-sharon/d9n71epb": {
+      "externalId": "center-and-sharon/d9n71epb",
+      "title": "בית פרטי/ קוטג', פדיה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/d9n71epb",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9000,
+      "rooms": 4.5,
+      "city": "פדיה",
+      "firstSeenAt": "2026-05-07T14:47:36.009Z",
+      "lastSeenAt": "2026-05-07T14:47:36.009Z"
+    },
+    "north-and-valleys/zk8ovsro": {
+      "externalId": "north-and-valleys/zk8ovsro",
+      "title": "דו משפחתי, מגן שאול",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/zk8ovsro",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4400,
+      "rooms": 5,
+      "city": "מגן שאול",
+      "firstSeenAt": "2026-05-07T14:47:36.009Z",
+      "lastSeenAt": "2026-05-07T14:47:36.009Z"
     }
   }
 }
