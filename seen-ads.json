@@ -3288,6 +3288,19 @@
       "city": "אחוזת ברק",
       "firstSeenAt": "2026-05-07T06:51:04.132Z",
       "lastSeenAt": "2026-05-07T08:17:27.759Z"
+    },
+    "north-and-valleys/f01mq9yc": {
+      "externalId": "north-and-valleys/f01mq9yc",
+      "title": "בית פרטי/ קוטג', גבעת יואב",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/f01mq9yc",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7200,
+      "rooms": 5,
+      "city": "גבעת יואב",
+      "firstSeenAt": "2026-05-07T10:36:12.699Z",
+      "lastSeenAt": "2026-05-07T10:36:12.699Z"
     }
   }
 }
