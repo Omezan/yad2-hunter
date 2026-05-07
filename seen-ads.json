@@ -3263,19 +3263,6 @@
       "firstSeenAt": "2026-05-07T10:36:12.699Z",
       "lastSeenAt": "2026-05-07T19:28:05.393Z"
     },
-    "center-and-sharon/seffxdvp": {
-      "externalId": "center-and-sharon/seffxdvp",
-      "title": "בית פרטי/ קוטג', כרמי יוסף",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/seffxdvp",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 5.5,
-      "city": "כרמי יוסף",
-      "firstSeenAt": "2026-05-07T11:03:22.106Z",
-      "lastSeenAt": "2026-05-07T17:52:37.881Z"
-    },
     "north-and-valleys/6u2b5rut": {
       "externalId": "north-and-valleys/6u2b5rut",
       "title": "בית פרטי/ קוטג', ביכורה",
@@ -3314,19 +3301,6 @@
       "city": "מגן שאול",
       "firstSeenAt": "2026-05-07T14:47:36.009Z",
       "lastSeenAt": "2026-05-07T19:28:05.393Z"
-    },
-    "south/2bnlasxd": {
-      "externalId": "south/2bnlasxd",
-      "title": "בית פרטי/ קוטג', עזריקם",
-      "link": "https://www.yad2.co.il/realestate/item/south/2bnlasxd",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 6100,
-      "rooms": 4.5,
-      "city": "עזריקם",
-      "firstSeenAt": "2026-05-04T17:19:16.326Z",
-      "lastSeenAt": "2026-05-07T13:30:15.463Z"
     },
     "south/2e2onarg": {
       "externalId": "south/2e2onarg",
