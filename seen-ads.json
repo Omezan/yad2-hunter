@@ -11,7 +11,7 @@
       "rooms": 5.5,
       "city": "שדות מיכה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/lek4shtw": {
       "externalId": "jerusalem-area/lek4shtw",
@@ -24,7 +24,7 @@
       "rooms": 4,
       "city": "שואבה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/v6jano1v": {
       "externalId": "jerusalem-area/v6jano1v",
@@ -37,7 +37,7 @@
       "rooms": 7,
       "city": "נווה מיכאל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/42cmt6di": {
       "externalId": "jerusalem-area/42cmt6di",
@@ -50,7 +50,7 @@
       "rooms": 4,
       "city": "בית זית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/d1xcv84h": {
       "externalId": "jerusalem-area/d1xcv84h",
@@ -63,7 +63,7 @@
       "rooms": 4,
       "city": "עמינדב",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "center-and-sharon/8kqo7kil": {
       "externalId": "center-and-sharon/8kqo7kil",
@@ -2221,7 +2221,7 @@
       "rooms": 4,
       "city": "מוצא עילית",
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "south/ev72y34d": {
       "externalId": "south/ev72y34d",
@@ -2429,7 +2429,7 @@
       "rooms": 4.5,
       "city": "צפרירים",
       "firstSeenAt": "2026-04-30T05:30:48.804Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "center-and-sharon/f7ym9xu4": {
       "externalId": "center-and-sharon/f7ym9xu4",
@@ -2806,7 +2806,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/8udbxrm5": {
       "externalId": "jerusalem-area/8udbxrm5",
@@ -2819,7 +2819,7 @@
       "rooms": 6,
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "north-and-valleys/normtgby": {
       "externalId": "north-and-valleys/normtgby",
@@ -2897,7 +2897,7 @@
       "rooms": 6,
       "city": "לוזית",
       "firstSeenAt": "2026-05-04T06:03:58.184Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "jerusalem-area/ibzrhexz": {
       "externalId": "jerusalem-area/ibzrhexz",
@@ -2910,7 +2910,7 @@
       "rooms": 6,
       "city": "גבעות עדן",
       "firstSeenAt": "2026-05-04T06:53:50.061Z",
-      "lastSeenAt": "2026-05-07T20:59:49.616Z"
+      "lastSeenAt": "2026-05-07T21:35:46.343Z"
     },
     "center-and-sharon/ea3j2b4l": {
       "externalId": "center-and-sharon/ea3j2b4l",
@@ -3327,6 +3327,32 @@
       "city": "שדה נחום",
       "firstSeenAt": "2026-05-07T21:16:30.274Z",
       "lastSeenAt": "2026-05-07T21:16:30.274Z"
+    },
+    "center-and-sharon/seffxdvp": {
+      "externalId": "center-and-sharon/seffxdvp",
+      "title": "בית פרטי/ קוטג', כרמי יוסף",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/seffxdvp",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 5.5,
+      "city": "כרמי יוסף",
+      "firstSeenAt": "2026-05-07T11:03:22.106Z",
+      "lastSeenAt": "2026-05-07T17:52:37.881Z"
+    },
+    "south/2bnlasxd": {
+      "externalId": "south/2bnlasxd",
+      "title": "בית פרטי/ קוטג', עזריקם",
+      "link": "https://www.yad2.co.il/realestate/item/south/2bnlasxd",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 6100,
+      "rooms": 4.5,
+      "city": "עזריקם",
+      "firstSeenAt": "2026-05-04T17:19:16.326Z",
+      "lastSeenAt": "2026-05-07T13:30:15.463Z"
     }
   }
 }
