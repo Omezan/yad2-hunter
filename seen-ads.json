@@ -3211,19 +3211,6 @@
       "firstSeenAt": "2026-05-06T14:43:54.015Z",
       "lastSeenAt": "2026-05-07T05:26:20.408Z"
     },
-    "center-and-sharon/p3bjicas": {
-      "externalId": "center-and-sharon/p3bjicas",
-      "title": "בית פרטי/ קוטג', עזריה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p3bjicas",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 8500,
-      "rooms": 6,
-      "city": "עזריה",
-      "firstSeenAt": "2026-05-06T14:43:54.015Z",
-      "lastSeenAt": "2026-05-07T05:26:20.408Z"
-    },
     "north-and-valleys/1x7kga13": {
       "externalId": "north-and-valleys/1x7kga13",
       "title": "בית פרטי/ קוטג', כמון",
@@ -3288,6 +3275,19 @@
       "city": "אבן מנחם",
       "firstSeenAt": "2026-05-07T05:26:20.408Z",
       "lastSeenAt": "2026-05-07T05:26:20.408Z"
+    },
+    "north-and-valleys/vic24njp": {
+      "externalId": "north-and-valleys/vic24njp",
+      "title": "דו משפחתי, אחוזת ברק",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/vic24njp",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5800,
+      "rooms": 4,
+      "city": "אחוזת ברק",
+      "firstSeenAt": "2026-05-07T06:51:04.132Z",
+      "lastSeenAt": "2026-05-07T06:51:04.132Z"
     }
   }
 }
