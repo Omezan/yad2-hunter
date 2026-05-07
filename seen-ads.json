@@ -3315,31 +3315,18 @@
       "firstSeenAt": "2026-05-07T19:19:16.541Z",
       "lastSeenAt": "2026-05-07T20:59:49.616Z"
     },
-    "center-and-sharon/seffxdvp": {
-      "externalId": "center-and-sharon/seffxdvp",
-      "title": "בית פרטי/ קוטג', כרמי יוסף",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/seffxdvp",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 5.5,
-      "city": "כרמי יוסף",
-      "firstSeenAt": "2026-05-07T11:03:22.106Z",
-      "lastSeenAt": "2026-05-07T17:52:37.881Z"
-    },
-    "south/2bnlasxd": {
-      "externalId": "south/2bnlasxd",
-      "title": "בית פרטי/ קוטג', עזריקם",
-      "link": "https://www.yad2.co.il/realestate/item/south/2bnlasxd",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 6100,
-      "rooms": 4.5,
-      "city": "עזריקם",
-      "firstSeenAt": "2026-05-04T17:19:16.326Z",
-      "lastSeenAt": "2026-05-07T13:30:15.463Z"
+    "north-and-valleys/o86y3yg9": {
+      "externalId": "north-and-valleys/o86y3yg9",
+      "title": "בית פרטי/ קוטג', שדה נחום",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/o86y3yg9",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7800,
+      "rooms": 5,
+      "city": "שדה נחום",
+      "firstSeenAt": "2026-05-07T21:16:30.274Z",
+      "lastSeenAt": "2026-05-07T21:16:30.274Z"
     }
   }
 }
