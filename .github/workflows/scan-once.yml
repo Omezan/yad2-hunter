@@ -5,6 +5,15 @@ name: Yad2 Scan (Once)
 # queue behind the hourly looping `scan` workflow.
 on:
   workflow_dispatch:
+    inputs:
+      search_ids:
+        description: >-
+          Comma-separated subset of search ids to scan. Empty = scan
+          all configured searches. Districts listed here also bypass
+          the Telegram suppression list (e.g. allows pinging on
+          north-valleys when the user explicitly asks for it).
+        required: false
+        default: ""
 
 concurrency:
   group: yad2-scan-once
@@ -56,6 +65,11 @@ jobs:
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+          # Empty = scan everything; otherwise a comma-separated list
+          # of search ids the user picked from the dashboard popover.
+          # Also acts as the "explicitly requested" override for the
+          # Telegram suppression list.
+          ENABLED_SEARCH_IDS: ${{ inputs.search_ids }}
           # Marks this run as a manual dashboard trigger so the worker
           # sends a Telegram message even when zero new ads are found.
           SCAN_TRIGGER_LABEL: manual-dashboard

@@ -7,9 +7,11 @@ import FilterBar, {
   type FreshnessFilter,
   type PriceBounds,
   type SortKey,
+  type TimeWindow,
   type ViewMode
 } from './components/FilterBar';
 import HealthCheckResultModal from './components/HealthCheckResultModal';
+import ScanPicker from './components/ScanPicker';
 import ScanResultModal from './components/ScanResultModal';
 
 // Leaflet uses window/document on import — must be client-only.
@@ -62,6 +64,7 @@ export default function DashboardPage() {
   const [searchParamSince, setSearchParamSince] = useState<string | null>(null);
   const [lastVisitAt, setLastVisitAt] = useState<string | null>(null);
   const [freshness, setFreshness] = useState<FreshnessFilter>('all');
+  const [timeWindow, setTimeWindow] = useState<TimeWindow>('all');
   const [priceMin, setPriceMin] = useState<number | null>(null);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [view, setView] = useState<ViewMode>('list');
@@ -192,6 +195,16 @@ export default function DashboardPage() {
     }
   }, [priceBounds, priceMin, priceMax]);
 
+  // Pre-compute the lower bound for the "time since first-seen" window,
+  // so each ad only does a single Date.parse + numeric compare.
+  const timeWindowSinceMs = useMemo(() => {
+    if (timeWindow === 'all') return null;
+    const DAY = 24 * 60 * 60 * 1000;
+    const span =
+      timeWindow === '24h' ? DAY : timeWindow === '7d' ? 7 * DAY : 30 * DAY;
+    return now - span;
+  }, [timeWindow, now]);
+
   const filteredAds = useMemo(() => {
     const lowerSearch = search.trim().toLowerCase();
     const effectiveMin = priceMin;
@@ -199,6 +212,10 @@ export default function DashboardPage() {
     let result = ads.filter((ad) => {
       if (freshness === 'new' && !isAdFresh(ad.firstSeenAt, effectiveSince)) {
         return false;
+      }
+      if (timeWindowSinceMs !== null) {
+        const ts = Date.parse(ad.firstSeenAt);
+        if (Number.isNaN(ts) || ts < timeWindowSinceMs) return false;
       }
       if (selectedDistricts.size > 0 && !selectedDistricts.has(ad.searchId)) {
         return false;
@@ -232,7 +249,17 @@ export default function DashboardPage() {
     });
 
     return result;
-  }, [ads, freshness, effectiveSince, selectedDistricts, search, sort, priceMin, priceMax]);
+  }, [
+    ads,
+    freshness,
+    effectiveSince,
+    timeWindowSinceMs,
+    selectedDistricts,
+    search,
+    sort,
+    priceMin,
+    priceMax
+  ]);
 
   const handleToggleDistrict = useCallback((value: string) => {
     setSelectedDistricts((prev) => {
@@ -425,19 +452,20 @@ export default function DashboardPage() {
           </h1>
         </div>
         <div className="header-actions">
-          <button
-            type="button"
-            className="primary"
-            onClick={scanTrigger.trigger}
+          <ScanPicker
+            label={scanButtonLabel}
             disabled={scanTrigger.isDisabled || Boolean(scanDispatch)}
-            title="מפעיל סריקה מיידית; תוצאות יופיעו כאן תוך כ-3 דקות"
-          >
-            {scanButtonLabel}
-          </button>
+            title="מפעיל סריקה לפי בחירת המחוזות; תוצאות תוך כ-3 דקות"
+            onSubmit={(searchIds) =>
+              scanTrigger.trigger(
+                searchIds.length > 0 ? { searchIds } : undefined
+              )
+            }
+          />
           <button
             type="button"
             className="secondary"
-            onClick={healthTrigger.trigger}
+            onClick={() => healthTrigger.trigger()}
             disabled={healthTrigger.isDisabled || Boolean(healthDispatch)}
             title="מפעיל בדיקת תקינות; הודעת Telegram + תוצאות בדאשבורד תוך כ-3 דקות"
           >
@@ -525,6 +553,8 @@ export default function DashboardPage() {
             view={view}
             onViewChange={setView}
             totalCount={totalCount}
+            timeWindow={timeWindow}
+            onTimeWindowChange={setTimeWindow}
           />
 
           <div className="results-count">{filteredAds.length} תוצאות</div>

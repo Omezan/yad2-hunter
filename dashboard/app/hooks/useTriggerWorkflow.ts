@@ -10,7 +10,12 @@ export type TriggerState = {
   cooldownSecondsLeft: number;
   isDisabled: boolean;
   dispatchedAt: string | null;
-  trigger: () => Promise<void>;
+  /**
+   * Dispatches the workflow. Accepts an optional JSON-serializable
+   * payload that the API route may forward as workflow inputs (e.g.
+   * the scan picker passes `{ searchIds: ['south', 'jerusalem'] }`).
+   */
+  trigger: (payload?: Record<string, unknown>) => Promise<void>;
 };
 
 type Options = {
@@ -46,31 +51,38 @@ export function useTriggerWorkflow({
     return () => window.clearInterval(id);
   }, [cooldownUntil, now]);
 
-  const trigger = useCallback(async () => {
-    if (status === 'pending') return;
-    if (cooldownUntil > Date.now()) return;
-    setStatus('pending');
-    setMessage('מפעיל…');
-    try {
-      const res = await fetch(endpoint, { method: 'POST' });
-      const json = (await res.json().catch(() => ({}))) as ApiResponse;
-      if (res.ok && json.ok) {
-        setStatus('success');
-        setMessage(json.message || 'הופעל. תוצאות יופיעו תוך כ-3 דקות.');
-        setCooldownUntil(Date.now() + cooldownMs);
-        if (json.dispatchedAt) {
-          setDispatchedAt(json.dispatchedAt);
-          onDispatched?.(json.dispatchedAt);
+  const trigger = useCallback(
+    async (payload?: Record<string, unknown>) => {
+      if (status === 'pending') return;
+      if (cooldownUntil > Date.now()) return;
+      setStatus('pending');
+      setMessage('מפעיל…');
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: payload ? { 'Content-Type': 'application/json' } : undefined,
+          body: payload ? JSON.stringify(payload) : undefined
+        });
+        const json = (await res.json().catch(() => ({}))) as ApiResponse;
+        if (res.ok && json.ok) {
+          setStatus('success');
+          setMessage(json.message || 'הופעל. תוצאות יופיעו תוך כ-3 דקות.');
+          setCooldownUntil(Date.now() + cooldownMs);
+          if (json.dispatchedAt) {
+            setDispatchedAt(json.dispatchedAt);
+            onDispatched?.(json.dispatchedAt);
+          }
+        } else {
+          setStatus('error');
+          setMessage(json.error || `שגיאה (${res.status})`);
         }
-      } else {
+      } catch (err) {
         setStatus('error');
-        setMessage(json.error || `שגיאה (${res.status})`);
+        setMessage(err instanceof Error ? err.message : String(err));
       }
-    } catch (err) {
-      setStatus('error');
-      setMessage(err instanceof Error ? err.message : String(err));
-    }
-  }, [cooldownMs, cooldownUntil, endpoint, onDispatched, status]);
+    },
+    [cooldownMs, cooldownUntil, endpoint, onDispatched, status]
+  );
 
   const cooldownSecondsLeft = Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
   const isDisabled = status === 'pending' || cooldownSecondsLeft > 0;

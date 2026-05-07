@@ -16,6 +16,37 @@ const {
 
 const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
+function parseIdList(raw) {
+  return String(raw || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+// Decide which ads should still trigger a Telegram digest. By default,
+// any district listed in TELEGRAM_SUPPRESS_DISTRICT_IDS is silenced —
+// the ads are still added to seen-ads.json, shown on the dashboard,
+// and counted by the health-check. Only the push notification is
+// dropped. When a manual run was triggered with an explicit district
+// selection (via ENABLED_SEARCH_IDS) we treat the user's selection as
+// an override: districts they explicitly asked for are notified even
+// if they are normally suppressed.
+function selectAdsForTelegram({
+  ads,
+  suppressDistrictIds,
+  explicitlyRequestedIds
+}) {
+  if (!Array.isArray(ads) || !ads.length) return [];
+  const suppressed = new Set(suppressDistrictIds || []);
+  const requested = new Set(explicitlyRequestedIds || []);
+  if (!suppressed.size) return ads.slice();
+  return ads.filter((ad) => {
+    if (!ad || !ad.searchId) return true;
+    if (!suppressed.has(ad.searchId)) return true;
+    return requested.has(ad.searchId);
+  });
+}
+
 // We deliberately do NOT enrich detail pages anymore: Yad2's anti-bot
 // rejects most direct detail-page GETs from GitHub-hosted Playwright
 // sessions, which used to leak captcha / agency / placeholder text
@@ -68,6 +99,13 @@ async function runOnce(options = {}) {
   const startedAt = new Date().toISOString();
   const trigger = options.trigger || 'manual';
 
+  // The dashboard's manual scan can request a specific district subset
+  // via the ENABLED_SEARCH_IDS workflow input. We treat that subset as
+  // an explicit user choice so the suppression list (e.g. north) is
+  // overridden for districts the user asked about.
+  const explicitlyRequestedIds = parseIdList(env.ENABLED_SEARCH_IDS);
+  const suppressDistrictIds = parseIdList(env.TELEGRAM_SUPPRESS_DISTRICT_IDS);
+
   try {
     const scrapeResult = await scrapeAllSearches({
       searches,
@@ -98,16 +136,31 @@ async function runOnce(options = {}) {
       existingAds
     });
 
+    // Telegram-only filter: keeps the data layer (seen / dashboard /
+    // health-check) untouched while honouring the user's preference
+    // not to be paged about specific districts.
+    const telegramAds = selectAdsForTelegram({
+      ads: relevantNewAds,
+      suppressDistrictIds,
+      explicitlyRequestedIds
+    });
+    const suppressedAdsCount = relevantNewAds.length - telegramAds.length;
+
     let telegramResult = { skipped: true, reason: 'No new ads' };
-    if (relevantNewAds.length > 0) {
+    if (telegramAds.length > 0) {
       telegramResult = await sendNewAdsDigest({
-        newAds: relevantNewAds,
+        newAds: telegramAds,
         runStartedAt: startedAt
       });
     } else if (MANUAL_TRIGGERS.has(trigger)) {
       telegramResult = await sendManualScanNoNewAdsNotice({
         runStartedAt: startedAt
       });
+    } else if (suppressedAdsCount > 0) {
+      telegramResult = {
+        skipped: true,
+        reason: `All ${suppressedAdsCount} new ads belong to suppressed districts`
+      };
     }
 
     const runEntry = {
@@ -120,7 +173,8 @@ async function runOnce(options = {}) {
       preFilteredAds: preFiltered.length,
       candidateNewAds: newCandidates.length,
       relevantNewAds: relevantNewAds.length,
-      notifiedNewAds: relevantNewAds.length,
+      notifiedNewAds: telegramAds.length,
+      suppressedNewAds: suppressedAdsCount,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       errors: scrapeResult.errors
     };
@@ -130,6 +184,8 @@ async function runOnce(options = {}) {
     return {
       ...runEntry,
       searches: searches.map((search) => search.id),
+      explicitlyRequestedIds,
+      suppressDistrictIds,
       rejectionCounts,
       droppedNewCandidates,
       telegramResult
@@ -179,5 +235,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-  runOnce
+  runOnce,
+  selectAdsForTelegram
 };

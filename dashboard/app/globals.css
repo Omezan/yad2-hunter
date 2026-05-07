@@ -1670,3 +1670,41 @@ input:focus {
   }
 }
 
+/* ================================
+ * Scan picker (district checkbox dropdown that wraps the primary
+ * "הרץ סריקה" button)
+ * ================================ */
+.scan-picker {
+  position: relative;
+}
+
+.scan-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scan-picker-popover {
+  /* Slightly wider on desktop so the longest district label
+   * ("ירושלים והסביבה") fits on one line with the check glyph. */
+  min-width: 280px;
+  max-width: min(360px, 90vw);
+}
+
+.scan-picker-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  font-weight: 700;
+  font-size: var(--type-sm);
+  /* Reserves a column for the checkmark so unchecked rows don't
+   * shift their label horizontally when toggled. */
+  flex: 0 0 auto;
+}
+
+.scan-picker-footer .toolbar-district-done:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+

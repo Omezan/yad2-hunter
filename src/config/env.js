@@ -34,6 +34,13 @@ const env = {
   PLAYWRIGHT_HEADLESS: parseBoolean(process.env.PLAYWRIGHT_HEADLESS, true),
   SEARCH_TIMEOUT_MS: parseInteger(process.env.SEARCH_TIMEOUT_MS, 60000),
   ENABLED_SEARCH_IDS: process.env.ENABLED_SEARCH_IDS || '',
+  // Comma-separated list of search ids whose ads should NEVER trigger
+  // a "new ad" Telegram digest. They keep being scraped, written into
+  // seen-ads, shown in the dashboard, and counted by the health-check;
+  // we just stop pinging the user about them. The default is the
+  // northern district as per the user's request.
+  TELEGRAM_SUPPRESS_DISTRICT_IDS:
+    process.env.TELEGRAM_SUPPRESS_DISTRICT_IDS || 'north-valleys',
   STATE_DIR: process.env.STATE_DIR || path.resolve(process.cwd(), 'state'),
   HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
   SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30),

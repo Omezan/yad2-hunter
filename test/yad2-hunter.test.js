@@ -25,6 +25,7 @@ const {
 } = require('../src/scraper/yad2');
 const { removeDeletedAds } = require('../src/store/file-store');
 const { reconcileSeen } = require('../src/worker/health-check');
+const { selectAdsForTelegram } = require('../src/worker/run-once');
 const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
@@ -1313,4 +1314,67 @@ test('mergeSeenAds: empty forceDeleteIds preserves everything', () => {
   };
   const merged = mergeSeenAds(local, remote, []);
   assert.deepEqual(Object.keys(merged.ads).sort(), ['also', 'keep']);
+});
+
+// -----------------------------------------------------------------------------
+// selectAdsForTelegram (district-level Telegram suppression)
+// -----------------------------------------------------------------------------
+
+const ADS_FOR_TELEGRAM = [
+  { externalId: 'south/a', searchId: 'south', title: 'A' },
+  { externalId: 'jerusalem/b', searchId: 'jerusalem', title: 'B' },
+  { externalId: 'north-valleys/c', searchId: 'north-valleys', title: 'C' },
+  { externalId: 'north-valleys/d', searchId: 'north-valleys', title: 'D' }
+];
+
+test('selectAdsForTelegram drops ads from suppressed districts by default', () => {
+  const result = selectAdsForTelegram({
+    ads: ADS_FOR_TELEGRAM,
+    suppressDistrictIds: ['north-valleys'],
+    explicitlyRequestedIds: []
+  });
+  assert.deepEqual(
+    result.map((a) => a.externalId),
+    ['south/a', 'jerusalem/b']
+  );
+});
+
+test('selectAdsForTelegram keeps everything when no suppression is configured', () => {
+  const result = selectAdsForTelegram({
+    ads: ADS_FOR_TELEGRAM,
+    suppressDistrictIds: [],
+    explicitlyRequestedIds: []
+  });
+  assert.equal(result.length, 4);
+});
+
+test('selectAdsForTelegram respects an explicit user request as an override', () => {
+  // User clicked "הרץ סריקה" with north-valleys checked → notify
+  // about north ads even though they are normally suppressed.
+  const result = selectAdsForTelegram({
+    ads: ADS_FOR_TELEGRAM,
+    suppressDistrictIds: ['north-valleys'],
+    explicitlyRequestedIds: ['north-valleys']
+  });
+  assert.deepEqual(
+    result.map((a) => a.externalId).sort(),
+    ['jerusalem/b', 'north-valleys/c', 'north-valleys/d', 'south/a'].sort()
+  );
+});
+
+test('selectAdsForTelegram still drops north when only south was explicitly requested', () => {
+  const result = selectAdsForTelegram({
+    ads: ADS_FOR_TELEGRAM,
+    suppressDistrictIds: ['north-valleys'],
+    explicitlyRequestedIds: ['south']
+  });
+  assert.deepEqual(
+    result.map((a) => a.externalId),
+    ['south/a', 'jerusalem/b']
+  );
+});
+
+test('selectAdsForTelegram is safe with empty / null inputs', () => {
+  assert.deepEqual(selectAdsForTelegram({ ads: [] }), []);
+  assert.deepEqual(selectAdsForTelegram({ ads: null }), []);
 });

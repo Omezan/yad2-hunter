@@ -13,6 +13,14 @@ import { solidPillStyle } from '../lib/district-colors';
 export type FreshnessFilter = 'all' | 'new';
 export type SortKey = 'firstSeenDesc' | 'priceAsc' | 'roomsDesc';
 export type ViewMode = 'list' | 'map';
+export type TimeWindow = 'all' | '24h' | '7d' | '30d';
+
+const TIME_WINDOW_OPTIONS: { value: TimeWindow; label: string }[] = [
+  { value: '24h', label: '24 שעות' },
+  { value: '7d', label: '7 ימים' },
+  { value: '30d', label: 'חודש' },
+  { value: 'all', label: 'הכל' }
+];
 
 type DistrictOption = {
   value: string;
@@ -51,6 +59,10 @@ type Props = {
   onViewChange: (value: ViewMode) => void;
   // Total ads tracked — shown as a compact badge inside the toolbar.
   totalCount: number;
+  // Pre-defined "time since first seen" window. 'all' disables the
+  // filter; '24h' / '7d' / '30d' anchor a sliding window from now.
+  timeWindow: TimeWindow;
+  onTimeWindowChange: (value: TimeWindow) => void;
 };
 
 function formatShekel(value: number): string {
@@ -115,7 +127,9 @@ export default function FilterBar({
   onPriceReset,
   view,
   onViewChange,
-  totalCount
+  totalCount,
+  timeWindow,
+  onTimeWindowChange
 }: Props) {
   const districtPopover = usePopover();
   const pricePopover = usePopover();
@@ -239,6 +253,23 @@ export default function FilterBar({
         >
           חדשות {hasFreshAds ? '' : '(אין)'}
         </button>
+      </div>
+
+      <div className="segmented" role="tablist" aria-label="טווח זמן">
+        {TIME_WINDOW_OPTIONS.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="tab"
+            aria-selected={timeWindow === option.value}
+            className={`segmented-option ${
+              timeWindow === option.value ? 'is-active' : ''
+            }`}
+            onClick={() => onTimeWindowChange(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
       </div>
 
       <div className="toolbar-sort">
