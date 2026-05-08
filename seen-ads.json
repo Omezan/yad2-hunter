@@ -3353,6 +3353,19 @@
       "city": "בית חנניה",
       "firstSeenAt": "2026-05-08T09:07:44.894Z",
       "lastSeenAt": "2026-05-08T09:07:44.894Z"
+    },
+    "north-and-valleys/hph31mbf": {
+      "externalId": "north-and-valleys/hph31mbf",
+      "title": "בית פרטי/ קוטג', אלי עד",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/hph31mbf",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6900,
+      "rooms": 5,
+      "city": "אלי עד",
+      "firstSeenAt": "2026-05-08T09:51:39.623Z",
+      "lastSeenAt": "2026-05-08T09:51:39.623Z"
     }
   }
 }
