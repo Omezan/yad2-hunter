@@ -3366,6 +3366,19 @@
       "city": "אלי עד",
       "firstSeenAt": "2026-05-08T09:51:39.623Z",
       "lastSeenAt": "2026-05-08T11:05:12.210Z"
+    },
+    "north-and-valleys/bs2n0wmx": {
+      "externalId": "north-and-valleys/bs2n0wmx",
+      "title": "בית פרטי/ קוטג', בר יוחאי",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/bs2n0wmx",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5500,
+      "rooms": 4.5,
+      "city": "בר יוחאי",
+      "firstSeenAt": "2026-05-08T11:44:07.506Z",
+      "lastSeenAt": "2026-05-08T11:44:07.506Z"
     }
   }
 }
