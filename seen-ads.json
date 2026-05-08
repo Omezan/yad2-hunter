@@ -143,19 +143,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-08T13:09:35.502Z"
     },
-    "center-and-sharon/zgrxqb2o": {
-      "externalId": "center-and-sharon/zgrxqb2o",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/zgrxqb2o",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 5,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T13:09:35.502Z"
-    },
     "center-and-sharon/c2pwq0et": {
       "externalId": "center-and-sharon/c2pwq0et",
       "title": "בית פרטי/ קוטג', עולש",
@@ -441,19 +428,6 @@
       "city": "מכמורת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-08T13:09:35.502Z"
-    },
-    "center-and-sharon/83bs84ek": {
-      "externalId": "center-and-sharon/83bs84ek",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/83bs84ek",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4.5,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T11:18:24.180Z"
     },
     "center-and-sharon/c99yfopd": {
       "externalId": "center-and-sharon/c99yfopd",
@@ -1206,19 +1180,6 @@
       "price": null,
       "rooms": 4,
       "city": "משמר הירדן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T13:09:35.502Z"
-    },
-    "north-and-valleys/x1atdd3i": {
-      "externalId": "north-and-valleys/x1atdd3i",
-      "title": "בית פרטי/ קוטג', פוריה נווה עובד",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/x1atdd3i",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 5,
-      "city": "פוריה נווה עובד",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-08T13:09:35.502Z"
     },
@@ -3379,6 +3340,32 @@
       "city": "בר יוחאי",
       "firstSeenAt": "2026-05-08T11:44:07.506Z",
       "lastSeenAt": "2026-05-08T13:09:35.502Z"
+    },
+    "center-and-sharon/zkusvo6l": {
+      "externalId": "center-and-sharon/zkusvo6l",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/zkusvo6l",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-05-08T14:14:52.092Z",
+      "lastSeenAt": "2026-05-08T14:14:52.092Z"
+    },
+    "north-and-valleys/4uwyzt4l": {
+      "externalId": "north-and-valleys/4uwyzt4l",
+      "title": "בית פרטי/ קוטג', מנות",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/4uwyzt4l",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4,
+      "city": "מנות",
+      "firstSeenAt": "2026-05-08T14:14:52.092Z",
+      "lastSeenAt": "2026-05-08T14:14:52.092Z"
     }
   }
 }
