@@ -1989,32 +1989,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-09T01:57:32.457Z"
     },
-    "north-and-valleys/y4f9pndg": {
-      "externalId": "north-and-valleys/y4f9pndg",
-      "title": "בית פרטי/ קוטג', כמון",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/y4f9pndg",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5000,
-      "rooms": 4,
-      "city": "כמון",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T23:48:11.522Z"
-    },
-    "north-and-valleys/usktop0a": {
-      "externalId": "north-and-valleys/usktop0a",
-      "title": "בית פרטי/ קוטג', עצמון שגב",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/usktop0a",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8500,
-      "rooms": 5,
-      "city": "עצמון שגב",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T23:48:11.522Z"
-    },
     "north-and-valleys/47nk4b6d": {
       "externalId": "north-and-valleys/47nk4b6d",
       "title": "בית פרטי/ קוטג', פוריה עילית",
@@ -3366,19 +3340,6 @@
       "city": "שניר",
       "firstSeenAt": "2026-05-08T17:04:07.737Z",
       "lastSeenAt": "2026-05-09T01:57:32.457Z"
-    },
-    "south/2zuvrfxt": {
-      "externalId": "south/2zuvrfxt",
-      "title": "בית פרטי/ קוטג', באר אורה",
-      "link": "https://www.yad2.co.il/realestate/item/south/2zuvrfxt",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 8800,
-      "rooms": 4,
-      "city": "באר אורה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-08T21:52:38.449Z"
     }
   }
 }
