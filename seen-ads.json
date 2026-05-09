@@ -3380,18 +3380,31 @@
       "firstSeenAt": "2026-05-09T10:49:41.845Z",
       "lastSeenAt": "2026-05-09T12:55:33.897Z"
     },
-    "coastal-north/404q6952": {
-      "externalId": "coastal-north/404q6952",
-      "title": "בית פרטי/ קוטג', בית חנניה",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/404q6952",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
+    "north-and-valleys/f32kmmrb": {
+      "externalId": "north-and-valleys/f32kmmrb",
+      "title": "בית פרטי/ קוטג', גן נר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/f32kmmrb",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
       "price": 8000,
-      "rooms": 6.5,
-      "city": "בית חנניה",
-      "firstSeenAt": "2026-05-08T09:07:44.894Z",
-      "lastSeenAt": "2026-05-09T05:17:50.180Z"
+      "rooms": 5,
+      "city": "גן נר",
+      "firstSeenAt": "2026-05-09T13:49:53.535Z",
+      "lastSeenAt": "2026-05-09T13:49:53.535Z"
+    },
+    "north-and-valleys/ha3inbbq": {
+      "externalId": "north-and-valleys/ha3inbbq",
+      "title": "בית פרטי/ קוטג', טל אל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ha3inbbq",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 5.5,
+      "city": "טל אל",
+      "firstSeenAt": "2026-05-09T13:49:53.535Z",
+      "lastSeenAt": "2026-05-09T13:49:53.535Z"
     }
   }
 }
