@@ -728,19 +728,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-09T05:17:50.180Z"
     },
-    "coastal-north/xhb6vxd9": {
-      "externalId": "coastal-north/xhb6vxd9",
-      "title": "בית פרטי/ קוטג', שדה יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/xhb6vxd9",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 9000,
-      "rooms": 7,
-      "city": "שדה יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T01:57:32.457Z"
-    },
     "coastal-north/y1h4jyk9": {
       "externalId": "coastal-north/y1h4jyk9",
       "title": "בית פרטי/ קוטג', לימן",
@@ -1934,19 +1921,6 @@
       "price": 4000,
       "rooms": 4,
       "city": "מצפה אבי\"ב",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T05:17:50.180Z"
-    },
-    "north-and-valleys/y2k4ry2f": {
-      "externalId": "north-and-valleys/y2k4ry2f",
-      "title": "בית פרטי/ קוטג', גילון",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/y2k4ry2f",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8500,
-      "rooms": 6,
-      "city": "גילון",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-09T05:17:50.180Z"
     },
