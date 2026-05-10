@@ -2,6 +2,42 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-10T13:23:51.776Z",
+      "completedAt": "2026-05-10T13:32:10.365Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 11,
+      "preFilteredAds": 11,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-10T12:53:51.676Z",
       "completedAt": "2026-05-10T12:56:18.659Z",
       "status": "completed",
@@ -1131,20 +1167,6 @@
       "relevantNewAds": 1,
       "notifiedNewAds": 1,
       "suppressedNewAds": 0,
-      "telegramSent": true,
-      "errors": []
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-05-09T09:41:34.775Z",
-      "completedAt": "2026-05-09T09:44:16.608Z",
-      "status": "completed",
-      "trigger": "github-actions",
-      "allMatch": true,
-      "additions": 0,
-      "removals": 1,
-      "unresolvedExtras": 0,
-      "unresolvedMissing": 0,
       "telegramSent": true,
       "errors": []
     }
