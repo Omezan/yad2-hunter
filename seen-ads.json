@@ -3341,19 +3341,6 @@
       "firstSeenAt": "2026-05-10T11:33:41.033Z",
       "lastSeenAt": "2026-05-10T20:40:16.483Z"
     },
-    "jerusalem-area/xqzoosyz": {
-      "externalId": "jerusalem-area/xqzoosyz",
-      "title": "דירת גן, הוותיקה, צור הדסה",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/xqzoosyz",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 8200,
-      "rooms": 4,
-      "city": "צור הדסה",
-      "firstSeenAt": "2026-05-10T13:57:17.360Z",
-      "lastSeenAt": "2026-05-10T20:40:16.483Z"
-    },
     "north-and-valleys/2aw13fbt": {
       "externalId": "north-and-valleys/2aw13fbt",
       "title": "בית פרטי/ קוטג', דן",
@@ -3470,45 +3457,6 @@
       "city": "חצב",
       "firstSeenAt": "2026-05-10T18:48:26.864Z",
       "lastSeenAt": "2026-05-10T20:40:16.483Z"
-    },
-    "center-and-sharon/0cwq5pos": {
-      "externalId": "center-and-sharon/0cwq5pos",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0cwq5pos",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5800,
-      "rooms": 4,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-05-10T08:23:29.031Z",
-      "lastSeenAt": "2026-05-10T17:44:45.764Z"
-    },
-    "south/zl9el65u": {
-      "externalId": "south/zl9el65u",
-      "title": "בית פרטי/ קוטג', נועם",
-      "link": "https://www.yad2.co.il/realestate/item/south/zl9el65u",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4800,
-      "rooms": 5,
-      "city": "נועם",
-      "firstSeenAt": "2026-04-29T15:06:00.373Z",
-      "lastSeenAt": "2026-05-10T15:45:39.633Z"
-    },
-    "north-and-valleys/pyymfkow": {
-      "externalId": "north-and-valleys/pyymfkow",
-      "title": "בית פרטי/ קוטג', כליל",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pyymfkow",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8500,
-      "rooms": 4,
-      "city": "כליל",
-      "firstSeenAt": "2026-05-01T07:38:15.503Z",
-      "lastSeenAt": "2026-05-10T16:45:05.125Z"
     },
     "north-and-valleys/hex7me57": {
       "externalId": "north-and-valleys/hex7me57",
