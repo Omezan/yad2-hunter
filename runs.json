@@ -2,6 +2,21 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-10T07:56:13.509Z",
+      "completedAt": "2026-05-10T07:58:44.430Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 260,
+      "preFilteredAds": 260,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "notifiedNewAds": 0,
+      "suppressedNewAds": 1,
+      "telegramSent": false,
+      "errors": []
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-10T06:00:11.821Z",
       "completedAt": "2026-05-10T06:08:26.676Z",
       "status": "partial",
@@ -1142,42 +1157,6 @@
       "suppressedNewAds": 0,
       "telegramSent": false,
       "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-09T00:15:41.030Z",
-      "completedAt": "2026-05-09T00:24:25.091Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 11,
-      "preFilteredAds": 11,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
