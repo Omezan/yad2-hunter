@@ -2,6 +2,37 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-10T09:53:12.217Z",
+      "completedAt": "2026-05-10T10:00:48.580Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 69,
+      "preFilteredAds": 69,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-10T09:23:12.125Z",
       "completedAt": "2026-05-10T09:25:51.802Z",
       "status": "completed",
@@ -1142,21 +1173,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-09T05:15:03.685Z",
-      "completedAt": "2026-05-09T05:17:50.741Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 257,
-      "preFilteredAds": 257,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 1,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
