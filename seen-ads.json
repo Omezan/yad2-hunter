@@ -2158,19 +2158,6 @@
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-10T16:45:05.125Z"
     },
-    "south/zl9el65u": {
-      "externalId": "south/zl9el65u",
-      "title": "בית פרטי/ קוטג', נועם",
-      "link": "https://www.yad2.co.il/realestate/item/south/zl9el65u",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4800,
-      "rooms": 5,
-      "city": "נועם",
-      "firstSeenAt": "2026-04-29T15:06:00.373Z",
-      "lastSeenAt": "2026-05-10T15:45:39.633Z"
-    },
     "north-and-valleys/jr2l0e7i": {
       "externalId": "north-and-valleys/jr2l0e7i",
       "title": "יחידת דיור, אילניה",
@@ -2376,19 +2363,6 @@
       "price": 6000,
       "rooms": 4,
       "city": "עין המפרץ",
-      "firstSeenAt": "2026-05-01T07:38:15.503Z",
-      "lastSeenAt": "2026-05-10T16:45:05.125Z"
-    },
-    "north-and-valleys/pyymfkow": {
-      "externalId": "north-and-valleys/pyymfkow",
-      "title": "בית פרטי/ קוטג', כליל",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pyymfkow",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8500,
-      "rooms": 4,
-      "city": "כליל",
       "firstSeenAt": "2026-05-01T07:38:15.503Z",
       "lastSeenAt": "2026-05-10T16:45:05.125Z"
     },
@@ -3483,6 +3457,19 @@
       "city": "תל תאומים",
       "firstSeenAt": "2026-05-10T16:45:05.125Z",
       "lastSeenAt": "2026-05-10T16:45:05.125Z"
+    },
+    "north-and-valleys/5pop9dvo": {
+      "externalId": "north-and-valleys/5pop9dvo",
+      "title": "דירת גן, מנות",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/5pop9dvo",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5200,
+      "rooms": 4,
+      "city": "מנות",
+      "firstSeenAt": "2026-05-10T17:10:53.167Z",
+      "lastSeenAt": "2026-05-10T17:10:53.167Z"
     }
   }
 }
