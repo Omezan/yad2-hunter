@@ -2054,19 +2054,6 @@
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-10T07:58:44.427Z"
     },
-    "south/ev72y34d": {
-      "externalId": "south/ev72y34d",
-      "title": "בית פרטי/ קוטג', מרכז שפירא",
-      "link": "https://www.yad2.co.il/realestate/item/south/ev72y34d",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": null,
-      "rooms": 7,
-      "city": "מרכז שפירא",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-10T05:32:47.931Z"
-    },
     "south/itne106h": {
       "externalId": "south/itne106h",
       "title": "מרתף/ פרטר, מרכז שפירא",
@@ -3172,19 +3159,6 @@
       "firstSeenAt": "2026-05-08T05:25:21.041Z",
       "lastSeenAt": "2026-05-10T07:58:44.427Z"
     },
-    "center-and-sharon/hci1azh0": {
-      "externalId": "center-and-sharon/hci1azh0",
-      "title": "דירה, חגלה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/hci1azh0",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 4,
-      "city": "חגלה",
-      "firstSeenAt": "2026-05-08T07:18:18.559Z",
-      "lastSeenAt": "2026-05-10T05:32:47.931Z"
-    },
     "north-and-valleys/hph31mbf": {
       "externalId": "north-and-valleys/hph31mbf",
       "title": "בית פרטי/ קוטג', אלי עד",
@@ -3405,6 +3379,19 @@
       "city": "תל קציר",
       "firstSeenAt": "2026-05-10T07:58:44.427Z",
       "lastSeenAt": "2026-05-10T07:58:44.427Z"
+    },
+    "center-and-sharon/0cwq5pos": {
+      "externalId": "center-and-sharon/0cwq5pos",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0cwq5pos",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5800,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-05-10T08:23:29.031Z",
+      "lastSeenAt": "2026-05-10T08:23:29.031Z"
     }
   }
 }
