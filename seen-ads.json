@@ -26,19 +26,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-10T02:33:12.149Z"
     },
-    "jerusalem-area/v6jano1v": {
-      "externalId": "jerusalem-area/v6jano1v",
-      "title": "בית פרטי/ קוטג', נווה מיכאל",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/v6jano1v",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": null,
-      "rooms": 7,
-      "city": "נווה מיכאל",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T23:39:28.849Z"
-    },
     "jerusalem-area/42cmt6di": {
       "externalId": "jerusalem-area/42cmt6di",
       "title": "דירה, בית זית",
@@ -1924,32 +1911,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-10T01:57:06.461Z"
     },
-    "north-and-valleys/hex7me57": {
-      "externalId": "north-and-valleys/hex7me57",
-      "title": "בית פרטי/ קוטג', פוריה עילית",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/hex7me57",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 5,
-      "city": "פוריה עילית",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T23:39:28.849Z"
-    },
-    "north-and-valleys/vh47dn81": {
-      "externalId": "north-and-valleys/vh47dn81",
-      "title": "יחידת דיור, אמירים",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/vh47dn81",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5800,
-      "rooms": 4,
-      "city": "אמירים",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T23:39:28.849Z"
-    },
     "north-and-valleys/47nk4b6d": {
       "externalId": "north-and-valleys/47nk4b6d",
       "title": "בית פרטי/ קוטג', פוריה עילית",
@@ -3418,19 +3379,6 @@
       "city": "עצמון שגב",
       "firstSeenAt": "2026-05-09T19:53:23.894Z",
       "lastSeenAt": "2026-05-10T01:57:06.461Z"
-    },
-    "coastal-north/z8uyxvop": {
-      "externalId": "coastal-north/z8uyxvop",
-      "title": "בית פרטי/ קוטג', ניר עציון",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/z8uyxvop",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 5335,
-      "rooms": 4.5,
-      "city": "ניר עציון",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-09T18:46:26.793Z"
     }
   }
 }
