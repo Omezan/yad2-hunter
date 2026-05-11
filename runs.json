@@ -2,6 +2,42 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-11T00:11:13.470Z",
+      "completedAt": "2026-05-11T00:19:37.882Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 11,
+      "preFilteredAds": 11,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-10T23:41:13.395Z",
       "completedAt": "2026-05-10T23:43:48.509Z",
       "status": "completed",
@@ -1133,47 +1169,6 @@
       "suppressedNewAds": 0,
       "telegramSent": false,
       "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-09T21:04:43.642Z",
-      "completedAt": "2026-05-09T21:14:26.814Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 11,
-      "preFilteredAds": 11,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
