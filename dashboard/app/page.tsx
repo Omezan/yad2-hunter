@@ -13,6 +13,8 @@ import FilterBar, {
 import HealthCheckResultModal from './components/HealthCheckResultModal';
 import ScanPicker from './components/ScanPicker';
 import ScanResultModal from './components/ScanResultModal';
+import TabBar, { type DashboardTab } from './components/TabBar';
+import TrendsView from './components/TrendsView';
 
 // Leaflet uses window/document on import — must be client-only.
 const MapView = dynamic(() => import('./components/MapView'), {
@@ -68,6 +70,7 @@ export default function DashboardPage() {
   const [priceMin, setPriceMin] = useState<number | null>(null);
   const [priceMax, setPriceMax] = useState<number | null>(null);
   const [view, setView] = useState<ViewMode>('list');
+  const [tab, setTab] = useState<DashboardTab>('ads');
   const [now, setNow] = useState<number>(() => Date.now());
 
   useEffect(() => {
@@ -520,6 +523,8 @@ export default function DashboardPage() {
         </span>
       </div>
 
+      <TabBar tab={tab} onChange={setTab} />
+
       {banner ? <div className={`notice notice-${banner.tone}`}>{banner.text}</div> : null}
 
       {loading ? <div className="notice notice-loading">טוען נתונים…</div> : null}
@@ -527,7 +532,7 @@ export default function DashboardPage() {
         <div className="notice notice-error">שגיאה בטעינת הנתונים: {error}</div>
       ) : null}
 
-      {!loading && !error ? (
+      {!loading && !error && tab === 'ads' ? (
         <>
           <FilterBar
             freshness={freshness}
@@ -575,6 +580,10 @@ export default function DashboardPage() {
             </div>
           )}
         </>
+      ) : null}
+
+      {!loading && !error && tab === 'trends' ? (
+        <TrendsView ads={ads} districtOptions={districtOptions} now={now} />
       ) : null}
 
       <ScanResultModal
