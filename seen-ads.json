@@ -2093,19 +2093,6 @@
       "firstSeenAt": "2026-04-29T17:20:24.803Z",
       "lastSeenAt": "2026-05-11T18:53:29.569Z"
     },
-    "center-and-sharon/9bxjuex5": {
-      "externalId": "center-and-sharon/9bxjuex5",
-      "title": "דירה, מתן",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9bxjuex5",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6000,
-      "rooms": 4,
-      "city": "מתן",
-      "firstSeenAt": "2026-04-29T20:36:14.775Z",
-      "lastSeenAt": "2026-05-11T16:26:43.740Z"
-    },
     "center-and-sharon/cnucmjp1": {
       "externalId": "center-and-sharon/cnucmjp1",
       "title": "בית פרטי/ קוטג', שער אפרים",
@@ -2417,19 +2404,6 @@
       "city": "גבע כרמל",
       "firstSeenAt": "2026-05-03T07:13:21.691Z",
       "lastSeenAt": "2026-05-11T18:53:29.569Z"
-    },
-    "north-and-valleys/xpx3jlm6": {
-      "externalId": "north-and-valleys/xpx3jlm6",
-      "title": "בית פרטי/ קוטג', פוריה כפר עבודה",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xpx3jlm6",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5800,
-      "rooms": 4,
-      "city": "פוריה כפר עבודה",
-      "firstSeenAt": "2026-05-03T07:13:21.691Z",
-      "lastSeenAt": "2026-05-11T16:26:43.740Z"
     },
     "north-and-valleys/oyfm9li5": {
       "externalId": "north-and-valleys/oyfm9li5",
@@ -3367,19 +3341,6 @@
       "firstSeenAt": "2026-05-10T19:55:13.793Z",
       "lastSeenAt": "2026-05-11T18:53:29.569Z"
     },
-    "north-and-valleys/vo93uvyc": {
-      "externalId": "north-and-valleys/vo93uvyc",
-      "title": "בית פרטי/ קוטג', כפר חסידים א'",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/vo93uvyc",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 6000,
-      "rooms": 4,
-      "city": "כפר חסידים א'",
-      "firstSeenAt": "2026-05-11T06:30:29.321Z",
-      "lastSeenAt": "2026-05-11T16:26:43.740Z"
-    },
     "center-and-sharon/emrmnqcb": {
       "externalId": "center-and-sharon/emrmnqcb",
       "title": "גג/ פנטהאוז, צור יצחק",
@@ -3445,18 +3406,18 @@
       "firstSeenAt": "2026-05-11T16:26:43.740Z",
       "lastSeenAt": "2026-05-11T18:53:29.569Z"
     },
-    "coastal-north/0dgs7klj": {
-      "externalId": "coastal-north/0dgs7klj",
-      "title": "בית פרטי/ קוטג', גשר הזיו",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/0dgs7klj",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 5000,
-      "rooms": 4.5,
-      "city": "גשר הזיו",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-11T13:40:22.170Z"
+    "north-and-valleys/jcedxfl0": {
+      "externalId": "north-and-valleys/jcedxfl0",
+      "title": "בית פרטי/ קוטג', אילניה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/jcedxfl0",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 6,
+      "city": "אילניה",
+      "firstSeenAt": "2026-05-11T20:04:17.672Z",
+      "lastSeenAt": "2026-05-11T20:04:17.672Z"
     }
   }
 }
