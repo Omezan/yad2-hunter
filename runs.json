@@ -2,6 +2,37 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-11T19:20:56.251Z",
+      "completedAt": "2026-05-11T19:27:41.277Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 52,
+      "preFilteredAds": 52,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "errors": [
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-11T18:50:56.230Z",
       "completedAt": "2026-05-11T18:53:29.572Z",
       "status": "completed",
@@ -1111,37 +1142,6 @@
       "suppressedNewAds": 0,
       "telegramSent": false,
       "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-10T09:53:12.217Z",
-      "completedAt": "2026-05-10T10:00:48.580Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 69,
-      "preFilteredAds": 69,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "errors": [
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
