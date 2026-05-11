@@ -533,19 +533,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-11T10:30:42.403Z"
     },
-    "south/f7xroeqt": {
-      "externalId": "south/f7xroeqt",
-      "title": "בית פרטי/ קוטג', משאבי שדה",
-      "link": "https://www.yad2.co.il/realestate/item/south/f7xroeqt",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 7000,
-      "rooms": 5,
-      "city": "משאבי שדה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-11T10:30:42.403Z"
-    },
     "south/e16wmuym": {
       "externalId": "south/e16wmuym",
       "title": "בית פרטי/ קוטג', מבועים",
@@ -1898,19 +1885,6 @@
       "firstSeenAt": "2026-04-28T10:14:51.506Z",
       "lastSeenAt": "2026-05-11T10:30:42.403Z"
     },
-    "north-and-valleys/qb9i06j8": {
-      "externalId": "north-and-valleys/qb9i06j8",
-      "title": "יחידת דיור, אחוזת ברק",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/qb9i06j8",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5500,
-      "rooms": 4,
-      "city": "אחוזת ברק",
-      "firstSeenAt": "2026-04-28T12:20:21.026Z",
-      "lastSeenAt": "2026-05-11T10:30:42.403Z"
-    },
     "north-and-valleys/s0jx57g3": {
       "externalId": "north-and-valleys/s0jx57g3",
       "title": "דירה, משמר הירדן",
@@ -2247,19 +2221,6 @@
       "rooms": 5.5,
       "city": "גיתה",
       "firstSeenAt": "2026-04-30T15:02:17.957Z",
-      "lastSeenAt": "2026-05-11T10:30:42.403Z"
-    },
-    "north-and-valleys/6ev1i9hw": {
-      "externalId": "north-and-valleys/6ev1i9hw",
-      "title": "בית פרטי/ קוטג', מצפה אילן",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/6ev1i9hw",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4400,
-      "rooms": 4,
-      "city": "מצפה אילן",
-      "firstSeenAt": "2026-04-30T18:07:37.696Z",
       "lastSeenAt": "2026-05-11T10:30:42.403Z"
     },
     "north-and-valleys/s9cspopx": {
@@ -3457,6 +3418,32 @@
       "city": "צור יצחק",
       "firstSeenAt": "2026-05-11T10:30:42.403Z",
       "lastSeenAt": "2026-05-11T10:30:42.403Z"
+    },
+    "north-and-valleys/dw6bxppw": {
+      "externalId": "north-and-valleys/dw6bxppw",
+      "title": "בית פרטי/ קוטג', אורטל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/dw6bxppw",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6800,
+      "rooms": 5,
+      "city": "אורטל",
+      "firstSeenAt": "2026-05-11T12:50:51.908Z",
+      "lastSeenAt": "2026-05-11T12:50:51.908Z"
+    },
+    "north-and-valleys/nmjb5b5w": {
+      "externalId": "north-and-valleys/nmjb5b5w",
+      "title": "בית פרטי/ קוטג', מכמנים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/nmjb5b5w",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 5,
+      "city": "מכמנים",
+      "firstSeenAt": "2026-05-11T12:50:51.908Z",
+      "lastSeenAt": "2026-05-11T12:50:51.908Z"
     }
   }
 }
