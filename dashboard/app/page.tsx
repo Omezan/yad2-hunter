@@ -33,6 +33,7 @@ import {
   readLastVisitAt,
   writeLastVisitAt
 } from './lib/freshness';
+import { isLevHaParkSearchId } from './lib/lev-hapark';
 import type { AdRow, LastRun, RunSummary, StateResponse } from './lib/types';
 
 function getQueryParam(name: string): string | null {
@@ -133,7 +134,16 @@ export default function DashboardPage() {
     };
   }, []);
 
-  const ads = data?.ads || [];
+  // The home dashboard is exclusively the "מציאת בית במושב" experience.
+  // Lev HaPark listings come from the same global state but are surfaced
+  // only on /lev-hapark, so we strip them once at the top of the data
+  // pipeline. Everything downstream (district options, price bounds,
+  // freshness badge, trends, filtered list, map view, scan-result modal)
+  // then sees a Lev-HaPark-free dataset.
+  const ads = useMemo(
+    () => (data?.ads || []).filter((ad) => !isLevHaParkSearchId(ad.searchId)),
+    [data?.ads]
+  );
   const effectiveSince = pickEffectiveSince(searchParamSince, lastVisitAt);
 
   const freshAds = useMemo(
@@ -319,8 +329,11 @@ export default function DashboardPage() {
       const since = dispatch?.since ?? null;
       const dispatchedMs = dispatchedAt ? Date.parse(dispatchedAt) : NaN;
       // Pick ads whose firstSeenAt advanced after the user clicked "הרץ סריקה",
-      // falling back to whatever was already considered "fresh" if dispatch parse fails.
+      // falling back to whatever was already considered "fresh" if dispatch
+      // parse fails. Lev HaPark hits are surfaced on /lev-hapark and never
+      // appear in this modal.
       const newAds = state.ads.filter((ad) => {
+        if (isLevHaParkSearchId(ad.searchId)) return false;
         const t = Date.parse(ad.firstSeenAt);
         if (Number.isNaN(t)) return false;
         if (!Number.isNaN(dispatchedMs) && t >= dispatchedMs) return true;

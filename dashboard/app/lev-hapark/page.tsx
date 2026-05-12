@@ -13,9 +13,9 @@ import {
   readLastVisitAt,
   writeLastVisitAt
 } from '../lib/freshness';
+import { LEV_HAPARK_SEARCH_IDS } from '../lib/lev-hapark';
 import type { AdRow, LastRun, StateResponse } from '../lib/types';
 
-const LEV_HAPARK_SEARCH_IDS = new Set(['lev-hapark-rent', 'lev-hapark-sale']);
 type Mode = 'all' | 'rent' | 'sale';
 
 const MODES: { value: Mode; label: string }[] = [
