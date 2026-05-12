@@ -2665,19 +2665,6 @@
       "firstSeenAt": "2026-05-05T11:13:43.518Z",
       "lastSeenAt": "2026-05-12T02:03:11.878Z"
     },
-    "north-and-valleys/068m4p1j": {
-      "externalId": "north-and-valleys/068m4p1j",
-      "title": "בית פרטי/ קוטג', כפר גדעון",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/068m4p1j",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 7000,
-      "rooms": 6,
-      "city": "כפר גדעון",
-      "firstSeenAt": "2026-05-05T11:13:43.518Z",
-      "lastSeenAt": "2026-05-11T23:49:17.318Z"
-    },
     "south/fev7h9z6": {
       "externalId": "south/fev7h9z6",
       "title": "דירת גן, תלמי אליהו",
@@ -3431,6 +3418,19 @@
       "city": "טללים",
       "firstSeenAt": "2026-05-11T20:29:22.815Z",
       "lastSeenAt": "2026-05-12T02:03:11.878Z"
+    },
+    "north-and-valleys/emqgfuta": {
+      "externalId": "north-and-valleys/emqgfuta",
+      "title": "בית פרטי/ קוטג', שפר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/emqgfuta",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6000,
+      "rooms": 4,
+      "city": "שפר",
+      "firstSeenAt": "2026-05-12T04:04:11.771Z",
+      "lastSeenAt": "2026-05-12T04:04:11.771Z"
     }
   }
 }
