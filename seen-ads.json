@@ -3951,6 +3951,19 @@
       "city": "כרכום",
       "firstSeenAt": "2026-05-12T20:30:43.581Z",
       "lastSeenAt": "2026-05-12T22:09:13.606Z"
+    },
+    "center-and-sharon/sm13l8rd": {
+      "externalId": "center-and-sharon/sm13l8rd",
+      "title": "גג/ פנטהאוז, מרכז דרום, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sm13l8rd",
+      "searchId": "lev-hapark-rent",
+      "searchLabel": "לב הפארק — שכירות",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 12000,
+      "rooms": 4.5,
+      "city": "רעננה",
+      "firstSeenAt": "2026-05-12T23:19:08.797Z",
+      "lastSeenAt": "2026-05-12T23:19:08.797Z"
     }
   }
 }
