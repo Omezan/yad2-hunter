@@ -3250,19 +3250,6 @@
       "firstSeenAt": "2026-05-10T16:45:05.125Z",
       "lastSeenAt": "2026-05-12T05:44:04.292Z"
     },
-    "center-and-sharon/z9f5mbwp": {
-      "externalId": "center-and-sharon/z9f5mbwp",
-      "title": "דירה, חגלה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/z9f5mbwp",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 4,
-      "city": "חגלה",
-      "firstSeenAt": "2026-05-10T16:45:05.125Z",
-      "lastSeenAt": "2026-05-12T02:03:11.878Z"
-    },
     "coastal-north/zsxrl1p3": {
       "externalId": "coastal-north/zsxrl1p3",
       "title": "דירת גן, אחיהוד",
@@ -3444,6 +3431,19 @@
       "city": "חגלה",
       "firstSeenAt": "2026-05-12T05:44:04.292Z",
       "lastSeenAt": "2026-05-12T05:44:04.292Z"
+    },
+    "center-and-sharon/jq25ij08": {
+      "externalId": "center-and-sharon/jq25ij08",
+      "title": "בית פרטי/ קוטג', יד חנה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/jq25ij08",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 6,
+      "city": "יד חנה",
+      "firstSeenAt": "2026-05-12T06:48:21.577Z",
+      "lastSeenAt": "2026-05-12T06:48:21.577Z"
     }
   }
 }
