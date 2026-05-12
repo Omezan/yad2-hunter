@@ -13,6 +13,10 @@ const {
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest
 } = require('../services/telegram');
+const {
+  sendManualScanNoNewAdsEmail,
+  sendNewAdsDigestEmail
+} = require('../services/email');
 
 const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
@@ -21,6 +25,51 @@ function parseIdList(raw) {
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+// Build a map searchId -> notifyVia by walking the active search list.
+// Defaults to 'telegram' for anything without an explicit channel,
+// preserving the historical behavior of the original 5 districts.
+function buildNotifyChannelMap(searches = []) {
+  const map = new Map();
+  for (const search of searches) {
+    if (!search || !search.id) continue;
+    map.set(search.id, search.notifyVia === 'email' ? 'email' : 'telegram');
+  }
+  return map;
+}
+
+// Split a list of ads by which channel their searchId routes to.
+// Ads with an unknown searchId fall back to Telegram (the historical
+// default) so we never silently lose a notification.
+function partitionAdsByChannel(ads, channelMap) {
+  const telegramAds = [];
+  const emailAds = [];
+  for (const ad of Array.isArray(ads) ? ads : []) {
+    if (!ad) continue;
+    const channel = channelMap.get(ad.searchId) || 'telegram';
+    if (channel === 'email') emailAds.push(ad);
+    else telegramAds.push(ad);
+  }
+  return { telegramAds, emailAds };
+}
+
+// Decide which channels deserve a "no new ads" manual-scan notice.
+// We only send it on the channel the user effectively asked about:
+//   - If they explicitly selected a district set on the dashboard,
+//     the notice fires for the channel(s) those searches notify on.
+//   - If they ran the global cron-style scan (no explicit selection),
+//     we keep the historical Telegram-only notice.
+function pickManualNoticeChannels({ explicitlyRequestedIds, channelMap }) {
+  if (!explicitlyRequestedIds || !explicitlyRequestedIds.length) {
+    return { telegram: true, email: false };
+  }
+  const channels = { telegram: false, email: false };
+  for (const id of explicitlyRequestedIds) {
+    const ch = channelMap.get(id) || 'telegram';
+    channels[ch] = true;
+  }
+  return channels;
 }
 
 // Decide which ads should still trigger a Telegram digest. By default,
@@ -136,15 +185,31 @@ async function runOnce(options = {}) {
       existingAds
     });
 
+    // Route ads to their notification channel. The original 5 moshav
+    // districts default to Telegram (no change to legacy behavior).
+    // The Lev HaPark watch (lev-hapark-*) carries `notifyVia: 'email'`
+    // in its search config and is routed to the email digest instead.
+    const channelMap = buildNotifyChannelMap(searches);
+    const { telegramAds: byTelegramChannel, emailAds: byEmailChannel } =
+      partitionAdsByChannel(relevantNewAds, channelMap);
+
     // Telegram-only filter: keeps the data layer (seen / dashboard /
     // health-check) untouched while honouring the user's preference
-    // not to be paged about specific districts.
+    // not to be paged about specific districts. Applied only on the
+    // Telegram branch — email recipients see everything from their
+    // own searches.
     const telegramAds = selectAdsForTelegram({
-      ads: relevantNewAds,
+      ads: byTelegramChannel,
       suppressDistrictIds,
       explicitlyRequestedIds
     });
-    const suppressedAdsCount = relevantNewAds.length - telegramAds.length;
+    const suppressedAdsCount = byTelegramChannel.length - telegramAds.length;
+    const emailAds = byEmailChannel;
+
+    const manualNoticeChannels = pickManualNoticeChannels({
+      explicitlyRequestedIds,
+      channelMap
+    });
 
     let telegramResult = { skipped: true, reason: 'No new ads' };
     if (telegramAds.length > 0) {
@@ -152,7 +217,7 @@ async function runOnce(options = {}) {
         newAds: telegramAds,
         runStartedAt: startedAt
       });
-    } else if (MANUAL_TRIGGERS.has(trigger)) {
+    } else if (MANUAL_TRIGGERS.has(trigger) && manualNoticeChannels.telegram) {
       telegramResult = await sendManualScanNoNewAdsNotice({
         runStartedAt: startedAt
       });
@@ -161,6 +226,18 @@ async function runOnce(options = {}) {
         skipped: true,
         reason: `All ${suppressedAdsCount} new ads belong to suppressed districts`
       };
+    }
+
+    let emailResult = { skipped: true, reason: 'No new ads' };
+    if (emailAds.length > 0) {
+      emailResult = await sendNewAdsDigestEmail({
+        newAds: emailAds,
+        runStartedAt: startedAt
+      });
+    } else if (MANUAL_TRIGGERS.has(trigger) && manualNoticeChannels.email) {
+      emailResult = await sendManualScanNoNewAdsEmail({
+        runStartedAt: startedAt
+      });
     }
 
     const runEntry = {
@@ -174,8 +251,10 @@ async function runOnce(options = {}) {
       candidateNewAds: newCandidates.length,
       relevantNewAds: relevantNewAds.length,
       notifiedNewAds: telegramAds.length,
+      notifiedEmailAds: emailAds.length,
       suppressedNewAds: suppressedAdsCount,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
+      emailSent: Boolean(emailResult && !emailResult.skipped),
       errors: scrapeResult.errors
     };
 
@@ -188,7 +267,8 @@ async function runOnce(options = {}) {
       suppressDistrictIds,
       rejectionCounts,
       droppedNewCandidates,
-      telegramResult
+      telegramResult,
+      emailResult
     };
   } catch (error) {
     recordRun({
@@ -202,6 +282,7 @@ async function runOnce(options = {}) {
       candidateNewAds: 0,
       relevantNewAds: 0,
       telegramSent: false,
+      emailSent: false,
       errors: [{ message: error.message }]
     });
     throw error;
@@ -236,5 +317,8 @@ if (require.main === module) {
 
 module.exports = {
   runOnce,
-  selectAdsForTelegram
+  selectAdsForTelegram,
+  buildNotifyChannelMap,
+  partitionAdsByChannel,
+  pickManualNoticeChannels
 };

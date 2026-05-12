@@ -41,6 +41,21 @@ const env = {
   // northern district as per the user's request.
   TELEGRAM_SUPPRESS_DISTRICT_IDS:
     process.env.TELEGRAM_SUPPRESS_DISTRICT_IDS || 'north-valleys',
+  // Email transport for the Lev HaPark watch (and any future search
+  // tagged with `notifyVia: 'email'`). All five SMTP_* variables are
+  // required for an actual send — when any of them is missing the
+  // email service skips gracefully (mirrors the Telegram service).
+  EMAIL_NOTIFICATIONS_ENABLED: parseBoolean(
+    process.env.EMAIL_NOTIFICATIONS_ENABLED,
+    true
+  ),
+  SMTP_HOST: process.env.SMTP_HOST || '',
+  SMTP_PORT: parseInteger(process.env.SMTP_PORT, 465),
+  SMTP_SECURE: parseBoolean(process.env.SMTP_SECURE, true),
+  SMTP_USER: process.env.SMTP_USER || '',
+  SMTP_PASS: process.env.SMTP_PASS || '',
+  SMTP_FROM: process.env.SMTP_FROM || '',
+  EMAIL_RECIPIENTS: process.env.EMAIL_RECIPIENTS || 'ohadmezan@gmail.com',
   STATE_DIR: process.env.STATE_DIR || path.resolve(process.cwd(), 'state'),
   HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
   SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30),

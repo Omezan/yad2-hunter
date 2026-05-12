@@ -19,6 +19,7 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 - `coastal-north`
 - `north-and-valleys`
 - `jerusalem-area`
+- `lev-hapark-rent` / `lev-hapark-sale` — שכונת לב הפארק, רעננה (5+ חדרים), שכירות ומכירה. החיפושים האלה לא שולחים ל-Telegram אלא ל-email לפי `notifyVia: 'email'`, ומופיעים בדאשבורד תחת `/lev-hapark`.
 
 ה-URLs עצמם מוגדרים ב-`src/config/searches.js`.
 
@@ -27,8 +28,16 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 1. ב־GitHub: `Settings` → `Secrets and variables` → `Actions` → `New repository secret`. להוסיף שני סודות:
    - `TELEGRAM_BOT_TOKEN`
    - `TELEGRAM_CHAT_ID`
-2. ב־`Settings` → `Actions` → `General` → `Workflow permissions` לוודא שמסומן `Read and write permissions`.
-3. אחרי שהקוד נדחף, להיכנס ל-`Actions` → `Yad2 Scan` → `Run workflow` כדי להפעיל ידנית פעם ראשונה. מהריצה הבאה והלאה הוא ירוץ אוטומטית כל 5 דקות.
+2. אם רוצים גם להפעיל את ה-watch של לב הפארק (email), להוסיף גם:
+   - `SMTP_HOST` — לדוגמה `smtp.gmail.com`
+   - `SMTP_PORT` — לדוגמה `465`
+   - `SMTP_SECURE` — `true` עבור 465, `false` עבור 587
+   - `SMTP_USER` — שם המשתמש (כתובת המייל ששולחת)
+   - `SMTP_PASS` — App Password (לא הסיסמה הרגילה של Google)
+   - `SMTP_FROM` — `"Yad2 Hunter <you@example.com>"`
+   - `EMAIL_RECIPIENTS` — נמען / רשימה מופרדת בפסיקים (ברירת מחדל בקוד: `ohadmezan@gmail.com`)
+3. ב־`Settings` → `Actions` → `General` → `Workflow permissions` לוודא שמסומן `Read and write permissions`.
+4. אחרי שהקוד נדחף, להיכנס ל-`Actions` → `Yad2 Scan` → `Run workflow` כדי להפעיל ידנית פעם ראשונה. מהריצה הבאה והלאה הוא ירוץ אוטומטית כל 5 דקות.
 
 ## מה קורה בריצה הראשונה
 
@@ -39,11 +48,18 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 מעבר לסודות, אפשר להגדיר ב-`.env` או ב־workflow:
 
 - `TELEGRAM_NOTIFICATIONS_ENABLED` — ברירת מחדל `true`.
+- `EMAIL_NOTIFICATIONS_ENABLED` — ברירת מחדל `true`. אם חסר אחד מה-`SMTP_*` השירות מדלג בלי שגיאה.
 - `PLAYWRIGHT_HEADLESS` — ברירת מחדל `true`.
 - `SEARCH_TIMEOUT_MS` — ברירת מחדל `60000`.
-- `ENABLED_SEARCH_IDS` — לסינון לקבוצת חיפושים מסוימת (למשל `center-sharon,south`).
+- `ENABLED_SEARCH_IDS` — לסינון לקבוצת חיפושים מסוימת (למשל `center-sharon,south` או `lev-hapark-rent,lev-hapark-sale`).
 - `HISTORY_LIMIT` — כמה ריצות לזכור ב-`runs.json`. ברירת מחדל `50`.
 - `SEEN_RETENTION_DAYS` — לכמה ימים לשמור מודעה ב-`seen-ads.json`. ברירת מחדל `30`.
+
+### Lev HaPark email watch
+
+- בדאשבורד יש דף נפרד `/lev-hapark` עם כפתור "הרץ סריקה" ייעודי שמפעיל רק את שני החיפושים האלה.
+- כשהריצה מוצאת מודעות חדשות בלב הפארק היא שולחת מייל ל-`EMAIL_RECIPIENTS` (במקום Telegram). חמשת ה-`SMTP_*` ו-`EMAIL_RECIPIENTS` צריכים להיות מוגדרים כסודות ב-GitHub Actions וגם בקובץ `.env` המקומי.
+- אם רוצים לבטל זמנית, להגדיר `EMAIL_NOTIFICATIONS_ENABLED=false`. המודעות עדיין יישמרו ב-`seen-ads.json` ויופיעו בדאשבורד.
 
 ## הרצה מקומית (אופציונלי)
 

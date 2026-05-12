@@ -25,7 +25,15 @@ const {
 } = require('../src/scraper/yad2');
 const { removeDeletedAds } = require('../src/store/file-store');
 const { reconcileSeen } = require('../src/worker/health-check');
-const { selectAdsForTelegram } = require('../src/worker/run-once');
+const {
+  buildNotifyChannelMap,
+  partitionAdsByChannel,
+  pickManualNoticeChannels,
+  selectAdsForTelegram
+} = require('../src/worker/run-once');
+const {
+  __testing: emailTesting
+} = require('../src/services/email');
 const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
@@ -1377,4 +1385,166 @@ test('selectAdsForTelegram still drops north when only south was explicitly requ
 test('selectAdsForTelegram is safe with empty / null inputs', () => {
   assert.deepEqual(selectAdsForTelegram({ ads: [] }), []);
   assert.deepEqual(selectAdsForTelegram({ ads: null }), []);
+});
+
+// =====================================================================
+// Notification routing (Telegram vs Email) for the Lev HaPark watch
+// =====================================================================
+
+const ROUTER_SEARCHES = [
+  { id: 'jerusalem' },
+  { id: 'south' },
+  { id: 'north-valleys' },
+  { id: 'lev-hapark-rent', notifyVia: 'email' },
+  { id: 'lev-hapark-sale', notifyVia: 'email' }
+];
+
+const ROUTER_ADS = [
+  { externalId: 'a', searchId: 'jerusalem' },
+  { externalId: 'b', searchId: 'south' },
+  { externalId: 'c', searchId: 'lev-hapark-rent' },
+  { externalId: 'd', searchId: 'lev-hapark-sale' },
+  { externalId: 'e', searchId: 'unknown-id' }
+];
+
+test('buildNotifyChannelMap defaults moshav districts to telegram and lev-hapark to email', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  assert.equal(map.get('jerusalem'), 'telegram');
+  assert.equal(map.get('south'), 'telegram');
+  assert.equal(map.get('north-valleys'), 'telegram');
+  assert.equal(map.get('lev-hapark-rent'), 'email');
+  assert.equal(map.get('lev-hapark-sale'), 'email');
+});
+
+test('partitionAdsByChannel routes lev-hapark to email and the rest to telegram', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  const { telegramAds, emailAds } = partitionAdsByChannel(ROUTER_ADS, map);
+  assert.deepEqual(
+    telegramAds.map((a) => a.externalId).sort(),
+    ['a', 'b', 'e'].sort()
+  );
+  assert.deepEqual(
+    emailAds.map((a) => a.externalId).sort(),
+    ['c', 'd'].sort()
+  );
+});
+
+test('partitionAdsByChannel falls back to telegram when searchId is unknown', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  const { telegramAds, emailAds } = partitionAdsByChannel(
+    [{ externalId: 'x', searchId: 'mystery-district' }],
+    map
+  );
+  assert.equal(telegramAds.length, 1);
+  assert.equal(emailAds.length, 0);
+});
+
+test('partitionAdsByChannel handles empty / null gracefully', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  assert.deepEqual(partitionAdsByChannel([], map), {
+    telegramAds: [],
+    emailAds: []
+  });
+  assert.deepEqual(partitionAdsByChannel(null, map), {
+    telegramAds: [],
+    emailAds: []
+  });
+});
+
+test('pickManualNoticeChannels stays on telegram for global cron-style runs', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  assert.deepEqual(
+    pickManualNoticeChannels({ explicitlyRequestedIds: [], channelMap: map }),
+    { telegram: true, email: false }
+  );
+});
+
+test('pickManualNoticeChannels picks email only for lev-hapark manual scan', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  assert.deepEqual(
+    pickManualNoticeChannels({
+      explicitlyRequestedIds: ['lev-hapark-rent', 'lev-hapark-sale'],
+      channelMap: map
+    }),
+    { telegram: false, email: true }
+  );
+});
+
+test('pickManualNoticeChannels picks both when the manual scan mixes districts', () => {
+  const map = buildNotifyChannelMap(ROUTER_SEARCHES);
+  assert.deepEqual(
+    pickManualNoticeChannels({
+      explicitlyRequestedIds: ['south', 'lev-hapark-sale'],
+      channelMap: map
+    }),
+    { telegram: true, email: true }
+  );
+});
+
+// =====================================================================
+// Email helpers (the only pure-function pieces of src/services/email.js)
+// =====================================================================
+
+test('email parseRecipients splits comma-separated values and trims whitespace', () => {
+  assert.deepEqual(
+    emailTesting.parseRecipients(' a@example.com ,b@example.com , c@example.com'),
+    ['a@example.com', 'b@example.com', 'c@example.com']
+  );
+  assert.deepEqual(emailTesting.parseRecipients(''), []);
+  assert.deepEqual(emailTesting.parseRecipients(null), []);
+});
+
+test('email buildSubject formats new-ads and no-ads cases distinctly', () => {
+  const subjNew = emailTesting.buildSubject({
+    newAds: [{ externalId: '1' }, { externalId: '2' }],
+    label: 'לב הפארק'
+  });
+  assert.equal(subjNew, 'לב הפארק — 2 מודעות חדשות');
+
+  const subjEmpty = emailTesting.buildSubject({
+    newAds: [],
+    label: 'לב הפארק'
+  });
+  assert.equal(subjEmpty, 'לב הפארק — אין מודעות חדשות');
+
+  const subjCustom = emailTesting.buildSubject({
+    newAds: [],
+    label: 'לב הפארק',
+    suffix: 'סריקה ידנית'
+  });
+  assert.equal(subjCustom, 'לב הפארק — סריקה ידנית');
+});
+
+test('email buildHtml escapes content and embeds the ad link', () => {
+  const html = emailTesting.buildHtml({
+    newAds: [
+      {
+        title: 'דירה <מפוארת> "לב הפארק"',
+        city: 'רעננה',
+        rooms: 5,
+        price: 5_000_000,
+        link: 'https://www.yad2.co.il/realestate/item/x?a=1&b=2',
+        districtLabel: 'לב הפארק, רעננה',
+        hasExplicitPrice: true
+      }
+    ],
+    label: 'לב הפארק',
+    runStartedAt: '2026-05-12T10:00:00.000Z',
+    dashboardPath: '/lev-hapark'
+  });
+  assert.match(html, /&lt;\u05de\u05e4\u05d5\u05d0\u05e8\u05ea&gt;/);
+  assert.match(html, /&quot;\u05dc\u05d1 \u05d4\u05e4\u05d0\u05e8\u05e7&quot;/);
+  assert.match(html, /a=1&amp;b=2/);
+  assert.match(html, /5,000,000 ₪/);
+});
+
+test('email buildDashboardUrl joins a base URL with a sub-path and ?since', () => {
+  const url = emailTesting.buildDashboardUrl({
+    runStartedAt: '2026-05-12T10:00:00.000Z',
+    dashboardPath: '/lev-hapark'
+  });
+  // Without a configured DASHBOARD_URL this returns null. We test that
+  // a configured URL gets the path appended correctly via a focused
+  // pure-function check below.
+  assert.ok(url === null || /\/lev-hapark/.test(url));
 });

@@ -38,6 +38,28 @@ const ALL_SEARCHES = [
     districtLabel: 'צפון והעמקים',
     url: 'https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9',
     settlementsOnly: true
+  },
+  // Lev HaPark, Ra'anana watch. Lives outside the moshav-style
+  // network — these are urban neighborhood searches with no
+  // `settlements=1` constraint and routed to email instead of
+  // Telegram (per the dedicated /lev-hapark dashboard page).
+  {
+    id: 'lev-hapark-rent',
+    label: 'לב הפארק — שכירות',
+    districtKey: 'lev-hapark',
+    districtLabel: 'לב הפארק, רעננה',
+    url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
+    settlementsOnly: false,
+    notifyVia: 'email'
+  },
+  {
+    id: 'lev-hapark-sale',
+    label: 'לב הפארק — מכירה',
+    districtKey: 'lev-hapark',
+    districtLabel: 'לב הפארק, רעננה',
+    url: 'https://www.yad2.co.il/realestate/forsale/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
+    settlementsOnly: false,
+    notifyVia: 'email'
   }
 ];
 

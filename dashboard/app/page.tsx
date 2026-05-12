@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import AdCard from './components/AdCard';
 import FilterBar, {
   type FreshnessFilter,
@@ -436,17 +437,19 @@ export default function DashboardPage() {
   return (
     <main className="layout">
       <header className="header">
-        {freshAds.length > 0 ? (
-          <div className="header-info">
-            <div className="header-badges">
+        <div className="header-info">
+          <div className="header-badges">
+            <Link href="/lev-hapark" className="lev-home-chip" title="מודעות לב הפארק, רעננה">
+              <span className="lev-home-chip-icon" aria-hidden="true">🌳</span>
+              <span>לב הפארק</span>
+            </Link>
+            {freshAds.length > 0 ? (
               <span className="badge badge-soft">
                 {freshAds.length} חדשות{sinceLabel ? ` מאז ${sinceLabel}` : ''}
               </span>
-            </div>
+            ) : null}
           </div>
-        ) : (
-          <div className="header-info" aria-hidden="true" />
-        )}
+        </div>
         <div className="header-brand">
           <h1 className="brand">
             <span className="brand-icon" aria-hidden="true">🏡</span>

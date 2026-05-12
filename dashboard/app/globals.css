@@ -2312,3 +2312,85 @@ input:focus {
   text-align: end;
 }
 
+/* ================================
+ * Lev HaPark page (/lev-hapark)
+ * ================================ */
+.lev-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--type-sm);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-elev);
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.lev-back:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.lev-toolbar {
+  /* The Lev HaPark page has fewer controls; pack everything to the
+   * right (RTL natural) so the toolbar feels balanced. */
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.lev-toolbar .segmented-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lev-toolbar-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.segmented-option.is-active .lev-toolbar-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Home-page link chip pointing at /lev-hapark */
+.lev-home-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(139, 91, 255, 0.18) 0%, rgba(210, 75, 155, 0.18) 100%);
+  border: 1px solid rgba(139, 91, 255, 0.45);
+  color: var(--text);
+  text-decoration: none;
+  font-size: var(--type-sm);
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lev-home-chip:hover {
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(139, 91, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.lev-home-chip-icon {
+  font-size: var(--type-md);
+  line-height: 1;
+}
+

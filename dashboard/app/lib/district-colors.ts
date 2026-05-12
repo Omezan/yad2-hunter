@@ -58,6 +58,22 @@ const PALETTE: Record<string, DistrictColor> = {
     softBg: 'rgba(58, 166, 99, 0.18)',
     softText: '#5fc587',
     softBorder: 'rgba(58, 166, 99, 0.5)'
+  },
+  // Lev HaPark, Ra'anana — urban purple (kept distinct from the
+  // moshav palette so the two watches don't look like the same data).
+  'lev-hapark-rent': {
+    solid: '#8b5bff',
+    solidStrong: '#6a3edd',
+    softBg: 'rgba(139, 91, 255, 0.16)',
+    softText: '#b196ff',
+    softBorder: 'rgba(139, 91, 255, 0.45)'
+  },
+  'lev-hapark-sale': {
+    solid: '#d24b9b',
+    solidStrong: '#a3327a',
+    softBg: 'rgba(210, 75, 155, 0.16)',
+    softText: '#ec8ec1',
+    softBorder: 'rgba(210, 75, 155, 0.45)'
   }
 };
 
