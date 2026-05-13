@@ -611,19 +611,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
     },
-    "south/mbeu4s09": {
-      "externalId": "south/mbeu4s09",
-      "title": "בית פרטי/ קוטג', משען",
-      "link": "https://www.yad2.co.il/realestate/item/south/mbeu4s09",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 7500,
-      "rooms": 4.5,
-      "city": "משען",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T06:24:11.999Z"
-    },
     "south/z3fltncf": {
       "externalId": "south/z3fltncf",
       "title": "משק חקלאי/ נחלה, רווחה",
@@ -842,19 +829,6 @@
       "price": 4700,
       "rooms": 4,
       "city": "כפר ראש הנקרה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T06:24:11.999Z"
-    },
-    "coastal-north/fwrxg3fz": {
-      "externalId": "coastal-north/fwrxg3fz",
-      "title": "בית פרטי/ קוטג', אחיהוד",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/fwrxg3fz",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 5100,
-      "rooms": 5,
-      "city": "אחיהוד",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
     },
@@ -2522,19 +2496,6 @@
       "firstSeenAt": "2026-05-04T10:25:32.358Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
     },
-    "center-and-sharon/f53i476g": {
-      "externalId": "center-and-sharon/f53i476g",
-      "title": "יחידת דיור, יציץ",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/f53i476g",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6000,
-      "rooms": 4,
-      "city": "יציץ",
-      "firstSeenAt": "2026-05-04T14:28:57.420Z",
-      "lastSeenAt": "2026-05-13T06:24:11.999Z"
-    },
     "center-and-sharon/vci2htw3": {
       "externalId": "center-and-sharon/vci2htw3",
       "title": "בית פרטי/ קוטג', ניצני עוז",
@@ -2977,19 +2938,6 @@
       "firstSeenAt": "2026-05-09T07:45:06.911Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
     },
-    "center-and-sharon/rxyvqmfr": {
-      "externalId": "center-and-sharon/rxyvqmfr",
-      "title": "בית פרטי/ קוטג', מזור",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/rxyvqmfr",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 6,
-      "city": "מזור",
-      "firstSeenAt": "2026-05-09T09:10:46.059Z",
-      "lastSeenAt": "2026-05-13T06:24:11.999Z"
-    },
     "north-and-valleys/bus0hi2i": {
       "externalId": "north-and-valleys/bus0hi2i",
       "title": "דו משפחתי, חד נס",
@@ -3170,19 +3118,6 @@
       "rooms": 5,
       "city": "רשפים",
       "firstSeenAt": "2026-05-10T13:57:17.360Z",
-      "lastSeenAt": "2026-05-13T06:24:11.999Z"
-    },
-    "center-and-sharon/k6qs2yua": {
-      "externalId": "center-and-sharon/k6qs2yua",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/k6qs2yua",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5900,
-      "rooms": 4,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-05-10T14:19:11.866Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
     },
     "center-and-sharon/n2p7ij73": {
@@ -3951,6 +3886,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-13T06:24:11.999Z",
       "lastSeenAt": "2026-05-13T06:24:11.999Z"
+    },
+    "south/8xs7kez7": {
+      "externalId": "south/8xs7kez7",
+      "title": "בית פרטי/ קוטג', ביצרון",
+      "link": "https://www.yad2.co.il/realestate/item/south/8xs7kez7",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 8500,
+      "rooms": 4,
+      "city": "ביצרון",
+      "firstSeenAt": "2026-05-13T08:28:59.898Z",
+      "lastSeenAt": "2026-05-13T08:28:59.898Z"
     }
   }
 }
