@@ -182,19 +182,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T02:10:52.909Z"
     },
-    "center-and-sharon/lkal93fm": {
-      "externalId": "center-and-sharon/lkal93fm",
-      "title": "בית פרטי/ קוטג', אחיטוב",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/lkal93fm",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 9000,
-      "rooms": 4,
-      "city": "אחיטוב",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-12T23:59:54.117Z"
-    },
     "center-and-sharon/fhvy18eq": {
       "externalId": "center-and-sharon/fhvy18eq",
       "title": "סאבלט, כפר ידידיה",
@@ -3951,19 +3938,6 @@
       "city": "כרכום",
       "firstSeenAt": "2026-05-12T20:30:43.581Z",
       "lastSeenAt": "2026-05-13T02:10:52.909Z"
-    },
-    "center-and-sharon/sm13l8rd": {
-      "externalId": "center-and-sharon/sm13l8rd",
-      "title": "גג/ פנטהאוז, מרכז דרום, רעננה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sm13l8rd",
-      "searchId": "lev-hapark-rent",
-      "searchLabel": "לב הפארק — שכירות",
-      "districtLabel": "לב הפארק, רעננה",
-      "price": 12000,
-      "rooms": 4.5,
-      "city": "רעננה",
-      "firstSeenAt": "2026-05-12T23:19:08.797Z",
-      "lastSeenAt": "2026-05-12T23:19:08.797Z"
     }
   }
 }
