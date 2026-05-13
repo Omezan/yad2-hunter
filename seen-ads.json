@@ -247,19 +247,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T19:38:38.255Z"
     },
-    "center-and-sharon/p00gh4ag": {
-      "externalId": "center-and-sharon/p00gh4ag",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p00gh4ag",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5700,
-      "rooms": 4,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T17:13:39.218Z"
-    },
     "center-and-sharon/mubl8dty": {
       "externalId": "center-and-sharon/mubl8dty",
       "title": "בית פרטי/ קוטג', פורת",
@@ -454,19 +441,6 @@
       "city": "בת חפר",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T19:38:38.255Z"
-    },
-    "center-and-sharon/0hbd1unz": {
-      "externalId": "center-and-sharon/0hbd1unz",
-      "title": "דירה, בת חפר",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0hbd1unz",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5900,
-      "rooms": 5,
-      "city": "בת חפר",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T14:12:20.517Z"
     },
     "center-and-sharon/gqmts8su": {
       "externalId": "center-and-sharon/gqmts8su",
@@ -714,19 +688,6 @@
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-13T19:38:38.255Z"
-    },
-    "coastal-north/uvzghi7t": {
-      "externalId": "coastal-north/uvzghi7t",
-      "title": "יחידת דיור, צרופה",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/uvzghi7t",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 6600,
-      "rooms": 4,
-      "city": "צרופה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T17:13:39.218Z"
     },
     "coastal-north/7qg20t2y": {
       "externalId": "coastal-north/7qg20t2y",
@@ -2235,19 +2196,6 @@
       "city": "חפצי בה",
       "firstSeenAt": "2026-05-01T13:54:15.776Z",
       "lastSeenAt": "2026-05-13T19:38:38.255Z"
-    },
-    "north-and-valleys/trw2wx58": {
-      "externalId": "north-and-valleys/trw2wx58",
-      "title": "בית פרטי/ קוטג', שדה אליעזר",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/trw2wx58",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8300,
-      "rooms": 5,
-      "city": "שדה אליעזר",
-      "firstSeenAt": "2026-05-02T07:40:30.408Z",
-      "lastSeenAt": "2026-05-13T14:12:20.517Z"
     },
     "north-and-valleys/vfe9usau": {
       "externalId": "north-and-valleys/vfe9usau",
@@ -3860,32 +3808,6 @@
       "city": "פוריה נווה עובד",
       "firstSeenAt": "2026-05-13T12:00:11.482Z",
       "lastSeenAt": "2026-05-13T19:38:38.255Z"
-    },
-    "north-and-valleys/ha50ovr6": {
-      "externalId": "north-and-valleys/ha50ovr6",
-      "title": "בית פרטי/ קוטג', שניר",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ha50ovr6",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 5,
-      "city": "שניר",
-      "firstSeenAt": "2026-05-08T17:04:07.737Z",
-      "lastSeenAt": "2026-05-13T09:40:51.027Z"
-    },
-    "coastal-north/554jdlxm": {
-      "externalId": "coastal-north/554jdlxm",
-      "title": "בית פרטי/ קוטג', בוסתן הגליל",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/554jdlxm",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 100,
-      "rooms": 5,
-      "city": "בוסתן הגליל",
-      "firstSeenAt": "2026-05-12T20:30:43.581Z",
-      "lastSeenAt": "2026-05-13T12:00:11.482Z"
     },
     "jerusalem-area/ji6duidi": {
       "externalId": "jerusalem-area/ji6duidi",
