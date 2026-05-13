@@ -96,4 +96,9 @@ jobs:
           GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          # Comma-separated externalIds the scan silently removed in
+          # this run (currently only Lev HaPark ads). The merge step
+          # uses this to subtract them after merging with origin/state
+          # so a concurrent push can't resurrect them.
+          SEEN_ADS_FORCE_DELETE_IDS: ${{ env.SEEN_ADS_FORCE_DELETE_IDS }}
         run: bash scripts/persist-state.sh

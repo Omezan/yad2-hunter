@@ -29,8 +29,14 @@ const {
   buildNotifyChannelMap,
   partitionAdsByChannel,
   pickManualNoticeChannels,
+  pickSilentPruneSearchIds,
   selectAdsForTelegram
 } = require('../src/worker/run-once');
+const {
+  ALL_SEARCHES,
+  getHealthCheckSearches,
+  getSelfPrunedSearchIds
+} = require('../src/config/searches');
 const {
   __testing: emailTesting
 } = require('../src/services/email');
@@ -448,6 +454,104 @@ test('removeDeletedAds still cleans up the genuinely missing single ad', () => {
   assert.equal(removed.length, 1);
   assert.equal(removed[0].externalId, 'id0');
   assert.equal(skippedDistricts.length, 0);
+});
+
+test('getHealthCheckSearches returns exactly the 5 moshav searches and excludes lev-hapark', () => {
+  const healthCheckIds = getHealthCheckSearches().map((s) => s.id);
+  assert.deepEqual(
+    new Set(healthCheckIds),
+    new Set(['jerusalem', 'center-sharon', 'south', 'coastal-north', 'north-valleys']),
+    'health-check should run exactly on the 5 original moshav districts'
+  );
+  for (const id of healthCheckIds) {
+    assert.ok(!id.startsWith('lev-hapark'), `lev-hapark id ${id} leaked into health-check`);
+  }
+});
+
+test('getSelfPrunedSearchIds returns exactly the lev-hapark searches', () => {
+  const selfPruned = getSelfPrunedSearchIds();
+  assert.equal(selfPruned.size, 2);
+  assert.ok(selfPruned.has('lev-hapark-rent'));
+  assert.ok(selfPruned.has('lev-hapark-sale'));
+});
+
+test('health-check and self-prune sets are disjoint and partition ALL_SEARCHES', () => {
+  // No search should be both health-checked AND self-pruned, and
+  // every configured search should land in exactly one bucket.
+  const healthCheckIds = new Set(getHealthCheckSearches().map((s) => s.id));
+  const selfPrunedIds = getSelfPrunedSearchIds();
+  for (const search of ALL_SEARCHES) {
+    const inHealth = healthCheckIds.has(search.id);
+    const inSelfPrune = selfPrunedIds.has(search.id);
+    assert.ok(
+      inHealth !== inSelfPrune,
+      `${search.id} must be in exactly one of health-check / self-prune (was health=${inHealth} prune=${inSelfPrune})`
+    );
+  }
+});
+
+test('pickSilentPruneSearchIds returns only lev-hapark ids that scraped successfully', () => {
+  const searches = [
+    { id: 'jerusalem' },
+    { id: 'south' },
+    { id: 'lev-hapark-rent' },
+    { id: 'lev-hapark-sale' }
+  ];
+  const selfPrunedIds = new Set(['lev-hapark-rent', 'lev-hapark-sale']);
+  const ids = pickSilentPruneSearchIds({
+    searches,
+    erroredSearchIds: new Set(),
+    selfPrunedIds
+  });
+  assert.deepEqual(ids.sort(), ['lev-hapark-rent', 'lev-hapark-sale']);
+});
+
+test('pickSilentPruneSearchIds drops a lev-hapark search whose scrape errored', () => {
+  const ids = pickSilentPruneSearchIds({
+    searches: [
+      { id: 'lev-hapark-rent' },
+      { id: 'lev-hapark-sale' }
+    ],
+    erroredSearchIds: new Set(['lev-hapark-sale']),
+    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
+  });
+  assert.deepEqual(ids, ['lev-hapark-rent']);
+});
+
+test('pickSilentPruneSearchIds NEVER returns a moshav id, even if scraped successfully', () => {
+  // Regression guard: the moshav data layer must remain owned by the
+  // health-check workflow. The silent-prune step is only ever allowed
+  // to touch ids in selfPrunedIds.
+  const ids = pickSilentPruneSearchIds({
+    searches: [
+      { id: 'jerusalem' },
+      { id: 'south' },
+      { id: 'coastal-north' },
+      { id: 'north-valleys' },
+      { id: 'center-sharon' }
+    ],
+    erroredSearchIds: new Set(),
+    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
+  });
+  assert.deepEqual(ids, []);
+});
+
+test('pickSilentPruneSearchIds tolerates array form for erroredSearchIds and selfPrunedIds', () => {
+  const ids = pickSilentPruneSearchIds({
+    searches: [{ id: 'lev-hapark-rent' }, { id: 'lev-hapark-sale' }],
+    erroredSearchIds: ['lev-hapark-rent'],
+    selfPrunedIds: ['lev-hapark-rent', 'lev-hapark-sale']
+  });
+  assert.deepEqual(ids, ['lev-hapark-sale']);
+});
+
+test('pickSilentPruneSearchIds ignores malformed entries', () => {
+  const ids = pickSilentPruneSearchIds({
+    searches: [null, undefined, { id: '' }, { id: 'lev-hapark-rent' }],
+    erroredSearchIds: new Set(),
+    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
+  });
+  assert.deepEqual(ids, ['lev-hapark-rent']);
 });
 
 test('mergeSeenAds: local-only and remote-only keys are both kept', () => {

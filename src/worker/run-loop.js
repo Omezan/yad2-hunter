@@ -16,11 +16,22 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function persistState() {
+function persistState({ forceDeleteIds = [] } = {}) {
   const script = path.resolve(__dirname, '..', '..', 'scripts', 'persist-state.sh');
+  // The merge step (scripts/merge-state.js) reads
+  // SEEN_ADS_FORCE_DELETE_IDS to subtract specific keys from the
+  // merged seen-ads.json. We pass the silent-prune deletions from the
+  // last runOnce so a concurrent workflow's stale snapshot can't
+  // resurrect them on push.
+  const env = { ...process.env };
+  if (Array.isArray(forceDeleteIds) && forceDeleteIds.length) {
+    env.SEEN_ADS_FORCE_DELETE_IDS = forceDeleteIds.join(',');
+  } else {
+    delete env.SEEN_ADS_FORCE_DELETE_IDS;
+  }
   const result = spawnSync('bash', [script], {
     stdio: 'inherit',
-    env: process.env
+    env
   });
   if (result.status !== 0) {
     console.warn(
@@ -60,10 +71,14 @@ async function main() {
       ).toISOString()} (deadline in ${Math.round((deadline - iterStart) / 1000)}s)`
     );
 
+    let silentRemovedIds = [];
     try {
       const result = await runOnce({ trigger: 'github-actions-loop' });
+      silentRemovedIds = (result.silentPrune?.removed || [])
+        .map((r) => r && r.externalId)
+        .filter(Boolean);
       console.log(
-        `[run-loop] iteration #${iteration} completed: relevantNewAds=${result.relevantNewAds} removedAds=${result.removedAds} totalAds=${result.totalAds}`
+        `[run-loop] iteration #${iteration} completed: relevantNewAds=${result.relevantNewAds} silentlyRemovedAds=${result.silentlyRemovedAds || 0} totalAds=${result.totalAds}`
       );
     } catch (error) {
       exitCode = 1;
@@ -75,7 +90,7 @@ async function main() {
     }
 
     if (persistEachIteration) {
-      persistState();
+      persistState({ forceDeleteIds: silentRemovedIds });
     }
 
     const iterDuration = Date.now() - iterStart;

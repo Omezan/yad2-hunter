@@ -50,7 +50,13 @@ const ALL_SEARCHES = [
     districtLabel: 'לב הפארק, רעננה',
     url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
     settlementsOnly: false,
-    notifyVia: 'email'
+    notifyVia: 'email',
+    // The Lev HaPark watch is intentionally NOT touched by the
+    // health-check workflow (no "ודא אמינות" button on /lev-hapark,
+    // no Telegram health-check rows). Removals of delisted ads are
+    // done silently by the scan worker itself — see run-once.js for
+    // the `selfPruneSearchIds` branch.
+    excludeFromHealthCheck: true
   },
   {
     id: 'lev-hapark-sale',
@@ -59,7 +65,8 @@ const ALL_SEARCHES = [
     districtLabel: 'לב הפארק, רעננה',
     url: 'https://www.yad2.co.il/realestate/forsale/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
     settlementsOnly: false,
-    notifyVia: 'email'
+    notifyVia: 'email',
+    excludeFromHealthCheck: true
   }
 ];
 
@@ -75,6 +82,29 @@ function getEnabledSearches(enabledIds = '') {
 
   const enabledSet = new Set(requestedIds);
   return ALL_SEARCHES.filter((search) => enabledSet.has(search.id));
+}
+
+// Subset of searches the health-check workflow reconciles. Searches
+// tagged with `excludeFromHealthCheck: true` (currently the Lev HaPark
+// watch) are skipped entirely: the worker never scrapes them in the
+// health-check context and never reports diffs on them. Their seen-ads
+// upkeep (silent removal of delisted listings) is delegated to the
+// scan worker — see src/worker/run-once.js#silentPrune.
+function getHealthCheckSearches() {
+  return ALL_SEARCHES.filter((search) => !search.excludeFromHealthCheck);
+}
+
+// Subset of searches the scan worker self-prunes (delisted listings
+// removed from seen-ads.json silently, no Telegram/email). Currently
+// equivalent to the inverse of getHealthCheckSearches: any search that
+// opts out of the health-check must have *some* mechanism to drop
+// stale ads, and we route that responsibility to the scan itself.
+function getSelfPrunedSearchIds() {
+  return new Set(
+    ALL_SEARCHES.filter((search) => search.excludeFromHealthCheck).map(
+      (search) => search.id
+    )
+  );
 }
 
 // Pulls the price/room ceiling-and-floor encoded in the search URL,
@@ -112,5 +142,7 @@ module.exports = {
   ALL_SEARCHES,
   getEnabledSearches,
   getFilterLimits,
-  buildFilterLimitsMap
+  buildFilterLimitsMap,
+  getHealthCheckSearches,
+  getSelfPrunedSearchIds
 };
