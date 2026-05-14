@@ -910,19 +910,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-14T02:13:24.249Z"
     },
-    "north-and-valleys/0spql7lx": {
-      "externalId": "north-and-valleys/0spql7lx",
-      "title": "בית פרטי/ קוטג', עין יעקב",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/0spql7lx",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 4.5,
-      "city": "עין יעקב",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T23:56:48.672Z"
-    },
     "north-and-valleys/56j17ut4": {
       "externalId": "north-and-valleys/56j17ut4",
       "title": "בית פרטי/ קוטג', מגן שאול",
@@ -1715,32 +1702,6 @@
       "city": "ביריה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-14T02:13:24.249Z"
-    },
-    "north-and-valleys/7gl4sgtq": {
-      "externalId": "north-and-valleys/7gl4sgtq",
-      "title": "יחידת דיור, מצפה אבי''ב, מצפה אבי\"ב",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/7gl4sgtq",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4000,
-      "rooms": 4,
-      "city": "מצפה אבי\"ב",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T23:56:48.672Z"
-    },
-    "north-and-valleys/eh5i2d9s": {
-      "externalId": "north-and-valleys/eh5i2d9s",
-      "title": "דו משפחתי, הררית",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/eh5i2d9s",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4500,
-      "rooms": 4,
-      "city": "הררית",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T23:56:48.672Z"
     },
     "north-and-valleys/47nk4b6d": {
       "externalId": "north-and-valleys/47nk4b6d",
@@ -3899,71 +3860,6 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-13T19:38:38.255Z",
       "lastSeenAt": "2026-05-14T02:13:24.249Z"
-    },
-    "center-and-sharon/p00gh4ag": {
-      "externalId": "center-and-sharon/p00gh4ag",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p00gh4ag",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5700,
-      "rooms": 4,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T17:13:39.218Z"
-    },
-    "center-and-sharon/0hbd1unz": {
-      "externalId": "center-and-sharon/0hbd1unz",
-      "title": "דירה, בת חפר",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0hbd1unz",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 5900,
-      "rooms": 5,
-      "city": "בת חפר",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T14:12:20.517Z"
-    },
-    "coastal-north/uvzghi7t": {
-      "externalId": "coastal-north/uvzghi7t",
-      "title": "יחידת דיור, צרופה",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/uvzghi7t",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 6600,
-      "rooms": 4,
-      "city": "צרופה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-13T17:13:39.218Z"
-    },
-    "north-and-valleys/trw2wx58": {
-      "externalId": "north-and-valleys/trw2wx58",
-      "title": "בית פרטי/ קוטג', שדה אליעזר",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/trw2wx58",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8300,
-      "rooms": 5,
-      "city": "שדה אליעזר",
-      "firstSeenAt": "2026-05-02T07:40:30.408Z",
-      "lastSeenAt": "2026-05-13T14:12:20.517Z"
-    },
-    "north-and-valleys/ha50ovr6": {
-      "externalId": "north-and-valleys/ha50ovr6",
-      "title": "בית פרטי/ קוטג', שניר",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ha50ovr6",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": null,
-      "rooms": 5,
-      "city": "שניר",
-      "firstSeenAt": "2026-05-08T17:04:07.737Z",
-      "lastSeenAt": "2026-05-13T09:40:51.027Z"
     },
     "coastal-north/554jdlxm": {
       "externalId": "coastal-north/554jdlxm",
