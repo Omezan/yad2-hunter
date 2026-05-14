@@ -1807,19 +1807,6 @@
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-14T11:48:58.868Z"
     },
-    "jerusalem-area/edzhmq4u": {
-      "externalId": "jerusalem-area/edzhmq4u",
-      "title": "בית פרטי/ קוטג', מוצא עילית",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/edzhmq4u",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 7500,
-      "rooms": 4,
-      "city": "מוצא עילית",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-14T09:32:14.907Z"
-    },
     "south/itne106h": {
       "externalId": "south/itne106h",
       "title": "מרתף/ פרטר, מרכז שפירא",
@@ -2561,19 +2548,6 @@
       "firstSeenAt": "2026-05-06T10:29:34.655Z",
       "lastSeenAt": "2026-05-14T11:48:58.868Z"
     },
-    "north-and-valleys/ovl2wbwl": {
-      "externalId": "north-and-valleys/ovl2wbwl",
-      "title": "בית פרטי/ קוטג', חד נס",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ovl2wbwl",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 6500,
-      "rooms": 6,
-      "city": "חד נס",
-      "firstSeenAt": "2026-05-06T12:26:41.972Z",
-      "lastSeenAt": "2026-05-14T06:21:57.830Z"
-    },
     "center-and-sharon/65jxlxj1": {
       "externalId": "center-and-sharon/65jxlxj1",
       "title": "דירה, צור יצחק",
@@ -2950,19 +2924,6 @@
       "city": "הזורעים",
       "firstSeenAt": "2026-05-10T09:25:51.192Z",
       "lastSeenAt": "2026-05-14T11:48:58.868Z"
-    },
-    "jerusalem-area/svvxnuba": {
-      "externalId": "jerusalem-area/svvxnuba",
-      "title": "דירה, סנסן, צור הדסה",
-      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/svvxnuba",
-      "searchId": "jerusalem",
-      "searchLabel": "ירושלים",
-      "districtLabel": "ירושלים והסביבה",
-      "price": 7500,
-      "rooms": 4,
-      "city": "צור הדסה",
-      "firstSeenAt": "2026-05-10T11:33:41.033Z",
-      "lastSeenAt": "2026-05-14T06:21:57.830Z"
     },
     "north-and-valleys/2aw13fbt": {
       "externalId": "north-and-valleys/2aw13fbt",
@@ -3834,19 +3795,6 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-13T19:38:38.255Z",
       "lastSeenAt": "2026-05-14T11:48:58.868Z"
-    },
-    "coastal-north/554jdlxm": {
-      "externalId": "coastal-north/554jdlxm",
-      "title": "בית פרטי/ קוטג', בוסתן הגליל",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/554jdlxm",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 100,
-      "rooms": 5,
-      "city": "בוסתן הגליל",
-      "firstSeenAt": "2026-05-12T20:30:43.581Z",
-      "lastSeenAt": "2026-05-14T09:32:14.907Z"
     },
     "north-and-valleys/snxjxydf": {
       "externalId": "north-and-valleys/snxjxydf",
