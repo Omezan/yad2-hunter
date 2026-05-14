@@ -2,6 +2,30 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-14T02:07:59.398Z",
+      "completedAt": "2026-05-14T02:13:25.640Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 270,
+      "preFilteredAds": 270,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "silentlyRemovedAds": 1,
+      "telegramSent": false,
+      "emailSent": true,
+      "errors": [
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-14T00:21:49.210Z",
       "completedAt": "2026-05-14T00:35:44.506Z",
       "status": "partial",
@@ -1558,21 +1582,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-12T11:12:12.855Z",
-      "completedAt": "2026-05-12T11:15:09.899Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 266,
-      "preFilteredAds": 266,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 0,
-      "suppressedNewAds": 1,
-      "telegramSent": false,
-      "errors": []
     }
   ]
 }
