@@ -2,6 +2,60 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-14T06:47:01.226Z",
+      "completedAt": "2026-05-14T07:00:42.341Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "silentlyRemovedAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-14T06:17:01.227Z",
       "completedAt": "2026-05-14T06:21:58.571Z",
       "status": "partial",
@@ -1583,23 +1637,6 @@
       "relevantNewAds": 0,
       "notifiedNewAds": 0,
       "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": true,
-      "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-12T12:54:23.663Z",
-      "completedAt": "2026-05-12T12:55:09.999Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 31,
-      "preFilteredAds": 31,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 1,
       "suppressedNewAds": 0,
       "telegramSent": false,
       "emailSent": true,
