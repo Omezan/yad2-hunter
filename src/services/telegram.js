@@ -251,9 +251,9 @@ function buildHealthCheckMessages({ rows, allMatch, generatedAt, reconciliation 
   const summary = formatHealthCheckSummary({
     rows,
     allMatch,
-    generatedAt,
     reconciliation
   });
+  const footer = formatHealthCheckFooter({ generatedAt });
 
   // Send diff details whenever any row has either an unresolved diff
   // (extra / missing) OR a reconciled diff (added / removed). Even if
@@ -272,15 +272,41 @@ function buildHealthCheckMessages({ rows, allMatch, generatedAt, reconciliation 
     );
   });
 
+  // No diff to report → just summary + footer in one message.
   if (!hasAnyDiff) {
-    return [summary];
+    return [appendFooter(summary, footer)];
   }
 
   const diffMessages = buildHealthCheckDiffMessages(rows);
-  return [summary, ...diffMessages];
+
+  // Happy path: everything fits in a single Telegram message. We
+  // concatenate summary + diff section + footer (in that order) so
+  // the user sees one cohesive report rather than two separate pings.
+  if (diffMessages.length === 1) {
+    const combined = `${summary}\n\n${diffMessages[0]}`;
+    const withFooter = appendFooter(combined, footer);
+    if (Array.from(withFooter).length <= TELEGRAM_MAX_CHARS) {
+      return [withFooter];
+    }
+  }
+
+  // Fallback: the diff section was already chunked by
+  // buildHealthCheckDiffMessages (because it exceeded ~3500 chars).
+  // Keep the historical "summary, then one or more diff chunks"
+  // shape, but make sure the footer rides along on the LAST chunk so
+  // the user always knows when the report was generated.
+  const withFooterOnLast = diffMessages.map((msg, idx) =>
+    idx === diffMessages.length - 1 ? appendFooter(msg, footer) : msg
+  );
+  return [summary, ...withFooterOnLast];
 }
 
-function formatHealthCheckSummary({ rows, allMatch, generatedAt, reconciliation } = {}) {
+function appendFooter(text, footer) {
+  if (!footer) return text;
+  return `${text}\n\n${footer}`;
+}
+
+function formatHealthCheckSummary({ rows, allMatch, reconciliation } = {}) {
   const headerLabel = '🩺 Yad2 Hunter — בדיקת תקינות';
   const statusLine = allMatch
     ? '✅ הכל תקין — Real תואם ל-Expected בכל האזורים'
@@ -322,22 +348,27 @@ function formatHealthCheckSummary({ rows, allMatch, generatedAt, reconciliation 
     )}`
   );
 
+  const reconciliationBlock = reconciliationLine ? `\n${reconciliationLine}` : '';
+
+  return `${headerLabel}\n${statusLine}${reconciliationBlock}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\``;
+}
+
+// The "נבדק: …\nלוח בקרה: …" tail. Lives on its own so the
+// unified health-check message can place it at the very bottom,
+// after both the summary table and the diff details.
+function formatHealthCheckFooter({ generatedAt } = {}) {
+  const lines = [];
   const timestamp = generatedAt
     ? new Date(generatedAt).toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' })
     : null;
-  const footerLines = [];
   if (timestamp) {
-    footerLines.push(`נבדק: ${timestamp}`);
+    lines.push(`נבדק: ${timestamp}`);
   }
   const dashboard = (env.DASHBOARD_URL || '').trim();
   if (dashboard) {
-    footerLines.push(`לוח בקרה: ${dashboard}`);
+    lines.push(`לוח בקרה: ${dashboard}`);
   }
-  const footer = footerLines.length ? `\n${footerLines.join('\n')}` : '';
-
-  const reconciliationBlock = reconciliationLine ? `\n${reconciliationLine}` : '';
-
-  return `${headerLabel}\n${statusLine}${reconciliationBlock}\n\n\`\`\`\n${tableLines.join('\n')}\n\`\`\`${footer}`;
+  return lines.length ? lines.join('\n') : null;
 }
 
 function formatReconciliationLine(reconciliation) {
@@ -422,54 +453,45 @@ function formatDiffBlockForRow(row) {
     lines.push(`  שגיאה: ${row.error}`);
   }
 
-  if (added.length) {
-    const shown = added.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = added.length - shown.length;
-    lines.push(`  ✅ נוספו ל-seen (${added.length}):`);
+  // Helper: render a "header + bulleted links" sub-block. Reasons are
+  // collapsed into the header (e.g. "מודעה הוסרה - 404") instead of
+  // appearing as a per-link `סיבה:` row, so the Telegram message stays
+  // compact and readable. Caller is responsible for picking a header
+  // that already conveys the "why".
+  const renderSubBlock = (header, items) => {
+    if (!items.length) return;
+    const shown = items.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
+    const omitted = items.length - shown.length;
+    lines.push(`  ${header}`);
     for (const item of shown) {
       lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
-      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
     }
     if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
-  }
+  };
 
   if (removed.length) {
-    const shown = removed.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = removed.length - shown.length;
-    lines.push(`  🗑️ הוסרו מ-seen (${removed.length}):`);
-    for (const item of shown) {
-      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
-      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
-    }
-    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
+    // All removals come from the URL-probe path (HTTP 404). If that
+    // ever changes — e.g. a "filter mismatch" removal — the header
+    // still reads fine even if not technically "404".
+    renderSubBlock('🗑️ מודעה הוסרה - 404', removed);
+  }
+
+  if (added.length) {
+    renderSubBlock('✅ מודעות חדשות שטרם נסרקו:', added);
   }
 
   if (unresolvedMissing.length || (!added.length && fallbackMissing.length)) {
     const list = unresolvedMissing.length
       ? unresolvedMissing
       : fallbackMissing.map((id) => ({ externalId: id, link: externalIdToLink(id) }));
-    const shown = list.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = list.length - shown.length;
-    lines.push(`  ⏳ חסר ב-seen ולא נסגר (${list.length}):`);
-    for (const item of shown) {
-      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
-      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
-    }
-    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
+    renderSubBlock(`⏳ חסר ב-seen — ייבדק שוב בריצה הבאה (${list.length}):`, list);
   }
 
   if (unresolvedExtra.length || (!removed.length && fallbackExtra.length)) {
     const list = unresolvedExtra.length
       ? unresolvedExtra
       : fallbackExtra.map((id) => ({ externalId: id, link: externalIdToLink(id) }));
-    const shown = list.slice(0, HEALTH_CHECK_DIFF_LIMIT_PER_DISTRICT);
-    const omitted = list.length - shown.length;
-    lines.push(`  ⏳ ב-seen אך לא ב-Yad2 ולא נסגר (${list.length}):`);
-    for (const item of shown) {
-      lines.push(`    • ${item.link || externalIdToLink(item.externalId)}`);
-      if (item.reason) lines.push(`      סיבה: ${item.reason}`);
-    }
-    if (omitted > 0) lines.push(`    … ועוד ${omitted}`);
+    renderSubBlock(`⏳ ב-seen אך לא ב-Yad2 — ייבדק שוב בריצה הבאה (${list.length}):`, list);
   }
 
   return lines.join('\n');
@@ -498,6 +520,7 @@ async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliati
 }
 
 module.exports = {
+  buildHealthCheckMessages,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckDiffSection,

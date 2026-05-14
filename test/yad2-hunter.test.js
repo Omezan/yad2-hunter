@@ -7,6 +7,7 @@ const {
   isRelevant
 } = require('../src/services/relevance');
 const {
+  buildHealthCheckMessages,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckMessage,
@@ -1066,10 +1067,13 @@ test('formatHealthCheckMessage shows per-row addition/removal reasons', () => {
   });
 
   assert.match(text, /🔧 תוקן ב-seen: נוספו 1 מודעות חדשות, הוסרו 1 מודעות שנעלמו מ-Yad2/);
-  assert.match(text, /✅ נוספו ל-seen \(1\):/);
-  assert.match(text, /🗑️ הוסרו מ-seen \(1\):/);
-  assert.match(text, /סיבה: HTTP 404/);
-  assert.match(text, /סיבה: מודעה חדשה שטרם נסרקה — נוספה ל-seen/);
+  assert.match(text, /✅ מודעות חדשות שטרם נסרקו:/);
+  assert.match(text, /🗑️ מודעה הוסרה - 404/);
+  // The per-link "סיבה: …" rows were intentionally dropped — the
+  // section header now conveys the reason, keeping the message
+  // compact and easier to skim on a phone.
+  assert.doesNotMatch(text, /סיבה: HTTP 404/);
+  assert.doesNotMatch(text, /סיבה: מודעה חדשה שטרם נסרקה/);
 });
 
 test('formatHealthCheckMessage falls back to legacy missingIds/extraIds when reconciled is absent', () => {
@@ -1089,8 +1093,151 @@ test('formatHealthCheckMessage falls back to legacy missingIds/extraIds when rec
     generatedAt: '2026-04-30T07:00:00Z'
   });
 
-  assert.match(text, /⏳ חסר ב-seen ולא נסגר \(1\)/);
-  assert.match(text, /⏳ ב-seen אך לא ב-Yad2 ולא נסגר \(1\)/);
+  assert.match(text, /⏳ חסר ב-seen — ייבדק שוב בריצה הבאה \(1\)/);
+  assert.match(text, /⏳ ב-seen אך לא ב-Yad2 — ייבדק שוב בריצה הבאה \(1\)/);
+});
+
+// -----------------------------------------------------------------------------
+// buildHealthCheckMessages: unified single-message output (May 2026)
+// -----------------------------------------------------------------------------
+
+test('buildHealthCheckMessages: typical run emits ONE combined message', () => {
+  // This is the user-facing change: instead of sending the summary
+  // and the diff-details as two separate Telegram pings, we now
+  // concatenate them into a single message — summary, then diff
+  // details, then the footer at the very bottom.
+  const rows = [
+    {
+      searchId: 'coastal-north',
+      label: 'חוף צפוני',
+      real: 24,
+      expected: 24,
+      reconciled: {
+        added: [],
+        removed: [
+          {
+            externalId: 'coastal-north/daxjha2y',
+            link: 'https://www.yad2.co.il/realestate/item/coastal-north/daxjha2y',
+            reason: 'HTTP 404'
+          }
+        ],
+        unresolvedExtra: [],
+        unresolvedMissing: []
+      }
+    },
+    {
+      searchId: 'north-valleys',
+      label: 'צפון ועמקים',
+      real: 138,
+      expected: 138,
+      reconciled: {
+        added: [
+          {
+            externalId: 'north-and-valleys/snxjxydf',
+            link: 'https://www.yad2.co.il/realestate/item/north-and-valleys/snxjxydf',
+            reason: 'מודעה חדשה שטרם נסרקה — נוספה ל-seen'
+          },
+          {
+            externalId: 'north-and-valleys/qdncoea5',
+            link: 'https://www.yad2.co.il/realestate/item/north-and-valleys/qdncoea5',
+            reason: 'מודעה חדשה שטרם נסרקה — נוספה ל-seen'
+          }
+        ],
+        removed: [],
+        unresolvedExtra: [],
+        unresolvedMissing: []
+      }
+    }
+  ];
+
+  const messages = buildHealthCheckMessages({
+    rows,
+    allMatch: true,
+    generatedAt: '2026-05-14T08:22:27Z',
+    reconciliation: {
+      additions: rows[1].reconciled.added,
+      removals: rows[0].reconciled.removed,
+      unresolvedExtras: [],
+      unresolvedMissing: [],
+      persisted: { ok: true }
+    }
+  });
+
+  assert.equal(messages.length, 1, 'expected exactly one combined Telegram message');
+  const text = messages[0];
+
+  // Summary block.
+  assert.match(text, /🩺 Yad2 Hunter — בדיקת תקינות/);
+  assert.match(text, /✅ הכל תקין/);
+  // Per-category headers (compact, no per-link reasons).
+  assert.match(text, /🗑️ מודעה הוסרה - 404/);
+  assert.match(text, /✅ מודעות חדשות שטרם נסרקו:/);
+  // Actual ad links are preserved.
+  assert.match(text, /coastal-north\/daxjha2y/);
+  assert.match(text, /north-and-valleys\/snxjxydf/);
+  assert.match(text, /north-and-valleys\/qdncoea5/);
+  // No per-link "סיבה:" lines — the simplification.
+  assert.doesNotMatch(text, /סיבה:/);
+});
+
+test('buildHealthCheckMessages: footer (נבדק + לוח בקרה) lands at the bottom of the unified message', () => {
+  const rows = [
+    {
+      searchId: 'south',
+      label: 'דרום',
+      real: 4,
+      expected: 5,
+      reconciled: {
+        added: [
+          {
+            externalId: 'south/NEW',
+            link: 'https://www.yad2.co.il/realestate/item/south/NEW'
+          }
+        ],
+        removed: [],
+        unresolvedExtra: [],
+        unresolvedMissing: []
+      }
+    }
+  ];
+
+  const [message] = buildHealthCheckMessages({
+    rows,
+    allMatch: false,
+    generatedAt: '2026-05-14T08:22:27Z',
+    reconciliation: {
+      additions: rows[0].reconciled.added,
+      removals: [],
+      unresolvedExtras: [],
+      unresolvedMissing: [],
+      persisted: { ok: true }
+    }
+  });
+
+  const lastDiffLineIdx = message.lastIndexOf('south/NEW');
+  const footerIdx = message.indexOf('נבדק:');
+  assert.ok(footerIdx > 0, 'expected "נבדק:" footer somewhere in the message');
+  assert.ok(
+    footerIdx > lastDiffLineIdx,
+    'footer must appear AFTER the diff details, not before'
+  );
+});
+
+test('buildHealthCheckMessages: emits a single message when everything matched (no diffs)', () => {
+  const rows = [
+    { searchId: 'south', label: 'דרום', real: 5, expected: 5, reconciled: {} }
+  ];
+
+  const messages = buildHealthCheckMessages({
+    rows,
+    allMatch: true,
+    generatedAt: '2026-05-14T08:22:27Z'
+  });
+
+  assert.equal(messages.length, 1);
+  assert.match(messages[0], /🩺 Yad2 Hunter — בדיקת תקינות/);
+  // No "פרטי הפערים" section when there are no diffs.
+  assert.doesNotMatch(messages[0], /פרטי הפערים/);
 });
 
 // -----------------------------------------------------------------------------
@@ -1303,7 +1450,8 @@ test('formatHealthCheckMessage still emits the diff details after a successful r
 
   assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/NEW/);
   assert.match(text, /https:\/\/www\.yad2\.co\.il\/realestate\/item\/south\/REMOVED/);
-  assert.match(text, /סיבה: HTTP 404/);
+  // Removal reason now lives in the section header, not on every link.
+  assert.match(text, /🗑️ מודעה הוסרה - 404/);
 });
 
 test('parseCityFromTitle pulls the city out of "PROPERTY_TYPE, CITY" titles', () => {
