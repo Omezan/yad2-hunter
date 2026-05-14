@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "kind": "health-check",
+      "startedAt": "2026-05-14T20:00:54.197Z",
+      "completedAt": "2026-05-14T20:03:49.717Z",
+      "status": "completed",
+      "trigger": "github-actions",
+      "allMatch": true,
+      "additions": 0,
+      "removals": 1,
+      "unresolvedExtras": 1,
+      "unresolvedMissing": 0,
+      "telegramSent": true,
+      "errors": []
+    },
+    {
       "kind": "scan",
       "startedAt": "2026-05-14T18:58:56.368Z",
       "completedAt": "2026-05-14T19:12:45.234Z",
@@ -1590,34 +1604,6 @@
           "searchLabel": "צפון ועמקים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-12T23:52:32.865Z",
-      "completedAt": "2026-05-12T23:59:54.120Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 270,
-      "preFilteredAds": 270,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
         {
           "searchId": "lev-hapark-rent",
           "searchLabel": "לב הפארק — שכירות",
