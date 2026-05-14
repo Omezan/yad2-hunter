@@ -2,6 +2,60 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-14T00:21:49.210Z",
+      "completedAt": "2026-05-14T00:35:44.506Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "silentlyRemovedAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-13T23:51:49.110Z",
       "completedAt": "2026-05-13T23:56:49.416Z",
       "status": "partial",
@@ -1518,20 +1572,6 @@
       "notifiedNewAds": 0,
       "suppressedNewAds": 1,
       "telegramSent": false,
-      "errors": []
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-05-12T10:41:42.677Z",
-      "completedAt": "2026-05-12T10:44:17.925Z",
-      "status": "completed",
-      "trigger": "github-actions",
-      "allMatch": true,
-      "additions": 3,
-      "removals": 2,
-      "unresolvedExtras": 0,
-      "unresolvedMissing": 0,
-      "telegramSent": true,
       "errors": []
     }
   ]
