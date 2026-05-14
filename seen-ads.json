@@ -611,19 +611,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-14T06:21:57.830Z"
     },
-    "coastal-north/daxjha2y": {
-      "externalId": "coastal-north/daxjha2y",
-      "title": "בית פרטי/ קוטג', כפר ראש הנקרה",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/daxjha2y",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 6950,
-      "rooms": 6,
-      "city": "כפר ראש הנקרה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-14T06:21:57.830Z"
-    },
     "coastal-north/afcrw3v6": {
       "externalId": "coastal-north/afcrw3v6",
       "title": "בית פרטי/ קוטג', לימן",
@@ -3886,6 +3873,32 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-14T06:21:57.830Z",
       "lastSeenAt": "2026-05-14T06:21:57.830Z"
+    },
+    "north-and-valleys/snxjxydf": {
+      "externalId": "north-and-valleys/snxjxydf",
+      "title": "בית פרטי/ קוטג', אלון הגליל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/snxjxydf",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 5,
+      "city": "אלון הגליל",
+      "firstSeenAt": "2026-05-14T08:22:27.077Z",
+      "lastSeenAt": "2026-05-14T08:22:27.077Z"
+    },
+    "north-and-valleys/qdncoea5": {
+      "externalId": "north-and-valleys/qdncoea5",
+      "title": "בית פרטי/ קוטג', כפר קיש",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/qdncoea5",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6650,
+      "rooms": 5,
+      "city": "כפר קיש",
+      "firstSeenAt": "2026-05-14T08:22:27.077Z",
+      "lastSeenAt": "2026-05-14T08:22:27.077Z"
     }
   }
 }
