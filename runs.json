@@ -1,6 +1,20 @@
 {
   "runs": [
     {
+      "kind": "health-check",
+      "startedAt": "2026-05-14T14:36:49.324Z",
+      "completedAt": "2026-05-14T14:39:53.999Z",
+      "status": "completed",
+      "trigger": "github-actions",
+      "allMatch": true,
+      "additions": 3,
+      "removals": 4,
+      "unresolvedExtras": 0,
+      "unresolvedMissing": 0,
+      "telegramSent": true,
+      "errors": []
+    },
+    {
       "kind": "scan",
       "startedAt": "2026-05-14T13:59:06.121Z",
       "completedAt": "2026-05-14T14:13:02.721Z",
@@ -1608,29 +1622,6 @@
           "searchLabel": "לב הפארק — שכירות",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-12T20:25:25.705Z",
-      "completedAt": "2026-05-12T20:30:44.934Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 275,
-      "preFilteredAds": 275,
-      "candidateNewAds": 4,
-      "relevantNewAds": 4,
-      "notifiedNewAds": 2,
-      "notifiedEmailAds": 1,
-      "suppressedNewAds": 1,
-      "telegramSent": true,
-      "emailSent": true,
-      "errors": [
         {
           "searchId": "lev-hapark-sale",
           "searchLabel": "לב הפארק — מכירה",
