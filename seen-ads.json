@@ -3847,6 +3847,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-15T17:28:22.797Z",
       "lastSeenAt": "2026-05-15T17:28:22.797Z"
+    },
+    "center-and-sharon/nbtp5k26": {
+      "externalId": "center-and-sharon/nbtp5k26",
+      "title": "בית פרטי/ קוטג', אחיטוב",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/nbtp5k26",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5500,
+      "rooms": 4,
+      "city": "אחיטוב",
+      "firstSeenAt": "2026-05-15T17:53:35.457Z",
+      "lastSeenAt": "2026-05-15T17:53:35.457Z"
     }
   }
 }
