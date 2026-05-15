@@ -3042,19 +3042,6 @@
       "firstSeenAt": "2026-05-12T10:44:14.753Z",
       "lastSeenAt": "2026-05-15T11:52:54.446Z"
     },
-    "south/91o50ww7": {
-      "externalId": "south/91o50ww7",
-      "title": "דירת גן, שדה עוזיהו",
-      "link": "https://www.yad2.co.il/realestate/item/south/91o50ww7",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 5450,
-      "rooms": 5,
-      "city": "שדה עוזיהו",
-      "firstSeenAt": "2026-05-12T10:44:14.753Z",
-      "lastSeenAt": "2026-05-15T09:43:48.817Z"
-    },
     "north-and-valleys/vz6fkuvu": {
       "externalId": "north-and-valleys/vz6fkuvu",
       "title": "דו משפחתי, נופית",
@@ -3599,19 +3586,6 @@
       "rooms": 6,
       "city": "נווה אטי\"ב",
       "firstSeenAt": "2026-05-13T14:12:20.517Z",
-      "lastSeenAt": "2026-05-15T11:52:54.446Z"
-    },
-    "center-and-sharon/83bs84ek": {
-      "externalId": "center-and-sharon/83bs84ek",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/83bs84ek",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4.5,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-05-13T17:13:39.218Z",
       "lastSeenAt": "2026-05-15T11:52:54.446Z"
     },
     "center-and-sharon/pejt6ypp": {
