@@ -2379,19 +2379,6 @@
       "firstSeenAt": "2026-05-05T17:21:49.778Z",
       "lastSeenAt": "2026-05-15T13:33:17.739Z"
     },
-    "center-and-sharon/a97twg2x": {
-      "externalId": "center-and-sharon/a97twg2x",
-      "title": "בית פרטי/ קוטג', מתן",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/a97twg2x",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": null,
-      "rooms": 9,
-      "city": "מתן",
-      "firstSeenAt": "2026-05-05T19:53:20.087Z",
-      "lastSeenAt": "2026-05-15T11:52:54.446Z"
-    },
     "center-and-sharon/uq7zfsu9": {
       "externalId": "center-and-sharon/uq7zfsu9",
       "title": "בית פרטי/ קוטג', אחיעזר",
@@ -3002,19 +2989,6 @@
       "city": "שפר",
       "firstSeenAt": "2026-05-12T04:04:11.771Z",
       "lastSeenAt": "2026-05-15T13:33:17.739Z"
-    },
-    "center-and-sharon/tid7zhpv": {
-      "externalId": "center-and-sharon/tid7zhpv",
-      "title": "דירה, חגלה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/tid7zhpv",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 4,
-      "city": "חגלה",
-      "firstSeenAt": "2026-05-12T05:44:04.292Z",
-      "lastSeenAt": "2026-05-15T11:52:54.446Z"
     },
     "center-and-sharon/jq25ij08": {
       "externalId": "center-and-sharon/jq25ij08",
@@ -3822,32 +3796,6 @@
       "firstSeenAt": "2026-05-15T11:52:54.446Z",
       "lastSeenAt": "2026-05-15T13:33:17.739Z"
     },
-    "south/91o50ww7": {
-      "externalId": "south/91o50ww7",
-      "title": "דירת גן, שדה עוזיהו",
-      "link": "https://www.yad2.co.il/realestate/item/south/91o50ww7",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 5450,
-      "rooms": 5,
-      "city": "שדה עוזיהו",
-      "firstSeenAt": "2026-05-12T10:44:14.753Z",
-      "lastSeenAt": "2026-05-15T09:43:48.817Z"
-    },
-    "center-and-sharon/83bs84ek": {
-      "externalId": "center-and-sharon/83bs84ek",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/83bs84ek",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4.5,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-05-13T17:13:39.218Z",
-      "lastSeenAt": "2026-05-15T11:52:54.446Z"
-    },
     "north-and-valleys/57t56t78": {
       "externalId": "north-and-valleys/57t56t78",
       "title": "בית פרטי/ קוטג', תמרת",
@@ -3873,6 +3821,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-15T13:33:17.739Z",
       "lastSeenAt": "2026-05-15T13:33:17.739Z"
+    },
+    "center-and-sharon/p9tnbr7v": {
+      "externalId": "center-and-sharon/p9tnbr7v",
+      "title": "דירה, חגלה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p9tnbr7v",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 4,
+      "city": "חגלה",
+      "firstSeenAt": "2026-05-15T14:34:25.952Z",
+      "lastSeenAt": "2026-05-15T14:34:25.952Z"
     }
   }
 }
