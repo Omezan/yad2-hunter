@@ -3899,6 +3899,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-16T16:49:27.179Z",
       "lastSeenAt": "2026-05-16T16:49:27.179Z"
+    },
+    "south/8xs7kez7": {
+      "externalId": "south/8xs7kez7",
+      "title": "בית פרטי/ קוטג', ביצרון",
+      "link": "https://www.yad2.co.il/realestate/item/south/8xs7kez7",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 8500,
+      "rooms": 4,
+      "city": "ביצרון",
+      "firstSeenAt": "2026-05-13T08:28:59.898Z",
+      "lastSeenAt": "2026-05-16T16:49:27.179Z"
     }
   }
 }
