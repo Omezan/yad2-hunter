@@ -884,19 +884,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-16T18:53:59.383Z"
     },
-    "north-and-valleys/2arh8w01": {
-      "externalId": "north-and-valleys/2arh8w01",
-      "title": "בית פרטי/ קוטג', אניעם",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/2arh8w01",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 6000,
-      "rooms": 4,
-      "city": "אניעם",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-16T17:51:39.889Z"
-    },
     "north-and-valleys/ynp8owlz": {
       "externalId": "north-and-valleys/ynp8owlz",
       "title": "בית פרטי/ קוטג', דן",
@@ -2717,19 +2704,6 @@
       "firstSeenAt": "2026-05-10T07:58:44.427Z",
       "lastSeenAt": "2026-05-16T18:53:59.383Z"
     },
-    "center-and-sharon/2ky3uca7": {
-      "externalId": "center-and-sharon/2ky3uca7",
-      "title": "דו משפחתי, בית נחמיה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/2ky3uca7",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 4,
-      "city": "בית נחמיה",
-      "firstSeenAt": "2026-05-10T09:25:51.192Z",
-      "lastSeenAt": "2026-05-16T16:49:27.179Z"
-    },
     "coastal-north/218c6ayn": {
       "externalId": "coastal-north/218c6ayn",
       "title": "בית פרטי/ קוטג', גשר הזיו",
@@ -3874,19 +3848,6 @@
       "firstSeenAt": "2026-05-16T15:55:02.518Z",
       "lastSeenAt": "2026-05-16T18:53:59.383Z"
     },
-    "south/8xs7kez7": {
-      "externalId": "south/8xs7kez7",
-      "title": "בית פרטי/ קוטג', ביצרון",
-      "link": "https://www.yad2.co.il/realestate/item/south/8xs7kez7",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 8500,
-      "rooms": 4,
-      "city": "ביצרון",
-      "firstSeenAt": "2026-05-13T08:28:59.898Z",
-      "lastSeenAt": "2026-05-16T16:49:27.179Z"
-    },
     "center-and-sharon/zg5mjeuh": {
       "externalId": "center-and-sharon/zg5mjeuh",
       "title": "דופלקס, רעננה",
@@ -3912,6 +3873,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-16T18:53:59.383Z",
       "lastSeenAt": "2026-05-16T18:53:59.383Z"
+    },
+    "north-and-valleys/068m4p1j": {
+      "externalId": "north-and-valleys/068m4p1j",
+      "title": "בית פרטי/ קוטג', כפר גדעון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/068m4p1j",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 6,
+      "city": "כפר גדעון",
+      "firstSeenAt": "2026-05-16T19:23:18.199Z",
+      "lastSeenAt": "2026-05-16T19:23:18.199Z"
     }
   }
 }
