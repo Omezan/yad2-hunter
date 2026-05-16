@@ -1157,19 +1157,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-16T14:25:56.736Z"
     },
-    "north-and-valleys/12l6v446": {
-      "externalId": "north-and-valleys/12l6v446",
-      "title": "בית פרטי/ קוטג', תמרת",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/12l6v446",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 7500,
-      "rooms": 6,
-      "city": "תמרת",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-16T13:02:08.719Z"
-    },
     "north-and-valleys/1go6akhg": {
       "externalId": "north-and-valleys/1go6akhg",
       "title": "בית פרטי/ קוטג', כורזים",
@@ -3728,19 +3715,6 @@
       "price": 4000,
       "rooms": 4,
       "city": "מצפה אבי\"ב",
-      "firstSeenAt": "2026-05-15T11:52:54.446Z",
-      "lastSeenAt": "2026-05-16T14:25:56.736Z"
-    },
-    "north-and-valleys/9mdn00tt": {
-      "externalId": "north-and-valleys/9mdn00tt",
-      "title": "בית פרטי/ קוטג', נאות גולן",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/9mdn00tt",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5500,
-      "rooms": 4.5,
-      "city": "נאות גולן",
       "firstSeenAt": "2026-05-15T11:52:54.446Z",
       "lastSeenAt": "2026-05-16T14:25:56.736Z"
     },
