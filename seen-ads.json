@@ -3873,6 +3873,32 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-16T07:53:51.438Z",
       "lastSeenAt": "2026-05-16T09:25:49.811Z"
+    },
+    "center-and-sharon/js9fa6a5": {
+      "externalId": "center-and-sharon/js9fa6a5",
+      "title": "בית פרטי/ קוטג', פתחיה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/js9fa6a5",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 5,
+      "city": "פתחיה",
+      "firstSeenAt": "2026-05-16T09:52:56.115Z",
+      "lastSeenAt": "2026-05-16T09:52:56.115Z"
+    },
+    "north-and-valleys/xysd7pqy": {
+      "externalId": "north-and-valleys/xysd7pqy",
+      "title": "בית פרטי/ קוטג', אבטליון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xysd7pqy",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7800,
+      "rooms": 4,
+      "city": "אבטליון",
+      "firstSeenAt": "2026-05-16T09:52:56.115Z",
+      "lastSeenAt": "2026-05-16T09:52:56.115Z"
     }
   }
 }
