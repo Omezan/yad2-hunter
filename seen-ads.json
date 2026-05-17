@@ -1014,19 +1014,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-17T13:00:13.244Z"
     },
-    "north-and-valleys/us30lrji": {
-      "externalId": "north-and-valleys/us30lrji",
-      "title": "בית פרטי/ קוטג', ביכורה",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/us30lrji",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 5500,
-      "rooms": 8,
-      "city": "ביכורה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-17T13:00:13.244Z"
-    },
     "north-and-valleys/nmzvickg": {
       "externalId": "north-and-valleys/nmzvickg",
       "title": "בית פרטי/ קוטג', בית לחם הגלילית",
@@ -3886,6 +3873,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-17T13:00:13.244Z",
       "lastSeenAt": "2026-05-17T13:00:13.244Z"
+    },
+    "center-and-sharon/vhx8lmgc": {
+      "externalId": "center-and-sharon/vhx8lmgc",
+      "title": "דירה, חגלה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/vhx8lmgc",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 4,
+      "city": "חגלה",
+      "firstSeenAt": "2026-05-17T13:57:02.450Z",
+      "lastSeenAt": "2026-05-17T13:57:02.450Z"
     }
   }
 }
