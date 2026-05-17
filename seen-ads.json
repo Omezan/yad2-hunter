@@ -3899,6 +3899,19 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-17T08:15:09.193Z",
       "lastSeenAt": "2026-05-17T08:15:09.193Z"
+    },
+    "north-and-valleys/nfh3faub": {
+      "externalId": "north-and-valleys/nfh3faub",
+      "title": "דירה, גינוסר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/nfh3faub",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4500,
+      "rooms": 4,
+      "city": "גינוסר",
+      "firstSeenAt": "2026-04-29T12:14:30.784Z",
+      "lastSeenAt": "2026-05-17T05:58:34.645Z"
     }
   }
 }
