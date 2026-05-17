@@ -2,6 +2,35 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-17T10:18:08.988Z",
+      "completedAt": "2026-05-17T10:23:07.505Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 270,
+      "preFilteredAds": 270,
+      "candidateNewAds": 2,
+      "relevantNewAds": 2,
+      "notifiedNewAds": 1,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "silentlyRemovedAds": 1,
+      "telegramSent": true,
+      "emailSent": true,
+      "errors": [
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "page.goto: Navigation to \"https://www.yad2.co.il/realestate/forsale/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807\" is interrupted by another navigation to \"https://validate.perfdrive.com/ca0c6c171687aa56742617df4ef03a07/?ssa=a67cb2f6-362e-4f62-b407-e288f149709a&ssb=63236326400&ssc=https%3A%2F%2Fwww.yad2.co.il%2F&ssi=1166c3b6-bhmf-4c93-9bd0-e94024f1b8bc&ssk=support%40shieldsquare.com&ssm=13860455073411271106568477081061&ssn=bdd5e4bcf1426c8ea3e01b21f052f400227a4d18f8a9-7d34-4c8c-ac3fc5&sso=601c3e2f-aaaf97ed00316a1840839d580fdd6b09586a61d7768c2dc5&ssp=34291632651779003181177900477288647&ssq=37763891328780960926213287843876142215053&ssr=MTcyLjE4NC4yMTMuMTYw&sst=Mozilla%2F5.0+%28Macintosh%3B+Intel+Mac+OS+X+10_15_7%29+AppleWebKit%2F537.36+%28KHTML%2C+like+Gecko%29+Chrome%2F124.0.0.0+Safari%2F537.36&ssu=&ssv=&ssw=&ssx=eyJfX3V6bWYiOiI3ZjkwMDA0ZDE4ZjhhOS03ZDM0LTRjOGMtYWUyZi1hYWFmOTdlZDAwMzExLTE3NzkwMTMyODc0NTgwLTAwMzdiYmEwMjE5NjY5ZjQwNWMxMCIsInJkIjoieWFkMi5jby5pbCIsInV6bXgiOiI3ZjkwMDA1NDEwMDUwNy1mNjBmLTRjZjYtYWZkNy03ZGZiMDFmMzgwZDcxLTE3NzkwMTMyODQwNzUzMzgzLWI2OTBhY2FlYWIzZTY3YTYxMyJ9\"\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/forsale/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-17T08:39:48.311Z",
       "completedAt": "2026-05-17T08:53:51.485Z",
       "status": "partial",
@@ -1665,20 +1694,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ]
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-05-16T03:56:24.775Z",
-      "completedAt": "2026-05-16T03:58:52.533Z",
-      "status": "completed",
-      "trigger": "github-actions",
-      "allMatch": true,
-      "additions": 0,
-      "removals": 1,
-      "unresolvedExtras": 0,
-      "unresolvedMissing": 0,
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
