@@ -63,6 +63,20 @@ type Props = {
   // filter; '24h' / '7d' / '30d' anchor a sliding window from now.
   timeWindow: TimeWindow;
   onTimeWindowChange: (value: TimeWindow) => void;
+  // Visual label for the multi-select popover. The mechanism (pills,
+  // count badge, popover behaviour) stays identical; only the header
+  // text, popover title, and aria labels swap to match the data
+  // domain. Defaults to 'district' to keep the main dashboard
+  // bit-identical.
+  categoryKey?: 'district' | 'city';
+};
+
+const CATEGORY_TEXT: Record<'district' | 'city', {
+  header: string;
+  popoverTitle: string;
+}> = {
+  district: { header: 'מחוז', popoverTitle: 'בחירת מחוז' },
+  city: { header: 'עיר', popoverTitle: 'בחירת עיר' }
 };
 
 function formatShekel(value: number): string {
@@ -129,10 +143,12 @@ export default function FilterBar({
   onViewChange,
   totalCount,
   timeWindow,
-  onTimeWindowChange
+  onTimeWindowChange,
+  categoryKey = 'district'
 }: Props) {
   const districtPopover = usePopover();
   const pricePopover = usePopover();
+  const categoryText = CATEGORY_TEXT[categoryKey];
 
   const districtSummary = (() => {
     if (selectedDistricts.size === 0) return 'הכל';
@@ -426,7 +442,7 @@ export default function FilterBar({
           aria-expanded={districtPopover.open}
           onClick={() => districtPopover.setOpen((v) => !v)}
         >
-          <span>מחוז: {districtSummary}</span>
+          <span>{categoryText.header}: {districtSummary}</span>
           {selectedDistricts.size > 0 ? (
             <span className="toolbar-district-count">{selectedDistricts.size}</span>
           ) : null}
@@ -443,7 +459,7 @@ export default function FilterBar({
             />
             <div className="toolbar-district-popover" role="dialog" aria-modal="true">
               <div className="toolbar-district-header">
-                <span className="toolbar-district-title">בחירת מחוז</span>
+                <span className="toolbar-district-title">{categoryText.popoverTitle}</span>
                 <button
                   type="button"
                   className="toolbar-district-close"

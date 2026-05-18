@@ -2421,13 +2421,6 @@ input:focus {
   background: var(--surface);
 }
 
-.ric-toolbar {
-  /* Single-search page: pack the results-count chip to the right so the
-   * toolbar feels balanced even without a segmented control. */
-  justify-content: flex-end;
-  gap: var(--space-3);
-}
-
 /* Home-page link chip pointing at /rent-in-cities */
 .ric-home-chip {
   display: inline-flex;
