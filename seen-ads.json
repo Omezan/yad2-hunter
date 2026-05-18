@@ -533,19 +533,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-18T17:31:45.627Z"
     },
-    "coastal-north/171fgjn3": {
-      "externalId": "coastal-north/171fgjn3",
-      "title": "יחידת דיור, אחיהוד",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/171fgjn3",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 5500,
-      "rooms": 5,
-      "city": "אחיהוד",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-18T14:35:06.536Z"
-    },
     "coastal-north/b1xaqent": {
       "externalId": "coastal-north/b1xaqent",
       "title": "בית פרטי/ קוטג', בן עמי",
@@ -3406,19 +3393,6 @@
       "firstSeenAt": "2026-05-15T06:29:18.507Z",
       "lastSeenAt": "2026-05-18T17:31:45.627Z"
     },
-    "center-and-sharon/ez6j9c8e": {
-      "externalId": "center-and-sharon/ez6j9c8e",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ez6j9c8e",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6500,
-      "rooms": 5,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-05-15T09:26:04.741Z",
-      "lastSeenAt": "2026-05-18T17:31:45.627Z"
-    },
     "north-and-valleys/g8nsof5a": {
       "externalId": "north-and-valleys/g8nsof5a",
       "title": "יחידת דיור, גבעת אלה",
@@ -4263,6 +4237,32 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-18T17:31:45.627Z",
       "lastSeenAt": "2026-05-18T17:31:45.627Z"
+    },
+    "center-and-sharon/nloxuzux": {
+      "externalId": "center-and-sharon/nloxuzux",
+      "title": "בית פרטי/ קוטג', בני עטרות",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/nloxuzux",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7200,
+      "rooms": 5,
+      "city": "בני עטרות",
+      "firstSeenAt": "2026-05-18T18:10:51.327Z",
+      "lastSeenAt": "2026-05-18T18:10:51.327Z"
+    },
+    "south/nrqzg7es": {
+      "externalId": "south/nrqzg7es",
+      "title": "בית פרטי/ קוטג', עין תמר",
+      "link": "https://www.yad2.co.il/realestate/item/south/nrqzg7es",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 3950,
+      "rooms": 6,
+      "city": "עין תמר",
+      "firstSeenAt": "2026-05-18T18:10:51.327Z",
+      "lastSeenAt": "2026-05-18T18:10:51.327Z"
     }
   }
 }
