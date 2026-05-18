@@ -7,6 +7,7 @@
     "scan": "node src/worker/run-once.js",
     "scan:loop": "node src/worker/run-loop.js",
     "health-check": "node src/worker/health-check.js",
+    "silent-prune": "node src/worker/silent-prune.js",
     "scrape:dry-run": "node scrape.js",
     "telegram:test": "node test-telegram.js",
     "test": "node --test test/*.test.js"

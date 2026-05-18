@@ -42,6 +42,12 @@ const {
   __testing: emailTesting
 } = require('../src/services/email');
 const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
+const {
+  applyRemovals,
+  classifyForRemoval,
+  pickPruneTargets,
+  resolveTargetSearchIds
+} = require('../src/worker/silent-prune');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -1846,4 +1852,151 @@ test('email buildDashboardUrl joins a base URL with a sub-path and ?since', () =
   // a configured URL gets the path appended correctly via a focused
   // pure-function check below.
   assert.ok(url === null || /\/lev-hapark/.test(url));
+});
+
+// =====================================================================
+// Daily silent prune worker for rent-in-cities (and any future watch
+// that opts in via PRUNE_TARGET_SEARCH_IDS).
+// =====================================================================
+
+function silentPruneSeen() {
+  // Mixed seen-set covering all the watches we care about, so we can
+  // assert the worker NEVER touches moshav or lev-hapark records.
+  return {
+    ads: {
+      ric_kept_alive: {
+        externalId: 'ric_kept_alive',
+        searchId: 'rent-in-cities',
+        link: 'https://www.yad2.co.il/realestate/item/ric_kept_alive'
+      },
+      ric_to_delete: {
+        externalId: 'ric_to_delete',
+        searchId: 'rent-in-cities',
+        link: 'https://www.yad2.co.il/realestate/item/ric_to_delete'
+      },
+      ric_blocked: {
+        externalId: 'ric_blocked',
+        searchId: 'rent-in-cities',
+        link: 'https://www.yad2.co.il/realestate/item/ric_blocked'
+      },
+      ric_errored: {
+        externalId: 'ric_errored',
+        searchId: 'rent-in-cities',
+        link: 'https://www.yad2.co.il/realestate/item/ric_errored'
+      },
+      ric_no_link: {
+        externalId: 'ric_no_link',
+        searchId: 'rent-in-cities',
+        link: ''
+      },
+      mosh_jerusalem: {
+        externalId: 'mosh_jerusalem',
+        searchId: 'jerusalem',
+        link: 'https://www.yad2.co.il/realestate/item/mosh_jerusalem'
+      },
+      lev_sale: {
+        externalId: 'lev_sale',
+        searchId: 'lev-hapark-sale',
+        link: 'https://www.yad2.co.il/realestate/item/lev_sale'
+      }
+    }
+  };
+}
+
+test('resolveTargetSearchIds defaults to rent-in-cities when env is empty', () => {
+  assert.deepEqual(resolveTargetSearchIds(''), ['rent-in-cities']);
+  assert.deepEqual(resolveTargetSearchIds(undefined), ['rent-in-cities']);
+  assert.deepEqual(resolveTargetSearchIds(null), ['rent-in-cities']);
+});
+
+test('resolveTargetSearchIds parses a comma-separated list when provided', () => {
+  assert.deepEqual(
+    resolveTargetSearchIds('rent-in-cities, future-watch ,'),
+    ['rent-in-cities', 'future-watch']
+  );
+});
+
+test('pickPruneTargets returns ONLY records with allowed searchId and a usable link', () => {
+  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
+  const ids = targets.map((r) => r.externalId).sort();
+  assert.deepEqual(ids, ['ric_blocked', 'ric_errored', 'ric_kept_alive', 'ric_to_delete']);
+});
+
+test('pickPruneTargets NEVER returns a moshav or lev-hapark record', () => {
+  // Regression guard: even if the caller passes a permissive set, the
+  // worker must not scrape or delete records outside the explicitly
+  // configured targetSearchIds.
+  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
+  for (const target of targets) {
+    assert.equal(target.searchId, 'rent-in-cities');
+    assert.notEqual(target.searchId, 'jerusalem');
+    assert.notEqual(target.searchId, 'lev-hapark-rent');
+    assert.notEqual(target.searchId, 'lev-hapark-sale');
+  }
+});
+
+test('classifyForRemoval deletes ONLY ads whose probe verdict is "removed"', () => {
+  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
+  const probes = [
+    {
+      url: 'https://www.yad2.co.il/realestate/item/ric_kept_alive',
+      status: 'live'
+    },
+    {
+      url: 'https://www.yad2.co.il/realestate/item/ric_to_delete',
+      status: 'removed',
+      httpStatus: 404,
+      reason: 'HTTP 404'
+    },
+    {
+      url: 'https://www.yad2.co.il/realestate/item/ric_blocked',
+      status: 'blocked',
+      reason: 'captcha/anti-bot'
+    },
+    {
+      url: 'https://www.yad2.co.il/realestate/item/ric_errored',
+      status: 'error',
+      reason: 'goto failed'
+    }
+  ];
+  const toRemove = classifyForRemoval(targets, probes);
+  assert.equal(toRemove.length, 1);
+  assert.equal(toRemove[0].externalId, 'ric_to_delete');
+  assert.equal(toRemove[0].reason, 'HTTP 404');
+});
+
+test('classifyForRemoval keeps everything when no probe matched (anti-bot regression guard)', () => {
+  // The probe array can be empty (e.g. browser launch failed). The
+  // worker must keep all the targets in this case — losing the data
+  // because Yad2 was unreachable is worse than not pruning today.
+  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
+  assert.deepEqual(classifyForRemoval(targets, []), []);
+  assert.deepEqual(classifyForRemoval(targets, new Map()), []);
+});
+
+test('applyRemovals strips matching externalIds and leaves everything else intact', () => {
+  const seen = silentPruneSeen();
+  const toRemove = [
+    {
+      externalId: 'ric_to_delete',
+      searchId: 'rent-in-cities',
+      link: 'irrelevant'
+    }
+  ];
+  const { seen: next, removedIds } = applyRemovals(seen, toRemove);
+  assert.deepEqual(removedIds, ['ric_to_delete']);
+  assert.equal(next.ads.ric_to_delete, undefined);
+  // Surrounding ads stay untouched.
+  assert.ok(next.ads.ric_kept_alive);
+  assert.ok(next.ads.mosh_jerusalem);
+  assert.ok(next.ads.lev_sale);
+  // And the input was not mutated.
+  assert.ok(seen.ads.ric_to_delete);
+});
+
+test('applyRemovals is a no-op when given an empty removal list', () => {
+  const seen = silentPruneSeen();
+  const { seen: next, removedIds } = applyRemovals(seen, []);
+  assert.deepEqual(removedIds, []);
+  assert.equal(next, seen);
 });

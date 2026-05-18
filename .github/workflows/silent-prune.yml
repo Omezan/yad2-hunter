@@ -1,0 +1,93 @@
+name: Yad2 Silent Prune (rent-in-cities)
+
+on:
+  schedule:
+    # 21:00 UTC ≈ 00:00 Israel time (winter) / 23:00 IL (summer DST).
+    # Acceptable for a silent maintenance job — it doesn't need to land
+    # exactly at midnight year-round, and it deliberately runs in a
+    # quiet hour that doesn't collide with the on-the-hour scan loop
+    # (cron "0 * * * *") or the every-2h health-check ("7 */2 * * *").
+    - cron: "0 21 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: yad2-silent-prune
+  cancel-in-progress: false
+
+permissions:
+  # Need write so the prune can push the reconciled seen-ads.json back
+  # to the `state` branch immediately when it removes a delisted ad.
+  contents: write
+
+jobs:
+  silent-prune:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Restore state from state branch
+        run: |
+          mkdir -p state
+          if git ls-remote --exit-code --heads origin state >/dev/null 2>&1; then
+            git fetch origin state --depth=1
+            git --work-tree=state checkout origin/state -- .
+            echo "Restored state from origin/state"
+          else
+            echo "No state branch yet, nothing to prune"
+          fi
+
+      - name: Refresh state right before running
+        # The looping scan job can push to `state` every ~30 min. Refresh
+        # just before the probe so we operate on the freshest possible
+        # seen-set, minimizing the chance we probe (and try to delete)
+        # an externalId the scan just removed.
+        run: |
+          if git ls-remote --exit-code --heads origin state >/dev/null 2>&1; then
+            git fetch origin state --depth=1
+            git --work-tree=state checkout origin/state -- .
+            echo "Re-restored state from origin/state"
+          fi
+
+      - name: Run silent prune
+        # NOTE: we deliberately do NOT pass TELEGRAM_* or SMTP_* into
+        # this step. The worker doesn't call those services, and the
+        # missing env vars are an extra structural guard against a
+        # future regression accidentally sending a notification.
+        env:
+          PLAYWRIGHT_HEADLESS: "true"
+          STATE_DIR: ${{ github.workspace }}/state
+          PRUNE_TARGET_SEARCH_IDS: "rent-in-cities"
+        run: npm run silent-prune
+
+      - name: Persist state to state branch
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STATE_DIR: ${{ github.workspace }}/state
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          GIT_COMMITTER_NAME: github-actions[bot]
+          GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          # Surfaced by silent-prune.js into $GITHUB_ENV; the merge step
+          # subtracts these keys from the union with origin/state so a
+          # racing scan's stale snapshot can't resurrect them.
+          SEEN_ADS_FORCE_DELETE_IDS: ${{ env.SEEN_ADS_FORCE_DELETE_IDS }}
+        run: bash scripts/persist-state.sh
