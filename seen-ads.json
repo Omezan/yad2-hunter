@@ -65,19 +65,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-18T06:49:26.221Z"
     },
-    "center-and-sharon/ldyfzx6a": {
-      "externalId": "center-and-sharon/ldyfzx6a",
-      "title": "יחידת דיור, מעש",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ldyfzx6a",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6300,
-      "rooms": 4,
-      "city": "מעש",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-18T02:17:36.562Z"
-    },
     "center-and-sharon/hh83goax": {
       "externalId": "center-and-sharon/hh83goax",
       "title": "גג/ פנטהאוז, בת חפר",
@@ -4107,6 +4094,71 @@
       "city": "ראשון לציון",
       "firstSeenAt": "2026-05-18T07:45:24.100Z",
       "lastSeenAt": "2026-05-18T07:45:24.100Z"
+    },
+    "center-and-sharon/q8zlok8b": {
+      "externalId": "center-and-sharon/q8zlok8b",
+      "title": "בית פרטי/ קוטג', מגשימים",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/q8zlok8b",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 7.5,
+      "city": "מגשימים",
+      "firstSeenAt": "2026-05-18T10:26:25.730Z",
+      "lastSeenAt": "2026-05-18T10:26:25.730Z"
+    },
+    "center-and-sharon/xdvfz77f": {
+      "externalId": "center-and-sharon/xdvfz77f",
+      "title": "בית פרטי/ קוטג', לפיד",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/xdvfz77f",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9000,
+      "rooms": 5,
+      "city": "לפיד",
+      "firstSeenAt": "2026-05-18T10:26:25.730Z",
+      "lastSeenAt": "2026-05-18T10:26:25.730Z"
+    },
+    "center-and-sharon/p9i9s7jz": {
+      "externalId": "center-and-sharon/p9i9s7jz",
+      "title": "בית פרטי/ קוטג', ניצני עוז",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p9i9s7jz",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 6,
+      "city": "ניצני עוז",
+      "firstSeenAt": "2026-05-18T10:26:25.730Z",
+      "lastSeenAt": "2026-05-18T10:26:25.730Z"
+    },
+    "south/9dwvthuq": {
+      "externalId": "south/9dwvthuq",
+      "title": "יחידת דיור, זרחיה",
+      "link": "https://www.yad2.co.il/realestate/item/south/9dwvthuq",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 3600,
+      "rooms": 4,
+      "city": "זרחיה",
+      "firstSeenAt": "2026-05-18T10:26:25.730Z",
+      "lastSeenAt": "2026-05-18T10:26:25.730Z"
+    },
+    "coastal-north/md8a0i02": {
+      "externalId": "coastal-north/md8a0i02",
+      "title": "בית פרטי/ קוטג', אביאל",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/md8a0i02",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": null,
+      "rooms": 7,
+      "city": "אביאל",
+      "firstSeenAt": "2026-05-18T10:26:25.730Z",
+      "lastSeenAt": "2026-05-18T10:26:25.730Z"
     }
   }
 }
