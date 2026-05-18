@@ -34,6 +34,7 @@ import {
   writeLastVisitAt
 } from './lib/freshness';
 import { isLevHaParkSearchId } from './lib/lev-hapark';
+import { isRentInCitiesSearchId } from './lib/rent-in-cities';
 import type { AdRow, LastRun, RunSummary, StateResponse } from './lib/types';
 
 function getQueryParam(name: string): string | null {
@@ -135,13 +136,19 @@ export default function DashboardPage() {
   }, []);
 
   // The home dashboard is exclusively the "מציאת בית במושב" experience.
-  // Lev HaPark listings come from the same global state but are surfaced
-  // only on /lev-hapark, so we strip them once at the top of the data
-  // pipeline. Everything downstream (district options, price bounds,
-  // freshness badge, trends, filtered list, map view, scan-result modal)
-  // then sees a Lev-HaPark-free dataset.
+  // Both Lev HaPark and rent-in-cities listings come from the same
+  // global state but are surfaced only on their dedicated pages, so
+  // we strip them once at the top of the data pipeline. Everything
+  // downstream (district options, price bounds, freshness badge,
+  // trends, filtered list, map view, scan-result modal) then sees a
+  // dataset scoped to the moshav watches.
   const ads = useMemo(
-    () => (data?.ads || []).filter((ad) => !isLevHaParkSearchId(ad.searchId)),
+    () =>
+      (data?.ads || []).filter(
+        (ad) =>
+          !isLevHaParkSearchId(ad.searchId) &&
+          !isRentInCitiesSearchId(ad.searchId)
+      ),
     [data?.ads]
   );
   const effectiveSince = pickEffectiveSince(searchParamSince, lastVisitAt);
@@ -330,10 +337,11 @@ export default function DashboardPage() {
       const dispatchedMs = dispatchedAt ? Date.parse(dispatchedAt) : NaN;
       // Pick ads whose firstSeenAt advanced after the user clicked "הרץ סריקה",
       // falling back to whatever was already considered "fresh" if dispatch
-      // parse fails. Lev HaPark hits are surfaced on /lev-hapark and never
-      // appear in this modal.
+      // parse fails. Lev HaPark and rent-in-cities hits live on their own
+      // dedicated pages and never appear in this modal.
       const newAds = state.ads.filter((ad) => {
         if (isLevHaParkSearchId(ad.searchId)) return false;
+        if (isRentInCitiesSearchId(ad.searchId)) return false;
         const t = Date.parse(ad.firstSeenAt);
         if (Number.isNaN(t)) return false;
         if (!Number.isNaN(dispatchedMs) && t >= dispatchedMs) return true;
@@ -455,6 +463,14 @@ export default function DashboardPage() {
             <Link href="/lev-hapark" className="lev-home-chip" title="מודעות לב הפארק, רעננה">
               <span className="lev-home-chip-icon" aria-hidden="true">🌳</span>
               <span>לב הפארק</span>
+            </Link>
+            <Link
+              href="/rent-in-cities"
+              className="ric-home-chip"
+              title="שכירות בערים — מרכז ושרון"
+            >
+              <span className="ric-home-chip-icon" aria-hidden="true">🏙️</span>
+              <span>שכירות בערים</span>
             </Link>
             {freshAds.length > 0 ? (
               <span className="badge badge-soft">

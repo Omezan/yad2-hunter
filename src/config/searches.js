@@ -67,6 +67,22 @@ const ALL_SEARCHES = [
     settlementsOnly: false,
     notifyVia: 'email',
     excludeFromHealthCheck: true
+  },
+  // Urban rentals across a fixed list of cities in מרכז ושרון
+  // (multiCity Yad2 ids: 6900, 9700, 8700, 8300, 2620), 4+ rooms,
+  // ≤ 9000₪, apartments / penthouses / duplexes. Unlike the moshav
+  // watches this one is NOT settlements-only, but unlike Lev HaPark
+  // it DOES route to Telegram. We opt it out of the health-check
+  // (excludeFromHealthCheck) so the scan worker self-prunes its
+  // delisted ads silently — same pattern as Lev HaPark.
+  {
+    id: 'rent-in-cities',
+    label: 'שכירות בערים',
+    districtKey: 'rent-in-cities',
+    districtLabel: 'שכירות בערים — מרכז ושרון',
+    url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&property=3%2C5%2C39&multiCity=6900%2C9700%2C8700%2C8300%2C2620',
+    settlementsOnly: false,
+    excludeFromHealthCheck: true
   }
 ];
 

@@ -2394,3 +2394,63 @@ input:focus {
   line-height: 1;
 }
 
+/* ---------------------------------------------------------------------------
+ * /rent-in-cities — "שכירות בערים" watch (urban rentals in 5 specific cities)
+ *
+ * Same visual structure as the Lev HaPark page, but with an amber /
+ * sunset palette so the two dedicated dashboards never look like the
+ * same data at a glance.
+ * ------------------------------------------------------------------------- */
+
+.ric-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: var(--type-sm);
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+}
+
+.ric-back:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.ric-toolbar {
+  /* Single-search page: pack the results-count chip to the right so the
+   * toolbar feels balanced even without a segmented control. */
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+/* Home-page link chip pointing at /rent-in-cities */
+.ric-home-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(224, 85, 43, 0.18) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  color: var(--text);
+  text-decoration: none;
+  font-size: var(--type-sm);
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ric-home-chip:hover {
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.28);
+  transform: translateY(-1px);
+}
+
+.ric-home-chip-icon {
+  font-size: var(--type-md);
+  line-height: 1;
+}

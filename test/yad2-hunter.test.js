@@ -469,11 +469,17 @@ test('getHealthCheckSearches returns exactly the 5 moshav searches and excludes 
   }
 });
 
-test('getSelfPrunedSearchIds returns exactly the lev-hapark searches', () => {
+test('getSelfPrunedSearchIds covers every excludeFromHealthCheck search', () => {
+  // The rent-in-cities watch joined lev-hapark in opting out of the
+  // health-check (its delisted listings are pruned by the scan
+  // worker instead). Whenever a new watch is added with
+  // excludeFromHealthCheck: true, this set should automatically
+  // include it.
   const selfPruned = getSelfPrunedSearchIds();
-  assert.equal(selfPruned.size, 2);
   assert.ok(selfPruned.has('lev-hapark-rent'));
   assert.ok(selfPruned.has('lev-hapark-sale'));
+  assert.ok(selfPruned.has('rent-in-cities'));
+  assert.equal(selfPruned.size, 3);
 });
 
 test('health-check and self-prune sets are disjoint and partition ALL_SEARCHES', () => {
@@ -1719,6 +1725,47 @@ test('pickManualNoticeChannels picks email only for lev-hapark manual scan', () 
       channelMap: map
     }),
     { telegram: false, email: true }
+  );
+});
+
+// rent-in-cities is a self-pruned watch (excludeFromHealthCheck) just
+// like lev-hapark, BUT it has no notifyVia override, so the router
+// must keep its ads on the Telegram bucket alongside the moshav
+// districts. These regressions cover the live router and the manual
+// scan channel picker.
+test('partitionAdsByChannel keeps rent-in-cities on telegram (no notifyVia)', () => {
+  const searches = [
+    { id: 'jerusalem' },
+    { id: 'rent-in-cities' },
+    { id: 'lev-hapark-rent', notifyVia: 'email' }
+  ];
+  const ads = [
+    { externalId: 'a', searchId: 'jerusalem' },
+    { externalId: 'b', searchId: 'rent-in-cities' },
+    { externalId: 'c', searchId: 'lev-hapark-rent' }
+  ];
+  const map = buildNotifyChannelMap(searches);
+  assert.equal(map.get('rent-in-cities'), 'telegram');
+  const { telegramAds, emailAds } = partitionAdsByChannel(ads, map);
+  assert.deepEqual(telegramAds.map((a) => a.externalId).sort(), ['a', 'b']);
+  assert.deepEqual(emailAds.map((a) => a.externalId), ['c']);
+});
+
+test('pickManualNoticeChannels keeps telegram on for a rent-in-cities manual scan', () => {
+  // Manually triggering ONLY rent-in-cities from its dashboard page
+  // must still result in a Telegram notice (the watch is telegram-routed),
+  // and must NOT trigger the email channel.
+  const searches = [
+    { id: 'rent-in-cities' },
+    { id: 'lev-hapark-rent', notifyVia: 'email' }
+  ];
+  const map = buildNotifyChannelMap(searches);
+  assert.deepEqual(
+    pickManualNoticeChannels({
+      explicitlyRequestedIds: ['rent-in-cities'],
+      channelMap: map
+    }),
+    { telegram: true, email: false }
   );
 });
 

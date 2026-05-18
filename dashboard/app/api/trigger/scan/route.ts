@@ -15,7 +15,8 @@ const KNOWN_SEARCH_IDS = new Set([
   'coastal-north',
   'north-valleys',
   'lev-hapark-rent',
-  'lev-hapark-sale'
+  'lev-hapark-sale',
+  'rent-in-cities'
 ]);
 
 function sanitizeSearchIds(raw: unknown): string {

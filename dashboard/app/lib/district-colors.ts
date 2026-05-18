@@ -74,6 +74,17 @@ const PALETTE: Record<string, DistrictColor> = {
     softBg: 'rgba(210, 75, 155, 0.16)',
     softText: '#ec8ec1',
     softBorder: 'rgba(210, 75, 155, 0.45)'
+  },
+  // שכירות בערים — warm sunset amber. Distinct from the gold of
+  // jerusalem and the terracotta of south, so a single glance at a
+  // pill / chip clearly identifies "urban rentals" without
+  // overlapping the moshav or Lev HaPark palettes.
+  'rent-in-cities': {
+    solid: '#f59e0b',
+    solidStrong: '#c97c05',
+    softBg: 'rgba(245, 158, 11, 0.16)',
+    softText: '#fbbf24',
+    softBorder: 'rgba(245, 158, 11, 0.45)'
   }
 };
 

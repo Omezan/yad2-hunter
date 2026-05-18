@@ -20,6 +20,7 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 - `north-and-valleys`
 - `jerusalem-area`
 - `lev-hapark-rent` / `lev-hapark-sale` — שכונת לב הפארק, רעננה (5+ חדרים), שכירות ומכירה. החיפושים האלה לא שולחים ל-Telegram אלא ל-email לפי `notifyVia: 'email'`, ומופיעים בדאשבורד תחת `/lev-hapark`.
+- `rent-in-cities` — שכירות עד ₪9,000, 4+ חדרים, על פני 5 ערים במרכז ובשרון (multiCity). דירה / פנטהאוז / דופלקס בלבד. החיפוש הזה ממשיך לשלוח ל-Telegram (אין `notifyVia`), אבל מוחרג מה-health-check (`excludeFromHealthCheck: true`) ולכן ה-scan עושה לו self-prune שקט בדיוק כמו לב הפארק. הוא מופיע בדאשבורד תחת `/rent-in-cities` ולא בדף הראשי.
 
 ה-URLs עצמם מוגדרים ב-`src/config/searches.js`.
 
@@ -51,7 +52,7 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 - `EMAIL_NOTIFICATIONS_ENABLED` — ברירת מחדל `true`. אם חסר אחד מה-`SMTP_*` השירות מדלג בלי שגיאה.
 - `PLAYWRIGHT_HEADLESS` — ברירת מחדל `true`.
 - `SEARCH_TIMEOUT_MS` — ברירת מחדל `60000`.
-- `ENABLED_SEARCH_IDS` — לסינון לקבוצת חיפושים מסוימת (למשל `center-sharon,south` או `lev-hapark-rent,lev-hapark-sale`).
+- `ENABLED_SEARCH_IDS` — לסינון לקבוצת חיפושים מסוימת (למשל `center-sharon,south`, `lev-hapark-rent,lev-hapark-sale`, או `rent-in-cities`).
 - `HISTORY_LIMIT` — כמה ריצות לזכור ב-`runs.json`. ברירת מחדל `50`.
 - `SEEN_RETENTION_DAYS` — לכמה ימים לשמור מודעה ב-`seen-ads.json`. ברירת מחדל `30`.
 
@@ -60,6 +61,13 @@ MVP מינימלי שסורק את Yad2 כל 5 דקות, מזהה מודעות �
 - בדאשבורד יש דף נפרד `/lev-hapark` עם כפתור "הרץ סריקה" ייעודי שמפעיל רק את שני החיפושים האלה.
 - כשהריצה מוצאת מודעות חדשות בלב הפארק היא שולחת מייל ל-`EMAIL_RECIPIENTS` (במקום Telegram). חמשת ה-`SMTP_*` ו-`EMAIL_RECIPIENTS` צריכים להיות מוגדרים כסודות ב-GitHub Actions וגם בקובץ `.env` המקומי.
 - אם רוצים לבטל זמנית, להגדיר `EMAIL_NOTIFICATIONS_ENABLED=false`. המודעות עדיין יישמרו ב-`seen-ads.json` ויופיעו בדאשבורד.
+
+### Rent-in-cities Telegram watch
+
+- בדאשבורד יש דף נפרד `/rent-in-cities` עם כפתור "הרץ סריקה" ייעודי שמפעיל רק את ה-watch הזה.
+- ההתראות נשלחות ל-Telegram (אותו `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHAT_ID` של המושבים) — אין שום סוד נוסף שצריך להגדיר.
+- ה-watch מוחרג מה-health-check (`excludeFromHealthCheck: true`), ולכן כשמודעה נמחקת מ-Yad2 — ה-scan הרגיל מנקה אותה בשקט מ-`seen-ads.json` בלי לשלוח התראה. כלל הסריקות במושבים והדף הראשי לא מושפעים כלל.
+- לא מופיע בדף הראשי (`/`) — רק בדף הייעודי.
 
 ## הרצה מקומית (אופציונלי)
 
