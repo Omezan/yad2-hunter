@@ -4250,6 +4250,84 @@
       "city": "ראשון לציון",
       "firstSeenAt": "2026-05-19T16:49:01.850Z",
       "lastSeenAt": "2026-05-19T16:49:01.850Z"
+    },
+    "center-and-sharon/6jhnntf7": {
+      "externalId": "center-and-sharon/6jhnntf7",
+      "title": "בית פרטי/ קוטג', גבעת כ''ח, גבעת כ\"ח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/6jhnntf7",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6000,
+      "rooms": 4,
+      "city": "גבעת כ\"ח",
+      "firstSeenAt": "2026-04-28T09:45:18.174Z",
+      "lastSeenAt": "2026-05-19T13:56:50.894Z"
+    },
+    "coastal-north/dspmfef9": {
+      "externalId": "coastal-north/dspmfef9",
+      "title": "דירה, בצת",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/dspmfef9",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 5000,
+      "rooms": 4,
+      "city": "בצת",
+      "firstSeenAt": "2026-04-28T09:45:18.174Z",
+      "lastSeenAt": "2026-05-19T13:56:50.894Z"
+    },
+    "center-and-sharon/5nrfsaqu": {
+      "externalId": "center-and-sharon/5nrfsaqu",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/5nrfsaqu",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5650,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-04-29T10:10:31.788Z",
+      "lastSeenAt": "2026-05-19T13:56:50.894Z"
+    },
+    "center-and-sharon/12yk9t03": {
+      "externalId": "center-and-sharon/12yk9t03",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/12yk9t03",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 6,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-05-05T11:13:43.518Z",
+      "lastSeenAt": "2026-05-19T13:56:50.894Z"
+    },
+    "south/rh736i07": {
+      "externalId": "south/rh736i07",
+      "title": "דירה, תלמים",
+      "link": "https://www.yad2.co.il/realestate/item/south/rh736i07",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 7200,
+      "rooms": 5.5,
+      "city": "תלמים",
+      "firstSeenAt": "2026-05-12T10:44:14.753Z",
+      "lastSeenAt": "2026-05-19T13:56:50.894Z"
+    },
+    "center-and-sharon/x6w0bg5j": {
+      "externalId": "center-and-sharon/x6w0bg5j",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/x6w0bg5j",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5800,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-05-16T11:50:50.312Z",
+      "lastSeenAt": "2026-05-19T10:38:38.778Z"
     }
   }
 }
