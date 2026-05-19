@@ -949,19 +949,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-19T10:38:38.778Z"
     },
-    "north-and-valleys/c8g7izoa": {
-      "externalId": "north-and-valleys/c8g7izoa",
-      "title": "בית פרטי/ קוטג', לבון",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/c8g7izoa",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8000,
-      "rooms": 5,
-      "city": "לבון",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-19T06:47:11.515Z"
-    },
     "north-and-valleys/c8ruyily": {
       "externalId": "north-and-valleys/c8ruyily",
       "title": "יחידת דיור, פוריה כפר עבודה",
@@ -3588,19 +3575,6 @@
       "firstSeenAt": "2026-05-17T13:00:13.244Z",
       "lastSeenAt": "2026-05-19T10:38:38.778Z"
     },
-    "center-and-sharon/vhx8lmgc": {
-      "externalId": "center-and-sharon/vhx8lmgc",
-      "title": "דירה, חגלה",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/vhx8lmgc",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 4,
-      "city": "חגלה",
-      "firstSeenAt": "2026-05-17T13:57:02.450Z",
-      "lastSeenAt": "2026-05-19T06:47:11.515Z"
-    },
     "south/pjwz6lt7": {
       "externalId": "south/pjwz6lt7",
       "title": "בית פרטי/ קוטג', נבטים",
@@ -4237,6 +4211,45 @@
       "city": "רעננה",
       "firstSeenAt": "2026-05-19T10:38:38.778Z",
       "lastSeenAt": "2026-05-19T10:38:38.778Z"
+    },
+    "center-and-sharon/qe7p70o9": {
+      "externalId": "center-and-sharon/qe7p70o9",
+      "title": "דירה, חגלה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/qe7p70o9",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 4,
+      "city": "חגלה",
+      "firstSeenAt": "2026-05-19T12:54:26.010Z",
+      "lastSeenAt": "2026-05-19T12:54:26.010Z"
+    },
+    "center-and-sharon/nwodz41p": {
+      "externalId": "center-and-sharon/nwodz41p",
+      "title": "בית פרטי/ קוטג', גבעת כ''ח, גבעת כ\"ח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/nwodz41p",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 4,
+      "city": "גבעת כ\"ח",
+      "firstSeenAt": "2026-05-19T12:54:26.010Z",
+      "lastSeenAt": "2026-05-19T12:54:26.010Z"
+    },
+    "north-and-valleys/8lcfbjgq": {
+      "externalId": "north-and-valleys/8lcfbjgq",
+      "title": "בית פרטי/ קוטג', מסד",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/8lcfbjgq",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 6,
+      "city": "מסד",
+      "firstSeenAt": "2026-05-19T12:54:26.010Z",
+      "lastSeenAt": "2026-05-19T12:54:26.010Z"
     }
   }
 }
