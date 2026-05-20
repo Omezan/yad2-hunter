@@ -650,19 +650,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-20T10:31:23.537Z"
     },
-    "north-and-valleys/ynp8owlz": {
-      "externalId": "north-and-valleys/ynp8owlz",
-      "title": "בית פרטי/ קוטג', דן",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ynp8owlz",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8500,
-      "rooms": 6,
-      "city": "דן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-20T02:17:39.294Z"
-    },
     "north-and-valleys/pgdnsspp": {
       "externalId": "north-and-valleys/pgdnsspp",
       "title": "בית פרטי/ קוטג', מולדת",
@@ -3003,19 +2990,6 @@
       "firstSeenAt": "2026-05-14T08:22:27.077Z",
       "lastSeenAt": "2026-05-20T10:31:23.537Z"
     },
-    "south/3ga9o3ag": {
-      "externalId": "south/3ga9o3ag",
-      "title": "בית פרטי/ קוטג', שני ליבנה",
-      "link": "https://www.yad2.co.il/realestate/item/south/3ga9o3ag",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 3500,
-      "rooms": 4.5,
-      "city": "שני ליבנה",
-      "firstSeenAt": "2026-05-14T14:39:52.009Z",
-      "lastSeenAt": "2026-05-20T10:31:23.537Z"
-    },
     "south/2zuvrfxt": {
       "externalId": "south/2zuvrfxt",
       "title": "בית פרטי/ קוטג', באר אורה",
@@ -3744,32 +3718,6 @@
       "firstSeenAt": "2026-05-18T14:35:06.536Z",
       "lastSeenAt": "2026-05-20T10:31:23.537Z"
     },
-    "south/62g906hx": {
-      "externalId": "south/62g906hx",
-      "title": "בית פרטי/ קוטג', אשבול",
-      "link": "https://www.yad2.co.il/realestate/item/south/62g906hx",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 8000,
-      "rooms": 5,
-      "city": "אשבול",
-      "firstSeenAt": "2026-05-18T14:35:06.536Z",
-      "lastSeenAt": "2026-05-20T10:31:23.537Z"
-    },
-    "south/3njhrfdb": {
-      "externalId": "south/3njhrfdb",
-      "title": "בית פרטי/ קוטג', יושיביה",
-      "link": "https://www.yad2.co.il/realestate/item/south/3njhrfdb",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 3900,
-      "rooms": 4,
-      "city": "יושיביה",
-      "firstSeenAt": "2026-05-18T14:35:06.536Z",
-      "lastSeenAt": "2026-05-20T06:49:34.369Z"
-    },
     "north-and-valleys/iubq5xoo": {
       "externalId": "north-and-valleys/iubq5xoo",
       "title": "בית פרטי/ קוטג', חלוץ",
@@ -4212,19 +4160,6 @@
       "firstSeenAt": "2026-05-20T10:31:23.537Z",
       "lastSeenAt": "2026-05-20T10:31:23.537Z"
     },
-    "south/j7ewssg9": {
-      "externalId": "south/j7ewssg9",
-      "title": "בית פרטי/ קוטג', יושיביה",
-      "link": "https://www.yad2.co.il/realestate/item/south/j7ewssg9",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4200,
-      "rooms": 4,
-      "city": "יושיביה",
-      "firstSeenAt": "2026-05-20T10:31:23.537Z",
-      "lastSeenAt": "2026-05-20T10:31:23.537Z"
-    },
     "north-and-valleys/bb71orj3": {
       "externalId": "north-and-valleys/bb71orj3",
       "title": "בית פרטי/ קוטג', ביכורה",
@@ -4237,6 +4172,19 @@
       "city": "ביכורה",
       "firstSeenAt": "2026-05-20T10:31:23.537Z",
       "lastSeenAt": "2026-05-20T10:31:23.537Z"
+    },
+    "south/f02o620n": {
+      "externalId": "south/f02o620n",
+      "title": "בית פרטי/ קוטג', יושיביה",
+      "link": "https://www.yad2.co.il/realestate/item/south/f02o620n",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 4300,
+      "rooms": 4,
+      "city": "יושיביה",
+      "firstSeenAt": "2026-05-20T11:30:37.983Z",
+      "lastSeenAt": "2026-05-20T11:30:37.983Z"
     }
   }
 }
