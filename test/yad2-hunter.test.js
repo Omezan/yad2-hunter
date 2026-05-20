@@ -39,6 +39,7 @@ const {
 const {
   __testing: emailTesting
 } = require('../src/services/email');
+const { __testing: loopTesting } = require('../src/worker/run-loop');
 const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
@@ -1773,5 +1774,113 @@ test('email buildDashboardUrl joins a base URL with a sub-path and ?since', () =
   // a configured URL gets the path appended correctly via a focused
   // pure-function check below.
   assert.ok(url === null || /\/lev-hapark/.test(url));
+});
+
+// =====================================================================
+// Hourly scan loop wrapper (src/worker/run-loop.js). These tests pin
+// down the budget arithmetic so the loop fires the intended number of
+// iterations per hour and never runs past its wall-clock deadline.
+// =====================================================================
+
+test('run-loop parsePositiveInt falls back to default for empty/invalid input', () => {
+  const { parsePositiveInt } = loopTesting;
+  assert.equal(parsePositiveInt('', 42), 42);
+  assert.equal(parsePositiveInt(undefined, 42), 42);
+  assert.equal(parsePositiveInt(null, 42), 42);
+  assert.equal(parsePositiveInt('abc', 42), 42);
+  assert.equal(parsePositiveInt('-5', 42), 42);
+  assert.equal(parsePositiveInt('0', 42), 42);
+  assert.equal(parsePositiveInt('17', 42), 17);
+});
+
+test('run-loop parseBool maps the env-var dialect to a real boolean', () => {
+  const { parseBool } = loopTesting;
+  assert.equal(parseBool('true', false), true);
+  assert.equal(parseBool('TRUE', false), true);
+  assert.equal(parseBool('1', false), true);
+  assert.equal(parseBool('yes', false), true);
+  assert.equal(parseBool('false', true), false);
+  assert.equal(parseBool('0', true), false);
+  assert.equal(parseBool('no', true), false);
+  // Falls back to the default when the value isn't a recognized boolean.
+  assert.equal(parseBool('', true), true);
+  assert.equal(parseBool(undefined, true), true);
+  assert.equal(parseBool('maybe', false), false);
+});
+
+test('run-loop shouldRunAnotherIteration enforces interval + safety buffer', () => {
+  const { shouldRunAnotherIteration, SAFETY_BUFFER_MS } = loopTesting;
+  const intervalMs = 30 * 60 * 1000;
+  const deadline = 1000 + intervalMs + SAFETY_BUFFER_MS;
+  assert.equal(
+    shouldRunAnotherIteration({
+      now: 1000,
+      deadline,
+      intervalMs,
+      safetyBufferMs: SAFETY_BUFFER_MS
+    }),
+    true,
+    'when exactly interval + buffer fits, another iteration should fire'
+  );
+  assert.equal(
+    shouldRunAnotherIteration({
+      now: 1001,
+      deadline,
+      intervalMs,
+      safetyBufferMs: SAFETY_BUFFER_MS
+    }),
+    false,
+    'one millisecond short of the budget must stop the loop'
+  );
+});
+
+test('run-loop default budget fits exactly 2 iterations at the 30-min interval', () => {
+  // Hourly cron → ~55 min budget → interval 30 min. The math must
+  // give the loop room for the second iteration but not a third.
+  const {
+    DEFAULT_BUDGET_MS,
+    DEFAULT_INTERVAL_MS,
+    SAFETY_BUFFER_MS,
+    shouldRunAnotherIteration
+  } = loopTesting;
+  const start = 0;
+  const deadline = start + DEFAULT_BUDGET_MS;
+  // After the first iteration (at t≈0), do we have room for another?
+  assert.equal(
+    shouldRunAnotherIteration({
+      now: start + 1000,
+      deadline,
+      intervalMs: DEFAULT_INTERVAL_MS,
+      safetyBufferMs: SAFETY_BUFFER_MS
+    }),
+    true
+  );
+  // After the second iteration (at t≈30 min + a little overhead),
+  // there must NOT be room for a third — otherwise we'd risk
+  // crossing the hourly boundary.
+  assert.equal(
+    shouldRunAnotherIteration({
+      now: start + DEFAULT_INTERVAL_MS + 60 * 1000,
+      deadline,
+      intervalMs: DEFAULT_INTERVAL_MS,
+      safetyBufferMs: SAFETY_BUFFER_MS
+    }),
+    false
+  );
+});
+
+test('run-loop computeSleepMs subtracts iteration cost from the interval', () => {
+  const { computeSleepMs } = loopTesting;
+  const intervalMs = 30 * 60 * 1000;
+  // A 5-min iteration should still leave ~25 min of sleep.
+  assert.equal(
+    computeSleepMs({ intervalMs, lastIterationDurationMs: 5 * 60 * 1000 }),
+    25 * 60 * 1000
+  );
+  // Floor the sleep at 5 s so a runaway iteration can't busy-loop.
+  assert.equal(
+    computeSleepMs({ intervalMs, lastIterationDurationMs: intervalMs + 1000 }),
+    5000
+  );
 });
 

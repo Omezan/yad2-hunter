@@ -2,11 +2,13 @@ name: Yad2 Scan
 
 on:
   schedule:
-    # Native every-30-min cron. The previous "hourly job + internal loop"
-    # architecture was retired so the schedule is now visible directly in
-    # the cron expression. Each tick fires a single scan iteration that
-    # scrapes every watch in src/config/searches.js.
-    - cron: "*/30 * * * *"
+    # One job per hour. GitHub's scheduler is observably unreliable for
+    # short cron intervals (free-tier accounts can see */30 slip to
+    # 60–240 min gaps under platform load), so we book a single runner
+    # per hour and let the job itself drive scan cadence via an
+    # internal loop — see src/worker/run-loop.js. Effective scan
+    # frequency: ~every 30 minutes.
+    - cron: "0 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -19,7 +21,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 60
 
     steps:
       - name: Checkout main
@@ -51,7 +53,7 @@ jobs:
             echo "No state branch yet, starting fresh"
           fi
 
-      - name: Run scan
+      - name: Run scan loop
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -74,7 +76,17 @@ jobs:
           GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
           GIT_COMMITTER_NAME: github-actions[bot]
           GIT_COMMITTER_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
-        run: npm run scan
+          # 55 minutes wall-clock budget so the loop finishes before
+          # the next hourly tick can collide on the concurrency group.
+          LOOP_BUDGET_MS: "3300000"
+          # Scan every 30 min within the budget. With a ~55-min budget
+          # this gives us 2 iterations per job (≈minute 0 and ≈minute
+          # 30), independent of GitHub's scheduler.
+          LOOP_INTERVAL_MS: "1800000"
+          # Persist seen-ads + runs after every iteration so a crash
+          # between iterations doesn't lose what we already discovered.
+          LOOP_PERSIST_EACH_ITERATION: "true"
+        run: npm run scan:loop
 
       - name: Persist final state to state branch
         if: always()
