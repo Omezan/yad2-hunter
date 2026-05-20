@@ -2,6 +2,23 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-20T11:34:55.088Z",
+      "completedAt": "2026-05-20T11:36:09.908Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 51,
+      "preFilteredAds": 51,
+      "candidateNewAds": 6,
+      "relevantNewAds": 6,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 6,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": true,
+      "errors": []
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-20T11:32:37.104Z",
       "completedAt": "2026-05-20T11:33:15.385Z",
       "status": "completed",
@@ -1733,35 +1750,6 @@
           "searchLabel": "לב הפארק — שכירות",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-18T14:27:38.663Z",
-      "completedAt": "2026-05-18T14:35:07.163Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 276,
-      "preFilteredAds": 276,
-      "candidateNewAds": 5,
-      "relevantNewAds": 5,
-      "notifiedNewAds": 3,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 2,
-      "silentlyRemovedAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
         {
           "searchId": "lev-hapark-sale",
           "searchLabel": "לב הפארק — מכירה",
