@@ -78,19 +78,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-20T02:17:39.294Z"
     },
-    "center-and-sharon/duqosnrj": {
-      "externalId": "center-and-sharon/duqosnrj",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/duqosnrj",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6200,
-      "rooms": 4,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-20T00:03:39.847Z"
-    },
     "center-and-sharon/c2pwq0et": {
       "externalId": "center-and-sharon/c2pwq0et",
       "title": "בית פרטי/ קוטג', עולש",
@@ -116,19 +103,6 @@
       "city": "ישרש",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-20T02:17:39.294Z"
-    },
-    "center-and-sharon/30rg3zbd": {
-      "externalId": "center-and-sharon/30rg3zbd",
-      "title": "דירה, בת חפר",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/30rg3zbd",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 6000,
-      "rooms": 5,
-      "city": "בת חפר",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-20T00:03:39.847Z"
     },
     "center-and-sharon/hh6sv5of": {
       "externalId": "center-and-sharon/hh6sv5of",
@@ -454,19 +428,6 @@
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-20T02:17:39.294Z"
-    },
-    "coastal-north/l4ycersf": {
-      "externalId": "coastal-north/l4ycersf",
-      "title": "בית פרטי/ קוטג', שדה יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/coastal-north/l4ycersf",
-      "searchId": "coastal-north",
-      "searchLabel": "חוף צפוני",
-      "districtLabel": "חוף צפוני",
-      "price": 8550,
-      "rooms": 5,
-      "city": "שדה יצחק",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-20T00:03:39.847Z"
     },
     "coastal-north/thk6eyv4": {
       "externalId": "coastal-north/thk6eyv4",
@@ -1339,19 +1300,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-20T02:17:39.294Z"
     },
-    "north-and-valleys/qsbuidq9": {
-      "externalId": "north-and-valleys/qsbuidq9",
-      "title": "דירה, ביריה",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/qsbuidq9",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 3750,
-      "rooms": 5,
-      "city": "ביריה",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-20T00:03:39.847Z"
-    },
     "north-and-valleys/47nk4b6d": {
       "externalId": "north-and-valleys/47nk4b6d",
       "title": "בית פרטי/ קוטג', פוריה עילית",
@@ -1636,19 +1584,6 @@
       "rooms": 5,
       "city": "אחוזת ברק",
       "firstSeenAt": "2026-05-01T08:04:34.058Z",
-      "lastSeenAt": "2026-05-20T02:17:39.294Z"
-    },
-    "north-and-valleys/3h70fsms": {
-      "externalId": "north-and-valleys/3h70fsms",
-      "title": "בית פרטי/ קוטג', הררית",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/3h70fsms",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 4700,
-      "rooms": 4,
-      "city": "הררית",
-      "firstSeenAt": "2026-05-01T10:18:19.545Z",
       "lastSeenAt": "2026-05-20T02:17:39.294Z"
     },
     "south/b5qfxzqf": {
