@@ -8,11 +8,14 @@ const {
 } = require('../src/services/relevance');
 const {
   buildHealthCheckMessages,
+  describeScrapeError,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
-  formatReconciliationLine
+  formatPartialScrapeWarning,
+  formatReconciliationLine,
+  summarizeScrapeErrors
 } = require('../src/services/telegram');
 const {
   extractCityFromHeadings,
@@ -1882,5 +1885,100 @@ test('run-loop computeSleepMs subtracts iteration cost from the interval', () =>
     computeSleepMs({ intervalMs, lastIterationDurationMs: intervalMs + 1000 }),
     5000
   );
+});
+
+// =====================================================================
+// Partial-scrape warning. The scan worker emits this as a separate
+// Telegram message every iteration where ANY watch failed (captcha,
+// timeout, etc.) so blocks never go silent.
+// =====================================================================
+
+test('describeScrapeError translates known Yad2 failure modes into Hebrew', () => {
+  assert.equal(
+    describeScrapeError('blocked by anti-bot after all retries'),
+    'נחסם על ידי הגנת captcha של Yad2'
+  );
+  assert.equal(describeScrapeError('captcha challenge'), 'נחסם על ידי captcha');
+  assert.equal(describeScrapeError('Timeout 60000ms exceeded'), 'תם הזמן הקצוב לסריקה');
+  assert.equal(describeScrapeError('net::ERR_CONNECTION_RESET'), 'שגיאת רשת מול Yad2');
+  assert.equal(describeScrapeError('HTTP 503 from yad2'), 'Yad2 החזיר שגיאת שרת (5xx)');
+  // Unknown messages pass through verbatim so we never hide signal.
+  assert.equal(describeScrapeError('weird custom failure'), 'weird custom failure');
+  // Missing / empty input doesn't crash.
+  assert.equal(describeScrapeError(''), 'שגיאה לא ידועה');
+  assert.equal(describeScrapeError(undefined), 'שגיאה לא ידועה');
+});
+
+test('summarizeScrapeErrors collapses multiple errors for the same watch', () => {
+  const summary = summarizeScrapeErrors([
+    { searchId: 'lev-hapark-rent', searchLabel: 'לב הפארק — שכירות', message: 'captcha challenge' },
+    { searchId: 'lev-hapark-rent', searchLabel: 'לב הפארק — שכירות', message: 'blocked by anti-bot after all retries' },
+    { searchId: 'rent-in-cities', searchLabel: 'שכירות בערים', message: 'blocked by anti-bot after all retries' }
+  ]);
+  assert.equal(summary.length, 2);
+  const rent = summary.find((s) => s.searchId === 'lev-hapark-rent');
+  assert.equal(rent.searchLabel, 'לב הפארק — שכירות');
+  // Both distinct reasons should show up in the collapsed line.
+  assert.match(rent.reason, /captcha/);
+  assert.match(rent.reason, /הגנת captcha של Yad2/);
+});
+
+test('summarizeScrapeErrors ignores entries without a searchId', () => {
+  const summary = summarizeScrapeErrors([
+    { searchId: '', message: 'noop' },
+    { message: 'noop' },
+    null,
+    { searchId: 'jerusalem', searchLabel: 'ירושלים', message: 'Timeout' }
+  ]);
+  assert.equal(summary.length, 1);
+  assert.equal(summary[0].searchId, 'jerusalem');
+});
+
+test('formatPartialScrapeWarning produces the operational Hebrew notice', () => {
+  const text = formatPartialScrapeWarning({
+    errors: [
+      {
+        searchId: 'lev-hapark-rent',
+        searchLabel: 'לב הפארק — שכירות',
+        message: 'blocked by anti-bot after all retries'
+      },
+      {
+        searchId: 'lev-hapark-sale',
+        searchLabel: 'לב הפארק — מכירה',
+        message: 'blocked by anti-bot after all retries'
+      },
+      {
+        searchId: 'rent-in-cities',
+        searchLabel: 'שכירות בערים',
+        message: 'blocked by anti-bot after all retries'
+      }
+    ],
+    runStartedAt: '2026-05-20T10:00:00Z'
+  });
+  assert.match(text, /סריקה חלקית/);
+  assert.match(text, /החיפושים הבאים לא נסרקו בהצלחה/);
+  assert.match(text, /לב הפארק — שכירות/);
+  assert.match(text, /לב הפארק — מכירה/);
+  assert.match(text, /שכירות בערים/);
+  // Reason rendered after an em-dash, not the raw English message.
+  assert.match(text, /— נחסם על ידי הגנת captcha של Yad2/);
+  // Reassurance line so the user knows the dashboard is intact.
+  assert.match(text, /המודעות הקיימות בדאשבורד לא הושפעו/);
+  // Should NOT echo the raw English internals.
+  assert.equal(/blocked by anti-bot/.test(text), false);
+});
+
+test('formatPartialScrapeWarning returns empty string when there are no errors', () => {
+  assert.equal(formatPartialScrapeWarning({ errors: [] }), '');
+  assert.equal(formatPartialScrapeWarning({ errors: null }), '');
+  assert.equal(formatPartialScrapeWarning({}), '');
+  assert.equal(formatPartialScrapeWarning(), '');
+});
+
+test('formatPartialScrapeWarning falls back to the searchId when label is missing', () => {
+  const text = formatPartialScrapeWarning({
+    errors: [{ searchId: 'mystery-watch', message: 'Timeout 60000ms exceeded' }]
+  });
+  assert.match(text, /• mystery-watch — תם הזמן הקצוב לסריקה/);
 });
 

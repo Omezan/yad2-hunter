@@ -497,6 +497,73 @@ function formatDiffBlockForRow(row) {
   return lines.join('\n');
 }
 
+// Friendlier rendering for the various failure modes that come out
+// of scrapeAllSearches. The scraper hands us either the explicit
+// "blocked by anti-bot after all retries" sentinel (after 3 fresh
+// browser profile retries) or a raw exception message. Translate
+// both into a short Hebrew phrase the user can act on at a glance.
+function describeScrapeError(message) {
+  const raw = typeof message === 'string' ? message.trim() : '';
+  if (!raw) return 'שגיאה לא ידועה';
+  if (/blocked by anti-?bot/i.test(raw)) return 'נחסם על ידי הגנת captcha של Yad2';
+  if (/captcha/i.test(raw)) return 'נחסם על ידי captcha';
+  if (/timeout|timed out/i.test(raw)) return 'תם הזמן הקצוב לסריקה';
+  if (/net::ERR/i.test(raw)) return 'שגיאת רשת מול Yad2';
+  if (/HTTP\s*5\d{2}/i.test(raw)) return 'Yad2 החזיר שגיאת שרת (5xx)';
+  return raw;
+}
+
+// Group the scraper's flat error list by searchId. The scraper may
+// emit several errors for the same watch (one per retry profile);
+// we collapse them so the warning shows one line per blocked watch.
+function summarizeScrapeErrors(errors) {
+  if (!Array.isArray(errors) || !errors.length) return [];
+  const bySearchId = new Map();
+  for (const err of errors) {
+    if (!err || !err.searchId) continue;
+    if (!bySearchId.has(err.searchId)) {
+      bySearchId.set(err.searchId, {
+        searchId: err.searchId,
+        searchLabel: err.searchLabel || err.searchId,
+        reasons: new Set()
+      });
+    }
+    const entry = bySearchId.get(err.searchId);
+    if (err.searchLabel) entry.searchLabel = err.searchLabel;
+    entry.reasons.add(describeScrapeError(err.message));
+  }
+  return Array.from(bySearchId.values()).map((entry) => ({
+    searchId: entry.searchId,
+    searchLabel: entry.searchLabel,
+    reason: Array.from(entry.reasons).join(' · ')
+  }));
+}
+
+// Formats the operational "some watches couldn't be scraped this
+// iteration" notice. Independent of the new-ads digest by design:
+// per the product brief this warning ships as its own Telegram
+// message after every iteration where errors exist, with no dedupe
+// across iterations.
+function formatPartialScrapeWarning({ errors, runStartedAt } = {}) {
+  const summary = summarizeScrapeErrors(errors);
+  if (!summary.length) return '';
+  const lines = ['⚠️ Yad2 Hunter — סריקה חלקית', 'החיפושים הבאים לא נסרקו בהצלחה:'];
+  for (const item of summary) {
+    lines.push(`• ${item.searchLabel} — ${item.reason}`);
+  }
+  lines.push('', 'המודעות הקיימות בדאשבורד לא הושפעו — ננסה שוב בריצה הבאה.');
+  const footer = buildDashboardFooter({ runStartedAt });
+  if (footer) lines.push('', footer);
+  return lines.join('\n');
+}
+
+async function sendPartialScrapeWarning({ errors, runStartedAt } = {}) {
+  const text = formatPartialScrapeWarning({ errors, runStartedAt });
+  if (!text) return { skipped: true, reason: 'No scrape errors to report' };
+  const result = await sendTelegramMessage({ text, disablePreview: true });
+  return { parts: 1, results: [result] };
+}
+
 async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliation } = {}) {
   const messages = buildHealthCheckMessages({
     rows,
@@ -521,14 +588,18 @@ async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliati
 
 module.exports = {
   buildHealthCheckMessages,
+  describeScrapeError,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
+  formatPartialScrapeWarning,
   formatReconciliationLine,
   sendHealthCheckReport,
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
-  sendTelegramMessage
+  sendPartialScrapeWarning,
+  sendTelegramMessage,
+  summarizeScrapeErrors
 };

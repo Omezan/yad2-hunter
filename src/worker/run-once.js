@@ -11,7 +11,8 @@ const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
   sendManualScanNoNewAdsNotice,
-  sendNewAdsDigest
+  sendNewAdsDigest,
+  sendPartialScrapeWarning
 } = require('../services/telegram');
 const {
   sendManualScanNoNewAdsEmail,
@@ -240,6 +241,29 @@ async function runOnce(options = {}) {
       });
     }
 
+    // Operational notice: if any watch was blocked or errored this
+    // iteration, send a SEPARATE Telegram message listing the
+    // affected watches. Always fires when there are errors, on
+    // every iteration (no dedupe) — this is the contract the user
+    // chose; signal beats silence when the scraper is being
+    // rate-limited.
+    let scrapeWarningResult = { skipped: true, reason: 'No scrape errors' };
+    if (Array.isArray(scrapeResult.errors) && scrapeResult.errors.length > 0) {
+      try {
+        scrapeWarningResult = await sendPartialScrapeWarning({
+          errors: scrapeResult.errors,
+          runStartedAt: startedAt
+        });
+      } catch (warnErr) {
+        scrapeWarningResult = {
+          skipped: true,
+          reason: `Failed to send partial-scrape warning: ${
+            warnErr && warnErr.message ? warnErr.message : warnErr
+          }`
+        };
+      }
+    }
+
     const runEntry = {
       kind: 'scan',
       startedAt,
@@ -268,7 +292,8 @@ async function runOnce(options = {}) {
       rejectionCounts,
       droppedNewCandidates,
       telegramResult,
-      emailResult
+      emailResult,
+      scrapeWarningResult
     };
   } catch (error) {
     recordRun({

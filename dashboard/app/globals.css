@@ -1685,10 +1685,46 @@ input:focus {
 }
 
 .scan-picker-popover {
-  /* Slightly wider on desktop so the longest district label
-   * ("ירושלים והסביבה") fits on one line with the check glyph. */
-  min-width: 280px;
-  max-width: min(360px, 90vw);
+  /* Slightly wider on desktop so the longest watch label
+   * ("שכירות בערים — מרכז ושרון") fits on one line with the check
+   * glyph. */
+  min-width: 320px;
+  max-width: min(420px, 92vw);
+}
+
+.scan-picker-groups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  /* The flat .toolbar-district-list inside .scan-picker used to own
+   * the scroll behaviour. With grouped sections we lift the scrolling
+   * up here so all groups share one scroll context — keeps the
+   * section headings sticky-feeling and avoids per-group inner bars. */
+  max-height: 56vh;
+  overflow-y: auto;
+  padding: var(--space-1) 0;
+}
+
+.scan-picker-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.scan-picker-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.scan-picker-group-list {
+  /* Inside a group we want a tight flow without the outer scroll —
+   * the parent .scan-picker-groups owns the scroll. */
+  max-height: none;
+  overflow: visible;
+  padding: 0;
 }
 
 .scan-picker-check {

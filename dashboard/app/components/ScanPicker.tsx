@@ -10,16 +10,47 @@ import {
 } from 'react';
 import { solidPillStyle } from '../lib/district-colors';
 
+type ScanOption = { value: string; label: string };
+type ScanOptionGroup = { key: string; title: string; options: ScanOption[] };
+
 // Mirrors the order/labels in src/config/searches.js. Kept hardcoded
-// here so the picker renders before /api/state has loaded — districts
-// without any ads yet still appear as selectable.
-export const SCAN_DISTRICT_OPTIONS: { value: string; label: string }[] = [
-  { value: 'jerusalem', label: 'ירושלים והסביבה' },
-  { value: 'center-sharon', label: 'מרכז והשרון' },
-  { value: 'south', label: 'דרום' },
-  { value: 'coastal-north', label: 'חוף צפוני' },
-  { value: 'north-valleys', label: 'צפון והעמקים' }
+// here so the picker renders before /api/state has loaded — watches
+// without any ads yet still appear as selectable. Grouped into the
+// three product surfaces (main dashboard, /lev-hapark, /rent-in-cities)
+// so the section header tells the user where the results will appear
+// when they pick a watch.
+export const SCAN_OPTION_GROUPS: ScanOptionGroup[] = [
+  {
+    key: 'moshav',
+    title: 'מושבים',
+    options: [
+      { value: 'jerusalem', label: 'ירושלים והסביבה' },
+      { value: 'center-sharon', label: 'מרכז והשרון' },
+      { value: 'south', label: 'דרום' },
+      { value: 'coastal-north', label: 'חוף צפוני' },
+      { value: 'north-valleys', label: 'צפון והעמקים' }
+    ]
+  },
+  {
+    key: 'lev-hapark',
+    title: 'לב הפארק, רעננה',
+    options: [
+      { value: 'lev-hapark-rent', label: 'לב הפארק — שכירות' },
+      { value: 'lev-hapark-sale', label: 'לב הפארק — מכירה' }
+    ]
+  },
+  {
+    key: 'rent-in-cities',
+    title: 'שכירות בערים',
+    options: [{ value: 'rent-in-cities', label: 'שכירות בערים — מרכז ושרון' }]
+  }
 ];
+
+// Back-compat alias for older importers; new code should use
+// SCAN_OPTION_GROUPS so it stays aware of the visual sectioning.
+export const SCAN_DISTRICT_OPTIONS: ScanOption[] = SCAN_OPTION_GROUPS.flatMap(
+  (group) => group.options
+);
 
 type Props = {
   /** Visible label rendered on the trigger button. */
@@ -37,12 +68,13 @@ type Props = {
 
 export default function ScanPicker({ label, disabled, title, onSubmit }: Props) {
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<Set<string>>(
-    () => new Set(SCAN_DISTRICT_OPTIONS.map((o) => o.value))
+  const allValues = useMemo(
+    () => SCAN_OPTION_GROUPS.flatMap((group) => group.options.map((o) => o.value)),
+    []
   );
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(allValues));
   const ref = useRef<HTMLDivElement | null>(null);
 
-  // Close on outside click + Escape, mirroring the district popover.
   useEffect(() => {
     if (!open) return;
     const onDocumentClick = (e: MouseEvent) => {
@@ -61,7 +93,6 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
     };
   }, [open]);
 
-  // Mobile bottom-sheet body lock.
   useEffect(() => {
     if (!open) return;
     if (typeof window === 'undefined') return;
@@ -85,21 +116,24 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
     });
   }, []);
 
-  const allSelected = selected.size === SCAN_DISTRICT_OPTIONS.length;
+  const allSelected = selected.size === allValues.length;
   const noneSelected = selected.size === 0;
 
   const triggerLabel = (() => {
     if (disabled) return label;
     if (allSelected) return label;
-    if (noneSelected) return `${label} (בחר מחוז)`;
+    if (noneSelected) return `${label} (בחר חיפוש)`;
     return `${label} (${selected.size})`;
   })();
 
   const handleSubmit = () => {
     if (noneSelected) return;
     setOpen(false);
-    // Empty list = "scan everything" → only send the explicit list
-    // when it's a strict subset.
+    // "all selected" is the cron-equivalent path: send an empty list so
+    // the worker treats it as "scan everything", which keeps the
+    // default Telegram suppression (north-valleys) in place. A strict
+    // subset is forwarded as an explicit list, which also bypasses
+    // suppression for any of those districts that are normally muted.
     onSubmit(allSelected ? [] : Array.from(selected));
   };
 
@@ -135,7 +169,7 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
             aria-modal="true"
           >
             <div className="toolbar-district-header">
-              <span className="toolbar-district-title">בחירת מחוזות לסריקה</span>
+              <span className="toolbar-district-title">בחירת חיפושים לסריקה</span>
               <button
                 type="button"
                 className="toolbar-district-close"
@@ -151,38 +185,53 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
                 type="button"
                 className="toolbar-district-link"
                 onClick={() =>
-                  setSelected(
-                    allSelected
-                      ? new Set()
-                      : new Set(SCAN_DISTRICT_OPTIONS.map((o) => o.value))
-                  )
+                  setSelected(allSelected ? new Set() : new Set(allValues))
                 }
               >
                 {allSelected ? 'נקה הכל' : 'בחר הכל'}
               </button>
             </div>
 
-            <div className="toolbar-district-list" role="listbox" aria-multiselectable="true">
-              {SCAN_DISTRICT_OPTIONS.map((option) => {
-                const active = selected.has(option.value);
-                const style: CSSProperties = solidPillStyle(option.value, active);
-                return (
-                  <button
-                    type="button"
-                    key={option.value}
-                    role="option"
-                    aria-selected={active}
-                    className={`pill pill-district ${active ? 'is-active' : ''}`}
-                    style={style}
-                    onClick={() => toggle(option.value)}
+            <div className="scan-picker-groups">
+              {SCAN_OPTION_GROUPS.map((group) => (
+                <div
+                  key={group.key}
+                  className="scan-picker-group"
+                  role="group"
+                  aria-label={group.title}
+                >
+                  <div className="scan-picker-group-title">{group.title}</div>
+                  <div
+                    className="toolbar-district-list scan-picker-group-list"
+                    role="listbox"
+                    aria-multiselectable="true"
                   >
-                    <span className="scan-picker-check" aria-hidden="true">
-                      {active ? '✓' : ''}
-                    </span>
-                    <span>{option.label}</span>
-                  </button>
-                );
-              })}
+                    {group.options.map((option) => {
+                      const active = selected.has(option.value);
+                      const style: CSSProperties = solidPillStyle(
+                        option.value,
+                        active
+                      );
+                      return (
+                        <button
+                          type="button"
+                          key={option.value}
+                          role="option"
+                          aria-selected={active}
+                          className={`pill pill-district ${active ? 'is-active' : ''}`}
+                          style={style}
+                          onClick={() => toggle(option.value)}
+                        >
+                          <span className="scan-picker-check" aria-hidden="true">
+                            {active ? '✓' : ''}
+                          </span>
+                          <span>{option.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
 
             <div className="toolbar-district-footer scan-picker-footer">
@@ -193,7 +242,7 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
                 disabled={noneSelected}
               >
                 {allSelected
-                  ? 'הרץ סריקה לכל המחוזות'
+                  ? 'הרץ סריקה לכל החיפושים'
                   : `הרץ סריקה (${selected.size})`}
               </button>
             </div>
