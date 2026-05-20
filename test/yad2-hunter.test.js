@@ -30,24 +30,16 @@ const {
   buildNotifyChannelMap,
   partitionAdsByChannel,
   pickManualNoticeChannels,
-  pickSilentPruneSearchIds,
   selectAdsForTelegram
 } = require('../src/worker/run-once');
 const {
   ALL_SEARCHES,
-  getHealthCheckSearches,
-  getSelfPrunedSearchIds
+  getHealthCheckSearches
 } = require('../src/config/searches');
 const {
   __testing: emailTesting
 } = require('../src/services/email');
 const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
-const {
-  applyRemovals,
-  classifyForRemoval,
-  pickPruneTargets,
-  resolveTargetSearchIds
-} = require('../src/worker/silent-prune');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -463,108 +455,37 @@ test('removeDeletedAds still cleans up the genuinely missing single ad', () => {
   assert.equal(skippedDistricts.length, 0);
 });
 
-test('getHealthCheckSearches returns exactly the 5 moshav searches and excludes lev-hapark', () => {
+test('getHealthCheckSearches reconciles every watch, including lev-hapark and rent-in-cities', () => {
+  // The daily reconciler is now the sole owner of deletions across
+  // every watch. There must be no leftover "excludeFromHealthCheck"
+  // gate.
   const healthCheckIds = getHealthCheckSearches().map((s) => s.id);
-  assert.deepEqual(
-    new Set(healthCheckIds),
-    new Set(['jerusalem', 'center-sharon', 'south', 'coastal-north', 'north-valleys']),
-    'health-check should run exactly on the 5 original moshav districts'
+  const expected = new Set([
+    'jerusalem',
+    'center-sharon',
+    'south',
+    'coastal-north',
+    'north-valleys',
+    'lev-hapark-rent',
+    'lev-hapark-sale',
+    'rent-in-cities'
+  ]);
+  assert.deepEqual(new Set(healthCheckIds), expected);
+  assert.equal(
+    healthCheckIds.length,
+    ALL_SEARCHES.length,
+    'every configured search must be in the health-check set'
   );
-  for (const id of healthCheckIds) {
-    assert.ok(!id.startsWith('lev-hapark'), `lev-hapark id ${id} leaked into health-check`);
-  }
 });
 
-test('getSelfPrunedSearchIds covers every excludeFromHealthCheck search', () => {
-  // The rent-in-cities watch joined lev-hapark in opting out of the
-  // health-check (its delisted listings are pruned by the scan
-  // worker instead). Whenever a new watch is added with
-  // excludeFromHealthCheck: true, this set should automatically
-  // include it.
-  const selfPruned = getSelfPrunedSearchIds();
-  assert.ok(selfPruned.has('lev-hapark-rent'));
-  assert.ok(selfPruned.has('lev-hapark-sale'));
-  assert.ok(selfPruned.has('rent-in-cities'));
-  assert.equal(selfPruned.size, 3);
-});
-
-test('health-check and self-prune sets are disjoint and partition ALL_SEARCHES', () => {
-  // No search should be both health-checked AND self-pruned, and
-  // every configured search should land in exactly one bucket.
-  const healthCheckIds = new Set(getHealthCheckSearches().map((s) => s.id));
-  const selfPrunedIds = getSelfPrunedSearchIds();
+test('ALL_SEARCHES no longer carries the legacy excludeFromHealthCheck flag', () => {
   for (const search of ALL_SEARCHES) {
-    const inHealth = healthCheckIds.has(search.id);
-    const inSelfPrune = selfPrunedIds.has(search.id);
-    assert.ok(
-      inHealth !== inSelfPrune,
-      `${search.id} must be in exactly one of health-check / self-prune (was health=${inHealth} prune=${inSelfPrune})`
+    assert.equal(
+      'excludeFromHealthCheck' in search,
+      false,
+      `${search.id} still has excludeFromHealthCheck`
     );
   }
-});
-
-test('pickSilentPruneSearchIds returns only lev-hapark ids that scraped successfully', () => {
-  const searches = [
-    { id: 'jerusalem' },
-    { id: 'south' },
-    { id: 'lev-hapark-rent' },
-    { id: 'lev-hapark-sale' }
-  ];
-  const selfPrunedIds = new Set(['lev-hapark-rent', 'lev-hapark-sale']);
-  const ids = pickSilentPruneSearchIds({
-    searches,
-    erroredSearchIds: new Set(),
-    selfPrunedIds
-  });
-  assert.deepEqual(ids.sort(), ['lev-hapark-rent', 'lev-hapark-sale']);
-});
-
-test('pickSilentPruneSearchIds drops a lev-hapark search whose scrape errored', () => {
-  const ids = pickSilentPruneSearchIds({
-    searches: [
-      { id: 'lev-hapark-rent' },
-      { id: 'lev-hapark-sale' }
-    ],
-    erroredSearchIds: new Set(['lev-hapark-sale']),
-    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
-  });
-  assert.deepEqual(ids, ['lev-hapark-rent']);
-});
-
-test('pickSilentPruneSearchIds NEVER returns a moshav id, even if scraped successfully', () => {
-  // Regression guard: the moshav data layer must remain owned by the
-  // health-check workflow. The silent-prune step is only ever allowed
-  // to touch ids in selfPrunedIds.
-  const ids = pickSilentPruneSearchIds({
-    searches: [
-      { id: 'jerusalem' },
-      { id: 'south' },
-      { id: 'coastal-north' },
-      { id: 'north-valleys' },
-      { id: 'center-sharon' }
-    ],
-    erroredSearchIds: new Set(),
-    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
-  });
-  assert.deepEqual(ids, []);
-});
-
-test('pickSilentPruneSearchIds tolerates array form for erroredSearchIds and selfPrunedIds', () => {
-  const ids = pickSilentPruneSearchIds({
-    searches: [{ id: 'lev-hapark-rent' }, { id: 'lev-hapark-sale' }],
-    erroredSearchIds: ['lev-hapark-rent'],
-    selfPrunedIds: ['lev-hapark-rent', 'lev-hapark-sale']
-  });
-  assert.deepEqual(ids, ['lev-hapark-sale']);
-});
-
-test('pickSilentPruneSearchIds ignores malformed entries', () => {
-  const ids = pickSilentPruneSearchIds({
-    searches: [null, undefined, { id: '' }, { id: 'lev-hapark-rent' }],
-    erroredSearchIds: new Set(),
-    selfPrunedIds: new Set(['lev-hapark-rent', 'lev-hapark-sale'])
-  });
-  assert.deepEqual(ids, ['lev-hapark-rent']);
 });
 
 test('mergeSeenAds: local-only and remote-only keys are both kept', () => {
@@ -1734,11 +1655,11 @@ test('pickManualNoticeChannels picks email only for lev-hapark manual scan', () 
   );
 });
 
-// rent-in-cities is a self-pruned watch (excludeFromHealthCheck) just
-// like lev-hapark, BUT it has no notifyVia override, so the router
-// must keep its ads on the Telegram bucket alongside the moshav
-// districts. These regressions cover the live router and the manual
-// scan channel picker.
+// rent-in-cities has no notifyVia override, so the channel router must
+// keep its ads on the Telegram bucket alongside the moshav districts.
+// These regressions cover the live router and the manual scan channel
+// picker, both for the rent-in-cities case and the existing lev-hapark
+// email override.
 test('partitionAdsByChannel keeps rent-in-cities on telegram (no notifyVia)', () => {
   const searches = [
     { id: 'jerusalem' },
@@ -1854,149 +1775,3 @@ test('email buildDashboardUrl joins a base URL with a sub-path and ?since', () =
   assert.ok(url === null || /\/lev-hapark/.test(url));
 });
 
-// =====================================================================
-// Daily silent prune worker for rent-in-cities (and any future watch
-// that opts in via PRUNE_TARGET_SEARCH_IDS).
-// =====================================================================
-
-function silentPruneSeen() {
-  // Mixed seen-set covering all the watches we care about, so we can
-  // assert the worker NEVER touches moshav or lev-hapark records.
-  return {
-    ads: {
-      ric_kept_alive: {
-        externalId: 'ric_kept_alive',
-        searchId: 'rent-in-cities',
-        link: 'https://www.yad2.co.il/realestate/item/ric_kept_alive'
-      },
-      ric_to_delete: {
-        externalId: 'ric_to_delete',
-        searchId: 'rent-in-cities',
-        link: 'https://www.yad2.co.il/realestate/item/ric_to_delete'
-      },
-      ric_blocked: {
-        externalId: 'ric_blocked',
-        searchId: 'rent-in-cities',
-        link: 'https://www.yad2.co.il/realestate/item/ric_blocked'
-      },
-      ric_errored: {
-        externalId: 'ric_errored',
-        searchId: 'rent-in-cities',
-        link: 'https://www.yad2.co.il/realestate/item/ric_errored'
-      },
-      ric_no_link: {
-        externalId: 'ric_no_link',
-        searchId: 'rent-in-cities',
-        link: ''
-      },
-      mosh_jerusalem: {
-        externalId: 'mosh_jerusalem',
-        searchId: 'jerusalem',
-        link: 'https://www.yad2.co.il/realestate/item/mosh_jerusalem'
-      },
-      lev_sale: {
-        externalId: 'lev_sale',
-        searchId: 'lev-hapark-sale',
-        link: 'https://www.yad2.co.il/realestate/item/lev_sale'
-      }
-    }
-  };
-}
-
-test('resolveTargetSearchIds defaults to rent-in-cities when env is empty', () => {
-  assert.deepEqual(resolveTargetSearchIds(''), ['rent-in-cities']);
-  assert.deepEqual(resolveTargetSearchIds(undefined), ['rent-in-cities']);
-  assert.deepEqual(resolveTargetSearchIds(null), ['rent-in-cities']);
-});
-
-test('resolveTargetSearchIds parses a comma-separated list when provided', () => {
-  assert.deepEqual(
-    resolveTargetSearchIds('rent-in-cities, future-watch ,'),
-    ['rent-in-cities', 'future-watch']
-  );
-});
-
-test('pickPruneTargets returns ONLY records with allowed searchId and a usable link', () => {
-  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
-  const ids = targets.map((r) => r.externalId).sort();
-  assert.deepEqual(ids, ['ric_blocked', 'ric_errored', 'ric_kept_alive', 'ric_to_delete']);
-});
-
-test('pickPruneTargets NEVER returns a moshav or lev-hapark record', () => {
-  // Regression guard: even if the caller passes a permissive set, the
-  // worker must not scrape or delete records outside the explicitly
-  // configured targetSearchIds.
-  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
-  for (const target of targets) {
-    assert.equal(target.searchId, 'rent-in-cities');
-    assert.notEqual(target.searchId, 'jerusalem');
-    assert.notEqual(target.searchId, 'lev-hapark-rent');
-    assert.notEqual(target.searchId, 'lev-hapark-sale');
-  }
-});
-
-test('classifyForRemoval deletes ONLY ads whose probe verdict is "removed"', () => {
-  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
-  const probes = [
-    {
-      url: 'https://www.yad2.co.il/realestate/item/ric_kept_alive',
-      status: 'live'
-    },
-    {
-      url: 'https://www.yad2.co.il/realestate/item/ric_to_delete',
-      status: 'removed',
-      httpStatus: 404,
-      reason: 'HTTP 404'
-    },
-    {
-      url: 'https://www.yad2.co.il/realestate/item/ric_blocked',
-      status: 'blocked',
-      reason: 'captcha/anti-bot'
-    },
-    {
-      url: 'https://www.yad2.co.il/realestate/item/ric_errored',
-      status: 'error',
-      reason: 'goto failed'
-    }
-  ];
-  const toRemove = classifyForRemoval(targets, probes);
-  assert.equal(toRemove.length, 1);
-  assert.equal(toRemove[0].externalId, 'ric_to_delete');
-  assert.equal(toRemove[0].reason, 'HTTP 404');
-});
-
-test('classifyForRemoval keeps everything when no probe matched (anti-bot regression guard)', () => {
-  // The probe array can be empty (e.g. browser launch failed). The
-  // worker must keep all the targets in this case — losing the data
-  // because Yad2 was unreachable is worse than not pruning today.
-  const targets = pickPruneTargets(silentPruneSeen(), ['rent-in-cities']);
-  assert.deepEqual(classifyForRemoval(targets, []), []);
-  assert.deepEqual(classifyForRemoval(targets, new Map()), []);
-});
-
-test('applyRemovals strips matching externalIds and leaves everything else intact', () => {
-  const seen = silentPruneSeen();
-  const toRemove = [
-    {
-      externalId: 'ric_to_delete',
-      searchId: 'rent-in-cities',
-      link: 'irrelevant'
-    }
-  ];
-  const { seen: next, removedIds } = applyRemovals(seen, toRemove);
-  assert.deepEqual(removedIds, ['ric_to_delete']);
-  assert.equal(next.ads.ric_to_delete, undefined);
-  // Surrounding ads stay untouched.
-  assert.ok(next.ads.ric_kept_alive);
-  assert.ok(next.ads.mosh_jerusalem);
-  assert.ok(next.ads.lev_sale);
-  // And the input was not mutated.
-  assert.ok(seen.ads.ric_to_delete);
-});
-
-test('applyRemovals is a no-op when given an empty removal list', () => {
-  const seen = silentPruneSeen();
-  const { seen: next, removedIds } = applyRemovals(seen, []);
-  assert.deepEqual(removedIds, []);
-  assert.equal(next, seen);
-});

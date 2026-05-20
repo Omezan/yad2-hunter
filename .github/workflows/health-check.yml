@@ -2,11 +2,12 @@ name: Yad2 Health Check
 
 on:
   schedule:
-    # Every 2 hours, at minute 7 of even hours (00:07, 02:07, ...). The
-    # minute :07 offset is chosen to fall between the scan iterations
-    # (which fire at :00 and :30) so the health-check doesn't race the
-    # scan workflow on the same minute.
-    - cron: "7 */2 * * *"
+    # Once per day, 17:00 UTC. That maps to ~20:00 Israel time in summer
+    # (DST) and ~19:00 Israel time in winter — close enough to "around
+    # eight in the evening" for this maintenance run. The reconciler
+    # owns deletions across ALL watches (moshav + lev-hapark +
+    # rent-in-cities); the scan workflow is intentionally additive only.
+    - cron: "0 17 * * *"
   workflow_dispatch:
 
 concurrency:

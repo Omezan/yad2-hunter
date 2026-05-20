@@ -3,7 +3,6 @@ const path = require('path');
 const { env } = require('../config/env');
 const {
   buildFilterLimitsMap,
-  getEnabledSearches,
   getHealthCheckSearches
 } = require('../config/searches');
 const {
@@ -398,17 +397,12 @@ function groupBy(list, key) {
 async function runHealthCheck() {
   ensureStateDir();
 
-  // The health-check workflow runs only against searches the user
-  // wants reconciled. The Lev HaPark watch (lev-hapark-*) carries
-  // `excludeFromHealthCheck: true` in its config so we never scrape,
-  // diff, probe, or report on it here — its dashboard at /lev-hapark
-  // deliberately has no "ודא אמינות" button, and removals of stale
-  // listings are handled silently by the scan worker instead.
-  //
-  // We still honor ENABLED_SEARCH_IDS for manual dispatch (used by
-  // the dashboard's "ודא אמינות" button) — but only as a subset of
-  // the health-check-eligible searches, never as an escape hatch
-  // that pulls lev-hapark back into this pipeline.
+  // The daily health-check reconciles every watch (moshav + Lev
+  // HaPark + rent-in-cities). The scan worker is now purely
+  // additive, so the reconciler is the sole owner of deletions
+  // across all dashboards. The "ודא אמינות" button on / still works
+  // via workflow_dispatch and ENABLED_SEARCH_IDS, allowing a
+  // dashboard-side trigger to scope the run to a subset.
   const allHealthChecked = getHealthCheckSearches();
   const rawEnabled = (env.ENABLED_SEARCH_IDS || '').trim();
   const searches = rawEnabled

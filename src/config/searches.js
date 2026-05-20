@@ -41,8 +41,10 @@ const ALL_SEARCHES = [
   },
   // Lev HaPark, Ra'anana watch. Lives outside the moshav-style
   // network — these are urban neighborhood searches with no
-  // `settlements=1` constraint and routed to email instead of
-  // Telegram (per the dedicated /lev-hapark dashboard page).
+  // `settlements=1` constraint. New-ad notifications are routed to
+  // email instead of Telegram (per the dedicated /lev-hapark
+  // dashboard page); the daily health-check reconciles them just
+  // like every other watch.
   {
     id: 'lev-hapark-rent',
     label: 'לב הפארק — שכירות',
@@ -50,13 +52,7 @@ const ALL_SEARCHES = [
     districtLabel: 'לב הפארק, רעננה',
     url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
     settlementsOnly: false,
-    notifyVia: 'email',
-    // The Lev HaPark watch is intentionally NOT touched by the
-    // health-check workflow (no "ודא אמינות" button on /lev-hapark,
-    // no Telegram health-check rows). Removals of delisted ads are
-    // done silently by the scan worker itself — see run-once.js for
-    // the `selfPruneSearchIds` branch.
-    excludeFromHealthCheck: true
+    notifyVia: 'email'
   },
   {
     id: 'lev-hapark-sale',
@@ -65,24 +61,20 @@ const ALL_SEARCHES = [
     districtLabel: 'לב הפארק, רעננה',
     url: 'https://www.yad2.co.il/realestate/forsale/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807',
     settlementsOnly: false,
-    notifyVia: 'email',
-    excludeFromHealthCheck: true
+    notifyVia: 'email'
   },
   // Urban rentals across a fixed list of cities in מרכז ושרון
   // (multiCity Yad2 ids: 6900, 9700, 8700, 8300, 2620), 4+ rooms,
-  // ≤ 9000₪, apartments / penthouses / duplexes. Unlike the moshav
-  // watches this one is NOT settlements-only, but unlike Lev HaPark
-  // it DOES route to Telegram. We opt it out of the health-check
-  // (excludeFromHealthCheck) so the scan worker self-prunes its
-  // delisted ads silently — same pattern as Lev HaPark.
+  // ≤ 9000₪, apartments / penthouses / duplexes. Routes to Telegram
+  // (no notifyVia override) and is reconciled by the daily
+  // health-check together with the moshav and lev-hapark watches.
   {
     id: 'rent-in-cities',
     label: 'שכירות בערים',
     districtKey: 'rent-in-cities',
     districtLabel: 'שכירות בערים — מרכז ושרון',
     url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&property=3%2C5%2C39&multiCity=6900%2C9700%2C8700%2C8300%2C2620',
-    settlementsOnly: false,
-    excludeFromHealthCheck: true
+    settlementsOnly: false
   }
 ];
 
@@ -100,27 +92,13 @@ function getEnabledSearches(enabledIds = '') {
   return ALL_SEARCHES.filter((search) => enabledSet.has(search.id));
 }
 
-// Subset of searches the health-check workflow reconciles. Searches
-// tagged with `excludeFromHealthCheck: true` (currently the Lev HaPark
-// watch) are skipped entirely: the worker never scrapes them in the
-// health-check context and never reports diffs on them. Their seen-ads
-// upkeep (silent removal of delisted listings) is delegated to the
-// scan worker — see src/worker/run-once.js#silentPrune.
+// Searches reconciled by the daily health-check. Every watch is in
+// scope now — the moshav, Lev HaPark, and rent-in-cities watches are
+// all probed once a day and the reconciler is the sole owner of
+// deletions. (The legacy `excludeFromHealthCheck` flag was removed
+// when the in-scan self-prune path was retired.)
 function getHealthCheckSearches() {
-  return ALL_SEARCHES.filter((search) => !search.excludeFromHealthCheck);
-}
-
-// Subset of searches the scan worker self-prunes (delisted listings
-// removed from seen-ads.json silently, no Telegram/email). Currently
-// equivalent to the inverse of getHealthCheckSearches: any search that
-// opts out of the health-check must have *some* mechanism to drop
-// stale ads, and we route that responsibility to the scan itself.
-function getSelfPrunedSearchIds() {
-  return new Set(
-    ALL_SEARCHES.filter((search) => search.excludeFromHealthCheck).map(
-      (search) => search.id
-    )
-  );
+  return ALL_SEARCHES.slice();
 }
 
 // Pulls the price/room ceiling-and-floor encoded in the search URL,
@@ -159,6 +137,5 @@ module.exports = {
   getEnabledSearches,
   getFilterLimits,
   buildFilterLimitsMap,
-  getHealthCheckSearches,
-  getSelfPrunedSearchIds
+  getHealthCheckSearches
 };

@@ -1,16 +1,10 @@
 const { env } = require('../config/env');
-const {
-  getEnabledSearches,
-  getSelfPrunedSearchIds
-} = require('../config/searches');
+const { getEnabledSearches } = require('../config/searches');
 const {
   commitAds,
   ensureStateDir,
   listRecentRuns,
-  loadSeenAds,
   recordRun,
-  removeDeletedAds,
-  saveSeenAds,
   splitNewAndExisting
 } = require('../store/file-store');
 const { scrapeAllSearches } = require('../scraper/yad2');
@@ -58,35 +52,6 @@ function partitionAdsByChannel(ads, channelMap) {
     else telegramAds.push(ad);
   }
   return { telegramAds, emailAds };
-}
-
-// Decide which searchIds should be passed to the silent-prune step
-// (i.e. scan-side removeDeletedAds) given the list of searches that
-// just ran and the set of searchIds whose scrape errored out. Only
-// the intersection of:
-//   - the global "self-pruned" set (currently lev-hapark-*),
-//   - searches actually included in this run, and
-//   - searches that did NOT error
-// is eligible. This is what enforces the "moshav data layer is never
-// touched by silent prune" invariant — moshav ids are not in the
-// self-pruned set, so they can never appear here.
-function pickSilentPruneSearchIds({ searches, erroredSearchIds, selfPrunedIds }) {
-  const erroredSet =
-    erroredSearchIds instanceof Set
-      ? erroredSearchIds
-      : new Set(erroredSearchIds || []);
-  const allowed =
-    selfPrunedIds instanceof Set
-      ? selfPrunedIds
-      : new Set(selfPrunedIds || []);
-  const result = [];
-  for (const search of searches || []) {
-    if (!search || !search.id) continue;
-    if (!allowed.has(search.id)) continue;
-    if (erroredSet.has(search.id)) continue;
-    result.push(search.id);
-  }
-  return result;
 }
 
 // Decide which channels deserve a "no new ads" manual-scan notice.
@@ -210,52 +175,15 @@ async function runOnce(options = {}) {
 
     const droppedNewCandidates = dumpRejectedNewCandidates(newCandidates, finalOptions);
 
-    // Scan is additive for moshav districts: we notify on relevantNewAds,
-    // write them into seen-ads (so the next run won't re-announce them),
-    // and never delete moshav records here — moshav deletions are owned
-    // by the health-check, which probes each "missing" listing for a 404
-    // before removing.
+    // Scan is purely additive: we notify on relevantNewAds, write them
+    // into seen-ads (so the next run won't re-announce them), and
+    // never delete anything here. Deletions across every watch are
+    // owned by the daily health-check, which probes each "missing"
+    // listing for a 404 before removing it.
     commitAds({
       newAds: relevantNewAds,
       existingAds
     });
-
-    // The Lev HaPark watch opts out of the health-check entirely (see
-    // src/config/searches.js#excludeFromHealthCheck), so the scan itself
-    // is responsible for retiring its stale records. We reuse
-    // removeDeletedAds — which has built-in trust guards (min live
-    // count + min live/seen ratio) so a captcha or anti-bot zero-result
-    // can never wipe the index — and pass it ONLY the self-pruned
-    // search ids that scraped successfully in this run. Moshav records
-    // are invisible to this step.
-    const selfPrunedAll = getSelfPrunedSearchIds();
-    const erroredSearchIds = new Set(
-      (scrapeResult.errors || []).map((err) => err && err.searchId).filter(Boolean)
-    );
-    const scrapedSelfPrunedIds = pickSilentPruneSearchIds({
-      searches,
-      erroredSearchIds,
-      selfPrunedIds: selfPrunedAll
-    });
-
-    let silentlyRemovedAds = [];
-    let silentPruneSkippedDistricts = [];
-    if (scrapedSelfPrunedIds.length > 0) {
-      const seenAfterCommit = loadSeenAds();
-      const scrapedAdsForSelfPrune = scrapeResult.ads.filter((ad) =>
-        ad && selfPrunedAll.has(ad.searchId)
-      );
-      const pruneResult = removeDeletedAds(
-        seenAfterCommit,
-        scrapedAdsForSelfPrune,
-        scrapedSelfPrunedIds
-      );
-      if (pruneResult.removed.length > 0) {
-        saveSeenAds(pruneResult.seen);
-      }
-      silentlyRemovedAds = pruneResult.removed;
-      silentPruneSkippedDistricts = pruneResult.skippedDistricts;
-    }
 
     // Route ads to their notification channel. The original 5 moshav
     // districts default to Telegram (no change to legacy behavior).
@@ -325,7 +253,6 @@ async function runOnce(options = {}) {
       notifiedNewAds: telegramAds.length,
       notifiedEmailAds: emailAds.length,
       suppressedNewAds: suppressedAdsCount,
-      silentlyRemovedAds: silentlyRemovedAds.length,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       emailSent: Boolean(emailResult && !emailResult.skipped),
       errors: scrapeResult.errors
@@ -340,11 +267,6 @@ async function runOnce(options = {}) {
       suppressDistrictIds,
       rejectionCounts,
       droppedNewCandidates,
-      silentPrune: {
-        scrapedSearchIds: scrapedSelfPrunedIds,
-        removed: silentlyRemovedAds,
-        skippedDistricts: silentPruneSkippedDistricts
-      },
       telegramResult,
       emailResult
     };
@@ -373,31 +295,6 @@ async function main() {
     const result = await runOnce({ trigger: trigger || 'github-actions' });
     const recentRuns = listRecentRuns(5);
 
-    // Surface silent-prune deletions to the workflow's subsequent
-    // persist-state step. The state-merge helper reads
-    // SEEN_ADS_FORCE_DELETE_IDS to subtract these keys after merging
-    // with origin/state, preventing a concurrent run's stale snapshot
-    // from resurrecting them. When not running under GitHub Actions,
-    // or when there's nothing to delete, this is a no-op.
-    if (process.env.GITHUB_ENV) {
-      const removedIds = (result.silentPrune?.removed || [])
-        .map((r) => r && r.externalId)
-        .filter(Boolean);
-      if (removedIds.length > 0) {
-        try {
-          const fs = require('fs');
-          fs.appendFileSync(
-            process.env.GITHUB_ENV,
-            `SEEN_ADS_FORCE_DELETE_IDS=${removedIds.join(',')}\n`
-          );
-        } catch (err) {
-          console.warn(
-            `[run-once] could not write SEEN_ADS_FORCE_DELETE_IDS to GITHUB_ENV: ${err.message}`
-          );
-        }
-      }
-    }
-
     console.log(
       JSON.stringify(
         {
@@ -423,6 +320,5 @@ module.exports = {
   selectAdsForTelegram,
   buildNotifyChannelMap,
   partitionAdsByChannel,
-  pickManualNoticeChannels,
-  pickSilentPruneSearchIds
+  pickManualNoticeChannels
 };
