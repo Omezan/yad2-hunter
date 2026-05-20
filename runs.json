@@ -1,6 +1,40 @@
 {
   "runs": [
     {
+      "kind": "scan",
+      "startedAt": "2026-05-20T06:40:07.259Z",
+      "completedAt": "2026-05-20T06:49:34.373Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 269,
+      "preFilteredAds": 269,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "silentlyRemovedAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
       "kind": "health-check",
       "startedAt": "2026-05-20T04:23:18.274Z",
       "completedAt": "2026-05-20T04:26:24.337Z",
@@ -1715,30 +1749,6 @@
           "searchLabel": "לב הפארק — שכירות",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-18T06:44:22.680Z",
-      "completedAt": "2026-05-18T06:49:26.227Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 266,
-      "preFilteredAds": 266,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 1,
-      "silentlyRemovedAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
         {
           "searchId": "lev-hapark-sale",
           "searchLabel": "לב הפארק — מכירה",
