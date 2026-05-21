@@ -2,6 +2,34 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-21T23:02:13.201Z",
+      "completedAt": "2026-05-21T23:10:10.092Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 272,
+      "preFilteredAds": 272,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": true,
+      "errors": [
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-21T21:56:47.408Z",
       "completedAt": "2026-05-21T22:13:00.100Z",
       "status": "partial",
@@ -1895,24 +1923,6 @@
       "unresolvedExtras": 0,
       "unresolvedMissing": 0,
       "telegramSent": true,
-      "errors": []
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-19T16:44:57.385Z",
-      "completedAt": "2026-05-19T16:49:03.700Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 326,
-      "preFilteredAds": 326,
-      "candidateNewAds": 11,
-      "relevantNewAds": 11,
-      "notifiedNewAds": 6,
-      "notifiedEmailAds": 4,
-      "suppressedNewAds": 1,
-      "silentlyRemovedAds": 6,
-      "telegramSent": true,
-      "emailSent": true,
       "errors": []
     }
   ]
