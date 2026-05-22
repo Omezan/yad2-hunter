@@ -2,6 +2,34 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-22T22:06:47.751Z",
+      "completedAt": "2026-05-22T22:13:53.398Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 277,
+      "preFilteredAds": 277,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-22T21:12:40.487Z",
       "completedAt": "2026-05-22T21:29:43.166Z",
       "status": "partial",
@@ -2052,40 +2080,6 @@
           "searchLabel": "צפון ועמקים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-20T06:40:07.259Z",
-      "completedAt": "2026-05-20T06:49:34.373Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 269,
-      "preFilteredAds": 269,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "silentlyRemovedAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
         {
           "searchId": "lev-hapark-rent",
           "searchLabel": "לב הפארק — שכירות",
