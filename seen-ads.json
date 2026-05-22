@@ -4276,6 +4276,58 @@
       "city": "פוריה עילית",
       "firstSeenAt": "2026-05-22T19:00:01.823Z",
       "lastSeenAt": "2026-05-22T19:00:01.823Z"
+    },
+    "north-and-valleys/nqsslmub": {
+      "externalId": "north-and-valleys/nqsslmub",
+      "title": "בית פרטי/ קוטג', חפצי בה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/nqsslmub",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 4,
+      "city": "חפצי בה",
+      "firstSeenAt": "2026-05-01T13:54:15.776Z",
+      "lastSeenAt": "2026-05-21T23:10:07.384Z"
+    },
+    "center-and-sharon/73ijwtlz": {
+      "externalId": "center-and-sharon/73ijwtlz",
+      "title": "דירה, מרכז דרום, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/73ijwtlz",
+      "searchId": "lev-hapark-rent",
+      "searchLabel": "לב הפארק — שכירות",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 6250,
+      "rooms": 4.5,
+      "city": "רעננה",
+      "firstSeenAt": "2026-05-21T19:12:34.480Z",
+      "lastSeenAt": "2026-05-21T19:12:34.480Z"
+    },
+    "center-and-sharon/si5u1swg": {
+      "externalId": "center-and-sharon/si5u1swg",
+      "title": "דירה, נווה דוד רמז, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/si5u1swg",
+      "searchId": "lev-hapark-rent",
+      "searchLabel": "לב הפארק — שכירות",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 9500,
+      "rooms": 4,
+      "city": "רעננה",
+      "firstSeenAt": "2026-05-21T20:00:21.583Z",
+      "lastSeenAt": "2026-05-22T19:00:01.823Z"
+    },
+    "center-and-sharon/sm13l8rd": {
+      "externalId": "center-and-sharon/sm13l8rd",
+      "title": "גג/ פנטהאוז, מרכז דרום, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sm13l8rd",
+      "searchId": "lev-hapark-rent",
+      "searchLabel": "לב הפארק — שכירות",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 12000,
+      "rooms": 4.5,
+      "city": "רעננה",
+      "firstSeenAt": "2026-05-22T07:50:00.228Z",
+      "lastSeenAt": "2026-05-22T07:50:00.228Z"
     }
   }
 }
