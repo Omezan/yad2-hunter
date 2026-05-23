@@ -2,6 +2,39 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-23T04:39:05.180Z",
+      "completedAt": "2026-05-23T04:48:12.123Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 266,
+      "preFilteredAds": 266,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-23T00:35:43.414Z",
       "completedAt": "2026-05-23T00:51:30.838Z",
       "status": "partial",
@@ -2060,36 +2093,6 @@
       "telegramSent": true,
       "emailSent": false,
       "errors": []
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-05-20T11:21:04.093Z",
-      "completedAt": "2026-05-20T11:30:42.429Z",
-      "status": "partial",
-      "trigger": "github-actions",
-      "allMatch": false,
-      "additions": 1,
-      "removals": 5,
-      "unresolvedExtras": 1,
-      "unresolvedMissing": 0,
-      "telegramSent": true,
-      "errors": [
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
