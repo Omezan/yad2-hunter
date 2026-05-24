@@ -621,35 +621,13 @@ async function sendScrapeFreezeNotice({ frozenUntil, counter, runStartedAt } = {
   return { parts: 1, results: [result] };
 }
 
-// Fires only when a *manual* trigger lands during an active freeze.
-// Scheduled iterations stay silent (the user already got the freeze
-// notice when the breaker first tripped).
-function formatFrozenManualNotice({ frozenUntil, runStartedAt, nowMs = Date.now() } = {}) {
-  if (!frozenUntil) return '';
-  const minutesLeft = formatMinutesLeft(frozenUntil, nowMs) ?? 0;
-  const clockLabel = formatJerusalemTime(frozenUntil);
-  const lines = ['🚫 Yad2 Hunter — הסריקה מוקפאת'];
-  lines.push('');
-  if (clockLabel) {
-    lines.push(
-      `הסריקה הידנית שביקשת לא רצה כי הסריקה מוקפאת אוטומטית אחרי חסימות חוזרות מ-Yad2. נחזור לסרוק בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳).`
-    );
-  } else {
-    lines.push(
-      'הסריקה הידנית שביקשת לא רצה כי הסריקה מוקפאת אוטומטית אחרי חסימות חוזרות מ-Yad2. נחזור לסרוק בקרוב.'
-    );
-  }
-  const footer = buildDashboardFooter({ runStartedAt });
-  if (footer) lines.push('', footer);
-  return lines.join('\n');
-}
-
-async function sendFrozenManualNotice({ frozenUntil, runStartedAt } = {}) {
-  const text = formatFrozenManualNotice({ frozenUntil, runStartedAt });
-  if (!text) return { skipped: true, reason: 'No frozenUntil supplied' };
-  const result = await sendTelegramMessage({ text, disablePreview: true });
-  return { parts: 1, results: [result] };
-}
+// Note: there used to be a `sendFrozenManualNotice` here that fired
+// when a manual trigger landed during an active freeze. Per the
+// product brief the dashboard's manual "הרץ סריקה" button now
+// BYPASSES the freeze entirely (and is excluded from the breaker's
+// counter), so this notice has no caller and was removed. The
+// normal new-ads digest / no-new-ads notice / partial-scrape
+// warning all still fire for manual runs.
 
 async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliation } = {}) {
   const messages = buildHealthCheckMessages({
@@ -678,14 +656,12 @@ module.exports = {
   describeScrapeError,
   formatDigestMessage,
   formatDigestMessages,
-  formatFrozenManualNotice,
   formatScrapeFreezeNotice,
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
   formatPartialScrapeWarning,
   formatReconciliationLine,
-  sendFrozenManualNotice,
   sendHealthCheckReport,
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,

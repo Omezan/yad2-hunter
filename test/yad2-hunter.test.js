@@ -11,7 +11,6 @@ const {
   describeScrapeError,
   formatDigestMessage,
   formatDigestMessages,
-  formatFrozenManualNotice,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
   formatPartialScrapeWarning,
@@ -2119,21 +2118,3 @@ test('formatScrapeFreezeNotice returns empty string when frozenUntil is missing'
   assert.equal(formatScrapeFreezeNotice(), '');
   assert.equal(formatScrapeFreezeNotice({ frozenUntil: null }), '');
 });
-
-test('formatFrozenManualNotice tells the user when the freeze ends', () => {
-  const nowMs = Date.parse('2026-05-24T17:30:00Z');
-  const frozenUntil = new Date(nowMs + 30 * 60 * 1000).toISOString();
-  const text = formatFrozenManualNotice({
-    frozenUntil,
-    runStartedAt: '2026-05-24T17:30:00Z',
-    nowMs
-  });
-  assert.match(text, /הסריקה מוקפאת/);
-  assert.match(text, /הסריקה הידנית שביקשת לא רצה/);
-  assert.match(text, /בעוד ~30 דק׳/);
-});
-
-test('formatFrozenManualNotice returns empty string when frozenUntil is missing', () => {
-  assert.equal(formatFrozenManualNotice({}), '');
-});
-

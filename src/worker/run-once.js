@@ -16,7 +16,6 @@ const {
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
-  sendFrozenManualNotice,
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
   sendPartialScrapeWarning,
@@ -177,32 +176,21 @@ async function runOnce(options = {}) {
   const suppressDistrictIds = parseIdList(env.TELEGRAM_SUPPRESS_DISTRICT_IDS);
 
   // Circuit-breaker gate. If we tripped the breaker on an earlier
-  // iteration and the freeze hasn't expired yet, we DO NOT scrape at
-  // all this run. The dashboard data is untouched and the per-channel
-  // notification logic is short-circuited to:
-  //   - manual triggers → a one-off "still frozen, retry at HH:MM"
-  //     Telegram so the user isn't left wondering why their click
-  //     produced nothing.
-  //   - scheduled triggers → silent (the user already got the freeze
-  //     notice when the breaker tripped).
+  // iteration and the freeze hasn't expired yet, we DO NOT scrape on
+  // SCHEDULED runs — the dashboard data is untouched, no scraping
+  // happens, no Telegram noise (the user already got the freeze
+  // notice when the breaker tripped).
+  //
+  // MANUAL triggers explicitly bypass the freeze: when the user
+  // clicks "הרץ סריקה" they're asking us to try anyway. Their
+  // run still emits the normal notifications (digest / no-new-ads /
+  // partial-scrape warning) but DOES NOT update the breaker — both
+  // success and failure are excluded from the consecutive-block
+  // counter, so a manual attempt can't accidentally extend the
+  // freeze or paper over a real Yad2 block on the scheduled track.
   const circuit = loadCircuit();
-  if (isFrozen(circuit, startedAtMs)) {
-    let frozenNoticeResult = { skipped: true, reason: 'No manual trigger' };
-    if (MANUAL_TRIGGERS.has(trigger)) {
-      try {
-        frozenNoticeResult = await sendFrozenManualNotice({
-          frozenUntil: circuit.frozenUntil,
-          runStartedAt: startedAt
-        });
-      } catch (notifyErr) {
-        frozenNoticeResult = {
-          skipped: true,
-          reason: `Failed to send frozen-manual notice: ${
-            notifyErr && notifyErr.message ? notifyErr.message : notifyErr
-          }`
-        };
-      }
-    }
+  const isManualTrigger = MANUAL_TRIGGERS.has(trigger);
+  if (isFrozen(circuit, startedAtMs) && !isManualTrigger) {
     const runEntry = {
       kind: 'scan',
       startedAt,
@@ -232,8 +220,7 @@ async function runOnce(options = {}) {
       droppedNewCandidates: [],
       telegramResult: { skipped: true, reason: 'Frozen by circuit breaker' },
       emailResult: { skipped: true, reason: 'Frozen by circuit breaker' },
-      scrapeWarningResult: { skipped: true, reason: 'Frozen by circuit breaker' },
-      frozenNoticeResult
+      scrapeWarningResult: { skipped: true, reason: 'Frozen by circuit breaker' }
     };
   }
 
@@ -324,7 +311,7 @@ async function runOnce(options = {}) {
 
     // Update the circuit-breaker state with this iteration's outcome,
     // BEFORE we decide which Telegram message to send. The breaker
-    // gives us three outcomes:
+    // gives us three outcomes on a SCHEDULED run:
     //   - justFrozen=true  → we hit the threshold this iteration;
     //                        send the freeze notice (and skip the
     //                        regular partial-scrape warning, which
@@ -333,25 +320,40 @@ async function runOnce(options = {}) {
     //                        scrape warning. This is the "first
     //                        block in a row" path.
     //   - justFrozen=false and not hadBlock → no warning.
+    //
+    // Manual triggers are excluded from the counter entirely (per
+    // product brief): the user wants the ability to retry from the
+    // dashboard during a freeze, and neither a manual success nor a
+    // manual block should perturb the scheduled track's state.
     const hadBlock = (scrapeResult.errors || []).some(isBlockedError);
-    const breaker = recordIterationOutcome(circuit, {
-      hadBlock,
-      threshold: env.SCRAPE_FREEZE_THRESHOLD,
-      freezeMs: env.SCRAPE_FREEZE_MS,
-      nowMs: Date.now()
-    });
-    try {
-      saveCircuit(circuit);
-    } catch (saveErr) {
-      console.warn(
-        `[run-once] failed to persist circuit state: ${saveErr.message}`
-      );
+    let breaker = {
+      justFrozen: false,
+      counter: circuit.consecutiveBlockedIterations || 0,
+      frozenUntil: circuit.frozenUntil
+    };
+    if (!isManualTrigger) {
+      breaker = recordIterationOutcome(circuit, {
+        hadBlock,
+        threshold: env.SCRAPE_FREEZE_THRESHOLD,
+        freezeMs: env.SCRAPE_FREEZE_MS,
+        nowMs: Date.now()
+      });
+      try {
+        saveCircuit(circuit);
+      } catch (saveErr) {
+        console.warn(
+          `[run-once] failed to persist circuit state: ${saveErr.message}`
+        );
+      }
     }
 
     let scrapeWarningResult = { skipped: true, reason: 'No scrape errors' };
     const hasScrapeErrors =
       Array.isArray(scrapeResult.errors) && scrapeResult.errors.length > 0;
     if (breaker.justFrozen) {
+      // Only reachable on a scheduled run — manual runs never set
+      // justFrozen because they skip the recordIterationOutcome
+      // call above.
       try {
         scrapeWarningResult = await sendScrapeFreezeNotice({
           frozenUntil: breaker.frozenUntil,
