@@ -4263,6 +4263,84 @@
       "city": "באר אורה",
       "firstSeenAt": "2026-05-24T10:03:56.386Z",
       "lastSeenAt": "2026-05-24T10:03:56.386Z"
+    },
+    "coastal-north/xj8vu9mm": {
+      "externalId": "coastal-north/xj8vu9mm",
+      "title": "בית פרטי/ קוטג', עמקה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/xj8vu9mm",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": null,
+      "rooms": 5,
+      "city": "עמקה",
+      "firstSeenAt": "2026-04-28T09:45:18.174Z",
+      "lastSeenAt": "2026-05-22T22:13:52.993Z"
+    },
+    "north-and-valleys/j1txu62j": {
+      "externalId": "north-and-valleys/j1txu62j",
+      "title": "בית פרטי/ קוטג', שורשים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/j1txu62j",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8400,
+      "rooms": 6,
+      "city": "שורשים",
+      "firstSeenAt": "2026-04-28T09:45:18.174Z",
+      "lastSeenAt": "2026-05-24T07:06:11.629Z"
+    },
+    "north-and-valleys/20otnf27": {
+      "externalId": "north-and-valleys/20otnf27",
+      "title": "בית פרטי/ קוטג', מיטב",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/20otnf27",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6900,
+      "rooms": 5,
+      "city": "מיטב",
+      "firstSeenAt": "2026-04-28T09:45:18.174Z",
+      "lastSeenAt": "2026-05-24T00:04:52.113Z"
+    },
+    "north-and-valleys/8vew6yfx": {
+      "externalId": "north-and-valleys/8vew6yfx",
+      "title": "יחידת דיור, לבון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/8vew6yfx",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5500,
+      "rooms": 4,
+      "city": "לבון",
+      "firstSeenAt": "2026-05-01T05:45:53.788Z",
+      "lastSeenAt": "2026-05-23T16:16:31.878Z"
+    },
+    "north-and-valleys/9njigkht": {
+      "externalId": "north-and-valleys/9njigkht",
+      "title": "בית פרטי/ קוטג', נורית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/9njigkht",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6900,
+      "rooms": 5,
+      "city": "נורית",
+      "firstSeenAt": "2026-05-18T06:49:26.221Z",
+      "lastSeenAt": "2026-05-23T11:17:53.976Z"
+    },
+    "north-and-valleys/nqsslmub": {
+      "externalId": "north-and-valleys/nqsslmub",
+      "title": "בית פרטי/ קוטג', חפצי בה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/nqsslmub",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 4,
+      "city": "חפצי בה",
+      "firstSeenAt": "2026-05-01T13:54:15.776Z",
+      "lastSeenAt": "2026-05-21T23:10:07.384Z"
     }
   }
 }
