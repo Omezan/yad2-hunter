@@ -247,19 +247,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
     },
-    "center-and-sharon/c99yfopd": {
-      "externalId": "center-and-sharon/c99yfopd",
-      "title": "בית פרטי/ קוטג', זיתן",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/c99yfopd",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 8500,
-      "rooms": 5,
-      "city": "זיתן",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-22T22:13:52.993Z"
-    },
     "center-and-sharon/4wib7jnh": {
       "externalId": "center-and-sharon/4wib7jnh",
       "title": "יחידת דיור, אחיעזר",
@@ -897,19 +884,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
     },
-    "north-and-valleys/4fhm8tbz": {
-      "externalId": "north-and-valleys/4fhm8tbz",
-      "title": "בית פרטי/ קוטג', בית אלפא",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/4fhm8tbz",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 8000,
-      "rooms": 6,
-      "city": "בית אלפא",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-22T22:13:52.993Z"
-    },
     "north-and-valleys/dwwayex1": {
       "externalId": "north-and-valleys/dwwayex1",
       "title": "בית פרטי/ קוטג', כורזים",
@@ -1209,19 +1183,6 @@
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
     },
-    "north-and-valleys/kafgjxf1": {
-      "externalId": "north-and-valleys/kafgjxf1",
-      "title": "דירה, אביטל",
-      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/kafgjxf1",
-      "searchId": "north-valleys",
-      "searchLabel": "צפון ועמקים",
-      "districtLabel": "צפון והעמקים",
-      "price": 3600,
-      "rooms": 4,
-      "city": "אביטל",
-      "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-05-24T00:04:52.113Z"
-    },
     "north-and-valleys/20otnf27": {
       "externalId": "north-and-valleys/20otnf27",
       "title": "בית פרטי/ קוטג', מיטב",
@@ -1338,32 +1299,6 @@
       "city": "עוזה",
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
-    },
-    "south/itne106h": {
-      "externalId": "south/itne106h",
-      "title": "מרתף/ פרטר, מרכז שפירא",
-      "link": "https://www.yad2.co.il/realestate/item/south/itne106h",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4800,
-      "rooms": 4,
-      "city": "מרכז שפירא",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-22T22:13:52.993Z"
-    },
-    "south/p9fb42y7": {
-      "externalId": "south/p9fb42y7",
-      "title": "בית פרטי/ קוטג', באר אורה",
-      "link": "https://www.yad2.co.il/realestate/item/south/p9fb42y7",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 8000,
-      "rooms": 4,
-      "city": "באר אורה",
-      "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-05-22T22:13:52.993Z"
     },
     "north-and-valleys/jofmdqx0": {
       "externalId": "north-and-valleys/jofmdqx0",
@@ -2743,19 +2678,6 @@
       "firstSeenAt": "2026-05-12T13:58:27.051Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
     },
-    "south/p40jzin7": {
-      "externalId": "south/p40jzin7",
-      "title": "בית פרטי/ קוטג', תלמי יוסף",
-      "link": "https://www.yad2.co.il/realestate/item/south/p40jzin7",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 4800,
-      "rooms": 4.5,
-      "city": "תלמי יוסף",
-      "firstSeenAt": "2026-05-12T20:30:43.581Z",
-      "lastSeenAt": "2026-05-24T07:06:11.629Z"
-    },
     "north-and-valleys/vwwhtgtx": {
       "externalId": "north-and-valleys/vwwhtgtx",
       "title": "בית פרטי/ קוטג', כרכום",
@@ -2872,19 +2794,6 @@
       "city": "כפר קיש",
       "firstSeenAt": "2026-05-14T08:22:27.077Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
-    },
-    "south/2zuvrfxt": {
-      "externalId": "south/2zuvrfxt",
-      "title": "בית פרטי/ קוטג', באר אורה",
-      "link": "https://www.yad2.co.il/realestate/item/south/2zuvrfxt",
-      "searchId": "south",
-      "searchLabel": "דרום",
-      "districtLabel": "דרום",
-      "price": 8800,
-      "rooms": 4,
-      "city": "באר אורה",
-      "firstSeenAt": "2026-05-14T14:39:52.009Z",
-      "lastSeenAt": "2026-05-23T15:08:06.504Z"
     },
     "north-and-valleys/vzo4cr3q": {
       "externalId": "north-and-valleys/vzo4cr3q",
@@ -3158,19 +3067,6 @@
       "city": "גבעת אלה",
       "firstSeenAt": "2026-05-17T14:27:22.929Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
-    },
-    "center-and-sharon/83bs84ek": {
-      "externalId": "center-and-sharon/83bs84ek",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/83bs84ek",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 4.5,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-05-17T16:49:41.919Z",
-      "lastSeenAt": "2026-05-22T22:13:52.993Z"
     },
     "center-and-sharon/6b2t976j": {
       "externalId": "center-and-sharon/6b2t976j",
@@ -3496,19 +3392,6 @@
       "city": "לפיד",
       "firstSeenAt": "2026-05-18T10:26:25.730Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
-    },
-    "center-and-sharon/p9i9s7jz": {
-      "externalId": "center-and-sharon/p9i9s7jz",
-      "title": "בית פרטי/ קוטג', ניצני עוז",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p9i9s7jz",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7500,
-      "rooms": 6,
-      "city": "ניצני עוז",
-      "firstSeenAt": "2026-05-18T10:26:25.730Z",
-      "lastSeenAt": "2026-05-24T03:37:27.091Z"
     },
     "south/9dwvthuq": {
       "externalId": "south/9dwvthuq",
@@ -3925,19 +3808,6 @@
       "city": "כפר סבא",
       "firstSeenAt": "2026-05-19T22:40:15.881Z",
       "lastSeenAt": "2026-05-19T22:40:15.881Z"
-    },
-    "center-and-sharon/j8tnljgt": {
-      "externalId": "center-and-sharon/j8tnljgt",
-      "title": "דירה, צור יצחק",
-      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/j8tnljgt",
-      "searchId": "center-sharon",
-      "searchLabel": "מרכז ושרון",
-      "districtLabel": "מרכז והשרון",
-      "price": 7000,
-      "rooms": 5,
-      "city": "צור יצחק",
-      "firstSeenAt": "2026-05-20T10:31:23.537Z",
-      "lastSeenAt": "2026-05-23T09:58:22.474Z"
     },
     "center-and-sharon/zq34b4jr": {
       "externalId": "center-and-sharon/zq34b4jr",
@@ -4419,6 +4289,32 @@
       "city": "שער אפרים",
       "firstSeenAt": "2026-05-24T07:06:11.629Z",
       "lastSeenAt": "2026-05-24T07:06:11.629Z"
+    },
+    "center-and-sharon/ulwqaqjp": {
+      "externalId": "center-and-sharon/ulwqaqjp",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ulwqaqjp",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6800,
+      "rooms": 4.5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-05-24T09:10:04.328Z",
+      "lastSeenAt": "2026-05-24T09:10:04.328Z"
+    },
+    "center-and-sharon/w3zdvxne": {
+      "externalId": "center-and-sharon/w3zdvxne",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/w3zdvxne",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5600,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-05-24T09:10:04.328Z",
+      "lastSeenAt": "2026-05-24T09:10:04.328Z"
     }
   }
 }
