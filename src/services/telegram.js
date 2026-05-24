@@ -539,70 +539,114 @@ function summarizeScrapeErrors(errors) {
   }));
 }
 
-// Renders a "blocked X minutes ago, will retry around HH:MM" line.
-// Used by the cooldown-skip section of the partial-scrape warning so
-// the user can tell at a glance when each paused search will wake up.
-function formatCooldownSkipLine(skip, nowMs = Date.now()) {
-  if (!skip || !skip.searchLabel) return null;
-  const label = skip.searchLabel;
-  const untilMs = Date.parse(skip.blockedUntil || '');
-  if (!Number.isFinite(untilMs)) {
-    return `• ${label} — בהפסקה אוטומטית מבלוק קודם`;
-  }
-  const minutesLeft = Math.max(1, Math.round((untilMs - nowMs) / 60000));
-  let clockLabel = '';
-  try {
-    clockLabel = new Date(untilMs).toLocaleString('he-IL', {
-      timeZone: 'Asia/Jerusalem',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  } catch {
-    clockLabel = '';
-  }
-  if (clockLabel) {
-    return `• ${label} — ננסה שוב בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳)`;
-  }
-  return `• ${label} — ננסה שוב בעוד ~${minutesLeft} דק׳`;
-}
-
 // Formats the operational "some watches couldn't be scraped this
 // iteration" notice. Independent of the new-ads digest by design:
 // per the product brief this warning ships as its own Telegram
-// message after every iteration where errors exist or where a
-// search is still in cooldown from an earlier block. No dedupe
+// message after every iteration where errors exist. No dedupe
 // across iterations — signal beats silence.
-function formatPartialScrapeWarning({ errors, cooldownSkips, runStartedAt } = {}) {
+function formatPartialScrapeWarning({ errors, runStartedAt } = {}) {
   const summary = summarizeScrapeErrors(errors);
-  const skips = Array.isArray(cooldownSkips) ? cooldownSkips : [];
-  if (!summary.length && !skips.length) return '';
-
-  const lines = ['⚠️ Yad2 Hunter — סריקה חלקית'];
-
-  if (summary.length) {
-    lines.push('', 'נחסמו עכשיו ולא נסרקו:');
-    for (const item of summary) {
-      lines.push(`• ${item.searchLabel} — ${item.reason}`);
-    }
+  if (!summary.length) return '';
+  const lines = ['⚠️ Yad2 Hunter — סריקה חלקית', 'החיפושים הבאים לא נסרקו בהצלחה:'];
+  for (const item of summary) {
+    lines.push(`• ${item.searchLabel} — ${item.reason}`);
   }
-
-  if (skips.length) {
-    lines.push('', 'בהפסקה אוטומטית מבלוק מוקדם יותר:');
-    for (const skip of skips) {
-      const line = formatCooldownSkipLine(skip);
-      if (line) lines.push(line);
-    }
-  }
-
   lines.push('', 'המודעות הקיימות בדאשבורד לא הושפעו — ננסה שוב בריצה הבאה.');
   const footer = buildDashboardFooter({ runStartedAt });
   if (footer) lines.push('', footer);
   return lines.join('\n');
 }
 
-async function sendPartialScrapeWarning({ errors, cooldownSkips, runStartedAt } = {}) {
-  const text = formatPartialScrapeWarning({ errors, cooldownSkips, runStartedAt });
-  if (!text) return { skipped: true, reason: 'No scrape errors or cooldowns to report' };
+async function sendPartialScrapeWarning({ errors, runStartedAt } = {}) {
+  const text = formatPartialScrapeWarning({ errors, runStartedAt });
+  if (!text) return { skipped: true, reason: 'No scrape errors to report' };
+  const result = await sendTelegramMessage({ text, disablePreview: true });
+  return { parts: 1, results: [result] };
+}
+
+// Wall-clock renderer used by both the freeze notice and the
+// manual-trigger "still frozen" notice. Locks to Asia/Jerusalem so
+// the displayed time matches the user's expectation regardless of
+// the runner's TZ.
+function formatJerusalemTime(iso) {
+  const ms = Date.parse(iso || '');
+  if (!Number.isFinite(ms)) return '';
+  try {
+    return new Date(ms).toLocaleString('he-IL', {
+      timeZone: 'Asia/Jerusalem',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch {
+    return '';
+  }
+}
+
+function formatMinutesLeft(iso, nowMs = Date.now()) {
+  const ms = Date.parse(iso || '');
+  if (!Number.isFinite(ms)) return null;
+  return Math.max(1, Math.round((ms - nowMs) / 60000));
+}
+
+// Fires on the iteration where the circuit breaker trips. Conveys:
+//   - that we just stopped scanning,
+//   - how many consecutive blocks triggered it,
+//   - when the freeze ends.
+function formatScrapeFreezeNotice({ frozenUntil, counter, runStartedAt, nowMs = Date.now() } = {}) {
+  if (!frozenUntil) return '';
+  const minutesLeft = formatMinutesLeft(frozenUntil, nowMs) ?? 60;
+  const clockLabel = formatJerusalemTime(frozenUntil);
+  const blockCount = Number.isFinite(counter) && counter > 0 ? counter : 2;
+
+  const lines = ['🚫 Yad2 Hunter — הקפאת סריקה אוטומטית'];
+  lines.push('');
+  lines.push(
+    `נחסמנו על ידי Yad2 ב-${blockCount} ריצות ברצף — אנחנו עוצרים את כל הסריקה לזמן מה כדי לתת ל-Yad2 זמן להירגע.`
+  );
+  if (clockLabel) {
+    lines.push('', `נחזור לסרוק בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳).`);
+  } else {
+    lines.push('', `נחזור לסרוק בעוד ~${minutesLeft} דק׳.`);
+  }
+  lines.push('', 'המודעות הקיימות בדאשבורד לא הושפעו.');
+  const footer = buildDashboardFooter({ runStartedAt });
+  if (footer) lines.push('', footer);
+  return lines.join('\n');
+}
+
+async function sendScrapeFreezeNotice({ frozenUntil, counter, runStartedAt } = {}) {
+  const text = formatScrapeFreezeNotice({ frozenUntil, counter, runStartedAt });
+  if (!text) return { skipped: true, reason: 'No frozenUntil supplied' };
+  const result = await sendTelegramMessage({ text, disablePreview: true });
+  return { parts: 1, results: [result] };
+}
+
+// Fires only when a *manual* trigger lands during an active freeze.
+// Scheduled iterations stay silent (the user already got the freeze
+// notice when the breaker first tripped).
+function formatFrozenManualNotice({ frozenUntil, runStartedAt, nowMs = Date.now() } = {}) {
+  if (!frozenUntil) return '';
+  const minutesLeft = formatMinutesLeft(frozenUntil, nowMs) ?? 0;
+  const clockLabel = formatJerusalemTime(frozenUntil);
+  const lines = ['🚫 Yad2 Hunter — הסריקה מוקפאת'];
+  lines.push('');
+  if (clockLabel) {
+    lines.push(
+      `הסריקה הידנית שביקשת לא רצה כי הסריקה מוקפאת אוטומטית אחרי חסימות חוזרות מ-Yad2. נחזור לסרוק בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳).`
+    );
+  } else {
+    lines.push(
+      'הסריקה הידנית שביקשת לא רצה כי הסריקה מוקפאת אוטומטית אחרי חסימות חוזרות מ-Yad2. נחזור לסרוק בקרוב.'
+    );
+  }
+  const footer = buildDashboardFooter({ runStartedAt });
+  if (footer) lines.push('', footer);
+  return lines.join('\n');
+}
+
+async function sendFrozenManualNotice({ frozenUntil, runStartedAt } = {}) {
+  const text = formatFrozenManualNotice({ frozenUntil, runStartedAt });
+  if (!text) return { skipped: true, reason: 'No frozenUntil supplied' };
   const result = await sendTelegramMessage({ text, disablePreview: true });
   return { parts: 1, results: [result] };
 }
@@ -632,18 +676,21 @@ async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliati
 module.exports = {
   buildHealthCheckMessages,
   describeScrapeError,
-  formatCooldownSkipLine,
   formatDigestMessage,
   formatDigestMessages,
+  formatFrozenManualNotice,
+  formatScrapeFreezeNotice,
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
   formatPartialScrapeWarning,
   formatReconciliationLine,
+  sendFrozenManualNotice,
   sendHealthCheckReport,
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
   sendPartialScrapeWarning,
+  sendScrapeFreezeNotice,
   sendTelegramMessage,
   summarizeScrapeErrors
 };

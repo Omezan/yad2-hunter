@@ -18,10 +18,10 @@
 //     Only the health-check sets this — the scan is additive only.
 //   - runs.json → merge by startedAt, dedupe, sort newest-first, cap
 //     to HISTORY_LIMIT.
-//   - scrape-cooldowns.json → per-searchId merge picking the LATER of
-//     local vs remote observation (observedAt / cleared marker). Lets
-//     one worker's "blocked" survive a concurrent writer's older
-//     "ok" snapshot, and vice-versa.
+//   - scrape-circuit.json → single global circuit-breaker record.
+//     Picks the entry with the latest lastObservedAt; concurrent
+//     writers with older snapshots lose. Threshold counter and
+//     frozenUntil come straight from the winning side.
 //   - Any other JSON file → prefer the local copy.
 
 const fs = require('fs');
@@ -105,70 +105,23 @@ function mergeSeenAds(localFile, remoteFile, forceDeleteIds = []) {
   };
 }
 
-// scrape-cooldowns.json merge:
-//   For each searchId in (local.entries ∪ remote.entries), keep the
-//   entry with the latest observedAt. A "cleared" marker on either
-//   side (state.cleared[id]) is treated as an observation at that
-//   timestamp; if it's newer than the matching entry, the cooldown
-//   for that search is dropped.
-//
-// Result shape: { entries: { … }, cleared: { … } }
-function mergeCooldowns(localFile, remoteFile) {
-  const localEntries =
-    (localFile && typeof localFile === 'object' && localFile.entries) || {};
-  const remoteEntries =
-    (remoteFile && typeof remoteFile === 'object' && remoteFile.entries) || {};
-  const localCleared =
-    (localFile && typeof localFile === 'object' && localFile.cleared) || {};
-  const remoteCleared =
-    (remoteFile && typeof remoteFile === 'object' && remoteFile.cleared) || {};
-
-  function entryObservedAt(entry) {
-    if (!entry) return 0;
-    return Date.parse(entry.observedAt || entry.blockedAt || '') || 0;
+// scrape-circuit.json merge:
+//   Single-record file describing the global circuit-breaker state.
+//   We keep the snapshot with the latest lastObservedAt — that's the
+//   freshest view of "did we just get blocked / are we currently
+//   frozen". A null/missing local timestamp loses to any remote one
+//   and vice-versa.
+function mergeCircuit(localFile, remoteFile) {
+  function ts(file) {
+    if (!file || typeof file !== 'object') return 0;
+    return Date.parse(file.lastObservedAt || '') || 0;
   }
-  function clearedAt(map, id) {
-    if (!map || !map[id]) return 0;
-    return Date.parse(map[id] || '') || 0;
+  const localTs = ts(localFile);
+  const remoteTs = ts(remoteFile);
+  if (localTs === 0 && remoteTs === 0) {
+    return localFile || remoteFile || null;
   }
-
-  const allIds = new Set([
-    ...Object.keys(localEntries),
-    ...Object.keys(remoteEntries),
-    ...Object.keys(localCleared),
-    ...Object.keys(remoteCleared)
-  ]);
-
-  const mergedEntries = {};
-  const mergedCleared = {};
-
-  for (const id of allIds) {
-    const local = localEntries[id] || null;
-    const remote = remoteEntries[id] || null;
-    const localClear = clearedAt(localCleared, id);
-    const remoteClear = clearedAt(remoteCleared, id);
-    const latestClear = Math.max(localClear, remoteClear);
-    const latestClearIso =
-      latestClear > 0 ? new Date(latestClear).toISOString() : null;
-
-    if (latestClearIso) mergedCleared[id] = latestClearIso;
-
-    const localObs = entryObservedAt(local);
-    const remoteObs = entryObservedAt(remote);
-    const latestEntry = localObs >= remoteObs ? local : remote;
-    const latestEntryObs = Math.max(localObs, remoteObs);
-
-    if (latestEntry && latestEntryObs > latestClear) {
-      mergedEntries[id] = latestEntry;
-    }
-  }
-
-  return {
-    ...(remoteFile || {}),
-    ...(localFile || {}),
-    entries: mergedEntries,
-    cleared: mergedCleared
-  };
+  return localTs >= remoteTs ? localFile : remoteFile;
 }
 
 function mergeRuns(localFile, remoteFile) {
@@ -216,7 +169,7 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
     );
   }
 
-  const MERGED_FILES = ['seen-ads.json', 'runs.json', 'scrape-cooldowns.json'];
+  const MERGED_FILES = ['seen-ads.json', 'runs.json', 'scrape-circuit.json'];
 
   for (const filename of MERGED_FILES) {
     const localPath = path.join(stateDir, filename);
@@ -239,17 +192,21 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
       merged = mergeRuns(local, remote);
       const localCount = local && local.runs ? local.runs.length : 0;
       const remoteCount = remote && remote.runs ? remote.runs.length : 0;
-      const mergedCount = merged && merged.runs ? merged.runs.length : 0;
+      const mergedCount = merged && remote && merged.runs ? merged.runs.length : 0;
       console.log(
         `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
       );
     } else {
-      merged = mergeCooldowns(local, remote);
-      const localCount = local && local.entries ? Object.keys(local.entries).length : 0;
-      const remoteCount = remote && remote.entries ? Object.keys(remote.entries).length : 0;
-      const mergedCount = merged && merged.entries ? Object.keys(merged.entries).length : 0;
+      merged = mergeCircuit(local, remote);
+      const winner = !local ? 'remote' : !remote ? 'local' : merged === local ? 'local' : 'remote';
       console.log(
-        `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
+        `[merge-state] ${filename}: chose ${winner} snapshot (frozenUntil=${
+          merged && merged.frozenUntil ? merged.frozenUntil : '—'
+        }, counter=${
+          merged && merged.consecutiveBlockedIterations
+            ? merged.consecutiveBlockedIterations
+            : 0
+        })`
       );
     }
 
@@ -280,6 +237,6 @@ module.exports = {
   HISTORY_LIMIT,
   mergeSeenAds,
   mergeRuns,
-  mergeCooldowns,
+  mergeCircuit,
   mergeStateDirs
 };
