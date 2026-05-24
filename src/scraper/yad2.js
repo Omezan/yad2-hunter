@@ -1,7 +1,44 @@
-const { chromium } = require('playwright');
+// playwright-extra wraps the standard `playwright` package and lets us
+// register the puppeteer-extra-plugin-stealth bundle. The plugin masks
+// ~25 separate bot-detection signals (navigator.webdriver, the missing
+// chrome.runtime object, plugin-list emptiness, permission status
+// quirks, etc.). Yad2's anti-bot lights up on most of those today, so
+// loading this plugin once at module init is the single biggest free
+// improvement we can make against captcha rates.
+const { chromium } = require('playwright-extra');
+const stealthPlugin = require('puppeteer-extra-plugin-stealth')();
+chromium.use(stealthPlugin);
 
+// Chromium launch flags. The defaults Playwright passes include flags
+// (most notably `--enable-automation` and `--use-mock-keychain`) that
+// expose this as an automated browser to fingerprinters even with the
+// stealth plugin loaded. Override with the typical "real Chrome" set.
+const STEALTH_LAUNCH_ARGS = [
+  '--disable-blink-features=AutomationControlled',
+  '--disable-features=IsolateOrigins,site-per-process',
+  '--no-default-browser-check',
+  '--no-first-run'
+];
+
+// Current desktop Chrome user agent. The major version here MUST stay
+// in sync with what real Chrome ships — Yad2's anti-bot flags UAs that
+// are more than ~6 months behind. Bumped to Chrome 135 (May 2026).
 const DEFAULT_USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36';
+
+// Client hints (sec-ch-ua-*) must agree with the User-Agent header
+// for the major-version + platform. Mismatches between them are a
+// strong bot signal (real Chrome guarantees consistency). Keep this
+// helper next to the UA so future bumps update both at once.
+function clientHintsFor(profile) {
+  const version = profile.chromeMajor;
+  const brands = `"Google Chrome";v="${version}", "Chromium";v="${version}", "Not.A/Brand";v="99"`;
+  return {
+    'sec-ch-ua': brands,
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': `"${profile.secChUaPlatform}"`
+  };
+}
 
 function normalizeItemUrl(rawUrl) {
   if (!rawUrl) {
@@ -1069,33 +1106,88 @@ function extractCityFromHeadings(data) {
   return null;
 }
 
+// Human-ish "I just opened the page" gestures. The anti-bot doesn't
+// look only at one signal — it watches the *interaction trace*:
+// did the user scroll? did the mouse move? was there time between
+// the page-load and the next action? Adding cheap, randomized motion
+// here knocks down a meaningful class of "looks scripted" signals.
+async function simulateHumanIdle(page) {
+  try {
+    const initialDwell = 600 + Math.floor(Math.random() * 1200);
+    await page.waitForTimeout(initialDwell);
+
+    // Move mouse to a couple of random positions in the visible
+    // viewport. wrap in try because page may be torn down by callers
+    // during warm-up errors.
+    const viewport = page.viewportSize();
+    if (viewport) {
+      const moves = 2 + Math.floor(Math.random() * 2);
+      for (let i = 0; i < moves; i += 1) {
+        const x = Math.floor(Math.random() * viewport.width);
+        const y = Math.floor(Math.random() * (viewport.height * 0.7));
+        await page.mouse.move(x, y, { steps: 8 + Math.floor(Math.random() * 8) });
+        await page.waitForTimeout(120 + Math.floor(Math.random() * 220));
+      }
+    }
+
+    // Scroll a screen or two down, then a little back up, like someone
+    // skimming the homepage before clicking through to a search.
+    const scrolls = 1 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < scrolls; i += 1) {
+      const distance = 250 + Math.floor(Math.random() * 600);
+      await page.mouse.wheel(0, distance);
+      await page.waitForTimeout(350 + Math.floor(Math.random() * 600));
+    }
+    if (Math.random() < 0.5) {
+      await page.mouse.wheel(0, -(150 + Math.floor(Math.random() * 250)));
+      await page.waitForTimeout(250 + Math.floor(Math.random() * 400));
+    }
+  } catch {
+    // Best-effort — any failure here is harmless and we should not
+    // abort the surrounding scrape on a missed mouse event.
+  }
+}
+
 async function warmUpSession(page, timeoutMs, logger) {
   try {
     await page.goto('https://www.yad2.co.il/', {
       waitUntil: 'domcontentloaded',
       timeout: timeoutMs
     });
-    await page.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+    await simulateHumanIdle(page);
   } catch (error) {
     logger.warn?.(`Warm-up failed (continuing anyway): ${error.message}`);
   }
 }
 
+// Rotating browser profiles. Each one must be internally consistent:
+// UA major version + platform substring + sec-ch-ua-platform must all
+// agree, otherwise Yad2's anti-bot flags the inconsistency. Linux is
+// intentionally dropped from the rotation — almost nobody browses
+// Yad2 from desktop Linux, and Yad2 is known to treat Linux UAs as a
+// bot prior. We stick to macOS + Windows which dominate the real
+// traffic.
 const BROWSER_PROFILES = [
   {
     userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    viewport: { width: 1440, height: 1200 }
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
+    viewport: { width: 1440, height: 900 },
+    chromeMajor: 135,
+    secChUaPlatform: 'macOS'
   },
   {
     userAgent:
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
-    viewport: { width: 1366, height: 768 }
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36',
+    viewport: { width: 1920, height: 1080 },
+    chromeMajor: 135,
+    secChUaPlatform: 'Windows'
   },
   {
     userAgent:
-      'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    viewport: { width: 1536, height: 864 }
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36',
+    viewport: { width: 1680, height: 1050 },
+    chromeMajor: 134,
+    secChUaPlatform: 'macOS'
   }
 ];
 
@@ -1107,10 +1199,14 @@ async function scrapeOneSearchWithFreshBrowser({
   profile,
   extraWarmupMs = 0
 }) {
-  const browser = await chromium.launch({ headless });
+  const browser = await chromium.launch({
+    headless,
+    args: STEALTH_LAUNCH_ARGS
+  });
   const context = await browser.newContext({
     userAgent: profile.userAgent,
     locale: 'he-IL',
+    timezoneId: 'Asia/Jerusalem',
     viewport: profile.viewport,
     extraHTTPHeaders: {
       'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
@@ -1120,7 +1216,8 @@ async function scrapeOneSearchWithFreshBrowser({
       'Sec-Fetch-Mode': 'navigate',
       'Sec-Fetch-Site': 'none',
       'Sec-Fetch-User': '?1',
-      'Upgrade-Insecure-Requests': '1'
+      'Upgrade-Insecure-Requests': '1',
+      ...clientHintsFor(profile)
     }
   });
 
@@ -1247,18 +1344,23 @@ async function enrichAdsWithDetails({
 }) {
   if (!ads.length) return ads;
 
-  const browser = await chromium.launch({ headless });
+  const browser = await chromium.launch({
+    headless,
+    args: STEALTH_LAUNCH_ARGS
+  });
   const context = await browser.newContext({
     userAgent: DEFAULT_USER_AGENT,
     locale: 'he-IL',
-    viewport: { width: 1440, height: 1200 },
+    timezoneId: 'Asia/Jerusalem',
+    viewport: { width: 1440, height: 900 },
     extraHTTPHeaders: {
       'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
       Accept:
         'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
       'Sec-Fetch-Dest': 'document',
       'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none'
+      'Sec-Fetch-Site': 'none',
+      ...clientHintsFor({ chromeMajor: 135, secChUaPlatform: 'macOS' })
     }
   });
 
@@ -1386,13 +1488,18 @@ async function probeListingsPresence({
 } = {}) {
   if (!Array.isArray(urls) || !urls.length) return [];
 
-  const browser = await chromium.launch({ headless });
+  const browser = await chromium.launch({
+    headless,
+    args: STEALTH_LAUNCH_ARGS
+  });
   const context = await browser.newContext({
     userAgent: DEFAULT_USER_AGENT,
     locale: 'he-IL',
-    viewport: { width: 1440, height: 1200 },
+    timezoneId: 'Asia/Jerusalem',
+    viewport: { width: 1440, height: 900 },
     extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8'
+      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
+      ...clientHintsFor({ chromeMajor: 135, secChUaPlatform: 'macOS' })
     }
   });
 
