@@ -2,6 +2,29 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-24T17:23:47.502Z",
+      "completedAt": "2026-05-24T17:25:45.022Z",
+      "status": "partial",
+      "trigger": "manual-dashboard",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-24T16:59:09.869Z",
       "completedAt": "2026-05-24T17:13:36.994Z",
       "status": "partial",
@@ -2225,44 +2248,6 @@
           "searchId": "north-valleys",
           "searchLabel": "צפון ועמקים",
           "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-22T16:24:59.580Z",
-      "completedAt": "2026-05-22T16:33:16.622Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 271,
-      "preFilteredAds": 271,
-      "candidateNewAds": 2,
-      "relevantNewAds": 2,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 2,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "page.evaluate: Execution context was destroyed, most likely because of a navigation"
         },
         {
           "searchId": "lev-hapark-rent",
