@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import AdCard from './components/AdCard';
+import DistrictLinks from './components/DistrictLinks';
 import FilterBar, {
   type FreshnessFilter,
   type PriceBounds,
@@ -554,6 +555,8 @@ export default function DashboardPage() {
           ) : null}
         </span>
       </div>
+
+      <DistrictLinks />
 
       <TabBar tab={tab} onChange={setTab} />
 

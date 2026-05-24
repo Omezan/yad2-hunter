@@ -2483,3 +2483,71 @@ input:focus {
   font-size: var(--type-md);
   line-height: 1;
 }
+
+/* ---------------------------------------------------------------------------
+ * Per-district "פתח ביד 2" quick-link strip on the main dashboard.
+ *
+ * Lives between the runs-status row and the TabBar. Each chip is an
+ * outbound link to the matching Yad2 search; the goal is to give the
+ * user a one-click manual escape hatch when the scraper is captcha'd
+ * and they want to confirm listings directly on the source.
+ * ------------------------------------------------------------------------ */
+.district-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin: var(--space-2) 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.district-links-label {
+  color: var(--text-muted);
+  font-size: var(--type-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.district-links-row {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+
+.district-link-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-elevated, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+  font-size: var(--type-sm);
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.district-link-chip:hover {
+  text-decoration: none;
+  border-color: var(--border-strong, var(--border));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.district-link-icon {
+  font-size: var(--type-md);
+  line-height: 1;
+}
+
+.district-link-arrow {
+  color: var(--text-muted);
+  font-size: var(--type-xs, 0.75rem);
+  margin-inline-start: 2px;
+}
