@@ -7,6 +7,15 @@ const {
   recordRun,
   splitNewAndExisting
 } = require('../store/file-store');
+const {
+  buildActiveCooldownMap,
+  clearCooldown,
+  describeCooldown,
+  loadCooldowns,
+  pruneExpired,
+  saveCooldowns,
+  setBlocked
+} = require('../store/scrape-cooldowns');
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
@@ -18,6 +27,17 @@ const {
   sendManualScanNoNewAdsEmail,
   sendNewAdsDigestEmail
 } = require('../services/email');
+
+// Any scrape error whose message matches this pattern is treated as
+// a "we got blocked" signal that should trigger a cooldown for the
+// search. Keep the pattern liberal so future wording tweaks in the
+// scraper don't silently disable the backoff.
+const BLOCKED_ERROR_PATTERN = /blocked|captcha|anti-?bot/i;
+
+function isBlockedError(error) {
+  if (!error || typeof error.message !== 'string') return false;
+  return BLOCKED_ERROR_PATTERN.test(error.message);
+}
 
 const MANUAL_TRIGGERS = new Set(['manual-dashboard', 'manual']);
 
@@ -147,6 +167,7 @@ async function runOnce(options = {}) {
 
   const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
   const startedAt = new Date().toISOString();
+  const startedAtMs = Date.parse(startedAt) || Date.now();
   const trigger = options.trigger || 'manual';
 
   // The dashboard's manual scan can request a specific district subset
@@ -156,12 +177,69 @@ async function runOnce(options = {}) {
   const explicitlyRequestedIds = parseIdList(env.ENABLED_SEARCH_IDS);
   const suppressDistrictIds = parseIdList(env.TELEGRAM_SUPPRESS_DISTRICT_IDS);
 
+  // Cooldown gate: load the cross-run cooldown state and split the
+  // enabled searches into "we'll scrape these now" vs "still cooling
+  // down from an earlier block". Skipped searches are reported via
+  // the partial-scrape warning so the user knows why they didn't
+  // run, but they're NOT failures — the dashboard data is unchanged.
+  const cooldownEnabled = env.SCRAPE_COOLDOWN_MS > 0;
+  const cooldownState = cooldownEnabled ? loadCooldowns() : { entries: {} };
+  const activeCooldowns = cooldownEnabled
+    ? buildActiveCooldownMap(cooldownState, startedAtMs)
+    : new Map();
+
+  const cooldownSkips = [];
+  const searchesToScrape = [];
+  for (const search of searches) {
+    if (cooldownEnabled && activeCooldowns.has(search.id)) {
+      const desc = describeCooldown(activeCooldowns.get(search.id));
+      cooldownSkips.push({
+        searchId: search.id,
+        searchLabel: search.label,
+        blockedAt: desc.blockedAt,
+        blockedUntil: desc.blockedUntil
+      });
+    } else {
+      searchesToScrape.push(search);
+    }
+  }
+
   try {
-    const scrapeResult = await scrapeAllSearches({
-      searches,
-      headless: env.PLAYWRIGHT_HEADLESS,
-      timeoutMs: env.SEARCH_TIMEOUT_MS
-    });
+    const scrapeResult = searchesToScrape.length
+      ? await scrapeAllSearches({
+          searches: searchesToScrape,
+          headless: env.PLAYWRIGHT_HEADLESS,
+          timeoutMs: env.SEARCH_TIMEOUT_MS
+        })
+      : { ads: [], errors: [] };
+
+    // Update the cooldown state based on what just happened. Two
+    // things to do, in order:
+    //   1. For every search we DID attempt, clear any stale cooldown
+    //      that might exist (cheap defensive write — useful when a
+    //      concurrent worker set one after we loaded the file).
+    //   2. For every blocked-style error, install a fresh cooldown so
+    //      the next iteration skips this search until the timeout
+    //      passes.
+    if (cooldownEnabled) {
+      const blockedIds = new Set();
+      for (const err of scrapeResult.errors || []) {
+        if (isBlockedError(err) && err.searchId) {
+          blockedIds.add(err.searchId);
+        }
+      }
+      const completedAtMs = Date.now();
+      for (const search of searchesToScrape) {
+        if (!blockedIds.has(search.id)) {
+          clearCooldown(cooldownState, search.id, completedAtMs);
+        }
+      }
+      for (const id of blockedIds) {
+        setBlocked(cooldownState, id, env.SCRAPE_COOLDOWN_MS, completedAtMs);
+      }
+      pruneExpired(cooldownState, completedAtMs);
+      saveCooldowns(cooldownState);
+    }
 
     const preFiltered = filterRelevantAds(scrapeResult.ads);
     const { newAds: newCandidates, existingAds } = splitNewAndExisting(preFiltered);
@@ -212,13 +290,25 @@ async function runOnce(options = {}) {
       channelMap
     });
 
+    // When a manual trigger lands while every requested search is in
+    // cooldown, we did NOT actually look at Yad2 — sending a "no new
+    // ads" notice would be misleading because we don't know what's
+    // new. The cooldown warning below carries the right signal, so we
+    // suppress the per-channel manual notice in that case.
+    const allRequestedInCooldown =
+      cooldownSkips.length > 0 && searchesToScrape.length === 0;
+
     let telegramResult = { skipped: true, reason: 'No new ads' };
     if (telegramAds.length > 0) {
       telegramResult = await sendNewAdsDigest({
         newAds: telegramAds,
         runStartedAt: startedAt
       });
-    } else if (MANUAL_TRIGGERS.has(trigger) && manualNoticeChannels.telegram) {
+    } else if (
+      MANUAL_TRIGGERS.has(trigger) &&
+      manualNoticeChannels.telegram &&
+      !allRequestedInCooldown
+    ) {
       telegramResult = await sendManualScanNoNewAdsNotice({
         runStartedAt: startedAt
       });
@@ -226,6 +316,11 @@ async function runOnce(options = {}) {
       telegramResult = {
         skipped: true,
         reason: `All ${suppressedAdsCount} new ads belong to suppressed districts`
+      };
+    } else if (allRequestedInCooldown) {
+      telegramResult = {
+        skipped: true,
+        reason: 'All requested searches in cooldown; warning notice covers it'
       };
     }
 
@@ -235,23 +330,31 @@ async function runOnce(options = {}) {
         newAds: emailAds,
         runStartedAt: startedAt
       });
-    } else if (MANUAL_TRIGGERS.has(trigger) && manualNoticeChannels.email) {
+    } else if (
+      MANUAL_TRIGGERS.has(trigger) &&
+      manualNoticeChannels.email &&
+      !allRequestedInCooldown
+    ) {
       emailResult = await sendManualScanNoNewAdsEmail({
         runStartedAt: startedAt
       });
     }
 
-    // Operational notice: if any watch was blocked or errored this
-    // iteration, send a SEPARATE Telegram message listing the
-    // affected watches. Always fires when there are errors, on
-    // every iteration (no dedupe) — this is the contract the user
-    // chose; signal beats silence when the scraper is being
-    // rate-limited.
+    // Operational notice: if any watch was blocked, errored, or is
+    // currently in cooldown after an earlier block, send a SEPARATE
+    // Telegram message listing the affected watches. Always fires
+    // when there's anything to report, on every iteration (no dedupe)
+    // — this is the contract the user chose; signal beats silence
+    // when the scraper is being rate-limited.
     let scrapeWarningResult = { skipped: true, reason: 'No scrape errors' };
-    if (Array.isArray(scrapeResult.errors) && scrapeResult.errors.length > 0) {
+    const hasScrapeErrors =
+      Array.isArray(scrapeResult.errors) && scrapeResult.errors.length > 0;
+    const hasCooldownSkips = cooldownSkips.length > 0;
+    if (hasScrapeErrors || hasCooldownSkips) {
       try {
         scrapeWarningResult = await sendPartialScrapeWarning({
           errors: scrapeResult.errors,
+          cooldownSkips,
           runStartedAt: startedAt
         });
       } catch (warnErr) {
@@ -268,7 +371,8 @@ async function runOnce(options = {}) {
       kind: 'scan',
       startedAt,
       completedAt: new Date().toISOString(),
-      status: scrapeResult.errors.length ? 'partial' : 'completed',
+      status:
+        scrapeResult.errors.length || cooldownSkips.length ? 'partial' : 'completed',
       trigger,
       totalAds: scrapeResult.ads.length,
       preFilteredAds: preFiltered.length,
@@ -279,7 +383,8 @@ async function runOnce(options = {}) {
       suppressedNewAds: suppressedAdsCount,
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       emailSent: Boolean(emailResult && !emailResult.skipped),
-      errors: scrapeResult.errors
+      errors: scrapeResult.errors,
+      cooldownSkips
     };
 
     recordRun(runEntry);
@@ -287,6 +392,7 @@ async function runOnce(options = {}) {
     return {
       ...runEntry,
       searches: searches.map((search) => search.id),
+      attemptedSearches: searchesToScrape.map((search) => search.id),
       explicitlyRequestedIds,
       suppressDistrictIds,
       rejectionCounts,

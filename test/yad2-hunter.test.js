@@ -9,6 +9,7 @@ const {
 const {
   buildHealthCheckMessages,
   describeScrapeError,
+  formatCooldownSkipLine,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckMessage,
@@ -43,7 +44,19 @@ const {
   __testing: emailTesting
 } = require('../src/services/email');
 const { __testing: loopTesting } = require('../src/worker/run-loop');
-const { mergeRuns, mergeSeenAds } = require('../scripts/merge-state');
+const {
+  mergeCooldowns,
+  mergeRuns,
+  mergeSeenAds
+} = require('../scripts/merge-state');
+const {
+  buildActiveCooldownMap,
+  clearCooldown,
+  describeCooldown,
+  getActiveCooldown,
+  pruneExpired,
+  setBlocked
+} = require('../src/store/scrape-cooldowns');
 
 const ITEM = 'https://www.yad2.co.il/realestate/item/center-and-sharon/abc123';
 
@@ -1956,7 +1969,7 @@ test('formatPartialScrapeWarning produces the operational Hebrew notice', () => 
     runStartedAt: '2026-05-20T10:00:00Z'
   });
   assert.match(text, /סריקה חלקית/);
-  assert.match(text, /החיפושים הבאים לא נסרקו בהצלחה/);
+  assert.match(text, /נחסמו עכשיו ולא נסרקו/);
   assert.match(text, /לב הפארק — שכירות/);
   assert.match(text, /לב הפארק — מכירה/);
   assert.match(text, /שכירות בערים/);
@@ -1980,5 +1993,214 @@ test('formatPartialScrapeWarning falls back to the searchId when label is missin
     errors: [{ searchId: 'mystery-watch', message: 'Timeout 60000ms exceeded' }]
   });
   assert.match(text, /• mystery-watch — תם הזמן הקצוב לסריקה/);
+});
+
+// ==========================================================================
+// Scrape cooldowns: per-search backoff after a captcha block.
+// ==========================================================================
+
+test('scrape-cooldowns setBlocked installs an entry that expires after the requested duration', () => {
+  const state = { entries: {} };
+  const t0 = 1_700_000_000_000;
+  setBlocked(state, 'south', 60 * 60 * 1000, t0);
+  const entry = state.entries['south'];
+  assert.ok(entry, 'entry should be created');
+  assert.equal(entry.blockedAt, new Date(t0).toISOString());
+  assert.equal(entry.blockedUntil, new Date(t0 + 60 * 60 * 1000).toISOString());
+  // Active while we're inside the window…
+  assert.ok(getActiveCooldown(state, 'south', t0 + 1));
+  // …and inactive after it.
+  assert.equal(getActiveCooldown(state, 'south', t0 + 60 * 60 * 1000 + 1), null);
+});
+
+test('scrape-cooldowns clearCooldown removes the entry and records a cleared marker', () => {
+  const state = { entries: {} };
+  const t0 = 1_700_000_000_000;
+  setBlocked(state, 'south', 30 * 60 * 1000, t0);
+  clearCooldown(state, 'south', t0 + 5 * 60 * 1000);
+  assert.equal(state.entries['south'], undefined);
+  assert.ok(state.cleared, 'should track a cleared marker');
+  assert.equal(state.cleared['south'], new Date(t0 + 5 * 60 * 1000).toISOString());
+});
+
+test('scrape-cooldowns buildActiveCooldownMap filters out expired entries', () => {
+  const t0 = 1_700_000_000_000;
+  const state = { entries: {} };
+  setBlocked(state, 'south', 60 * 60 * 1000, t0); // active
+  setBlocked(state, 'north-valleys', 1, t0);      // expires immediately
+  const map = buildActiveCooldownMap(state, t0 + 2);
+  assert.equal(map.has('south'), true);
+  assert.equal(map.has('north-valleys'), false);
+});
+
+test('scrape-cooldowns pruneExpired drops dead entries and stale cleared markers', () => {
+  const t0 = 1_700_000_000_000;
+  const state = { entries: {}, cleared: {} };
+  setBlocked(state, 'south', 1, t0);                          // expires at t0+1
+  setBlocked(state, 'center-sharon', 60 * 60 * 1000, t0);     // still active
+  state.cleared['old-marker'] = new Date(t0 - 5 * 60 * 60 * 1000).toISOString();
+  state.cleared['fresh-marker'] = new Date(t0).toISOString();
+  pruneExpired(state, t0 + 60 * 1000);
+  assert.equal(state.entries['south'], undefined);
+  assert.ok(state.entries['center-sharon']);
+  assert.equal(state.cleared['old-marker'], undefined);
+  assert.ok(state.cleared['fresh-marker']);
+});
+
+test('scrape-cooldowns describeCooldown flattens the entry shape for notifications', () => {
+  const t0 = 1_700_000_000_000;
+  const state = { entries: {} };
+  setBlocked(state, 'south', 60 * 60 * 1000, t0);
+  const desc = describeCooldown(state.entries['south']);
+  assert.equal(desc.blockedAt, new Date(t0).toISOString());
+  assert.equal(desc.blockedUntil, new Date(t0 + 60 * 60 * 1000).toISOString());
+  assert.equal(desc.observedAt, new Date(t0).toISOString());
+});
+
+test('mergeCooldowns keeps the entry with the latest observedAt', () => {
+  const older = '2026-05-24T10:00:00.000Z';
+  const newer = '2026-05-24T11:00:00.000Z';
+  const local = {
+    entries: {
+      south: { blockedAt: older, blockedUntil: newer, observedAt: older }
+    }
+  };
+  const remote = {
+    entries: {
+      south: {
+        blockedAt: newer,
+        blockedUntil: '2026-05-24T12:00:00.000Z',
+        observedAt: newer
+      }
+    }
+  };
+  const merged = mergeCooldowns(local, remote);
+  assert.equal(merged.entries.south.observedAt, newer);
+});
+
+test('mergeCooldowns drops entries that were cleared more recently than they were blocked', () => {
+  const blockedTs = '2026-05-24T10:00:00.000Z';
+  const clearedTs = '2026-05-24T11:00:00.000Z';
+  const local = {
+    entries: {},
+    cleared: { south: clearedTs }
+  };
+  const remote = {
+    entries: {
+      south: { blockedAt: blockedTs, blockedUntil: '2026-05-24T11:00:00.000Z', observedAt: blockedTs }
+    },
+    cleared: {}
+  };
+  const merged = mergeCooldowns(local, remote);
+  assert.equal(merged.entries.south, undefined);
+  assert.equal(merged.cleared.south, clearedTs);
+});
+
+test('mergeCooldowns keeps a remote block when no clear marker is more recent', () => {
+  const blockedTs = '2026-05-24T11:00:00.000Z';
+  const localClearedTs = '2026-05-24T10:00:00.000Z';
+  const local = {
+    entries: {},
+    cleared: { south: localClearedTs }
+  };
+  const remote = {
+    entries: {
+      south: {
+        blockedAt: blockedTs,
+        blockedUntil: '2026-05-24T12:00:00.000Z',
+        observedAt: blockedTs
+      }
+    }
+  };
+  const merged = mergeCooldowns(local, remote);
+  assert.ok(merged.entries.south);
+  assert.equal(merged.entries.south.observedAt, blockedTs);
+});
+
+test('mergeCooldowns is robust to missing files (null inputs)', () => {
+  const merged = mergeCooldowns(null, null);
+  assert.deepEqual(merged.entries, {});
+  assert.deepEqual(merged.cleared, {});
+});
+
+// ==========================================================================
+// Cooldown-aware partial-scrape warning.
+// ==========================================================================
+
+test('formatCooldownSkipLine renders the localized "retry around HH:MM" line', () => {
+  // 23:43 Asia/Jerusalem ≡ 20:43Z on the configured TZ. Use a fixed
+  // "now" so the "X minutes left" math is deterministic.
+  const nowMs = Date.parse('2026-05-24T17:00:00Z');
+  const blockedUntil = new Date(nowMs + 45 * 60 * 1000).toISOString();
+  const line = formatCooldownSkipLine(
+    {
+      searchId: 'center-sharon',
+      searchLabel: 'מרכז ושרון',
+      blockedUntil
+    },
+    nowMs
+  );
+  assert.match(line, /^• מרכז ושרון —/);
+  assert.match(line, /ננסה שוב/);
+  assert.match(line, /בעוד ~45 דק׳/);
+});
+
+test('formatCooldownSkipLine falls back gracefully when blockedUntil is missing', () => {
+  const line = formatCooldownSkipLine({
+    searchId: 'center-sharon',
+    searchLabel: 'מרכז ושרון'
+  });
+  assert.match(line, /בהפסקה אוטומטית מבלוק קודם/);
+});
+
+test('formatPartialScrapeWarning renders both blocked and cooldown sections', () => {
+  const nowMs = Date.parse('2026-05-24T17:00:00Z');
+  const blockedUntil = new Date(nowMs + 50 * 60 * 1000).toISOString();
+  const text = formatPartialScrapeWarning({
+    errors: [
+      {
+        searchId: 'center-sharon',
+        searchLabel: 'מרכז ושרון',
+        message: 'blocked by anti-bot after all retries'
+      }
+    ],
+    cooldownSkips: [
+      {
+        searchId: 'south',
+        searchLabel: 'דרום',
+        blockedUntil
+      }
+    ],
+    runStartedAt: '2026-05-24T17:00:00Z'
+  });
+  assert.match(text, /נחסמו עכשיו ולא נסרקו/);
+  assert.match(text, /• מרכז ושרון/);
+  assert.match(text, /בהפסקה אוטומטית מבלוק מוקדם יותר/);
+  assert.match(text, /• דרום/);
+  // Reassurance line is still present.
+  assert.match(text, /המודעות הקיימות בדאשבורד לא הושפעו/);
+});
+
+test('formatPartialScrapeWarning fires for cooldowns alone with no scrape errors', () => {
+  const nowMs = Date.parse('2026-05-24T17:00:00Z');
+  const blockedUntil = new Date(nowMs + 50 * 60 * 1000).toISOString();
+  const text = formatPartialScrapeWarning({
+    errors: [],
+    cooldownSkips: [
+      {
+        searchId: 'south',
+        searchLabel: 'דרום',
+        blockedUntil
+      }
+    ]
+  });
+  assert.notEqual(text, '');
+  assert.match(text, /בהפסקה אוטומטית/);
+  // No "blocked now" section when there are no scrape errors.
+  assert.equal(/נחסמו עכשיו/.test(text), false);
+});
+
+test('formatPartialScrapeWarning still returns empty when nothing to report', () => {
+  assert.equal(formatPartialScrapeWarning({ errors: [], cooldownSkips: [] }), '');
 });
 

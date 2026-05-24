@@ -59,7 +59,11 @@ const env = {
   STATE_DIR: process.env.STATE_DIR || path.resolve(process.cwd(), 'state'),
   HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
   SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30),
-  DASHBOARD_URL: (process.env.DASHBOARD_URL || '').trim()
+  DASHBOARD_URL: (process.env.DASHBOARD_URL || '').trim(),
+  // When Yad2 captcha-blocks a specific search, the worker stops
+  // hitting that search for this many milliseconds (default 1h).
+  // Setting it to 0 disables the cooldown layer entirely.
+  SCRAPE_COOLDOWN_MS: parseInteger(process.env.SCRAPE_COOLDOWN_MS, 60 * 60 * 1000)
 };
 
 module.exports = {

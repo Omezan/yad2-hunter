@@ -539,27 +539,70 @@ function summarizeScrapeErrors(errors) {
   }));
 }
 
+// Renders a "blocked X minutes ago, will retry around HH:MM" line.
+// Used by the cooldown-skip section of the partial-scrape warning so
+// the user can tell at a glance when each paused search will wake up.
+function formatCooldownSkipLine(skip, nowMs = Date.now()) {
+  if (!skip || !skip.searchLabel) return null;
+  const label = skip.searchLabel;
+  const untilMs = Date.parse(skip.blockedUntil || '');
+  if (!Number.isFinite(untilMs)) {
+    return `• ${label} — בהפסקה אוטומטית מבלוק קודם`;
+  }
+  const minutesLeft = Math.max(1, Math.round((untilMs - nowMs) / 60000));
+  let clockLabel = '';
+  try {
+    clockLabel = new Date(untilMs).toLocaleString('he-IL', {
+      timeZone: 'Asia/Jerusalem',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  } catch {
+    clockLabel = '';
+  }
+  if (clockLabel) {
+    return `• ${label} — ננסה שוב בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳)`;
+  }
+  return `• ${label} — ננסה שוב בעוד ~${minutesLeft} דק׳`;
+}
+
 // Formats the operational "some watches couldn't be scraped this
 // iteration" notice. Independent of the new-ads digest by design:
 // per the product brief this warning ships as its own Telegram
-// message after every iteration where errors exist, with no dedupe
-// across iterations.
-function formatPartialScrapeWarning({ errors, runStartedAt } = {}) {
+// message after every iteration where errors exist or where a
+// search is still in cooldown from an earlier block. No dedupe
+// across iterations — signal beats silence.
+function formatPartialScrapeWarning({ errors, cooldownSkips, runStartedAt } = {}) {
   const summary = summarizeScrapeErrors(errors);
-  if (!summary.length) return '';
-  const lines = ['⚠️ Yad2 Hunter — סריקה חלקית', 'החיפושים הבאים לא נסרקו בהצלחה:'];
-  for (const item of summary) {
-    lines.push(`• ${item.searchLabel} — ${item.reason}`);
+  const skips = Array.isArray(cooldownSkips) ? cooldownSkips : [];
+  if (!summary.length && !skips.length) return '';
+
+  const lines = ['⚠️ Yad2 Hunter — סריקה חלקית'];
+
+  if (summary.length) {
+    lines.push('', 'נחסמו עכשיו ולא נסרקו:');
+    for (const item of summary) {
+      lines.push(`• ${item.searchLabel} — ${item.reason}`);
+    }
   }
+
+  if (skips.length) {
+    lines.push('', 'בהפסקה אוטומטית מבלוק מוקדם יותר:');
+    for (const skip of skips) {
+      const line = formatCooldownSkipLine(skip);
+      if (line) lines.push(line);
+    }
+  }
+
   lines.push('', 'המודעות הקיימות בדאשבורד לא הושפעו — ננסה שוב בריצה הבאה.');
   const footer = buildDashboardFooter({ runStartedAt });
   if (footer) lines.push('', footer);
   return lines.join('\n');
 }
 
-async function sendPartialScrapeWarning({ errors, runStartedAt } = {}) {
-  const text = formatPartialScrapeWarning({ errors, runStartedAt });
-  if (!text) return { skipped: true, reason: 'No scrape errors to report' };
+async function sendPartialScrapeWarning({ errors, cooldownSkips, runStartedAt } = {}) {
+  const text = formatPartialScrapeWarning({ errors, cooldownSkips, runStartedAt });
+  if (!text) return { skipped: true, reason: 'No scrape errors or cooldowns to report' };
   const result = await sendTelegramMessage({ text, disablePreview: true });
   return { parts: 1, results: [result] };
 }
@@ -589,6 +632,7 @@ async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliati
 module.exports = {
   buildHealthCheckMessages,
   describeScrapeError,
+  formatCooldownSkipLine,
   formatDigestMessage,
   formatDigestMessages,
   formatHealthCheckDiffSection,

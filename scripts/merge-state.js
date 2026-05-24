@@ -18,6 +18,10 @@
 //     Only the health-check sets this — the scan is additive only.
 //   - runs.json → merge by startedAt, dedupe, sort newest-first, cap
 //     to HISTORY_LIMIT.
+//   - scrape-cooldowns.json → per-searchId merge picking the LATER of
+//     local vs remote observation (observedAt / cleared marker). Lets
+//     one worker's "blocked" survive a concurrent writer's older
+//     "ok" snapshot, and vice-versa.
 //   - Any other JSON file → prefer the local copy.
 
 const fs = require('fs');
@@ -101,6 +105,72 @@ function mergeSeenAds(localFile, remoteFile, forceDeleteIds = []) {
   };
 }
 
+// scrape-cooldowns.json merge:
+//   For each searchId in (local.entries ∪ remote.entries), keep the
+//   entry with the latest observedAt. A "cleared" marker on either
+//   side (state.cleared[id]) is treated as an observation at that
+//   timestamp; if it's newer than the matching entry, the cooldown
+//   for that search is dropped.
+//
+// Result shape: { entries: { … }, cleared: { … } }
+function mergeCooldowns(localFile, remoteFile) {
+  const localEntries =
+    (localFile && typeof localFile === 'object' && localFile.entries) || {};
+  const remoteEntries =
+    (remoteFile && typeof remoteFile === 'object' && remoteFile.entries) || {};
+  const localCleared =
+    (localFile && typeof localFile === 'object' && localFile.cleared) || {};
+  const remoteCleared =
+    (remoteFile && typeof remoteFile === 'object' && remoteFile.cleared) || {};
+
+  function entryObservedAt(entry) {
+    if (!entry) return 0;
+    return Date.parse(entry.observedAt || entry.blockedAt || '') || 0;
+  }
+  function clearedAt(map, id) {
+    if (!map || !map[id]) return 0;
+    return Date.parse(map[id] || '') || 0;
+  }
+
+  const allIds = new Set([
+    ...Object.keys(localEntries),
+    ...Object.keys(remoteEntries),
+    ...Object.keys(localCleared),
+    ...Object.keys(remoteCleared)
+  ]);
+
+  const mergedEntries = {};
+  const mergedCleared = {};
+
+  for (const id of allIds) {
+    const local = localEntries[id] || null;
+    const remote = remoteEntries[id] || null;
+    const localClear = clearedAt(localCleared, id);
+    const remoteClear = clearedAt(remoteCleared, id);
+    const latestClear = Math.max(localClear, remoteClear);
+    const latestClearIso =
+      latestClear > 0 ? new Date(latestClear).toISOString() : null;
+
+    if (latestClearIso) mergedCleared[id] = latestClearIso;
+
+    const localObs = entryObservedAt(local);
+    const remoteObs = entryObservedAt(remote);
+    const latestEntry = localObs >= remoteObs ? local : remote;
+    const latestEntryObs = Math.max(localObs, remoteObs);
+
+    if (latestEntry && latestEntryObs > latestClear) {
+      mergedEntries[id] = latestEntry;
+    }
+  }
+
+  return {
+    ...(remoteFile || {}),
+    ...(localFile || {}),
+    entries: mergedEntries,
+    cleared: mergedCleared
+  };
+}
+
 function mergeRuns(localFile, remoteFile) {
   const local = Array.isArray(localFile && localFile.runs) ? localFile.runs : [];
   const remote = Array.isArray(remoteFile && remoteFile.runs) ? remoteFile.runs : [];
@@ -146,7 +216,9 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
     );
   }
 
-  for (const filename of ['seen-ads.json', 'runs.json']) {
+  const MERGED_FILES = ['seen-ads.json', 'runs.json', 'scrape-cooldowns.json'];
+
+  for (const filename of MERGED_FILES) {
     const localPath = path.join(stateDir, filename);
     const remotePath = path.join(workDir, filename);
     const local = readJsonSafe(localPath);
@@ -163,11 +235,19 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
       console.log(
         `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
       );
-    } else {
+    } else if (filename === 'runs.json') {
       merged = mergeRuns(local, remote);
       const localCount = local && local.runs ? local.runs.length : 0;
       const remoteCount = remote && remote.runs ? remote.runs.length : 0;
       const mergedCount = merged && merged.runs ? merged.runs.length : 0;
+      console.log(
+        `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
+      );
+    } else {
+      merged = mergeCooldowns(local, remote);
+      const localCount = local && local.entries ? Object.keys(local.entries).length : 0;
+      const remoteCount = remote && remote.entries ? Object.keys(remote.entries).length : 0;
+      const mergedCount = merged && merged.entries ? Object.keys(merged.entries).length : 0;
       console.log(
         `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
       );
@@ -178,7 +258,7 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
 
   // Copy any other state files present locally (future-proofing).
   for (const entry of fs.readdirSync(stateDir)) {
-    if (entry === 'seen-ads.json' || entry === 'runs.json') continue;
+    if (MERGED_FILES.includes(entry)) continue;
     const src = path.join(stateDir, entry);
     if (!fs.statSync(src).isFile()) continue;
     const dst = path.join(workDir, entry);
@@ -200,5 +280,6 @@ module.exports = {
   HISTORY_LIMIT,
   mergeSeenAds,
   mergeRuns,
+  mergeCooldowns,
   mergeStateDirs
 };
