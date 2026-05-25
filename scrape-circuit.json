@@ -1,7 +1,7 @@
 {
-  "consecutiveBlockedIterations": 10,
-  "frozenUntil": "2026-05-25T21:39:21.797Z",
+  "consecutiveBlockedIterations": 11,
+  "frozenUntil": "2026-05-25T23:23:25.706Z",
   "firstBlockedAt": "2026-05-24T20:19:45.594Z",
-  "lastBlockedAt": "2026-05-25T20:39:21.797Z",
-  "lastObservedAt": "2026-05-25T20:39:21.797Z"
+  "lastBlockedAt": "2026-05-25T22:23:25.706Z",
+  "lastObservedAt": "2026-05-25T22:23:25.706Z"
 }
