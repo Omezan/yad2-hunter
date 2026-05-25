@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-25T00:00:38.450Z",
+      "completedAt": "2026-05-25T00:00:38.451Z",
+      "status": "skipped",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [],
+      "circuitFrozenUntil": "2026-05-25T00:43:56.440Z"
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-24T23:26:51.320Z",
       "completedAt": "2026-05-24T23:43:57.057Z",
       "status": "partial",
@@ -2257,39 +2275,6 @@
           "searchLabel": "צפון ועמקים",
           "message": "blocked by anti-bot after all retries"
         },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-23T04:39:05.180Z",
-      "completedAt": "2026-05-23T04:48:12.123Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 266,
-      "preFilteredAds": 266,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
         {
           "searchId": "lev-hapark-rent",
           "searchLabel": "לב הפארק — שכירות",
