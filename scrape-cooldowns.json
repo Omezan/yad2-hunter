@@ -1,0 +1,44 @@
+{
+  "entries": {
+    "jerusalem": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "center-sharon": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "south": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "coastal-north": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "north-valleys": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "lev-hapark-rent": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "lev-hapark-sale": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    },
+    "rent-in-cities": {
+      "blockedAt": "2026-05-26T09:57:41.229Z",
+      "blockedUntil": "2026-05-26T10:57:41.229Z",
+      "observedAt": "2026-05-26T09:57:41.229Z"
+    }
+  }
+}
