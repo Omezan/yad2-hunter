@@ -60,13 +60,11 @@ const env = {
   HISTORY_LIMIT: parseInteger(process.env.HISTORY_LIMIT, 50),
   SEEN_RETENTION_DAYS: parseInteger(process.env.SEEN_RETENTION_DAYS, 30),
   DASHBOARD_URL: (process.env.DASHBOARD_URL || '').trim(),
-  // Circuit breaker: when this many consecutive iterations end with
-  // at least one captcha block, freeze ALL scanning for
-  // SCRAPE_FREEZE_MS to let Yad2's rate limit relax. Setting either
-  // to 0 (or the threshold to a very high number) effectively
-  // disables the breaker.
-  SCRAPE_FREEZE_THRESHOLD: parseInteger(process.env.SCRAPE_FREEZE_THRESHOLD, 2),
-  SCRAPE_FREEZE_MS: parseInteger(process.env.SCRAPE_FREEZE_MS, 60 * 60 * 1000)
+  // Per-search cooldown: when Yad2 captcha-blocks a specific search
+  // on the scheduled track, that *one* search is held out for this
+  // many milliseconds (default 1h). The other searches keep
+  // scanning normally. Set to 0 to disable the cooldown layer.
+  SCRAPE_COOLDOWN_MS: parseInteger(process.env.SCRAPE_COOLDOWN_MS, 60 * 60 * 1000)
 };
 
 module.exports = {

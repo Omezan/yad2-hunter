@@ -18,10 +18,11 @@
 //     Only the health-check sets this — the scan is additive only.
 //   - runs.json → merge by startedAt, dedupe, sort newest-first, cap
 //     to HISTORY_LIMIT.
-//   - scrape-circuit.json → single global circuit-breaker record.
-//     Picks the entry with the latest lastObservedAt; concurrent
-//     writers with older snapshots lose. Threshold counter and
-//     frozenUntil come straight from the winning side.
+//   - scrape-cooldowns.json → per-searchId merge. For each search id
+//     in (local.entries ∪ remote.entries) we keep the record with
+//     the latest observedAt. Lets two concurrent writers reconcile
+//     cleanly: writer A blocks search X, writer B blocks search Y,
+//     the merged file has both.
 //   - Any other JSON file → prefer the local copy.
 
 const fs = require('fs');
@@ -105,23 +106,38 @@ function mergeSeenAds(localFile, remoteFile, forceDeleteIds = []) {
   };
 }
 
-// scrape-circuit.json merge:
-//   Single-record file describing the global circuit-breaker state.
-//   We keep the snapshot with the latest lastObservedAt — that's the
-//   freshest view of "did we just get blocked / are we currently
-//   frozen". A null/missing local timestamp loses to any remote one
-//   and vice-versa.
-function mergeCircuit(localFile, remoteFile) {
-  function ts(file) {
-    if (!file || typeof file !== 'object') return 0;
-    return Date.parse(file.lastObservedAt || '') || 0;
+// scrape-cooldowns.json merge:
+//   For each searchId in (local.entries ∪ remote.entries) keep the
+//   entry with the latest observedAt. Missing-on-one-side entries
+//   pass through unchanged so two writers each cooling down a
+//   different search can both win.
+function mergeCooldowns(localFile, remoteFile) {
+  const localEntries =
+    (localFile && typeof localFile === 'object' && localFile.entries) || {};
+  const remoteEntries =
+    (remoteFile && typeof remoteFile === 'object' && remoteFile.entries) || {};
+  const ids = new Set([...Object.keys(localEntries), ...Object.keys(remoteEntries)]);
+  const merged = {};
+  for (const id of ids) {
+    const local = localEntries[id] || null;
+    const remote = remoteEntries[id] || null;
+    if (local && !remote) {
+      merged[id] = local;
+      continue;
+    }
+    if (remote && !local) {
+      merged[id] = remote;
+      continue;
+    }
+    const localTs = Date.parse((local && (local.observedAt || local.blockedAt)) || '') || 0;
+    const remoteTs = Date.parse((remote && (remote.observedAt || remote.blockedAt)) || '') || 0;
+    merged[id] = localTs >= remoteTs ? local : remote;
   }
-  const localTs = ts(localFile);
-  const remoteTs = ts(remoteFile);
-  if (localTs === 0 && remoteTs === 0) {
-    return localFile || remoteFile || null;
-  }
-  return localTs >= remoteTs ? localFile : remoteFile;
+  return {
+    ...(remoteFile || {}),
+    ...(localFile || {}),
+    entries: merged
+  };
 }
 
 function mergeRuns(localFile, remoteFile) {
@@ -169,7 +185,7 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
     );
   }
 
-  const MERGED_FILES = ['seen-ads.json', 'runs.json', 'scrape-circuit.json'];
+  const MERGED_FILES = ['seen-ads.json', 'runs.json', 'scrape-cooldowns.json'];
 
   for (const filename of MERGED_FILES) {
     const localPath = path.join(stateDir, filename);
@@ -192,25 +208,38 @@ function mergeStateDirs(stateDir, workDir, options = {}) {
       merged = mergeRuns(local, remote);
       const localCount = local && local.runs ? local.runs.length : 0;
       const remoteCount = remote && remote.runs ? remote.runs.length : 0;
-      const mergedCount = merged && remote && merged.runs ? merged.runs.length : 0;
+      const mergedCount = merged && merged.runs ? merged.runs.length : 0;
       console.log(
         `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
       );
     } else {
-      merged = mergeCircuit(local, remote);
-      const winner = !local ? 'remote' : !remote ? 'local' : merged === local ? 'local' : 'remote';
+      merged = mergeCooldowns(local, remote);
+      const localCount = local && local.entries ? Object.keys(local.entries).length : 0;
+      const remoteCount = remote && remote.entries ? Object.keys(remote.entries).length : 0;
+      const mergedCount = merged && merged.entries ? Object.keys(merged.entries).length : 0;
       console.log(
-        `[merge-state] ${filename}: chose ${winner} snapshot (frozenUntil=${
-          merged && merged.frozenUntil ? merged.frozenUntil : '—'
-        }, counter=${
-          merged && merged.consecutiveBlockedIterations
-            ? merged.consecutiveBlockedIterations
-            : 0
-        })`
+        `[merge-state] ${filename}: local=${localCount} remote=${remoteCount} merged=${mergedCount}`
       );
     }
 
     writeJsonPretty(remotePath, merged);
+  }
+
+  // Best-effort cleanup of legacy state files. The previous global
+  // circuit-breaker design wrote `scrape-circuit.json`; once we've
+  // migrated to per-search cooldowns the file is dead weight. Delete
+  // it from the work tree so the next push removes it from the
+  // state branch as well. Safe no-op if the file isn't there.
+  const legacyCircuitPath = path.join(workDir, 'scrape-circuit.json');
+  if (fs.existsSync(legacyCircuitPath)) {
+    try {
+      fs.unlinkSync(legacyCircuitPath);
+      console.log('[merge-state] removed legacy scrape-circuit.json');
+    } catch (cleanupErr) {
+      console.warn(
+        `[merge-state] could not remove legacy scrape-circuit.json: ${cleanupErr.message}`
+      );
+    }
   }
 
   // Copy any other state files present locally (future-proofing).
@@ -237,6 +266,6 @@ module.exports = {
   HISTORY_LIMIT,
   mergeSeenAds,
   mergeRuns,
-  mergeCircuit,
+  mergeCooldowns,
   mergeStateDirs
 };

@@ -8,18 +8,18 @@ const {
   splitNewAndExisting
 } = require('../store/file-store');
 const {
-  isFrozen,
-  loadCircuit,
-  recordIterationOutcome,
-  saveCircuit
-} = require('../store/scrape-circuit');
+  buildActiveCooldownMap,
+  loadCooldowns,
+  pruneExpired,
+  saveCooldowns,
+  setBlocked
+} = require('../store/scrape-cooldowns');
 const { scrapeAllSearches } = require('../scraper/yad2');
 const { filterRelevantAds, getRejection } = require('../services/relevance');
 const {
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
-  sendPartialScrapeWarning,
-  sendScrapeFreezeNotice
+  sendPartialScrapeWarning
 } = require('../services/telegram');
 const {
   sendManualScanNoNewAdsEmail,
@@ -175,61 +175,78 @@ async function runOnce(options = {}) {
   const explicitlyRequestedIds = parseIdList(env.ENABLED_SEARCH_IDS);
   const suppressDistrictIds = parseIdList(env.TELEGRAM_SUPPRESS_DISTRICT_IDS);
 
-  // Circuit-breaker gate. If we tripped the breaker on an earlier
-  // iteration and the freeze hasn't expired yet, we DO NOT scrape on
-  // SCHEDULED runs — the dashboard data is untouched, no scraping
-  // happens, no Telegram noise (the user already got the freeze
-  // notice when the breaker tripped).
+  // Per-search cooldown gate. The scheduled track filters out
+  // searches that are currently cooled down from an earlier block;
+  // those searches sit out until their `blockedUntil` passes. The
+  // remaining searches scrape normally and return results as usual.
   //
-  // MANUAL triggers explicitly bypass the freeze: when the user
-  // clicks "הרץ סריקה" they're asking us to try anyway. Their
-  // run still emits the normal notifications (digest / no-new-ads /
-  // partial-scrape warning) but DOES NOT update the breaker — both
-  // success and failure are excluded from the consecutive-block
-  // counter, so a manual attempt can't accidentally extend the
-  // freeze or paper over a real Yad2 block on the scheduled track.
-  const circuit = loadCircuit();
+  // Manual triggers ("הרץ סריקה" from the dashboard) BYPASS the
+  // filter — every requested search is attempted regardless of its
+  // cooldown — and they do NOT update the cooldown state, so a user
+  // who clicks the button can't accidentally extend or shorten the
+  // scheduled track's view of which searches are blocked.
   const isManualTrigger = MANUAL_TRIGGERS.has(trigger);
-  if (isFrozen(circuit, startedAtMs) && !isManualTrigger) {
-    const runEntry = {
-      kind: 'scan',
-      startedAt,
-      completedAt: new Date().toISOString(),
-      status: 'skipped',
-      trigger,
-      totalAds: 0,
-      preFilteredAds: 0,
-      candidateNewAds: 0,
-      relevantNewAds: 0,
-      notifiedNewAds: 0,
-      notifiedEmailAds: 0,
-      suppressedNewAds: 0,
-      telegramSent: false,
-      emailSent: false,
-      errors: [],
-      circuitFrozenUntil: circuit.frozenUntil
-    };
-    recordRun(runEntry);
-    return {
-      ...runEntry,
-      searches: searches.map((search) => search.id),
-      attemptedSearches: [],
-      explicitlyRequestedIds,
-      suppressDistrictIds,
-      rejectionCounts: { preFilter: {}, finalFilter: {} },
-      droppedNewCandidates: [],
-      telegramResult: { skipped: true, reason: 'Frozen by circuit breaker' },
-      emailResult: { skipped: true, reason: 'Frozen by circuit breaker' },
-      scrapeWarningResult: { skipped: true, reason: 'Frozen by circuit breaker' }
-    };
+  const cooldownEnabled = env.SCRAPE_COOLDOWN_MS > 0;
+  const cooldownState = cooldownEnabled ? loadCooldowns() : { entries: {} };
+  const activeCooldowns = cooldownEnabled
+    ? buildActiveCooldownMap(cooldownState, startedAtMs)
+    : new Map();
+
+  let searchesToScrape;
+  const cooldownSkips = [];
+  if (isManualTrigger || !cooldownEnabled) {
+    searchesToScrape = searches;
+  } else {
+    searchesToScrape = [];
+    for (const search of searches) {
+      if (activeCooldowns.has(search.id)) {
+        const entry = activeCooldowns.get(search.id);
+        cooldownSkips.push({
+          searchId: search.id,
+          searchLabel: search.label,
+          blockedAt: entry.blockedAt,
+          blockedUntil: entry.blockedUntil
+        });
+      } else {
+        searchesToScrape.push(search);
+      }
+    }
   }
 
   try {
-    const scrapeResult = await scrapeAllSearches({
-      searches,
-      headless: env.PLAYWRIGHT_HEADLESS,
-      timeoutMs: env.SEARCH_TIMEOUT_MS
-    });
+    const scrapeResult = searchesToScrape.length
+      ? await scrapeAllSearches({
+          searches: searchesToScrape,
+          headless: env.PLAYWRIGHT_HEADLESS,
+          timeoutMs: env.SEARCH_TIMEOUT_MS
+        })
+      : { ads: [], errors: [] };
+
+    // Update the per-search cooldown state with this iteration's
+    // outcome — but ONLY on scheduled runs. Manual triggers leave
+    // the cooldown state untouched per the product brief: the user
+    // explicitly wants the ability to retry from the dashboard
+    // without their attempts perturbing the scheduled track.
+    if (cooldownEnabled && !isManualTrigger) {
+      const blockedIds = new Set();
+      for (const err of scrapeResult.errors || []) {
+        if (isBlockedError(err) && err.searchId) {
+          blockedIds.add(err.searchId);
+        }
+      }
+      const completedAtMs = Date.now();
+      for (const id of blockedIds) {
+        setBlocked(cooldownState, id, env.SCRAPE_COOLDOWN_MS, completedAtMs);
+      }
+      pruneExpired(cooldownState, completedAtMs);
+      try {
+        saveCooldowns(cooldownState);
+      } catch (saveErr) {
+        console.warn(
+          `[run-once] failed to persist cooldowns: ${saveErr.message}`
+        );
+      }
+    }
 
     const preFiltered = filterRelevantAds(scrapeResult.ads);
     const { newAds: newCandidates, existingAds } = splitNewAndExisting(preFiltered);
@@ -309,66 +326,16 @@ async function runOnce(options = {}) {
       });
     }
 
-    // Update the circuit-breaker state with this iteration's outcome,
-    // BEFORE we decide which Telegram message to send. The breaker
-    // gives us three outcomes on a SCHEDULED run:
-    //   - justFrozen=true  → we hit the threshold this iteration;
-    //                        send the freeze notice (and skip the
-    //                        regular partial-scrape warning, which
-    //                        would be redundant).
-    //   - justFrozen=false but hadBlock → send the existing partial
-    //                        scrape warning. This is the "first
-    //                        block in a row" path.
-    //   - justFrozen=false and not hadBlock → no warning.
-    //
-    // Manual triggers are excluded from the counter entirely (per
-    // product brief): the user wants the ability to retry from the
-    // dashboard during a freeze, and neither a manual success nor a
-    // manual block should perturb the scheduled track's state.
-    const hadBlock = (scrapeResult.errors || []).some(isBlockedError);
-    let breaker = {
-      justFrozen: false,
-      counter: circuit.consecutiveBlockedIterations || 0,
-      frozenUntil: circuit.frozenUntil
-    };
-    if (!isManualTrigger) {
-      breaker = recordIterationOutcome(circuit, {
-        hadBlock,
-        threshold: env.SCRAPE_FREEZE_THRESHOLD,
-        freezeMs: env.SCRAPE_FREEZE_MS,
-        nowMs: Date.now()
-      });
-      try {
-        saveCircuit(circuit);
-      } catch (saveErr) {
-        console.warn(
-          `[run-once] failed to persist circuit state: ${saveErr.message}`
-        );
-      }
-    }
-
+    // Operational notice: if any search got newly blocked this
+    // iteration, send a separate Telegram warning. Per the product
+    // brief we deliberately do NOT spam a warning every iteration
+    // for searches that were already in cooldown — the message
+    // would repeat every 30 min for an hour, which is noise. The
+    // initial block already raised the alarm.
     let scrapeWarningResult = { skipped: true, reason: 'No scrape errors' };
     const hasScrapeErrors =
       Array.isArray(scrapeResult.errors) && scrapeResult.errors.length > 0;
-    if (breaker.justFrozen) {
-      // Only reachable on a scheduled run — manual runs never set
-      // justFrozen because they skip the recordIterationOutcome
-      // call above.
-      try {
-        scrapeWarningResult = await sendScrapeFreezeNotice({
-          frozenUntil: breaker.frozenUntil,
-          counter: breaker.counter,
-          runStartedAt: startedAt
-        });
-      } catch (warnErr) {
-        scrapeWarningResult = {
-          skipped: true,
-          reason: `Failed to send freeze notice: ${
-            warnErr && warnErr.message ? warnErr.message : warnErr
-          }`
-        };
-      }
-    } else if (hasScrapeErrors) {
+    if (hasScrapeErrors) {
       try {
         scrapeWarningResult = await sendPartialScrapeWarning({
           errors: scrapeResult.errors,
@@ -388,7 +355,8 @@ async function runOnce(options = {}) {
       kind: 'scan',
       startedAt,
       completedAt: new Date().toISOString(),
-      status: scrapeResult.errors.length ? 'partial' : 'completed',
+      status:
+        scrapeResult.errors.length || cooldownSkips.length ? 'partial' : 'completed',
       trigger,
       totalAds: scrapeResult.ads.length,
       preFilteredAds: preFiltered.length,
@@ -400,8 +368,7 @@ async function runOnce(options = {}) {
       telegramSent: Boolean(telegramResult && !telegramResult.skipped),
       emailSent: Boolean(emailResult && !emailResult.skipped),
       errors: scrapeResult.errors,
-      circuitCounter: breaker.counter,
-      circuitFrozenUntil: breaker.justFrozen ? breaker.frozenUntil : null
+      cooldownSkipCount: cooldownSkips.length
     };
 
     recordRun(runEntry);
@@ -409,15 +376,15 @@ async function runOnce(options = {}) {
     return {
       ...runEntry,
       searches: searches.map((search) => search.id),
-      attemptedSearches: searches.map((search) => search.id),
+      attemptedSearches: searchesToScrape.map((search) => search.id),
+      cooldownSkips,
       explicitlyRequestedIds,
       suppressDistrictIds,
       rejectionCounts,
       droppedNewCandidates,
       telegramResult,
       emailResult,
-      scrapeWarningResult,
-      circuitJustFrozen: breaker.justFrozen
+      scrapeWarningResult
     };
   } catch (error) {
     recordRun({

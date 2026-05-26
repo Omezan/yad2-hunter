@@ -564,70 +564,15 @@ async function sendPartialScrapeWarning({ errors, runStartedAt } = {}) {
   return { parts: 1, results: [result] };
 }
 
-// Wall-clock renderer used by both the freeze notice and the
-// manual-trigger "still frozen" notice. Locks to Asia/Jerusalem so
-// the displayed time matches the user's expectation regardless of
-// the runner's TZ.
-function formatJerusalemTime(iso) {
-  const ms = Date.parse(iso || '');
-  if (!Number.isFinite(ms)) return '';
-  try {
-    return new Date(ms).toLocaleString('he-IL', {
-      timeZone: 'Asia/Jerusalem',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  } catch {
-    return '';
-  }
-}
-
-function formatMinutesLeft(iso, nowMs = Date.now()) {
-  const ms = Date.parse(iso || '');
-  if (!Number.isFinite(ms)) return null;
-  return Math.max(1, Math.round((ms - nowMs) / 60000));
-}
-
-// Fires on the iteration where the circuit breaker trips. Conveys:
-//   - that we just stopped scanning,
-//   - how many consecutive blocks triggered it,
-//   - when the freeze ends.
-function formatScrapeFreezeNotice({ frozenUntil, counter, runStartedAt, nowMs = Date.now() } = {}) {
-  if (!frozenUntil) return '';
-  const minutesLeft = formatMinutesLeft(frozenUntil, nowMs) ?? 60;
-  const clockLabel = formatJerusalemTime(frozenUntil);
-  const blockCount = Number.isFinite(counter) && counter > 0 ? counter : 2;
-
-  const lines = ['🚫 Yad2 Hunter — הקפאת סריקה אוטומטית'];
-  lines.push('');
-  lines.push(
-    `נחסמנו על ידי Yad2 ב-${blockCount} ריצות ברצף — אנחנו עוצרים את כל הסריקה לזמן מה כדי לתת ל-Yad2 זמן להירגע.`
-  );
-  if (clockLabel) {
-    lines.push('', `נחזור לסרוק בסביבות ${clockLabel} (בעוד ~${minutesLeft} דק׳).`);
-  } else {
-    lines.push('', `נחזור לסרוק בעוד ~${minutesLeft} דק׳.`);
-  }
-  lines.push('', 'המודעות הקיימות בדאשבורד לא הושפעו.');
-  const footer = buildDashboardFooter({ runStartedAt });
-  if (footer) lines.push('', footer);
-  return lines.join('\n');
-}
-
-async function sendScrapeFreezeNotice({ frozenUntil, counter, runStartedAt } = {}) {
-  const text = formatScrapeFreezeNotice({ frozenUntil, counter, runStartedAt });
-  if (!text) return { skipped: true, reason: 'No frozenUntil supplied' };
-  const result = await sendTelegramMessage({ text, disablePreview: true });
-  return { parts: 1, results: [result] };
-}
-
-// Note: there used to be a `sendFrozenManualNotice` here that fired
-// when a manual trigger landed during an active freeze. Per the
-// product brief the dashboard's manual "הרץ סריקה" button now
-// BYPASSES the freeze entirely (and is excluded from the breaker's
-// counter), so this notice has no caller and was removed. The
-// normal new-ads digest / no-new-ads notice / partial-scrape
-// warning all still fire for manual runs.
+// Note: this file previously exposed `formatScrapeFreezeNotice` and
+// `sendScrapeFreezeNotice` (the global "we got blocked twice in a
+// row, stopping everything for an hour" message) plus a
+// `sendFrozenManualNotice` ("you tried to manually run during a
+// freeze"). Both were removed when the cooldown layer was reshaped
+// from a global circuit breaker to per-search cooldowns: only the
+// individual blocked search is held out, everything else keeps
+// scanning, and the existing `sendPartialScrapeWarning` already
+// covers the user-facing signal we need.
 
 async function sendHealthCheckReport({ rows, allMatch, generatedAt, reconciliation } = {}) {
   const messages = buildHealthCheckMessages({
@@ -656,7 +601,6 @@ module.exports = {
   describeScrapeError,
   formatDigestMessage,
   formatDigestMessages,
-  formatScrapeFreezeNotice,
   formatHealthCheckDiffSection,
   formatHealthCheckMessage,
   formatManualScanNoNewAdsMessage,
@@ -666,7 +610,6 @@ module.exports = {
   sendManualScanNoNewAdsNotice,
   sendNewAdsDigest,
   sendPartialScrapeWarning,
-  sendScrapeFreezeNotice,
   sendTelegramMessage,
   summarizeScrapeErrors
 };
