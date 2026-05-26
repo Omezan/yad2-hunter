@@ -1281,8 +1281,27 @@ async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000,
     }
   }
 
+  // Pass-2 short-circuit: when pass 1 returned ZERO ads across all
+  // searches, the bottleneck is almost certainly the runner IP
+  // (Yad2 captcha rejecting on first contact), not the browser
+  // fingerprint. Retrying with a different UA does effectively
+  // nothing in that case and just eats the workflow's time budget
+  // — leaving us not enough headroom to send the partial-scrape
+  // warning before the job's timeout-minutes cap kills us. Skip
+  // the retry pass entirely; the existing per-search "blocked"
+  // errors are already populated in allErrors.
+  if (allAds.length === 0 && stillEmpty.length > 0) {
+    logger.warn?.(
+      `Skipping fresh-browser retry pass for ${stillEmpty.length} searches: pass-1 returned zero ads on every search, retry would waste the time budget. Will report all as blocked.`
+    );
+  }
+
   let profileIndex = 1;
-  while (stillEmpty.length > 0 && profileIndex < BROWSER_PROFILES.length) {
+  while (
+    stillEmpty.length > 0 &&
+    profileIndex < BROWSER_PROFILES.length &&
+    allAds.length > 0
+  ) {
     const profile = BROWSER_PROFILES[profileIndex];
     const queue = stillEmpty.splice(0);
     logger.warn?.(

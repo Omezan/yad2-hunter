@@ -25,7 +25,13 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    # 15-min budget: a fully-blocked day burns ~60-90s/search across
+    # 8 searches × up to 2 browser profiles. The previous 8-min cap
+    # killed the job mid-stride before it could send the partial-
+    # scrape warning. With the pass-2 short-circuit in
+    # scrapeAllSearches (skips when pass-1 found zero ads) we should
+    # land well inside this budget even on the worst-case day.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout main
