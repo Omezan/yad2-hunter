@@ -64,7 +64,9 @@ const env = {
   // on the scheduled track, that *one* search is held out for this
   // many milliseconds (default 1h). The other searches keep
   // scanning normally. Set to 0 to disable the cooldown layer.
-  SCRAPE_COOLDOWN_MS: parseInteger(process.env.SCRAPE_COOLDOWN_MS, 60 * 60 * 1000)
+  SCRAPE_COOLDOWN_MS: parseInteger(process.env.SCRAPE_COOLDOWN_MS, 60 * 60 * 1000),
+  TELEGRAM_PROXY_URL: process.env.TELEGRAM_PROXY_URL || '',
+  TELEGRAM_PROXY_SECRET: process.env.TELEGRAM_PROXY_SECRET || ''
 };
 
 module.exports = {

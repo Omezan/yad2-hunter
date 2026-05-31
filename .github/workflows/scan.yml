@@ -57,8 +57,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_NOTIFICATIONS_ENABLED: "true"
-          # SMTP transport for the Lev HaPark watch — see scan-once.yml.
-          # When secrets are unset, the email service skips gracefully.
+          TELEGRAM_PROXY_URL: ${{ secrets.TELEGRAM_PROXY_URL }}
+          TELEGRAM_PROXY_SECRET: ${{ secrets.TELEGRAM_PROXY_SECRET }}
           EMAIL_NOTIFICATIONS_ENABLED: "true"
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}

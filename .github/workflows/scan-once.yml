@@ -67,6 +67,8 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TELEGRAM_NOTIFICATIONS_ENABLED: "true"
+          TELEGRAM_PROXY_URL: ${{ secrets.TELEGRAM_PROXY_URL }}
+          TELEGRAM_PROXY_SECRET: ${{ secrets.TELEGRAM_PROXY_SECRET }}
           # SMTP transport for the Lev HaPark watch. All five vars
           # must be set as GitHub Actions secrets for the email
           # digest to actually fire; otherwise the email service
