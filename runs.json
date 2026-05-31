@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-31T09:13:57.353Z",
+      "completedAt": "2026-05-31T09:17:47.214Z",
+      "status": "failed",
+      "trigger": "manual-dashboard",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "message": "Request failed with status code 403"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-31T09:06:18.302Z",
       "completedAt": "2026-05-31T09:09:51.524Z",
       "status": "failed",
@@ -1863,65 +1881,6 @@
       "emailSent": false,
       "errors": [],
       "cooldownSkipCount": 8
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-28T21:07:14.166Z",
-      "completedAt": "2026-05-28T21:11:34.105Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
-      "cooldownSkipCount": 0
     }
   ]
 }
