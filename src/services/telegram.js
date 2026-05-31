@@ -1,5 +1,19 @@
 const axios = require('axios');
+const dns = require('dns');
+const https = require('https');
 const { env } = require('../config/env');
+
+const googleDnsResolver = new dns.Resolver();
+googleDnsResolver.setServers(['8.8.8.8', '8.8.4.4']);
+
+function googleDnsLookup(hostname, options, callback) {
+  googleDnsResolver.resolve4(hostname, (err, addresses) => {
+    if (err) return callback(err);
+    callback(null, addresses[0], 4);
+  });
+}
+
+const telegramHttpsAgent = new https.Agent({ lookup: googleDnsLookup });
 
 function truncateTitle(title, maxLength = 70) {
   if (!title || title.length <= maxLength) {
@@ -153,12 +167,18 @@ async function sendTelegramMessage(input) {
     payload.parse_mode = parseMode;
   }
 
-  const response = await axios.post(
-    `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
-    payload
-  );
-
-  return response.data;
+  try {
+    const response = await axios.post(
+      `https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`,
+      payload,
+      { httpsAgent: telegramHttpsAgent }
+    );
+    return response.data;
+  } catch (err) {
+    const reason = err.code || err.message || String(err);
+    console.error(`[telegram] failed to send message: ${reason}`);
+    return { skipped: true, reason: `send failed: ${reason}` };
+  }
 }
 
 function sleep(ms) {
