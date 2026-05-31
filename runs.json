@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-05-31T09:06:18.302Z",
+      "completedAt": "2026-05-31T09:09:51.524Z",
+      "status": "failed",
+      "trigger": "manual-dashboard",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "message": "unable to get local issuer certificate"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-05-31T08:44:07.970Z",
       "completedAt": "2026-05-31T08:44:43.582Z",
       "status": "partial",
@@ -1904,61 +1922,6 @@
         }
       ],
       "cooldownSkipCount": 0
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-05-28T19:40:05.638Z",
-      "completedAt": "2026-05-28T19:45:10.443Z",
-      "status": "partial",
-      "trigger": "github-actions",
-      "allMatch": false,
-      "additions": 0,
-      "removals": 0,
-      "unresolvedExtras": 0,
-      "unresolvedMissing": 0,
-      "telegramSent": true,
-      "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "coastal-north",
-          "searchLabel": "חוף צפוני",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ]
     }
   ]
 }
