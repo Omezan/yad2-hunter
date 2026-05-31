@@ -24,7 +24,7 @@ permissions:
 
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     # 15-min budget: a fully-blocked day burns ~60-90s/search across
     # 8 searches × up to 2 browser profiles. The previous 8-min cap
     # killed the job mid-stride before it could send the partial-
@@ -50,7 +50,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
 
       - name: Restore state from state branch
         run: |

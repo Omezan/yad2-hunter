@@ -12,7 +12,7 @@ on:
 
 concurrency:
   group: yad2-health-check
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   # Need write so that the health-check can push reconciled seen-ads.json
@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   health-check:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     timeout-minutes: 12
 
     steps:
@@ -41,7 +41,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
 
       - name: Restore state from state branch
         run: |
