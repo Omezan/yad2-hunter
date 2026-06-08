@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-08T05:29:08.493Z",
+      "completedAt": "2026-06-08T05:32:59.788Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 337,
+      "preFilteredAds": 337,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-08T00:35:15.081Z",
       "completedAt": "2026-06-08T00:38:57.759Z",
       "status": "completed",
@@ -863,24 +881,6 @@
       "errors": [
         {
           "message": "Request failed with status code 403"
-        }
-      ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-31T09:06:18.302Z",
-      "completedAt": "2026-05-31T09:09:51.524Z",
-      "status": "failed",
-      "trigger": "manual-dashboard",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
-        {
-          "message": "unable to get local issuer certificate"
         }
       ]
     }
