@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-08T00:35:15.081Z",
+      "completedAt": "2026-06-08T00:38:57.759Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 338,
+      "preFilteredAds": 338,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": true,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-08T00:05:15.114Z",
       "completedAt": "2026-06-08T00:08:54.356Z",
       "status": "completed",
@@ -865,30 +883,6 @@
           "message": "unable to get local issuer certificate"
         }
       ]
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-31T08:44:07.970Z",
-      "completedAt": "2026-05-31T08:44:43.582Z",
-      "status": "partial",
-      "trigger": "manual-dashboard",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
-      "cooldownSkipCount": 0
     }
   ]
 }
