@@ -2,6 +2,30 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-10T13:18:07.070Z",
+      "completedAt": "2026-06-10T13:32:17.171Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 353,
+      "preFilteredAds": 353,
+      "candidateNewAds": 3,
+      "relevantNewAds": 3,
+      "notifiedNewAds": 2,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": true,
+      "errors": [
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-10T10:25:55.633Z",
       "completedAt": "2026-06-10T10:29:50.435Z",
       "status": "completed",
@@ -867,24 +891,6 @@
       "suppressedNewAds": 0,
       "telegramSent": true,
       "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-05-31T14:42:46.251Z",
-      "completedAt": "2026-05-31T14:46:19.062Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 315,
-      "preFilteredAds": 315,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 1,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
     }
