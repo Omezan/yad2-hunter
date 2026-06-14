@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-14T21:40:03.833Z",
+      "completedAt": "2026-06-14T21:44:00.093Z",
+      "status": "completed",
+      "trigger": "github-actions-loop",
+      "totalAds": 372,
+      "preFilteredAds": 372,
+      "candidateNewAds": 1,
+      "relevantNewAds": 1,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 1,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": true,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-14T21:10:03.799Z",
       "completedAt": "2026-06-14T21:13:46.683Z",
       "status": "completed",
@@ -873,24 +891,6 @@
       "suppressedNewAds": 0,
       "telegramSent": false,
       "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-03T08:16:15.401Z",
-      "completedAt": "2026-06-03T08:20:08.323Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 329,
-      "preFilteredAds": 329,
-      "candidateNewAds": 8,
-      "relevantNewAds": 8,
-      "notifiedNewAds": 5,
-      "notifiedEmailAds": 2,
-      "suppressedNewAds": 1,
-      "telegramSent": true,
-      "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
     }
