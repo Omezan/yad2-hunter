@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-19T06:27:02.094Z",
+      "completedAt": "2026-06-19T06:31:41.757Z",
+      "status": "failed",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "message": "browserType.launch: Timeout 180000ms exceeded.\nCall log:\n  - <launching> /Users/ohadme/Library/Caches/ms-playwright/chromium_headless_shell-1217/chrome-headless-shell-mac-arm64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-update --no-default-browser-check --disable-dev-shm-usage --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --disable-blink-features=AutomationControlled,AutomationControlled --disable-features=IsolateOrigins,site-per-process --no-default-browser-check --no-first-run --user-data-dir=/var/folders/5g/89f6f15s0g311y_llykdqs0m0000gn/T/playwright_chromiumdev_profile-IVo4W8 --remote-debugging-pipe --no-startup-window\n  - <launched> pid=88168\n"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-18T12:54:02.550Z",
       "completedAt": "2026-06-18T12:57:41.948Z",
       "status": "completed",
@@ -873,24 +891,6 @@
       "suppressedNewAds": 2,
       "telegramSent": true,
       "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-08T05:59:08.481Z",
-      "completedAt": "2026-06-08T06:02:55.644Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 337,
-      "preFilteredAds": 337,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 1,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
     }
