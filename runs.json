@@ -1,6 +1,26 @@
 {
   "runs": [
     {
+      "kind": "health-check",
+      "startedAt": "2026-06-20T18:23:08.880Z",
+      "completedAt": "2026-06-20T18:33:57.914Z",
+      "status": "partial",
+      "trigger": "github-actions",
+      "allMatch": false,
+      "additions": 12,
+      "removals": 35,
+      "unresolvedExtras": 109,
+      "unresolvedMissing": 0,
+      "telegramSent": true,
+      "errors": [
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/north-and-valleys?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        }
+      ]
+    },
+    {
       "kind": "scan",
       "startedAt": "2026-06-19T06:27:02.094Z",
       "completedAt": "2026-06-19T06:31:41.757Z",
@@ -871,24 +891,6 @@
       "notifiedNewAds": 11,
       "notifiedEmailAds": 0,
       "suppressedNewAds": 4,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-08T10:28:09.841Z",
-      "completedAt": "2026-06-08T10:32:10.058Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 334,
-      "preFilteredAds": 334,
-      "candidateNewAds": 3,
-      "relevantNewAds": 3,
-      "notifiedNewAds": 1,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 2,
       "telegramSent": true,
       "emailSent": false,
       "errors": [],
