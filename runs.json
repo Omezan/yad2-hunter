@@ -2,6 +2,50 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-22T17:46:05.830Z",
+      "completedAt": "2026-06-22T18:06:08.261Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 348,
+      "preFilteredAds": 348,
+      "candidateNewAds": 5,
+      "relevantNewAds": 5,
+      "notifiedNewAds": 2,
+      "notifiedEmailAds": 2,
+      "suppressedNewAds": 1,
+      "telegramSent": true,
+      "emailSent": true,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/jerusalem-area?maxPrice=9000&minRooms=4&settlements=1&zoom=9\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/jerusalem-area?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "page.goto: Timeout 60000ms exceeded.\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9000&minRooms=4&property=3%2C5%2C39&multiCity=6900%2C9700%2C8700%2C8300%2C2620\", waiting until \"domcontentloaded\"\n"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-22T12:48:35.142Z",
       "completedAt": "2026-06-22T12:56:16.249Z",
       "status": "partial",
@@ -881,24 +925,6 @@
       "notifiedEmailAds": 0,
       "suppressedNewAds": 0,
       "telegramSent": false,
-      "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-10T09:55:55.603Z",
-      "completedAt": "2026-06-10T09:59:45.437Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 354,
-      "preFilteredAds": 354,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 1,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
       "emailSent": false,
       "errors": [],
       "cooldownSkipCount": 0
