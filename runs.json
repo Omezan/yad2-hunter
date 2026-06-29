@@ -2,6 +2,30 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-06-29T10:53:26.041Z",
+      "completedAt": "2026-06-29T11:03:31.269Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 225,
+      "preFilteredAds": 225,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-06-29T08:39:49.415Z",
       "completedAt": "2026-06-29T08:44:45.577Z",
       "status": "completed",
@@ -1011,20 +1035,6 @@
       "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
-    },
-    {
-      "kind": "health-check",
-      "startedAt": "2026-06-14T18:28:54.000Z",
-      "completedAt": "2026-06-14T18:32:46.187Z",
-      "status": "partial",
-      "trigger": "github-actions",
-      "allMatch": false,
-      "additions": 3,
-      "removals": 87,
-      "unresolvedExtras": 5,
-      "unresolvedMissing": 0,
-      "telegramSent": true,
-      "errors": []
     }
   ]
 }
