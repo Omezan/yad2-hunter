@@ -2,6 +2,65 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-07-08T08:48:43.853Z",
+      "completedAt": "2026-07-08T08:53:00.691Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "center-sharon",
+          "searchLabel": "מרכז ושרון",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "south",
+          "searchLabel": "דרום",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "north-valleys",
+          "searchLabel": "צפון ועמקים",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-rent",
+          "searchLabel": "לב הפארק — שכירות",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "lev-hapark-sale",
+          "searchLabel": "לב הפארק — מכירה",
+          "message": "blocked by anti-bot after all retries"
+        },
+        {
+          "searchId": "rent-in-cities",
+          "searchLabel": "שכירות בערים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-07-07T11:47:52.713Z",
       "completedAt": "2026-07-07T11:52:18.728Z",
       "status": "partial",
@@ -1535,24 +1594,6 @@
       "suppressedNewAds": 2,
       "telegramSent": true,
       "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-17T15:22:07.078Z",
-      "completedAt": "2026-06-17T15:25:59.133Z",
-      "status": "completed",
-      "trigger": "github-actions-loop",
-      "totalAds": 379,
-      "preFilteredAds": 379,
-      "candidateNewAds": 4,
-      "relevantNewAds": 4,
-      "notifiedNewAds": 3,
-      "notifiedEmailAds": 1,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
     }
