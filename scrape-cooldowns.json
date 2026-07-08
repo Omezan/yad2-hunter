@@ -1,44 +1,44 @@
 {
   "entries": {
     "north-valleys": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "lev-hapark-sale": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "rent-in-cities": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "lev-hapark-rent": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "jerusalem": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "center-sharon": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "south": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     },
     "coastal-north": {
-      "blockedAt": "2026-07-08T12:23:51.409Z",
-      "blockedUntil": "2026-07-08T13:23:51.409Z",
-      "observedAt": "2026-07-08T12:23:51.409Z"
+      "blockedAt": "2026-07-08T15:23:42.835Z",
+      "blockedUntil": "2026-07-08T16:23:42.835Z",
+      "observedAt": "2026-07-08T15:23:42.835Z"
     }
   }
 }
