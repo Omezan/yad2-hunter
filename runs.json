@@ -2,6 +2,30 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-07-09T14:54:55.665Z",
+      "completedAt": "2026-07-09T14:55:26.954Z",
+      "status": "partial",
+      "trigger": "manual-dashboard",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "jerusalem",
+          "searchLabel": "ירושלים",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-07-09T14:18:13.657Z",
       "completedAt": "2026-07-09T14:18:13.692Z",
       "status": "partial",
@@ -1816,35 +1840,6 @@
           "searchId": "south",
           "searchLabel": "דרום",
           "message": "page.goto: net::ERR_INTERNET_DISCONNECTED at https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\nCall log:\n  - navigating to \"https://www.yad2.co.il/realestate/rent/south?maxPrice=9000&minRooms=4&settlements=1&zoom=9\", waiting until \"domcontentloaded\"\n"
-        }
-      ],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-22T12:48:35.142Z",
-      "completedAt": "2026-06-22T12:56:16.249Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 313,
-      "preFilteredAds": 313,
-      "candidateNewAds": 2,
-      "relevantNewAds": 2,
-      "notifiedNewAds": 2,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
         }
       ],
       "cooldownSkipCount": 0
