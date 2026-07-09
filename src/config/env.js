@@ -66,7 +66,10 @@ const env = {
   // scanning normally. Set to 0 to disable the cooldown layer.
   SCRAPE_COOLDOWN_MS: parseInteger(process.env.SCRAPE_COOLDOWN_MS, 60 * 60 * 1000),
   TELEGRAM_PROXY_URL: process.env.TELEGRAM_PROXY_URL || '',
-  TELEGRAM_PROXY_SECRET: process.env.TELEGRAM_PROXY_SECRET || ''
+  TELEGRAM_PROXY_SECRET: process.env.TELEGRAM_PROXY_SECRET || '',
+  PROXY_SERVER: process.env.PROXY_SERVER || '',
+  PROXY_USERNAME: process.env.PROXY_USERNAME || '',
+  PROXY_PASSWORD: process.env.PROXY_PASSWORD || ''
 };
 
 module.exports = {

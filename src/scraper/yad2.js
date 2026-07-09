@@ -13,12 +13,22 @@ chromium.use(stealthPlugin);
 // (most notably `--enable-automation` and `--use-mock-keychain`) that
 // expose this as an automated browser to fingerprinters even with the
 // stealth plugin loaded. Override with the typical "real Chrome" set.
+const { env } = require('../config/env');
+
 const STEALTH_LAUNCH_ARGS = [
   '--disable-blink-features=AutomationControlled',
   '--disable-features=IsolateOrigins,site-per-process',
   '--no-default-browser-check',
   '--no-first-run'
 ];
+
+function buildProxyConfig() {
+  if (!env.PROXY_SERVER) return {};
+  const proxy = { server: env.PROXY_SERVER };
+  if (env.PROXY_USERNAME) proxy.username = env.PROXY_USERNAME;
+  if (env.PROXY_PASSWORD) proxy.password = env.PROXY_PASSWORD;
+  return { proxy };
+}
 
 // Current desktop Chrome user agent. The major version here MUST stay
 // in sync with what real Chrome ships — Yad2's anti-bot flags UAs that
@@ -1201,7 +1211,8 @@ async function scrapeOneSearchWithFreshBrowser({
 }) {
   const browser = await chromium.launch({
     headless,
-    args: STEALTH_LAUNCH_ARGS
+    args: STEALTH_LAUNCH_ARGS,
+    ...buildProxyConfig()
   });
   const context = await browser.newContext({
     userAgent: profile.userAgent,
@@ -1365,7 +1376,8 @@ async function enrichAdsWithDetails({
 
   const browser = await chromium.launch({
     headless,
-    args: STEALTH_LAUNCH_ARGS
+    args: STEALTH_LAUNCH_ARGS,
+    ...buildProxyConfig()
   });
   const context = await browser.newContext({
     userAgent: DEFAULT_USER_AGENT,
@@ -1509,7 +1521,8 @@ async function probeListingsPresence({
 
   const browser = await chromium.launch({
     headless,
-    args: STEALTH_LAUNCH_ARGS
+    args: STEALTH_LAUNCH_ARGS,
+    ...buildProxyConfig()
   });
   const context = await browser.newContext({
     userAgent: DEFAULT_USER_AGENT,

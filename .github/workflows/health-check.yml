@@ -71,6 +71,9 @@ jobs:
           TELEGRAM_NOTIFICATIONS_ENABLED: "true"
           TELEGRAM_PROXY_URL: ${{ secrets.TELEGRAM_PROXY_URL }}
           TELEGRAM_PROXY_SECRET: ${{ secrets.TELEGRAM_PROXY_SECRET }}
+          PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
+          PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
+          PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
