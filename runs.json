@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-07-12T10:55:12.765Z",
+      "completedAt": "2026-07-12T10:55:12.778Z",
+      "status": "partial",
+      "trigger": "github-actions-loop",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "notifiedNewAds": 0,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 8
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-07-12T10:25:12.799Z",
       "completedAt": "2026-07-12T10:41:46.221Z",
       "status": "partial",
@@ -1944,45 +1962,6 @@
       "telegramSent": true,
       "emailSent": true,
       "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-23T12:35:21.939Z",
-      "completedAt": "2026-06-23T12:46:24.929Z",
-      "status": "partial",
-      "trigger": "github-actions-loop",
-      "totalAds": 160,
-      "preFilteredAds": 160,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "north-valleys",
-          "searchLabel": "צפון ועמקים",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-rent",
-          "searchLabel": "לב הפארק — שכירות",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "lev-hapark-sale",
-          "searchLabel": "לב הפארק — מכירה",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "rent-in-cities",
-          "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
       "cooldownSkipCount": 0
     }
   ]
