@@ -531,7 +531,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "jerusalem-area/8udbxrm5": {
       "externalId": "jerusalem-area/8udbxrm5",
@@ -544,7 +544,7 @@
       "rooms": 6,
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "north-and-valleys/spmbqhpq": {
       "externalId": "north-and-valleys/spmbqhpq",
@@ -1168,7 +1168,7 @@
       "rooms": 8,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-20T13:45:45.178Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/v491yo9f": {
       "externalId": "center-and-sharon/v491yo9f",
@@ -2715,7 +2715,7 @@
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-09T07:46:37.224Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/pbq583rm": {
       "externalId": "center-and-sharon/pbq583rm",
@@ -2737,11 +2737,11 @@
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
       "districtLabel": "ירושלים והסביבה",
-      "price": 8500,
+      "price": 8000,
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "jerusalem-area/mqjfcyuw": {
       "externalId": "jerusalem-area/mqjfcyuw",
@@ -2754,7 +2754,7 @@
       "rooms": 6,
       "city": "אדרת",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/toihphbq": {
       "externalId": "center-and-sharon/toihphbq",
@@ -4284,11 +4284,11 @@
       "searchId": "jerusalem",
       "searchLabel": "ירושלים",
       "districtLabel": "ירושלים והסביבה",
-      "price": 7900,
+      "price": 7600,
       "rooms": 4.5,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/i0t56a64": {
       "externalId": "center-and-sharon/i0t56a64",
@@ -4938,7 +4938,7 @@
       "rooms": 10,
       "city": "בית מאיר",
       "firstSeenAt": "2026-06-22T18:06:03.018Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/93t00vf2": {
       "externalId": "center-and-sharon/93t00vf2",
@@ -5094,7 +5094,7 @@
       "rooms": 5,
       "city": "עמינדב",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/q0xmph0g": {
       "externalId": "center-and-sharon/q0xmph0g",
@@ -5562,7 +5562,7 @@
       "rooms": 7,
       "city": "לוזית",
       "firstSeenAt": "2026-06-25T11:49:08.207Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/8mejtnxd": {
       "externalId": "center-and-sharon/8mejtnxd",
@@ -5588,7 +5588,7 @@
       "rooms": 4,
       "city": "זכריה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "jerusalem-area/u9d5xns0": {
       "externalId": "jerusalem-area/u9d5xns0",
@@ -5601,7 +5601,7 @@
       "rooms": 4,
       "city": "תעוז",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "jerusalem-area/suin41mo": {
       "externalId": "jerusalem-area/suin41mo",
@@ -5614,7 +5614,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "jerusalem-area/v6yezbsr": {
       "externalId": "jerusalem-area/v6yezbsr",
@@ -5627,7 +5627,7 @@
       "rooms": 5,
       "city": "גפן",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/1f7gu5gq": {
       "externalId": "center-and-sharon/1f7gu5gq",
@@ -6095,7 +6095,7 @@
       "rooms": 6,
       "city": "מסילת ציון",
       "firstSeenAt": "2026-06-30T07:53:41.142Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     },
     "center-and-sharon/hyezua61": {
       "externalId": "center-and-sharon/hyezua61",
@@ -6187,6 +6187,188 @@
       "city": "לימן",
       "firstSeenAt": "2026-07-13T07:28:15.758Z",
       "lastSeenAt": "2026-07-13T07:28:15.758Z"
+    },
+    "jerusalem-area/0rdiy9rr": {
+      "externalId": "jerusalem-area/0rdiy9rr",
+      "title": "דירת גן, נס הרים",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/0rdiy9rr",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8500,
+      "rooms": 5.5,
+      "city": "נס הרים",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/42zsycj3": {
+      "externalId": "jerusalem-area/42zsycj3",
+      "title": "בית פרטי/ קוטג', מבוא ביתר",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/42zsycj3",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": null,
+      "rooms": 5,
+      "city": "מבוא ביתר",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/12lh0dsm": {
+      "externalId": "jerusalem-area/12lh0dsm",
+      "title": "יחידת דיור, בית מאיר",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/12lh0dsm",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8000,
+      "rooms": 5,
+      "city": "בית מאיר",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/zwz5ixsv": {
+      "externalId": "jerusalem-area/zwz5ixsv",
+      "title": "דירת גן, עמינדב",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/zwz5ixsv",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8700,
+      "rooms": 4,
+      "city": "עמינדב",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/0fntna49": {
+      "externalId": "jerusalem-area/0fntna49",
+      "title": "דירה, סנסן, צור הדסה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/0fntna49",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8600,
+      "rooms": 5,
+      "city": "צור הדסה",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/29w7tgt1": {
+      "externalId": "jerusalem-area/29w7tgt1",
+      "title": "בית פרטי/ קוטג', כפר אוריה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/29w7tgt1",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 7500,
+      "rooms": 4,
+      "city": "כפר אוריה",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/gk1n9ijl": {
+      "externalId": "jerusalem-area/gk1n9ijl",
+      "title": "יחידת דיור, שורש",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/gk1n9ijl",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8600,
+      "rooms": 4,
+      "city": "שורש",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/zuqas7h4": {
+      "externalId": "jerusalem-area/zuqas7h4",
+      "title": "בית פרטי/ קוטג', בית מאיר",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/zuqas7h4",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 7500,
+      "rooms": 4.5,
+      "city": "בית מאיר",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/dc81111q": {
+      "externalId": "jerusalem-area/dc81111q",
+      "title": "דירה, סנסן, צור הדסה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/dc81111q",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 7400,
+      "rooms": 4,
+      "city": "צור הדסה",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/hz64621l": {
+      "externalId": "jerusalem-area/hz64621l",
+      "title": "בית פרטי/ קוטג', לוזית",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/hz64621l",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 6000,
+      "rooms": 5,
+      "city": "לוזית",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/185n81k5": {
+      "externalId": "jerusalem-area/185n81k5",
+      "title": "משק חקלאי/ נחלה, גפן",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/185n81k5",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": null,
+      "rooms": 4,
+      "city": "גפן",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/b47fknjt": {
+      "externalId": "jerusalem-area/b47fknjt",
+      "title": "דירת גן, הר כתרון, צור הדסה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/b47fknjt",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8950,
+      "rooms": 5,
+      "city": "צור הדסה",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/uyvxl65d": {
+      "externalId": "jerusalem-area/uyvxl65d",
+      "title": "בית פרטי/ קוטג', גבעת ישעיהו",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/uyvxl65d",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 7400,
+      "rooms": 4.5,
+      "city": "גבעת ישעיהו",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+    },
+    "jerusalem-area/eiktfj7g": {
+      "externalId": "jerusalem-area/eiktfj7g",
+      "title": "דירה, העמק, צור הדסה",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/eiktfj7g",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 6500,
+      "rooms": 4,
+      "city": "צור הדסה",
+      "firstSeenAt": "2026-07-13T07:48:48.107Z",
+      "lastSeenAt": "2026-07-13T07:48:48.107Z"
     }
   }
 }
