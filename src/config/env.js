@@ -74,7 +74,12 @@ const env = {
   // wss://brd-customer-...-zone-scraping_browser1:PASS@brd.superproxy.io:9222
   // When set, Playwright connects over CDP to Bright Data's managed
   // browser (auto unblocking) instead of launching local Chromium.
-  BRIGHT_DATA_BROWSER_WS: (process.env.BRIGHT_DATA_BROWSER_WS || '').trim()
+  BRIGHT_DATA_BROWSER_WS: (process.env.BRIGHT_DATA_BROWSER_WS || '').trim(),
+  // How many searches to scrape in parallel. Only used on the Browser
+  // API path (local Chromium stays sequential). Higher = faster but more
+  // Bright Data session contention (slower per-session, more timeouts).
+  // 0/unset lets the scraper pick a sensible default (3).
+  SCRAPE_CONCURRENCY: parseInteger(process.env.SCRAPE_CONCURRENCY, 0)
 };
 
 module.exports = {

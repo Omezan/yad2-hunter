@@ -323,21 +323,23 @@ function dedupeByExternalId(ads) {
 }
 
 async function readExpectedCount(page) {
-  return page.evaluate(() => {
-    const candidates = Array.from(
-      document.querySelectorAll('h1, h2, [class*="results"], [data-testid*="results"]')
-    );
-    for (const el of candidates) {
-      const text = (el.innerText || el.textContent || '').trim();
-      const match = text.match(/(\d{1,4})\s*תוצאות?/);
-      if (match) {
-        return Number.parseInt(match[1], 10);
+  return page
+    .evaluate(() => {
+      const candidates = Array.from(
+        document.querySelectorAll('h1, h2, [class*="results"], [data-testid*="results"]')
+      );
+      for (const el of candidates) {
+        const text = (el.innerText || el.textContent || '').trim();
+        const match = text.match(/(\d{1,4})\s*תוצאות?/);
+        if (match) {
+          return Number.parseInt(match[1], 10);
+        }
       }
-    }
-    const body = (document.body && document.body.innerText) || '';
-    const match = body.match(/(\d{1,4})\s*תוצאות?/);
-    return match ? Number.parseInt(match[1], 10) : null;
-  });
+      const body = (document.body && document.body.innerText) || '';
+      const match = body.match(/(\d{1,4})\s*תוצאות?/);
+      return match ? Number.parseInt(match[1], 10) : null;
+    })
+    .catch(() => null);
 }
 
 async function countDistrictItemAnchors(page) {
@@ -374,20 +376,25 @@ async function extractAnchorsFromPage(page) {
 }
 
 async function detectCaptcha(page) {
-  return page.evaluate(() => {
-    const title = (document.title || '').toLowerCase();
-    if (title.includes('shieldsquare') || title.includes('captcha')) return true;
-    if (title.includes('radware') || title.includes('bot manager block')) return true;
-    // Yad2's anti-bot challenge sets the document title to literally
-    // "Are you for real?" while the body may not yet contain that text
-    // (challenge text is rendered later by JS). Catch it from the title
-    // alone so we never proceed to extract fields from a blocked page.
-    if (title.includes('are you for real')) return true;
-    const body = (document.body && document.body.innerText) || '';
-    return /are you for real|אבטחת אתר|captcha digest|radware|bot manager block|מסיבות אבטחה והגנה על האתר|incident id/i.test(
-      body
-    );
-  });
+  return page
+    .evaluate(() => {
+      const title = (document.title || '').toLowerCase();
+      if (title.includes('shieldsquare') || title.includes('captcha')) return true;
+      if (title.includes('radware') || title.includes('bot manager block')) return true;
+      // Yad2's anti-bot challenge sets the document title to literally
+      // "Are you for real?" while the body may not yet contain that text
+      // (challenge text is rendered later by JS). Catch it from the title
+      // alone so we never proceed to extract fields from a blocked page.
+      if (title.includes('are you for real')) return true;
+      const body = (document.body && document.body.innerText) || '';
+      return /are you for real|אבטחת אתר|captcha digest|radware|bot manager block|מסיבות אבטחה והגנה על האתר|incident id/i.test(
+        body
+      );
+    })
+    // A transient soft-navigation can destroy the execution context mid
+    // evaluate. That's not a captcha — treat as "not blocked" and let the
+    // caller's item-anchor wait decide readiness.
+    .catch(() => false);
 }
 
 async function detectErrorPage(page) {
@@ -439,13 +446,17 @@ async function detectErrorPage(page) {
 }
 
 async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = console } = {}) {
+  // Yad2 keeps analytics/websocket connections open, so 'networkidle'
+  // rarely fires and we just burn the timeout. Keep it short — the
+  // explicit item-anchor wait below is the real readiness signal.
+  const idleWaitMs = usesBrowserApi() ? 2500 : 6000;
   for (let attempt = 1; attempt <= attempts; attempt += 1) {
     await page.goto(url, {
       waitUntil: 'domcontentloaded',
       timeout: timeoutMs
     });
 
-    await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+    await page.waitForLoadState('networkidle', { timeout: idleWaitMs }).catch(() => null);
 
     if (await detectCaptcha(page)) {
       logger.warn?.(`  captcha challenge on ${url} (attempt ${attempt}/${attempts})`);
@@ -552,7 +563,7 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
 
       pageIndex += 1;
       await page.waitForLoadState('domcontentloaded', { timeout: 6000 }).catch(() => null);
-      await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
+      await page.waitForLoadState('networkidle', { timeout: idleWaitMs }).catch(() => null);
 
       const added = await safeScrollAndExtract();
       logger.info?.(
@@ -610,29 +621,42 @@ async function goToNextPage(page, targetPageNumber, logger) {
     return false;
   }
 
-  try {
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
-    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => null);
+  // Missing a page here silently under-collects a whole district (the
+  // caller just stops paginating), so retry a slow/failed load once
+  // before giving up — Browser API sessions can stall transiently.
+  const maxAttempts = 2;
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+      await page
+        .waitForLoadState('networkidle', { timeout: usesBrowserApi() ? 2500 : 15000 })
+        .catch(() => null);
 
-    let hasItems = await waitForListingItems(page, 20000);
-    if (!hasItems) {
-      await page.waitForTimeout(3000);
-      const attachedCount = await page
-        .evaluate(() => document.querySelectorAll('a[href*="/realestate/item/"]').length)
-        .catch(() => 0);
-      hasItems = attachedCount > 0;
+      let hasItems = await waitForListingItems(page, 20000);
+      if (!hasItems) {
+        await page.waitForTimeout(3000);
+        const attachedCount = await page
+          .evaluate(() => document.querySelectorAll('a[href*="/realestate/item/"]').length)
+          .catch(() => 0);
+        hasItems = attachedCount > 0;
+      }
+      if (hasItems) {
+        logger.info?.(`    pager: advanced to page ${targetPageNumber} via direct:${targetUrl}`);
+        return true;
+      }
+      logger.warn?.(
+        `    pager: ${targetUrl} returned no items (attempt ${attempt}/${maxAttempts})`
+      );
+    } catch (error) {
+      logger.warn?.(
+        `    pager: navigation to page ${targetPageNumber} failed (attempt ${attempt}/${maxAttempts}): ${error.message}`
+      );
     }
-    if (!hasItems) {
-      logger.warn?.(`    pager: ${targetUrl} returned no items`);
-      return false;
+    if (attempt < maxAttempts) {
+      await page.waitForTimeout(2000);
     }
-
-    logger.info?.(`    pager: advanced to page ${targetPageNumber} via direct:${targetUrl}`);
-    return true;
-  } catch (error) {
-    logger.warn?.(`    pager: navigation to page ${targetPageNumber} failed: ${error.message}`);
-    return false;
   }
+  return false;
 }
 
 const DISTRICT_ITEM_URL_RE = /\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i;
@@ -1248,7 +1272,21 @@ async function scrapeOneSearchWithFreshBrowser({
     logger.info(
       `Checking ${search.label}: ${search.url}${remote ? ' [Browser API]' : ''}`
     );
-    let result = await scrapeSearch(page, search, timeoutMs, { logger });
+    // Yad2 occasionally fires a late client-side navigation that destroys
+    // the execution context mid-scrape. That surfaces as a nav-race error,
+    // not a real block — retry the whole search once in the same session.
+    let result;
+    try {
+      result = await scrapeSearch(page, search, timeoutMs, { logger });
+    } catch (error) {
+      const isNavRace = /Execution context was destroyed|Target closed|navigation/i.test(
+        error.message || ''
+      );
+      if (!isNavRace) throw error;
+      logger.warn?.(`  ${search.id}: nav-race (${error.message}); retrying once`);
+      await page.waitForTimeout(1500);
+      result = await scrapeSearch(page, search, timeoutMs, { logger });
+    }
     if (result.ads.length === 0) {
       logger.warn?.(
         `  ${search.id}: empty result on first attempt; warming up and retrying once in same browser`
@@ -1262,10 +1300,28 @@ async function scrapeOneSearchWithFreshBrowser({
       result = await scrapeSearch(page, search, timeoutMs, { logger });
     }
     logger.info(`  ${search.id} total: ${result.ads.length}`);
-    return { ads: result.ads, error: null };
+
+    // Detect a partial scrape: pagination stalled and we collected
+    // meaningfully fewer than Yad2 reported. Surfacing this as `partial`
+    // lets the orchestrator retry in a FRESH session (a new Bright Data
+    // exit node) instead of silently dropping half a district.
+    const expected =
+      typeof result.expectedCount === 'number' ? result.expectedCount : null;
+    const partial = expected !== null && result.ads.length < expected;
+    if (partial) {
+      logger.warn?.(
+        `  ${search.id}: partial scrape (${result.ads.length}/${expected}); will retry in fresh session`
+      );
+    }
+
+    return { ads: result.ads, error: null, partial, expected };
   } catch (error) {
     logger.error(`Failed scraping ${search.id}: ${error.message}`);
-    return { ads: [], error: { searchId: search.id, searchLabel: search.label, message: error.message } };
+    return {
+      ads: [],
+      error: { searchId: search.id, searchLabel: search.label, message: error.message },
+      partial: false
+    };
   } finally {
     // Closing the CDP browser ends the Bright Data session. Do not
     // close the default remote context separately — it can race.
@@ -1276,10 +1332,135 @@ async function scrapeOneSearchWithFreshBrowser({
   }
 }
 
-async function scrapeAllSearches({ searches, headless = true, timeoutMs = 60000, logger = console }) {
+// Run a batch of searches through a bounded worker pool. Each search
+// still gets its own fresh browser/session. Used for the Browser API
+// path where Bright Data allows many concurrent sessions, so we don't
+// pay the per-search latency serially.
+async function runSearchPool({ searches, headless, timeoutMs, logger, profile, concurrency, extraWarmupMs = 0 }) {
+  const queue = searches.slice();
+  const results = [];
+  const errors = [];
+
+  async function worker() {
+    while (queue.length) {
+      const search = queue.shift();
+      if (!search) break;
+      const result = await scrapeOneSearchWithFreshBrowser({
+        search,
+        headless,
+        timeoutMs,
+        logger,
+        profile,
+        extraWarmupMs
+      });
+      if (result.error) errors.push(result.error);
+      results.push({ search, ...result });
+    }
+  }
+
+  const workers = Array.from({ length: Math.min(concurrency, searches.length) }, () => worker());
+  await Promise.all(workers);
+  return { results, errors };
+}
+
+async function scrapeAllSearches({
+  searches,
+  headless = true,
+  timeoutMs = 60000,
+  logger = console,
+  concurrency
+}) {
+  const remote = usesBrowserApi();
+  // Browser API rotates IPs per session and tolerates parallel sessions,
+  // so run several searches at once. Local Chromium stays sequential to
+  // avoid hammering a single residential IP (and the local machine).
+  // Tunable via SCRAPE_CONCURRENCY; default 3 for remote. Pushing higher
+  // starves individual sessions enough that a paginated district can time
+  // out mid-scrape (mitigated now by partial-detection + fresh retry).
+  const configured = concurrency || env.SCRAPE_CONCURRENCY || 0;
+  const effectiveConcurrency = configured > 0 ? configured : remote ? 3 : 1;
+
   const allAds = [];
   const allErrors = [];
   const stillEmpty = [];
+
+  if (effectiveConcurrency > 1) {
+    logger.info?.(
+      `Scraping ${searches.length} searches with concurrency=${effectiveConcurrency}${
+        remote ? ' [Browser API]' : ''
+      }`
+    );
+    // Keep the best result per search across passes (a fresh-session
+    // retry can land a slow exit node and do WORSE, so never regress).
+    const bestBySearchId = new Map();
+    function recordResult(entry) {
+      const prev = bestBySearchId.get(entry.search.id);
+      if (!prev || entry.ads.length > prev.ads.length) {
+        bestBySearchId.set(entry.search.id, entry);
+      }
+    }
+
+    const pass1 = await runSearchPool({
+      searches,
+      headless,
+      timeoutMs,
+      logger,
+      profile: BROWSER_PROFILES[0],
+      concurrency: effectiveConcurrency
+    });
+    pass1.results.forEach(recordResult);
+
+    // Retry empties AND partials once in a fresh session (new exit node).
+    const needsRetry = pass1.results
+      .filter((r) => r.ads.length === 0 || r.partial)
+      .map((r) => r.search);
+    const anySuccess = pass1.results.some((r) => r.ads.length > 0);
+    if (needsRetry.length > 0 && anySuccess) {
+      logger.warn?.(
+        `Retrying ${needsRetry.length} empty/partial searches (${needsRetry
+          .map((s) => s.id)
+          .join(', ')}) concurrently`
+      );
+      const pass2 = await runSearchPool({
+        searches: needsRetry,
+        headless,
+        timeoutMs,
+        logger,
+        profile: BROWSER_PROFILES[1] || BROWSER_PROFILES[0],
+        concurrency: effectiveConcurrency,
+        extraWarmupMs: remote ? 0 : 5000
+      });
+      pass2.results.forEach(recordResult);
+    }
+
+    for (const entry of bestBySearchId.values()) {
+      if (entry.ads.length > 0) {
+        allAds.push(...entry.ads);
+        // A still-partial best result is worth surfacing but not fatal.
+        if (entry.partial && entry.expected) {
+          logger.warn?.(
+            `  ${entry.search.id}: kept partial ${entry.ads.length}/${entry.expected} after retry`
+          );
+        }
+      } else {
+        stillEmpty.push(entry.search);
+      }
+    }
+
+    for (const search of stillEmpty) {
+      logger.error(`  ${search.id}: still empty after concurrent retry; giving up for this run`);
+      allErrors.push({
+        searchId: search.id,
+        searchLabel: search.label,
+        message: 'blocked by anti-bot after all retries'
+      });
+    }
+
+    return {
+      ads: dedupeByExternalId(allAds),
+      errors: allErrors
+    };
+  }
 
   for (let i = 0; i < searches.length; i += 1) {
     const search = searches[i];
