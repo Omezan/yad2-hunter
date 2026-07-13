@@ -38,10 +38,32 @@ function usesBrowserApi() {
 
 // Open either Bright Data's managed browser (CDP) or a local Chromium
 // with optional ISP proxy. Callers must always browser.close() in finally.
-async function openBrowser({ headless = true } = {}) {
+// The remote connect is retried: Bright Data occasionally drops the
+// WebSocket mid-handshake (code 1006) and a bare failure would otherwise
+// abort the whole scan.
+async function openBrowser({ headless = true, logger = console } = {}) {
   if (usesBrowserApi()) {
-    const browser = await chromium.connectOverCDP(env.BRIGHT_DATA_BROWSER_WS);
-    return { browser, remote: true };
+    const maxAttempts = 3;
+    let lastError = null;
+    for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+      try {
+        const browser = await chromium.connectOverCDP(env.BRIGHT_DATA_BROWSER_WS, {
+          timeout: 60000
+        });
+        return { browser, remote: true };
+      } catch (error) {
+        lastError = error;
+        logger.warn?.(
+          `  Browser API connect attempt ${attempt}/${maxAttempts} failed: ${
+            (error.message || '').split('\n')[0]
+          }`
+        );
+        if (attempt < maxAttempts) {
+          await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
+        }
+      }
+    }
+    throw lastError;
   }
   const browser = await chromium.launch({
     headless,
@@ -1255,10 +1277,16 @@ async function scrapeOneSearchWithFreshBrowser({
   profile,
   extraWarmupMs = 0
 }) {
-  const { browser, remote } = await openBrowser({ headless });
-  const context = await openContext(browser, remote, { profile });
+  // Open the browser/context INSIDE the try so a transient Bright Data
+  // connect failure (ws 1006) becomes a caught per-search error that
+  // gets retried in a fresh session — never a crash of the whole scan.
+  let browser = null;
+  let remote = false;
+  let context = null;
 
   try {
+    ({ browser, remote } = await openBrowser({ headless, logger }));
+    context = await openContext(browser, remote, { profile });
     const page = await openPage(context);
     // Browser API already unlocks; skip the homepage warm-up to save
     // session time / cost. Local / proxy paths still warm up.
@@ -1325,10 +1353,12 @@ async function scrapeOneSearchWithFreshBrowser({
   } finally {
     // Closing the CDP browser ends the Bright Data session. Do not
     // close the default remote context separately — it can race.
-    if (!remote) {
+    if (!remote && context) {
       await context.close().catch(() => null);
     }
-    await browser.close().catch(() => null);
+    if (browser) {
+      await browser.close().catch(() => null);
+    }
   }
 }
 
