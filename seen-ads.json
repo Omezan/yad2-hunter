@@ -24,7 +24,7 @@
       "rooms": 5,
       "city": "פורת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/d0k467j8": {
       "externalId": "center-and-sharon/d0k467j8",
@@ -50,7 +50,7 @@
       "rooms": 7,
       "city": "ארסוף",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/ewyudw5j": {
       "externalId": "south/ewyudw5j",
@@ -76,7 +76,7 @@
       "rooms": 4,
       "city": "כוכב מיכאל",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/xjll8477": {
       "externalId": "south/xjll8477",
@@ -89,7 +89,7 @@
       "rooms": 5,
       "city": "שני ליבנה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/afcrw3v6": {
       "externalId": "coastal-north/afcrw3v6",
@@ -102,7 +102,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/y1h4jyk9": {
       "externalId": "coastal-north/y1h4jyk9",
@@ -115,7 +115,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/0mbzd44f": {
       "externalId": "coastal-north/0mbzd44f",
@@ -128,7 +128,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/lmk6t8ii": {
       "externalId": "coastal-north/lmk6t8ii",
@@ -141,7 +141,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/w90d2sil": {
       "externalId": "north-and-valleys/w90d2sil",
@@ -180,7 +180,7 @@
       "rooms": 4,
       "city": "כינרת מושבה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/dy0ur3t0": {
       "externalId": "north-and-valleys/dy0ur3t0",
@@ -189,11 +189,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 5000,
+      "price": 3000,
       "rooms": 6,
       "city": "אלמגור",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/3rxn3au6": {
       "externalId": "north-and-valleys/3rxn3au6",
@@ -232,7 +232,7 @@
       "rooms": 7,
       "city": "בית לחם הגלילית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/wekutxpn": {
       "externalId": "north-and-valleys/wekutxpn",
@@ -258,7 +258,7 @@
       "rooms": 5,
       "city": "משמר הירדן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/tz2osen3": {
       "externalId": "north-and-valleys/tz2osen3",
@@ -297,7 +297,7 @@
       "rooms": 5,
       "city": "שדה אליעזר",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/dwwayex1": {
       "externalId": "north-and-valleys/dwwayex1",
@@ -323,7 +323,7 @@
       "rooms": 5.5,
       "city": "מנות",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/x7kjurgy": {
       "externalId": "north-and-valleys/x7kjurgy",
@@ -336,7 +336,7 @@
       "rooms": 4,
       "city": "כינרת מושבה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/fa54d6yl": {
       "externalId": "north-and-valleys/fa54d6yl",
@@ -362,7 +362,7 @@
       "rooms": 5,
       "city": "חד נס",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/9r3jp1p4": {
       "externalId": "north-and-valleys/9r3jp1p4",
@@ -375,7 +375,7 @@
       "rooms": 5,
       "city": "פוריה עילית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/rjw9j2hx": {
       "externalId": "north-and-valleys/rjw9j2hx",
@@ -388,7 +388,7 @@
       "rooms": 4.5,
       "city": "תמרת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/zwo42rc3": {
       "externalId": "north-and-valleys/zwo42rc3",
@@ -414,7 +414,7 @@
       "rooms": 6,
       "city": "פוריה עילית",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/gi70o0rk": {
       "externalId": "center-and-sharon/gi70o0rk",
@@ -436,11 +436,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 7400,
+      "price": 7350,
       "rooms": 4.5,
       "city": "גיתה",
       "firstSeenAt": "2026-04-29T12:14:30.784Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/cnucmjp1": {
       "externalId": "center-and-sharon/cnucmjp1",
@@ -453,7 +453,7 @@
       "rooms": 5,
       "city": "שער אפרים",
       "firstSeenAt": "2026-04-29T21:55:37.293Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/s9cspopx": {
       "externalId": "north-and-valleys/s9cspopx",
@@ -466,7 +466,7 @@
       "rooms": 4.5,
       "city": "אחוזת ברק",
       "firstSeenAt": "2026-05-01T05:45:53.788Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/99mxrqpu": {
       "externalId": "north-and-valleys/99mxrqpu",
@@ -492,7 +492,7 @@
       "rooms": 5.5,
       "city": "פקיעין חדשה",
       "firstSeenAt": "2026-05-02T09:56:43.034Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/pxci2l6p": {
       "externalId": "south/pxci2l6p",
@@ -531,7 +531,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/8udbxrm5": {
       "externalId": "jerusalem-area/8udbxrm5",
@@ -544,7 +544,7 @@
       "rooms": 6,
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-05-03T15:05:31.972Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/spmbqhpq": {
       "externalId": "north-and-valleys/spmbqhpq",
@@ -557,7 +557,7 @@
       "rooms": 7,
       "city": "כחל",
       "firstSeenAt": "2026-05-05T09:59:31.394Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/7clrdkmt": {
       "externalId": "north-and-valleys/7clrdkmt",
@@ -570,7 +570,7 @@
       "rooms": 5,
       "city": "עין יעקב",
       "firstSeenAt": "2026-05-08T05:25:21.041Z",
-      "lastSeenAt": "2026-06-25T11:49:08.207Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/bus0hi2i": {
       "externalId": "north-and-valleys/bus0hi2i",
@@ -583,7 +583,7 @@
       "rooms": 5,
       "city": "חד נס",
       "firstSeenAt": "2026-05-09T09:10:46.059Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/jcedxfl0": {
       "externalId": "north-and-valleys/jcedxfl0",
@@ -592,11 +592,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 7000,
+      "price": 6750,
       "rooms": 6,
       "city": "אילניה",
       "firstSeenAt": "2026-05-11T20:04:17.672Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/vz6fkuvu": {
       "externalId": "north-and-valleys/vz6fkuvu",
@@ -622,7 +622,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/qh08o90a": {
       "externalId": "center-and-sharon/qh08o90a",
@@ -635,7 +635,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/r4c160hj": {
       "externalId": "center-and-sharon/r4c160hj",
@@ -648,7 +648,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3vad190d": {
       "externalId": "center-and-sharon/3vad190d",
@@ -661,7 +661,7 @@
       "rooms": 6.5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/t8ihjq29": {
       "externalId": "center-and-sharon/t8ihjq29",
@@ -674,7 +674,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/pv8adi6t": {
       "externalId": "center-and-sharon/pv8adi6t",
@@ -700,7 +700,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/vm6cdhjy": {
       "externalId": "center-and-sharon/vm6cdhjy",
@@ -713,7 +713,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/o0ad7s3g": {
       "externalId": "center-and-sharon/o0ad7s3g",
@@ -739,7 +739,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/tx65ccdd": {
       "externalId": "center-and-sharon/tx65ccdd",
@@ -752,7 +752,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/fdq452gz": {
       "externalId": "center-and-sharon/fdq452gz",
@@ -765,7 +765,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3d3rgd8y": {
       "externalId": "center-and-sharon/3d3rgd8y",
@@ -778,7 +778,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-12T12:32:45.055Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/476b8wc0": {
       "externalId": "north-and-valleys/476b8wc0",
@@ -791,7 +791,7 @@
       "rooms": 5,
       "city": "תל עדשים",
       "firstSeenAt": "2026-05-12T13:58:27.051Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/q9c7z6n6": {
       "externalId": "center-and-sharon/q9c7z6n6",
@@ -826,11 +826,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 6650,
+      "price": 6200,
       "rooms": 5,
       "city": "כפר קיש",
       "firstSeenAt": "2026-05-14T08:22:27.077Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/vzo4cr3q": {
       "externalId": "north-and-valleys/vzo4cr3q",
@@ -843,7 +843,7 @@
       "rooms": 5,
       "city": "מצפה אבי\"ב",
       "firstSeenAt": "2026-05-14T16:10:28.244Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/yqlplkf5": {
       "externalId": "north-and-valleys/yqlplkf5",
@@ -895,7 +895,7 @@
       "rooms": 6,
       "city": "כפר גדעון",
       "firstSeenAt": "2026-05-16T19:23:18.199Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/q7tbfvu3": {
       "externalId": "center-and-sharon/q7tbfvu3",
@@ -921,7 +921,7 @@
       "rooms": 4,
       "city": "גבעת אבני",
       "firstSeenAt": "2026-05-17T13:00:13.244Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/pjwz6lt7": {
       "externalId": "south/pjwz6lt7",
@@ -999,7 +999,7 @@
       "rooms": 5,
       "city": "לפיד",
       "firstSeenAt": "2026-05-18T10:26:25.730Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/iubq5xoo": {
       "externalId": "north-and-valleys/iubq5xoo",
@@ -1025,7 +1025,7 @@
       "rooms": 6,
       "city": "עין תמר",
       "firstSeenAt": "2026-05-18T18:10:51.327Z",
-      "lastSeenAt": "2026-06-25T11:49:08.207Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/f4atxtfa": {
       "externalId": "north-and-valleys/f4atxtfa",
@@ -1034,11 +1034,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 5800,
+      "price": 5600,
       "rooms": 4,
       "city": "אמירים",
       "firstSeenAt": "2026-05-19T06:47:11.515Z",
-      "lastSeenAt": "2026-06-25T11:49:08.207Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/8lcfbjgq": {
       "externalId": "north-and-valleys/8lcfbjgq",
@@ -1047,11 +1047,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 6800,
+      "price": 6000,
       "rooms": 6,
       "city": "מסד",
       "firstSeenAt": "2026-05-19T12:54:26.010Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/2nrenc74": {
       "externalId": "center-and-sharon/2nrenc74",
@@ -1064,7 +1064,7 @@
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-05-19T16:49:01.850Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/x50uhawp": {
       "externalId": "south/x50uhawp",
@@ -1090,7 +1090,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-19T16:49:01.850Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/9jjtwrh0": {
       "externalId": "center-and-sharon/9jjtwrh0",
@@ -1103,7 +1103,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-05-19T22:10:30.021Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/lfd5xlst": {
       "externalId": "center-and-sharon/lfd5xlst",
@@ -1129,7 +1129,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-20T11:36:07.783Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/1ahw4wla": {
       "externalId": "center-and-sharon/1ahw4wla",
@@ -1142,7 +1142,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-20T11:36:07.783Z",
-      "lastSeenAt": "2026-06-29T11:26:48.662Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/k80ug6c6": {
       "externalId": "center-and-sharon/k80ug6c6",
@@ -1168,7 +1168,7 @@
       "rooms": 8,
       "city": "צור הדסה",
       "firstSeenAt": "2026-05-20T13:45:45.178Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/v491yo9f": {
       "externalId": "center-and-sharon/v491yo9f",
@@ -1207,7 +1207,7 @@
       "rooms": 6,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-05-20T19:31:45.556Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/f5tq4agc": {
       "externalId": "north-and-valleys/f5tq4agc",
@@ -1246,7 +1246,7 @@
       "rooms": 4,
       "city": "עזריקם",
       "firstSeenAt": "2026-05-22T13:37:39.734Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/i22y1xby": {
       "externalId": "north-and-valleys/i22y1xby",
@@ -1298,7 +1298,7 @@
       "rooms": 5,
       "city": "שער אפרים",
       "firstSeenAt": "2026-05-24T07:06:11.629Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ulwqaqjp": {
       "externalId": "center-and-sharon/ulwqaqjp",
@@ -1324,7 +1324,7 @@
       "rooms": 4.5,
       "city": "מזור",
       "firstSeenAt": "2026-05-24T09:33:19.827Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/xj8vu9mm": {
       "externalId": "coastal-north/xj8vu9mm",
@@ -1350,7 +1350,7 @@
       "rooms": 4,
       "city": "חפצי בה",
       "firstSeenAt": "2026-05-01T13:54:15.776Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/ef0uj19q": {
       "externalId": "jerusalem-area/ef0uj19q",
@@ -1441,7 +1441,7 @@
       "rooms": 4,
       "city": "ישרש",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/g34968s0": {
       "externalId": "center-and-sharon/g34968s0",
@@ -1480,7 +1480,7 @@
       "rooms": 4,
       "city": "בית קמה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/nf3u3llk": {
       "externalId": "south/nf3u3llk",
@@ -1493,7 +1493,7 @@
       "rooms": 4,
       "city": "גבעתי",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/nhdvid8s": {
       "externalId": "south/nhdvid8s",
@@ -1506,7 +1506,7 @@
       "rooms": 4,
       "city": "אלומה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/5m1114f2": {
       "externalId": "south/5m1114f2",
@@ -1519,7 +1519,7 @@
       "rooms": 4,
       "city": "דבירה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/g4fnprsl": {
       "externalId": "south/g4fnprsl",
@@ -1675,7 +1675,7 @@
       "rooms": 4.5,
       "city": "מרחביה מושב",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/lpbh74l0": {
       "externalId": "north-and-valleys/lpbh74l0",
@@ -1701,7 +1701,7 @@
       "rooms": 5,
       "city": "לבון",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/xvsjb16k": {
       "externalId": "north-and-valleys/xvsjb16k",
@@ -1740,7 +1740,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/7zh3r0om": {
       "externalId": "center-and-sharon/7zh3r0om",
@@ -1766,7 +1766,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/re5mtz0r": {
       "externalId": "center-and-sharon/re5mtz0r",
@@ -1779,7 +1779,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/sikxdjiv": {
       "externalId": "center-and-sharon/sikxdjiv",
@@ -1818,7 +1818,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-05-31T10:17:39.642Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/c9omjzcz": {
       "externalId": "center-and-sharon/c9omjzcz",
@@ -1827,11 +1827,11 @@
       "searchId": "rent-in-cities",
       "searchLabel": "שכירות בערים",
       "districtLabel": "שכירות בערים — מרכז ושרון",
-      "price": 7500,
+      "price": 7000,
       "rooms": 4,
       "city": "רעננה",
       "firstSeenAt": "2026-05-31T15:16:27.405Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/9n7vacym": {
       "externalId": "north-and-valleys/9n7vacym",
@@ -1857,7 +1857,7 @@
       "rooms": 4.5,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/q9ln5zwr": {
       "externalId": "center-and-sharon/q9ln5zwr",
@@ -1870,7 +1870,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/4c5vmbh5": {
       "externalId": "center-and-sharon/4c5vmbh5",
@@ -1883,7 +1883,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/wjf5u8ei": {
       "externalId": "south/wjf5u8ei",
@@ -1957,11 +1957,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 7000,
+      "price": 6700,
       "rooms": 6,
       "city": "נווה זיו",
       "firstSeenAt": "2026-06-02T06:47:01.097Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/t1k5ajz7": {
       "externalId": "north-and-valleys/t1k5ajz7",
@@ -1970,11 +1970,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 6900,
+      "price": 6800,
       "rooms": 4,
       "city": "אחוזת ברק",
       "firstSeenAt": "2026-06-02T06:47:01.097Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/2yk148x8": {
       "externalId": "north-and-valleys/2yk148x8",
@@ -2013,7 +2013,7 @@
       "rooms": 4.5,
       "city": "ראשון לציון",
       "firstSeenAt": "2026-06-02T12:43:54.740Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/6n7n9w91": {
       "externalId": "jerusalem-area/6n7n9w91",
@@ -2052,7 +2052,7 @@
       "rooms": 5,
       "city": "זיתן",
       "firstSeenAt": "2026-06-03T08:20:05.880Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/xtx2lu73": {
       "externalId": "center-and-sharon/xtx2lu73",
@@ -2078,7 +2078,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-06-03T08:20:05.880Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/l35iy07t": {
       "externalId": "center-and-sharon/l35iy07t",
@@ -2091,7 +2091,7 @@
       "rooms": 5,
       "city": "אחיסמך",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/gmhiac0n": {
       "externalId": "center-and-sharon/gmhiac0n",
@@ -2104,7 +2104,7 @@
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/fix1im1e": {
       "externalId": "center-and-sharon/fix1im1e",
@@ -2117,7 +2117,7 @@
       "rooms": 7,
       "city": "מכמורת",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3l3hvn4y": {
       "externalId": "center-and-sharon/3l3hvn4y",
@@ -2130,7 +2130,7 @@
       "rooms": 4,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/ahqyqpwb": {
       "externalId": "south/ahqyqpwb",
@@ -2143,7 +2143,7 @@
       "rooms": 4,
       "city": "כפר הרי\"ף",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/neepnj7j": {
       "externalId": "south/neepnj7j",
@@ -2156,7 +2156,7 @@
       "rooms": 4,
       "city": "אשלים",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/70nblzl7": {
       "externalId": "south/70nblzl7",
@@ -2169,7 +2169,7 @@
       "rooms": 4,
       "city": "אשבול",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/30v34xu7": {
       "externalId": "south/30v34xu7",
@@ -2195,7 +2195,7 @@
       "rooms": 5,
       "city": "עוזה",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/5eaz21e4": {
       "externalId": "coastal-north/5eaz21e4",
@@ -2208,7 +2208,7 @@
       "rooms": 4,
       "city": "לימן",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/6pgrqmy4": {
       "externalId": "coastal-north/6pgrqmy4",
@@ -2221,7 +2221,7 @@
       "rooms": 6.5,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/eqan7fns": {
       "externalId": "coastal-north/eqan7fns",
@@ -2234,7 +2234,7 @@
       "rooms": 5,
       "city": "רגבה",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/z2cu3kz4": {
       "externalId": "north-and-valleys/z2cu3kz4",
@@ -2247,7 +2247,7 @@
       "rooms": 5,
       "city": "אשחר",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/wu6wobe8": {
       "externalId": "north-and-valleys/wu6wobe8",
@@ -2260,7 +2260,7 @@
       "rooms": 5.5,
       "city": "יפתח",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/17xeqt4o": {
       "externalId": "north-and-valleys/17xeqt4o",
@@ -2299,7 +2299,7 @@
       "rooms": 4,
       "city": "גבעת אבני",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/mntgn4yc": {
       "externalId": "north-and-valleys/mntgn4yc",
@@ -2325,7 +2325,7 @@
       "rooms": 4,
       "city": "נורית",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/sbsettin": {
       "externalId": "north-and-valleys/sbsettin",
@@ -2351,7 +2351,7 @@
       "rooms": 5.5,
       "city": "גן נר",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/bjohhiak": {
       "externalId": "north-and-valleys/bjohhiak",
@@ -2364,7 +2364,7 @@
       "rooms": 5,
       "city": "מצפה אבי\"ב",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/cxjxi6uc": {
       "externalId": "north-and-valleys/cxjxi6uc",
@@ -2390,7 +2390,7 @@
       "rooms": 6,
       "city": "הוד השרון",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/mencrehp": {
       "externalId": "center-and-sharon/mencrehp",
@@ -2442,7 +2442,7 @@
       "rooms": 5,
       "city": "הוד השרון",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/op50rxx0": {
       "externalId": "coastal-north/op50rxx0",
@@ -2455,7 +2455,7 @@
       "rooms": 4.5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-07T06:54:48.392Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/0mfj4wbz": {
       "externalId": "north-and-valleys/0mfj4wbz",
@@ -2481,7 +2481,7 @@
       "rooms": 5.5,
       "city": "באר אורה",
       "firstSeenAt": "2026-06-07T11:01:04.394Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/3gzmuegb": {
       "externalId": "jerusalem-area/3gzmuegb",
@@ -2533,7 +2533,7 @@
       "rooms": 4,
       "city": "יד נתן",
       "firstSeenAt": "2026-06-07T16:17:06.807Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/3x969ht9": {
       "externalId": "jerusalem-area/3x969ht9",
@@ -2572,7 +2572,7 @@
       "rooms": 8.5,
       "city": "גבעת אלה",
       "firstSeenAt": "2026-06-07T18:06:33.899Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/k7qlyt3m": {
       "externalId": "north-and-valleys/k7qlyt3m",
@@ -2598,7 +2598,7 @@
       "rooms": 6,
       "city": "כפר זיתים",
       "firstSeenAt": "2026-06-08T10:32:09.350Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/z68w7ws3": {
       "externalId": "center-and-sharon/z68w7ws3",
@@ -2611,7 +2611,7 @@
       "rooms": 6,
       "city": "שדה ורבורג",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/snvr73cm": {
       "externalId": "center-and-sharon/snvr73cm",
@@ -2624,7 +2624,7 @@
       "rooms": 4.5,
       "city": "גאולים",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/7qcb6zfo": {
       "externalId": "coastal-north/7qcb6zfo",
@@ -2637,7 +2637,7 @@
       "rooms": 5,
       "city": "צרופה",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/o7ue1kwb": {
       "externalId": "north-and-valleys/o7ue1kwb",
@@ -2676,7 +2676,7 @@
       "rooms": 4,
       "city": "משמר הירדן",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/8ediumm8": {
       "externalId": "center-and-sharon/8ediumm8",
@@ -2715,7 +2715,7 @@
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-09T07:46:37.224Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/pbq583rm": {
       "externalId": "center-and-sharon/pbq583rm",
@@ -2741,7 +2741,7 @@
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/mqjfcyuw": {
       "externalId": "jerusalem-area/mqjfcyuw",
@@ -2754,7 +2754,7 @@
       "rooms": 6,
       "city": "אדרת",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/toihphbq": {
       "externalId": "center-and-sharon/toihphbq",
@@ -2767,7 +2767,7 @@
       "rooms": 4,
       "city": "נירית",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/9kwp717v": {
       "externalId": "center-and-sharon/9kwp717v",
@@ -2780,7 +2780,7 @@
       "rooms": 4,
       "city": "ניצני עוז",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/la9e8ylf": {
       "externalId": "center-and-sharon/la9e8ylf",
@@ -2845,7 +2845,7 @@
       "rooms": 4,
       "city": "עין זיוון",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/sbiuepsz": {
       "externalId": "north-and-valleys/sbiuepsz",
@@ -2858,7 +2858,7 @@
       "rooms": 4,
       "city": "דוב\"ב",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/qtms9exy": {
       "externalId": "north-and-valleys/qtms9exy",
@@ -2871,7 +2871,7 @@
       "rooms": 4.5,
       "city": null,
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/r69kkij1": {
       "externalId": "north-and-valleys/r69kkij1",
@@ -2884,7 +2884,7 @@
       "rooms": 4,
       "city": "אלוני אבא",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/88aueo7l": {
       "externalId": "north-and-valleys/88aueo7l",
@@ -2897,7 +2897,7 @@
       "rooms": 5,
       "city": "ביריה",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/hd7p4nlb": {
       "externalId": "north-and-valleys/hd7p4nlb",
@@ -2910,7 +2910,7 @@
       "rooms": 4,
       "city": "נווה אטי\"ב",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3kzpvilu": {
       "externalId": "center-and-sharon/3kzpvilu",
@@ -2923,7 +2923,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/xlihhmni": {
       "externalId": "center-and-sharon/xlihhmni",
@@ -2949,7 +2949,7 @@
       "rooms": 6,
       "city": "כפר יעבץ",
       "firstSeenAt": "2026-06-10T22:32:14.454Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/hkhp2f4i": {
       "externalId": "center-and-sharon/hkhp2f4i",
@@ -2962,7 +2962,7 @@
       "rooms": 4.5,
       "city": "צור משה",
       "firstSeenAt": "2026-06-10T22:32:14.454Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/4sxwec2s": {
       "externalId": "south/4sxwec2s",
@@ -3014,7 +3014,7 @@
       "rooms": 6,
       "city": "גבעת אבני",
       "firstSeenAt": "2026-06-10T22:32:14.454Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/6bwtfixi": {
       "externalId": "north-and-valleys/6bwtfixi",
@@ -3027,7 +3027,7 @@
       "rooms": 5,
       "city": "גבעת אבני",
       "firstSeenAt": "2026-06-10T22:32:14.454Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/fehnu3j3": {
       "externalId": "center-and-sharon/fehnu3j3",
@@ -3040,7 +3040,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-06-10T22:32:14.454Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ezy6uwwv": {
       "externalId": "center-and-sharon/ezy6uwwv",
@@ -3053,7 +3053,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-11T08:48:40.577Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/2g4u8uqf": {
       "externalId": "north-and-valleys/2g4u8uqf",
@@ -3066,7 +3066,7 @@
       "rooms": 5,
       "city": "משגב עם",
       "firstSeenAt": "2026-06-11T08:48:40.577Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/qeafjvbr": {
       "externalId": "north-and-valleys/qeafjvbr",
@@ -3092,7 +3092,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-06-11T09:25:05.831Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/u4onusz7": {
       "externalId": "jerusalem-area/u4onusz7",
@@ -3118,7 +3118,7 @@
       "rooms": 4,
       "city": "שער אפרים",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/jjzeow52": {
       "externalId": "center-and-sharon/jjzeow52",
@@ -3157,7 +3157,7 @@
       "rooms": 6,
       "city": "מזור",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/nk09hr3b": {
       "externalId": "center-and-sharon/nk09hr3b",
@@ -3196,7 +3196,7 @@
       "rooms": 5,
       "city": "תנובות",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/rygsgi81": {
       "externalId": "center-and-sharon/rygsgi81",
@@ -3209,7 +3209,7 @@
       "rooms": 4,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/81i6uqli": {
       "externalId": "center-and-sharon/81i6uqli",
@@ -3274,7 +3274,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/d3d2e4jj": {
       "externalId": "north-and-valleys/d3d2e4jj",
@@ -3287,7 +3287,7 @@
       "rooms": 4,
       "city": "מורשת",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/tock87n5": {
       "externalId": "north-and-valleys/tock87n5",
@@ -3296,11 +3296,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 5900,
+      "price": 5400,
       "rooms": 4,
       "city": "יערה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/cab738rv": {
       "externalId": "north-and-valleys/cab738rv",
@@ -3313,7 +3313,7 @@
       "rooms": 4,
       "city": "אביטל",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/dkd2d5bq": {
       "externalId": "north-and-valleys/dkd2d5bq",
@@ -3352,7 +3352,7 @@
       "rooms": 5,
       "city": "דבורה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/gj1sol72": {
       "externalId": "north-and-valleys/gj1sol72",
@@ -3365,7 +3365,7 @@
       "rooms": 5,
       "city": "בית השיטה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/xn95n35a": {
       "externalId": "north-and-valleys/xn95n35a",
@@ -3378,7 +3378,7 @@
       "rooms": 6,
       "city": "אדמית",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/k5q11a6v": {
       "externalId": "north-and-valleys/k5q11a6v",
@@ -3387,11 +3387,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 4500,
+      "price": 4200,
       "rooms": 4,
       "city": "אלמגור",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/stqdihjh": {
       "externalId": "north-and-valleys/stqdihjh",
@@ -3430,7 +3430,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/s03na999": {
       "externalId": "center-and-sharon/s03na999",
@@ -3456,7 +3456,7 @@
       "rooms": 5.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-14T14:32:08.134Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/mo0fmgr3": {
       "externalId": "center-and-sharon/mo0fmgr3",
@@ -3495,7 +3495,7 @@
       "rooms": 4,
       "city": "יד בנימין",
       "firstSeenAt": "2026-06-14T15:54:32.908Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/0x8bkp4l": {
       "externalId": "center-and-sharon/0x8bkp4l",
@@ -3521,7 +3521,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-14T18:32:33.431Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/015prgsm": {
       "externalId": "south/015prgsm",
@@ -3534,7 +3534,7 @@
       "rooms": 5,
       "city": "זרועה",
       "firstSeenAt": "2026-06-14T18:32:33.431Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/tbkegpvm": {
       "externalId": "jerusalem-area/tbkegpvm",
@@ -3560,7 +3560,7 @@
       "rooms": 6,
       "city": "אומן",
       "firstSeenAt": "2026-06-14T19:27:15.429Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/60sxu4cc": {
       "externalId": "center-and-sharon/60sxu4cc",
@@ -3573,7 +3573,7 @@
       "rooms": 4,
       "city": "רעננה",
       "firstSeenAt": "2026-06-14T19:57:24.741Z",
-      "lastSeenAt": "2026-06-29T11:26:48.662Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/1rjrhb5t": {
       "externalId": "center-and-sharon/1rjrhb5t",
@@ -3595,11 +3595,11 @@
       "searchId": "south",
       "searchLabel": "דרום",
       "districtLabel": "דרום",
-      "price": 7200,
+      "price": 6800,
       "rooms": 5,
       "city": "נהורה",
       "firstSeenAt": "2026-06-15T10:57:26.199Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/yiljud7m": {
       "externalId": "north-and-valleys/yiljud7m",
@@ -3612,7 +3612,7 @@
       "rooms": 5,
       "city": "נווה זיו",
       "firstSeenAt": "2026-06-15T10:57:26.199Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/gmtuyfdq": {
       "externalId": "north-and-valleys/gmtuyfdq",
@@ -3638,7 +3638,7 @@
       "rooms": 4.5,
       "city": "פקיעין חדשה",
       "firstSeenAt": "2026-06-15T10:57:26.199Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/dnmci5nf": {
       "externalId": "north-and-valleys/dnmci5nf",
@@ -3664,7 +3664,7 @@
       "rooms": 4,
       "city": "אמירים",
       "firstSeenAt": "2026-06-15T10:57:26.199Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/nlwol6eu": {
       "externalId": "jerusalem-area/nlwol6eu",
@@ -3690,7 +3690,7 @@
       "rooms": 6,
       "city": "גבעת חיים איחוד",
       "firstSeenAt": "2026-06-15T20:27:42.029Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/rg375ues": {
       "externalId": "south/rg375ues",
@@ -3703,7 +3703,7 @@
       "rooms": 6,
       "city": "טללים",
       "firstSeenAt": "2026-06-15T20:27:42.029Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/zibq3n7m": {
       "externalId": "south/zibq3n7m",
@@ -3742,7 +3742,7 @@
       "rooms": 4,
       "city": "ישרש",
       "firstSeenAt": "2026-06-16T08:36:12.062Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/ujz07vqi": {
       "externalId": "south/ujz07vqi",
@@ -3755,7 +3755,7 @@
       "rooms": 5.5,
       "city": "נוגה",
       "firstSeenAt": "2026-06-16T08:36:12.062Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/mx3195oo": {
       "externalId": "center-and-sharon/mx3195oo",
@@ -3768,7 +3768,7 @@
       "rooms": 7.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-16T08:36:12.062Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/moeikl4a": {
       "externalId": "center-and-sharon/moeikl4a",
@@ -3781,7 +3781,7 @@
       "rooms": 4.5,
       "city": "רמות השבים",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/sp9roa4z": {
       "externalId": "south/sp9roa4z",
@@ -3794,7 +3794,7 @@
       "rooms": 4.5,
       "city": "לכיש",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/iq8oi6rj": {
       "externalId": "south/iq8oi6rj",
@@ -3820,7 +3820,7 @@
       "rooms": 4,
       "city": "אשלים",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/cqy2cqpj": {
       "externalId": "coastal-north/cqy2cqpj",
@@ -3833,7 +3833,7 @@
       "rooms": 4,
       "city": "נתיב השיירה",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/e9jn6ff3": {
       "externalId": "north-and-valleys/e9jn6ff3",
@@ -3846,7 +3846,7 @@
       "rooms": 4,
       "city": "כפר זיתים",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/2314chkb": {
       "externalId": "north-and-valleys/2314chkb",
@@ -3859,7 +3859,7 @@
       "rooms": 4,
       "city": "אליפלט",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/voc9zxta": {
       "externalId": "north-and-valleys/voc9zxta",
@@ -3872,7 +3872,7 @@
       "rooms": 5,
       "city": "אבירים",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/z8ukzqrs": {
       "externalId": "north-and-valleys/z8ukzqrs",
@@ -3885,7 +3885,7 @@
       "rooms": 4,
       "city": "פקיעין חדשה",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/fgpms3nn": {
       "externalId": "north-and-valleys/fgpms3nn",
@@ -3898,7 +3898,7 @@
       "rooms": 6,
       "city": "נופית",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/oq6yk6k8": {
       "externalId": "north-and-valleys/oq6yk6k8",
@@ -3989,7 +3989,7 @@
       "rooms": 5.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-17T15:25:55.337Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/g66kni7w": {
       "externalId": "center-and-sharon/g66kni7w",
@@ -4002,7 +4002,7 @@
       "rooms": 5,
       "city": "הוד השרון",
       "firstSeenAt": "2026-06-17T15:25:55.337Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/rc94ss8x": {
       "externalId": "center-and-sharon/rc94ss8x",
@@ -4080,7 +4080,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-06-18T09:18:31.882Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/x3wphswg": {
       "externalId": "center-and-sharon/x3wphswg",
@@ -4106,7 +4106,7 @@
       "rooms": 4,
       "city": "יקנעם",
       "firstSeenAt": "2026-06-18T12:27:43.337Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/n0u3cyzp": {
       "externalId": "center-and-sharon/n0u3cyzp",
@@ -4145,7 +4145,7 @@
       "rooms": 10,
       "city": "נתיב העשרה",
       "firstSeenAt": "2026-06-20T18:32:09.265Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/5ycdb4gb": {
       "externalId": "south/5ycdb4gb",
@@ -4210,7 +4210,7 @@
       "rooms": 4,
       "city": "מדרך עוז",
       "firstSeenAt": "2026-06-20T18:32:09.265Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/6d3lqe93": {
       "externalId": "north-and-valleys/6d3lqe93",
@@ -4223,7 +4223,7 @@
       "rooms": 4,
       "city": "אניעם",
       "firstSeenAt": "2026-06-20T18:32:09.265Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ierp91sw": {
       "externalId": "center-and-sharon/ierp91sw",
@@ -4249,7 +4249,7 @@
       "rooms": 4,
       "city": "קרית אונו",
       "firstSeenAt": "2026-06-20T18:32:09.265Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/c6qhgjq6": {
       "externalId": "center-and-sharon/c6qhgjq6",
@@ -4262,7 +4262,7 @@
       "rooms": 6,
       "city": "רעננה",
       "firstSeenAt": "2026-06-20T18:32:09.265Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/4r3kwnnn": {
       "externalId": "jerusalem-area/4r3kwnnn",
@@ -4288,7 +4288,7 @@
       "rooms": 4.5,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/i0t56a64": {
       "externalId": "center-and-sharon/i0t56a64",
@@ -4301,7 +4301,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/bto7viga": {
       "externalId": "center-and-sharon/bto7viga",
@@ -4340,7 +4340,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/unin0lh3": {
       "externalId": "center-and-sharon/unin0lh3",
@@ -4379,7 +4379,7 @@
       "rooms": 4,
       "city": "חמד",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/6rsnka5x": {
       "externalId": "south/6rsnka5x",
@@ -4392,7 +4392,7 @@
       "rooms": 6,
       "city": "רבדים",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/d8b8jgnu": {
       "externalId": "south/d8b8jgnu",
@@ -4418,7 +4418,7 @@
       "rooms": 5,
       "city": null,
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/6u2b5rut": {
       "externalId": "north-and-valleys/6u2b5rut",
@@ -4431,7 +4431,7 @@
       "rooms": 4,
       "city": "ביכורה",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/1c7bxpkj": {
       "externalId": "north-and-valleys/1c7bxpkj",
@@ -4444,7 +4444,7 @@
       "rooms": 4,
       "city": "אדירים",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/gk2u1oxj": {
       "externalId": "north-and-valleys/gk2u1oxj",
@@ -4457,7 +4457,7 @@
       "rooms": 5,
       "city": "מיטב",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/homx8j05": {
       "externalId": "north-and-valleys/homx8j05",
@@ -4496,7 +4496,7 @@
       "rooms": 4,
       "city": "הזורעים",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/pe98m3bz": {
       "externalId": "north-and-valleys/pe98m3bz",
@@ -4522,7 +4522,7 @@
       "rooms": 4,
       "city": "חבר",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/rsdzwhef": {
       "externalId": "north-and-valleys/rsdzwhef",
@@ -4548,7 +4548,7 @@
       "rooms": 4,
       "city": "דישון",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/kuryt0bg": {
       "externalId": "north-and-valleys/kuryt0bg",
@@ -4561,7 +4561,7 @@
       "rooms": 4,
       "city": "אבן מנחם",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/usktop0a": {
       "externalId": "north-and-valleys/usktop0a",
@@ -4574,7 +4574,7 @@
       "rooms": 5,
       "city": "עצמון שגב",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/ueqop5v3": {
       "externalId": "north-and-valleys/ueqop5v3",
@@ -4613,7 +4613,7 @@
       "rooms": 4,
       "city": "מנות",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/1tmg3b5b": {
       "externalId": "north-and-valleys/1tmg3b5b",
@@ -4639,7 +4639,7 @@
       "rooms": 5,
       "city": "אניעם",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/bs2n0wmx": {
       "externalId": "north-and-valleys/bs2n0wmx",
@@ -4652,7 +4652,7 @@
       "rooms": 4.5,
       "city": "בר יוחאי",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/zdhlvdkp": {
       "externalId": "north-and-valleys/zdhlvdkp",
@@ -4691,7 +4691,7 @@
       "rooms": 4,
       "city": "פוריה נווה עובד",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/jpbux3oa": {
       "externalId": "north-and-valleys/jpbux3oa",
@@ -4756,7 +4756,7 @@
       "rooms": 13,
       "city": "ראשון לציון",
       "firstSeenAt": "2026-06-22T06:45:08.053Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/f5qrso22": {
       "externalId": "center-and-sharon/f5qrso22",
@@ -4834,7 +4834,7 @@
       "rooms": 5,
       "city": "בית יצחק שער חפר",
       "firstSeenAt": "2026-06-22T09:48:45.108Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/rc3jgcrv": {
       "externalId": "center-and-sharon/rc3jgcrv",
@@ -4847,7 +4847,7 @@
       "rooms": 4,
       "city": "תנובות",
       "firstSeenAt": "2026-06-22T09:48:45.108Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/b41slie0": {
       "externalId": "north-and-valleys/b41slie0",
@@ -4860,7 +4860,7 @@
       "rooms": 4,
       "city": "גבעת אבני",
       "firstSeenAt": "2026-06-22T09:48:45.108Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/9bmph07k": {
       "externalId": "center-and-sharon/9bmph07k",
@@ -4886,7 +4886,7 @@
       "rooms": 4,
       "city": "יד נתן",
       "firstSeenAt": "2026-06-22T12:56:14.378Z",
-      "lastSeenAt": "2026-06-25T09:32:57.066Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/enxp22r7": {
       "externalId": "north-and-valleys/enxp22r7",
@@ -4899,7 +4899,7 @@
       "rooms": 5,
       "city": "טירת צבי",
       "firstSeenAt": "2026-06-22T18:06:03.018Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/l7e4xpva": {
       "externalId": "center-and-sharon/l7e4xpva",
@@ -4912,7 +4912,7 @@
       "rooms": 5.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-22T18:06:03.018Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/zob1o2b1": {
       "externalId": "center-and-sharon/zob1o2b1",
@@ -4925,7 +4925,7 @@
       "rooms": 5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-22T18:06:03.018Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/beshmdz9": {
       "externalId": "jerusalem-area/beshmdz9",
@@ -4938,7 +4938,7 @@
       "rooms": 10,
       "city": "בית מאיר",
       "firstSeenAt": "2026-06-22T18:06:03.018Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/93t00vf2": {
       "externalId": "center-and-sharon/93t00vf2",
@@ -5003,7 +5003,7 @@
       "rooms": 4,
       "city": "בני דקלים",
       "firstSeenAt": "2026-06-23T12:11:24.381Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/lt3y99qv": {
       "externalId": "north-and-valleys/lt3y99qv",
@@ -5016,7 +5016,7 @@
       "rooms": 4,
       "city": "כפר קיש",
       "firstSeenAt": "2026-06-23T12:11:24.381Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/fhgqgwdy": {
       "externalId": "north-and-valleys/fhgqgwdy",
@@ -5094,7 +5094,7 @@
       "rooms": 5,
       "city": "עמינדב",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/q0xmph0g": {
       "externalId": "center-and-sharon/q0xmph0g",
@@ -5107,7 +5107,7 @@
       "rooms": 7,
       "city": "שדי חמד",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3uwx52l0": {
       "externalId": "center-and-sharon/3uwx52l0",
@@ -5133,7 +5133,7 @@
       "rooms": 4,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/u7pjw7x5": {
       "externalId": "center-and-sharon/u7pjw7x5",
@@ -5146,7 +5146,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/luzvjkm6": {
       "externalId": "center-and-sharon/luzvjkm6",
@@ -5159,7 +5159,7 @@
       "rooms": 4,
       "city": "כפר סירקין",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/le7di4we": {
       "externalId": "center-and-sharon/le7di4we",
@@ -5172,7 +5172,7 @@
       "rooms": 4,
       "city": "טירת יהודה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/m6xc9p05": {
       "externalId": "center-and-sharon/m6xc9p05",
@@ -5185,7 +5185,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/m5ic3ipu": {
       "externalId": "center-and-sharon/m5ic3ipu",
@@ -5198,7 +5198,7 @@
       "rooms": 4,
       "city": "אומץ",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/vtwylrp7": {
       "externalId": "south/vtwylrp7",
@@ -5220,11 +5220,11 @@
       "searchId": "south",
       "searchLabel": "דרום",
       "districtLabel": "דרום",
-      "price": 8500,
+      "price": 7700,
       "rooms": 4,
       "city": "עזריקם",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/1n0euowc": {
       "externalId": "south/1n0euowc",
@@ -5237,7 +5237,7 @@
       "rooms": 6,
       "city": "תלמי יוסף",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/f7jl50x1": {
       "externalId": "coastal-north/f7jl50x1",
@@ -5250,7 +5250,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/8ifew8tk": {
       "externalId": "north-and-valleys/8ifew8tk",
@@ -5259,11 +5259,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 9000,
+      "price": 8000,
       "rooms": 6,
       "city": "מרחביה מושב",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/aiy2u44s": {
       "externalId": "north-and-valleys/aiy2u44s",
@@ -5272,11 +5272,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 1000,
+      "price": 2000,
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/6dfz6b1j": {
       "externalId": "north-and-valleys/6dfz6b1j",
@@ -5289,7 +5289,7 @@
       "rooms": 5,
       "city": "רמת צבי",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/l2uf7dag": {
       "externalId": "north-and-valleys/l2uf7dag",
@@ -5315,7 +5315,7 @@
       "rooms": 4,
       "city": "משגב עם",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/hzzz3s69": {
       "externalId": "north-and-valleys/hzzz3s69",
@@ -5341,7 +5341,7 @@
       "rooms": 6,
       "city": "מירב",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/b8inp6zp": {
       "externalId": "north-and-valleys/b8inp6zp",
@@ -5354,7 +5354,7 @@
       "rooms": 4,
       "city": "יערה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/18ytbivc": {
       "externalId": "north-and-valleys/18ytbivc",
@@ -5380,7 +5380,7 @@
       "rooms": 5,
       "city": "חבר",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/xwe65ji2": {
       "externalId": "north-and-valleys/xwe65ji2",
@@ -5419,7 +5419,7 @@
       "rooms": 5.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/3bdnfamm": {
       "externalId": "center-and-sharon/3bdnfamm",
@@ -5432,7 +5432,7 @@
       "rooms": 7,
       "city": "רעננה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T09:41:32.090Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ik02uy2t": {
       "externalId": "center-and-sharon/ik02uy2t",
@@ -5458,7 +5458,7 @@
       "rooms": 5.5,
       "city": "רעננה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/45qsyuvz": {
       "externalId": "center-and-sharon/45qsyuvz",
@@ -5471,7 +5471,7 @@
       "rooms": 4,
       "city": "כפר סבא",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/5tynl6nc": {
       "externalId": "center-and-sharon/5tynl6nc",
@@ -5484,7 +5484,7 @@
       "rooms": 6,
       "city": "קרית אונו",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/hqps4b8e": {
       "externalId": "center-and-sharon/hqps4b8e",
@@ -5510,7 +5510,7 @@
       "rooms": 4,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-25T09:04:05.579Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ekla9trz": {
       "externalId": "center-and-sharon/ekla9trz",
@@ -5549,7 +5549,7 @@
       "rooms": 8,
       "city": "ראשון לציון",
       "firstSeenAt": "2026-06-25T09:32:57.066Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/lbe4si9p": {
       "externalId": "jerusalem-area/lbe4si9p",
@@ -5562,7 +5562,7 @@
       "rooms": 7,
       "city": "לוזית",
       "firstSeenAt": "2026-06-25T11:49:08.207Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/8mejtnxd": {
       "externalId": "center-and-sharon/8mejtnxd",
@@ -5588,7 +5588,7 @@
       "rooms": 4,
       "city": "זכריה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/u9d5xns0": {
       "externalId": "jerusalem-area/u9d5xns0",
@@ -5601,7 +5601,7 @@
       "rooms": 4,
       "city": "תעוז",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/suin41mo": {
       "externalId": "jerusalem-area/suin41mo",
@@ -5614,7 +5614,7 @@
       "rooms": 6,
       "city": "צור הדסה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/v6yezbsr": {
       "externalId": "jerusalem-area/v6yezbsr",
@@ -5627,7 +5627,7 @@
       "rooms": 5,
       "city": "גפן",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/1f7gu5gq": {
       "externalId": "center-and-sharon/1f7gu5gq",
@@ -5653,7 +5653,7 @@
       "rooms": 4,
       "city": "ירחיב",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/l148ipy9": {
       "externalId": "center-and-sharon/l148ipy9",
@@ -5727,11 +5727,11 @@
       "searchId": "south",
       "searchLabel": "דרום",
       "districtLabel": "דרום",
-      "price": 6400,
+      "price": 6000,
       "rooms": 4.5,
       "city": "הר עמשא",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/xce1yi8h": {
       "externalId": "south/xce1yi8h",
@@ -5744,7 +5744,7 @@
       "rooms": 6,
       "city": "ספיר",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "south/15fjollx": {
       "externalId": "south/15fjollx",
@@ -5770,7 +5770,7 @@
       "rooms": 4,
       "city": "אחיהוד",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/4fwj2f5j": {
       "externalId": "coastal-north/4fwj2f5j",
@@ -5783,7 +5783,7 @@
       "rooms": 4.5,
       "city": "לימן",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/ssoanjvl": {
       "externalId": "coastal-north/ssoanjvl",
@@ -5822,7 +5822,7 @@
       "rooms": 4,
       "city": "עמקה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/18v6e85g": {
       "externalId": "north-and-valleys/18v6e85g",
@@ -5835,7 +5835,7 @@
       "rooms": 4,
       "city": "בני יהודה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/6yb03dnz": {
       "externalId": "north-and-valleys/6yb03dnz",
@@ -5874,7 +5874,7 @@
       "rooms": 4,
       "city": "חניתה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/18191k8w": {
       "externalId": "north-and-valleys/18191k8w",
@@ -5900,7 +5900,7 @@
       "rooms": 5,
       "city": "מכמנים",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/zahycpmk": {
       "externalId": "north-and-valleys/zahycpmk",
@@ -5913,7 +5913,7 @@
       "rooms": 4,
       "city": "כחל",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/zpsszfhl": {
       "externalId": "north-and-valleys/zpsszfhl",
@@ -5926,7 +5926,7 @@
       "rooms": 4,
       "city": "כפר חנניה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/w6fxxqvv": {
       "externalId": "north-and-valleys/w6fxxqvv",
@@ -5939,7 +5939,7 @@
       "rooms": 4,
       "city": "פוריה עילית",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/60nwbibx": {
       "externalId": "north-and-valleys/60nwbibx",
@@ -5948,11 +5948,11 @@
       "searchId": "north-valleys",
       "searchLabel": "צפון ועמקים",
       "districtLabel": "צפון והעמקים",
-      "price": 7650,
+      "price": 7550,
       "rooms": 4.5,
       "city": "אחוזת ברק",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/9m2e6129": {
       "externalId": "north-and-valleys/9m2e6129",
@@ -5965,7 +5965,7 @@
       "rooms": 4,
       "city": "כפר חסידים א'",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "north-and-valleys/2aw13fbt": {
       "externalId": "north-and-valleys/2aw13fbt",
@@ -5978,7 +5978,7 @@
       "rooms": 5,
       "city": "דן",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-29T08:44:42.902Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/si5u1swg": {
       "externalId": "center-and-sharon/si5u1swg",
@@ -6043,7 +6043,7 @@
       "rooms": 6,
       "city": "עזר",
       "firstSeenAt": "2026-06-30T07:53:41.142Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/rn3504c7": {
       "externalId": "center-and-sharon/rn3504c7",
@@ -6056,7 +6056,7 @@
       "rooms": 4,
       "city": "הוד השרון",
       "firstSeenAt": "2026-06-30T07:53:41.142Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/7z5d94av": {
       "externalId": "center-and-sharon/7z5d94av",
@@ -6069,7 +6069,7 @@
       "rooms": 4,
       "city": "קרית אונו",
       "firstSeenAt": "2026-06-30T07:53:41.142Z",
-      "lastSeenAt": "2026-06-30T07:53:41.142Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/6q0zekey": {
       "externalId": "center-and-sharon/6q0zekey",
@@ -6095,7 +6095,7 @@
       "rooms": 6,
       "city": "מסילת ציון",
       "firstSeenAt": "2026-06-30T07:53:41.142Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/hyezua61": {
       "externalId": "center-and-sharon/hyezua61",
@@ -6104,11 +6104,11 @@
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
       "districtLabel": "מרכז והשרון",
-      "price": null,
+      "price": 8500,
       "rooms": 5,
       "city": "חגור",
       "firstSeenAt": "2026-06-30T09:41:32.090Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "center-and-sharon/ib4hwnwc": {
       "externalId": "center-and-sharon/ib4hwnwc",
@@ -6173,7 +6173,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-07-13T07:28:15.758Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "coastal-north/lzpshnea": {
       "externalId": "coastal-north/lzpshnea",
@@ -6186,7 +6186,7 @@
       "rooms": 4,
       "city": "לימן",
       "firstSeenAt": "2026-07-13T07:28:15.758Z",
-      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/0rdiy9rr": {
       "externalId": "jerusalem-area/0rdiy9rr",
@@ -6199,7 +6199,7 @@
       "rooms": 5.5,
       "city": "נס הרים",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/42zsycj3": {
       "externalId": "jerusalem-area/42zsycj3",
@@ -6212,7 +6212,7 @@
       "rooms": 5,
       "city": "מבוא ביתר",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/12lh0dsm": {
       "externalId": "jerusalem-area/12lh0dsm",
@@ -6225,7 +6225,7 @@
       "rooms": 5,
       "city": "בית מאיר",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/zwz5ixsv": {
       "externalId": "jerusalem-area/zwz5ixsv",
@@ -6238,7 +6238,7 @@
       "rooms": 4,
       "city": "עמינדב",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/0fntna49": {
       "externalId": "jerusalem-area/0fntna49",
@@ -6251,7 +6251,7 @@
       "rooms": 5,
       "city": "צור הדסה",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/29w7tgt1": {
       "externalId": "jerusalem-area/29w7tgt1",
@@ -6264,7 +6264,7 @@
       "rooms": 4,
       "city": "כפר אוריה",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/gk1n9ijl": {
       "externalId": "jerusalem-area/gk1n9ijl",
@@ -6277,7 +6277,7 @@
       "rooms": 4,
       "city": "שורש",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/zuqas7h4": {
       "externalId": "jerusalem-area/zuqas7h4",
@@ -6290,7 +6290,7 @@
       "rooms": 4.5,
       "city": "בית מאיר",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/dc81111q": {
       "externalId": "jerusalem-area/dc81111q",
@@ -6303,7 +6303,7 @@
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/hz64621l": {
       "externalId": "jerusalem-area/hz64621l",
@@ -6316,7 +6316,7 @@
       "rooms": 5,
       "city": "לוזית",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/185n81k5": {
       "externalId": "jerusalem-area/185n81k5",
@@ -6329,7 +6329,7 @@
       "rooms": 4,
       "city": "גפן",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/b47fknjt": {
       "externalId": "jerusalem-area/b47fknjt",
@@ -6342,7 +6342,7 @@
       "rooms": 5,
       "city": "צור הדסה",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/uyvxl65d": {
       "externalId": "jerusalem-area/uyvxl65d",
@@ -6355,7 +6355,7 @@
       "rooms": 4.5,
       "city": "גבעת ישעיהו",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     },
     "jerusalem-area/eiktfj7g": {
       "externalId": "jerusalem-area/eiktfj7g",
@@ -6368,7 +6368,1645 @@
       "rooms": 4,
       "city": "צור הדסה",
       "firstSeenAt": "2026-07-13T07:48:48.107Z",
-      "lastSeenAt": "2026-07-13T07:48:48.107Z"
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "jerusalem-area/2iobnx0u": {
+      "externalId": "jerusalem-area/2iobnx0u",
+      "title": "בית פרטי/ קוטג', אדרת",
+      "link": "https://www.yad2.co.il/realestate/item/jerusalem-area/2iobnx0u",
+      "searchId": "jerusalem",
+      "searchLabel": "ירושלים",
+      "districtLabel": "ירושלים והסביבה",
+      "price": 8500,
+      "rooms": 4,
+      "city": "אדרת",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/rk6zwfvy": {
+      "externalId": "center-and-sharon/rk6zwfvy",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/rk6zwfvy",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/u3f6qvue": {
+      "externalId": "center-and-sharon/u3f6qvue",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/u3f6qvue",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 6,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/9uynho86": {
+      "externalId": "center-and-sharon/9uynho86",
+      "title": "דו משפחתי, נירית",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9uynho86",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6800,
+      "rooms": 5,
+      "city": "נירית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/8pj5sqjq": {
+      "externalId": "center-and-sharon/8pj5sqjq",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/8pj5sqjq",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7200,
+      "rooms": 5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/ph7cb6vw": {
+      "externalId": "center-and-sharon/ph7cb6vw",
+      "title": "יחידת דיור, יד רמב''ם, יד רמב\"ם",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ph7cb6vw",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 4,
+      "city": "יד רמב\"ם",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/wahiink1": {
+      "externalId": "center-and-sharon/wahiink1",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/wahiink1",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6000,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/6v84dyoo": {
+      "externalId": "center-and-sharon/6v84dyoo",
+      "title": "יחידת דיור, בורגתה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/6v84dyoo",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בורגתה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/7mh5mrll": {
+      "externalId": "center-and-sharon/7mh5mrll",
+      "title": "דירה, אחיטוב",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7mh5mrll",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "אחיטוב",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/zwvqnr0w": {
+      "externalId": "center-and-sharon/zwvqnr0w",
+      "title": "דירה, גבעת כ''ח, גבעת כ\"ח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/zwvqnr0w",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 5,
+      "city": "גבעת כ\"ח",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/2tpwwk74": {
+      "externalId": "center-and-sharon/2tpwwk74",
+      "title": "בית פרטי/ קוטג', בורגתה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/2tpwwk74",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בורגתה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/gljs6i0y": {
+      "externalId": "center-and-sharon/gljs6i0y",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/gljs6i0y",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6700,
+      "rooms": 5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/kors9fa2": {
+      "externalId": "center-and-sharon/kors9fa2",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/kors9fa2",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/j9ts30hj": {
+      "externalId": "center-and-sharon/j9ts30hj",
+      "title": "דירה, נוף איילון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/j9ts30hj",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "נוף איילון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/awbavb7e": {
+      "externalId": "center-and-sharon/awbavb7e",
+      "title": "דירת גן, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/awbavb7e",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/4mv3zz47": {
+      "externalId": "center-and-sharon/4mv3zz47",
+      "title": "דירת גן, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/4mv3zz47",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7290,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/2qthfzd9": {
+      "externalId": "center-and-sharon/2qthfzd9",
+      "title": "בית פרטי/ קוטג', אחיסמך",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/2qthfzd9",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 5,
+      "city": "אחיסמך",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/55cg189b": {
+      "externalId": "center-and-sharon/55cg189b",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/55cg189b",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/9u0rm1qe": {
+      "externalId": "center-and-sharon/9u0rm1qe",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9u0rm1qe",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6600,
+      "rooms": 5,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/92xrf384": {
+      "externalId": "center-and-sharon/92xrf384",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/92xrf384",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6200,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/wayorw87": {
+      "externalId": "center-and-sharon/wayorw87",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/wayorw87",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7200,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/aokre1e7": {
+      "externalId": "center-and-sharon/aokre1e7",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/aokre1e7",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5700,
+      "rooms": 4.5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/j44rk032": {
+      "externalId": "center-and-sharon/j44rk032",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/j44rk032",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5600,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/vjin0ijs": {
+      "externalId": "center-and-sharon/vjin0ijs",
+      "title": "בית פרטי/ קוטג', חרוצים",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/vjin0ijs",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8900,
+      "rooms": 4,
+      "city": "חרוצים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/k8v8qz9p": {
+      "externalId": "center-and-sharon/k8v8qz9p",
+      "title": "דירה, שילת",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/k8v8qz9p",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8800,
+      "rooms": 4,
+      "city": "שילת",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/yej584kw": {
+      "externalId": "center-and-sharon/yej584kw",
+      "title": "בית פרטי/ קוטג', בצרה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/yej584kw",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 7.5,
+      "city": "בצרה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/h7bv3o2m": {
+      "externalId": "center-and-sharon/h7bv3o2m",
+      "title": "בית פרטי/ קוטג', נוף איילון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/h7bv3o2m",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 7,
+      "city": "נוף איילון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/p70w91eb": {
+      "externalId": "center-and-sharon/p70w91eb",
+      "title": "בית פרטי/ קוטג', שער אפרים",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/p70w91eb",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8800,
+      "rooms": 4.5,
+      "city": "שער אפרים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/j8if7ukf": {
+      "externalId": "center-and-sharon/j8if7ukf",
+      "title": "בית פרטי/ קוטג', אחיעזר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/j8if7ukf",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5500,
+      "rooms": 4,
+      "city": "אחיעזר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/e4ql6d6v": {
+      "externalId": "center-and-sharon/e4ql6d6v",
+      "title": "דו משפחתי, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/e4ql6d6v",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7800,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/3wctall6": {
+      "externalId": "center-and-sharon/3wctall6",
+      "title": "גג/ פנטהאוז, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/3wctall6",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/nxuz9deg": {
+      "externalId": "center-and-sharon/nxuz9deg",
+      "title": "דירה, מתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/nxuz9deg",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7800,
+      "rooms": 4,
+      "city": "מתן",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/9sm0a5wb": {
+      "externalId": "center-and-sharon/9sm0a5wb",
+      "title": "דירה, מצליח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9sm0a5wb",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8000,
+      "rooms": 4,
+      "city": "מצליח",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/9yvz6840": {
+      "externalId": "center-and-sharon/9yvz6840",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9yvz6840",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/o8st07hp": {
+      "externalId": "center-and-sharon/o8st07hp",
+      "title": "בית פרטי/ קוטג', אחיטוב",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/o8st07hp",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 5,
+      "city": "אחיטוב",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/98g93g96": {
+      "externalId": "center-and-sharon/98g93g96",
+      "title": "משק חקלאי/ נחלה, חגור",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/98g93g96",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "חגור",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/q502nrj5": {
+      "externalId": "center-and-sharon/q502nrj5",
+      "title": "בית פרטי/ קוטג', שדי חמד",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/q502nrj5",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 7,
+      "city": "שדי חמד",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/l6qeonfe": {
+      "externalId": "center-and-sharon/l6qeonfe",
+      "title": "גג/ פנטהאוז, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/l6qeonfe",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7800,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/780gemjn": {
+      "externalId": "south/780gemjn",
+      "title": "בית פרטי/ קוטג', בית אלעזרי",
+      "link": "https://www.yad2.co.il/realestate/item/south/780gemjn",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 8500,
+      "rooms": 4.5,
+      "city": "בית אלעזרי",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/uxvmldd9": {
+      "externalId": "south/uxvmldd9",
+      "title": "בית פרטי/ קוטג', שובל",
+      "link": "https://www.yad2.co.il/realestate/item/south/uxvmldd9",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 9000,
+      "rooms": 5,
+      "city": "שובל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/pqzjw9so": {
+      "externalId": "south/pqzjw9so",
+      "title": "דירה, נהורה",
+      "link": "https://www.yad2.co.il/realestate/item/south/pqzjw9so",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 4900,
+      "rooms": 5.5,
+      "city": "נהורה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/sf6k7hm5": {
+      "externalId": "south/sf6k7hm5",
+      "title": "בית פרטי/ קוטג', גבעות בר",
+      "link": "https://www.yad2.co.il/realestate/item/south/sf6k7hm5",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 7500,
+      "rooms": 6.5,
+      "city": "גבעות בר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/v6jzxr6u": {
+      "externalId": "south/v6jzxr6u",
+      "title": "בית פרטי/ קוטג', זרועה",
+      "link": "https://www.yad2.co.il/realestate/item/south/v6jzxr6u",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 7200,
+      "rooms": 5,
+      "city": "זרועה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/jfbocl4k": {
+      "externalId": "south/jfbocl4k",
+      "title": "בית פרטי/ קוטג', אשלים",
+      "link": "https://www.yad2.co.il/realestate/item/south/jfbocl4k",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 6800,
+      "rooms": 5,
+      "city": "אשלים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/cimcske5": {
+      "externalId": "south/cimcske5",
+      "title": "דו משפחתי, כיסופים",
+      "link": "https://www.yad2.co.il/realestate/item/south/cimcske5",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 6200,
+      "rooms": 5,
+      "city": "כיסופים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/qy3wai8z": {
+      "externalId": "south/qy3wai8z",
+      "title": "טריפלקס, אלומה",
+      "link": "https://www.yad2.co.il/realestate/item/south/qy3wai8z",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": null,
+      "rooms": 7,
+      "city": "אלומה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/09jhza49": {
+      "externalId": "south/09jhza49",
+      "title": "בית פרטי/ קוטג', אשלים",
+      "link": "https://www.yad2.co.il/realestate/item/south/09jhza49",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": null,
+      "rooms": 10,
+      "city": "אשלים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/yxulvdz4": {
+      "externalId": "south/yxulvdz4",
+      "title": "דירה, אלומה",
+      "link": "https://www.yad2.co.il/realestate/item/south/yxulvdz4",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 4900,
+      "rooms": 4,
+      "city": "אלומה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/xt7d09x1": {
+      "externalId": "south/xt7d09x1",
+      "title": "בית פרטי/ קוטג', אשלים",
+      "link": "https://www.yad2.co.il/realestate/item/south/xt7d09x1",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 5800,
+      "rooms": 4,
+      "city": "אשלים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/lbhg0ae2": {
+      "externalId": "south/lbhg0ae2",
+      "title": "יחידת דיור, יד בנימין",
+      "link": "https://www.yad2.co.il/realestate/item/south/lbhg0ae2",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 6000,
+      "rooms": 4,
+      "city": "יד בנימין",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/1pl8ghwj": {
+      "externalId": "south/1pl8ghwj",
+      "title": "בית פרטי/ קוטג', נהורה",
+      "link": "https://www.yad2.co.il/realestate/item/south/1pl8ghwj",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 7500,
+      "rooms": 4.5,
+      "city": "נהורה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/7cg5rkhf": {
+      "externalId": "south/7cg5rkhf",
+      "title": "בית פרטי/ קוטג', נאות הכיכר",
+      "link": "https://www.yad2.co.il/realestate/item/south/7cg5rkhf",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": 3800,
+      "rooms": 4,
+      "city": "נאות הכיכר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "south/czbm9qjl": {
+      "externalId": "south/czbm9qjl",
+      "title": "בית פרטי/ קוטג', יושיביה",
+      "link": "https://www.yad2.co.il/realestate/item/south/czbm9qjl",
+      "searchId": "south",
+      "searchLabel": "דרום",
+      "districtLabel": "דרום",
+      "price": null,
+      "rooms": 5,
+      "city": "יושיביה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/jj6148sg": {
+      "externalId": "north-and-valleys/jj6148sg",
+      "title": "בית פרטי/ קוטג', מכמנים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/jj6148sg",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7300,
+      "rooms": 4.5,
+      "city": "מכמנים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/j9j65wxu": {
+      "externalId": "north-and-valleys/j9j65wxu",
+      "title": "בית פרטי/ קוטג', נופית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/j9j65wxu",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 5.5,
+      "city": "נופית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/o89jbnmo": {
+      "externalId": "north-and-valleys/o89jbnmo",
+      "title": "יחידת דיור, מצפה אבי''ב, מצפה אבי\"ב",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/o89jbnmo",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4500,
+      "rooms": 4,
+      "city": "מצפה אבי\"ב",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/15ad45uq": {
+      "externalId": "north-and-valleys/15ad45uq",
+      "title": "בית פרטי/ קוטג', נווה זיו",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/15ad45uq",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 6,
+      "city": "נווה זיו",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/cdsu9w0d": {
+      "externalId": "north-and-valleys/cdsu9w0d",
+      "title": "בית פרטי/ קוטג', אבן מנחם",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/cdsu9w0d",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4500,
+      "rooms": 4.5,
+      "city": "אבן מנחם",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/7d9hy9x1": {
+      "externalId": "north-and-valleys/7d9hy9x1",
+      "title": "בית פרטי/ קוטג', פרזון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/7d9hy9x1",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5000,
+      "rooms": 5,
+      "city": "פרזון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/b4p87943": {
+      "externalId": "north-and-valleys/b4p87943",
+      "title": "בית פרטי/ קוטג', שניר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/b4p87943",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8500,
+      "rooms": 6,
+      "city": "שניר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/iyd1gv3m": {
+      "externalId": "north-and-valleys/iyd1gv3m",
+      "title": "סאבלט, כליל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/iyd1gv3m",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5500,
+      "rooms": 4,
+      "city": "כליל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/olcny2jf": {
+      "externalId": "north-and-valleys/olcny2jf",
+      "title": "בית פרטי/ קוטג', מצפה אבי''ב, מצפה אבי\"ב",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/olcny2jf",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 5,
+      "city": "מצפה אבי\"ב",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/qlzolzpv": {
+      "externalId": "north-and-valleys/qlzolzpv",
+      "title": "בית פרטי/ קוטג', שזור",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/qlzolzpv",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5500,
+      "rooms": 5,
+      "city": "שזור",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/8all5ljb": {
+      "externalId": "north-and-valleys/8all5ljb",
+      "title": "דו משפחתי, גינוסר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/8all5ljb",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8500,
+      "rooms": 4,
+      "city": "גינוסר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/tcyp3gy8": {
+      "externalId": "north-and-valleys/tcyp3gy8",
+      "title": "דירה, לבון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/tcyp3gy8",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4600,
+      "rooms": 5,
+      "city": "לבון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/wd159mqk": {
+      "externalId": "north-and-valleys/wd159mqk",
+      "title": "סאבלט, פוריה עילית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/wd159mqk",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 5,
+      "city": "פוריה עילית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/p22tzqjn": {
+      "externalId": "north-and-valleys/p22tzqjn",
+      "title": "דירה, חמדיה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/p22tzqjn",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 3000,
+      "rooms": 4,
+      "city": "חמדיה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/i1c18f37": {
+      "externalId": "north-and-valleys/i1c18f37",
+      "title": "בית פרטי/ קוטג', עדי",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/i1c18f37",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 9000,
+      "rooms": 7,
+      "city": "עדי",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/58cat90t": {
+      "externalId": "north-and-valleys/58cat90t",
+      "title": "בית פרטי/ קוטג', נופית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/58cat90t",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5000,
+      "rooms": 5,
+      "city": "נופית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/y6z6qugs": {
+      "externalId": "north-and-valleys/y6z6qugs",
+      "title": "דירה, איילת השחר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/y6z6qugs",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 2900,
+      "rooms": 4,
+      "city": "איילת השחר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/b2v0mrtj": {
+      "externalId": "north-and-valleys/b2v0mrtj",
+      "title": "יחידת דיור, אבני איתן",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/b2v0mrtj",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4400,
+      "rooms": 4.5,
+      "city": "אבני איתן",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/5khcj3hf": {
+      "externalId": "north-and-valleys/5khcj3hf",
+      "title": "בית פרטי/ קוטג', אלון הגליל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/5khcj3hf",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8900,
+      "rooms": 5,
+      "city": "אלון הגליל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/jb8hw938": {
+      "externalId": "north-and-valleys/jb8hw938",
+      "title": "בית פרטי/ קוטג', אומן",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/jb8hw938",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4.5,
+      "city": "אומן",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/ysy3jl23": {
+      "externalId": "north-and-valleys/ysy3jl23",
+      "title": "דירה, נהלל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ysy3jl23",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6500,
+      "rooms": 4,
+      "city": "נהלל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/wygfxnsb": {
+      "externalId": "north-and-valleys/wygfxnsb",
+      "title": "בית פרטי/ קוטג', גדיש",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/wygfxnsb",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4500,
+      "rooms": 4,
+      "city": "גדיש",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/bjj70r1k": {
+      "externalId": "north-and-valleys/bjj70r1k",
+      "title": "בית פרטי/ קוטג', כפר יחזקאל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/bjj70r1k",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5500,
+      "rooms": 5.5,
+      "city": "כפר יחזקאל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/g48002b0": {
+      "externalId": "north-and-valleys/g48002b0",
+      "title": "בית פרטי/ קוטג', מכמנים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/g48002b0",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7700,
+      "rooms": 5,
+      "city": "מכמנים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/9vh0od63": {
+      "externalId": "north-and-valleys/9vh0od63",
+      "title": "בית פרטי/ קוטג', אומן",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/9vh0od63",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4,
+      "city": "אומן",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/v718gt0i": {
+      "externalId": "north-and-valleys/v718gt0i",
+      "title": "בית פרטי/ קוטג', גבת",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/v718gt0i",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7600,
+      "rooms": 4,
+      "city": "גבת",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/3hm5ds69": {
+      "externalId": "north-and-valleys/3hm5ds69",
+      "title": "בית פרטי/ קוטג', דפנה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/3hm5ds69",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 5,
+      "city": "דפנה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/39bvolih": {
+      "externalId": "north-and-valleys/39bvolih",
+      "title": "בית פרטי/ קוטג', כפר זיתים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/39bvolih",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6500,
+      "rooms": 4,
+      "city": "כפר זיתים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/if4eq96q": {
+      "externalId": "north-and-valleys/if4eq96q",
+      "title": "דו משפחתי, נופית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/if4eq96q",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8500,
+      "rooms": 6,
+      "city": "נופית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/xywn2z6h": {
+      "externalId": "north-and-valleys/xywn2z6h",
+      "title": "דירה, חוסן",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xywn2z6h",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4500,
+      "rooms": 4,
+      "city": "חוסן",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/bmx02zqt": {
+      "externalId": "north-and-valleys/bmx02zqt",
+      "title": "בית פרטי/ קוטג', שדה נחום",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/bmx02zqt",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6990,
+      "rooms": 5.5,
+      "city": "שדה נחום",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/m00zmqf3": {
+      "externalId": "north-and-valleys/m00zmqf3",
+      "title": "בית פרטי/ קוטג', גבעת אלה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/m00zmqf3",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 6.5,
+      "city": "גבעת אלה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/7u1qyp2m": {
+      "externalId": "north-and-valleys/7u1qyp2m",
+      "title": "בית פרטי/ קוטג', נווה זיו",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/7u1qyp2m",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 6,
+      "city": "נווה זיו",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/3345ezbm": {
+      "externalId": "north-and-valleys/3345ezbm",
+      "title": "בית פרטי/ קוטג', גן נר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/3345ezbm",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 8,
+      "city": "גן נר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/ir6ree2r": {
+      "externalId": "north-and-valleys/ir6ree2r",
+      "title": "דופלקס, כחל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ir6ree2r",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8200,
+      "rooms": 7,
+      "city": "כחל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/rztov7ls": {
+      "externalId": "north-and-valleys/rztov7ls",
+      "title": "בית פרטי/ קוטג', לבנים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/rztov7ls",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5800,
+      "rooms": 5.5,
+      "city": "לבנים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/noqj57dk": {
+      "externalId": "north-and-valleys/noqj57dk",
+      "title": "דירת גן, כפר זיתים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/noqj57dk",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 4,
+      "city": "כפר זיתים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/35m7gops": {
+      "externalId": "north-and-valleys/35m7gops",
+      "title": "בית פרטי/ קוטג', צוריאל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/35m7gops",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6500,
+      "rooms": 5,
+      "city": "צוריאל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/0icmpjmx": {
+      "externalId": "north-and-valleys/0icmpjmx",
+      "title": "בית פרטי/ קוטג', מצובה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/0icmpjmx",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4200,
+      "rooms": 4,
+      "city": "מצובה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/fvv17rlz": {
+      "externalId": "north-and-valleys/fvv17rlz",
+      "title": "בית פרטי/ קוטג', כפר ברוך",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/fvv17rlz",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 9000,
+      "rooms": 4,
+      "city": "כפר ברוך",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/vwwhtgtx": {
+      "externalId": "north-and-valleys/vwwhtgtx",
+      "title": "בית פרטי/ קוטג', כרכום",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/vwwhtgtx",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 4,
+      "city": "כרכום",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/me6rqw7i": {
+      "externalId": "north-and-valleys/me6rqw7i",
+      "title": "בית פרטי/ קוטג', שורשים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/me6rqw7i",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 5.5,
+      "city": "שורשים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/xup90j46": {
+      "externalId": "north-and-valleys/xup90j46",
+      "title": "בית פרטי/ קוטג', שדי תרומות",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xup90j46",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5800,
+      "rooms": 5,
+      "city": "שדי תרומות",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/ljbowvw5": {
+      "externalId": "north-and-valleys/ljbowvw5",
+      "title": "בית פרטי/ קוטג', גבעת אבני",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ljbowvw5",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 9000,
+      "rooms": 5,
+      "city": "גבעת אבני",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/x4i9gfhy": {
+      "externalId": "north-and-valleys/x4i9gfhy",
+      "title": "בית פרטי/ קוטג', כורזים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/x4i9gfhy",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7900,
+      "rooms": 4.5,
+      "city": "כורזים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/hzhat7z7": {
+      "externalId": "north-and-valleys/hzhat7z7",
+      "title": "בית פרטי/ קוטג', גבת",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/hzhat7z7",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 4,
+      "city": "גבת",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/xu26vnk1": {
+      "externalId": "north-and-valleys/xu26vnk1",
+      "title": "בית פרטי/ קוטג', מעלה גלבוע",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xu26vnk1",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7000,
+      "rooms": 5.5,
+      "city": "מעלה גלבוע",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/pk2sxqjj": {
+      "externalId": "north-and-valleys/pk2sxqjj",
+      "title": "בית פרטי/ קוטג', נורית",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pk2sxqjj",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 5,
+      "city": "נורית",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/kqj0pfry": {
+      "externalId": "north-and-valleys/kqj0pfry",
+      "title": "בית פרטי/ קוטג', רשפים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/kqj0pfry",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7300,
+      "rooms": 5,
+      "city": "רשפים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/5k5l2m1l": {
+      "externalId": "north-and-valleys/5k5l2m1l",
+      "title": "בית פרטי/ קוטג', גבעת אבני",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/5k5l2m1l",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6750,
+      "rooms": 4,
+      "city": "גבעת אבני",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/1lxsiiz2": {
+      "externalId": "north-and-valleys/1lxsiiz2",
+      "title": "בית פרטי/ קוטג', תל עדשים",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/1lxsiiz2",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 8000,
+      "rooms": 4,
+      "city": "תל עדשים",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/ybxc5o8b": {
+      "externalId": "north-and-valleys/ybxc5o8b",
+      "title": "בית פרטי/ קוטג', מולדת",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ybxc5o8b",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6900,
+      "rooms": 5.5,
+      "city": "מולדת",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/11j6qv7z": {
+      "externalId": "north-and-valleys/11j6qv7z",
+      "title": "דירה, אביטל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/11j6qv7z",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 4200,
+      "rooms": 4,
+      "city": "אביטל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/xe8u34if": {
+      "externalId": "north-and-valleys/xe8u34if",
+      "title": "דירה, גשר",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/xe8u34if",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 3500,
+      "rooms": 4,
+      "city": "גשר",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/vqfpifou": {
+      "externalId": "north-and-valleys/vqfpifou",
+      "title": "כליל 1",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/vqfpifou",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 250,
+      "rooms": 4,
+      "city": null,
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/ioz4ev0p": {
+      "externalId": "north-and-valleys/ioz4ev0p",
+      "title": "בית פרטי/ קוטג', אלון הגליל",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/ioz4ev0p",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 5,
+      "city": "אלון הגליל",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/pzivlxi5": {
+      "externalId": "north-and-valleys/pzivlxi5",
+      "title": "בית פרטי/ קוטג', ברק",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pzivlxi5",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": null,
+      "rooms": 6,
+      "city": "ברק",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/pmjkxp6s": {
+      "externalId": "north-and-valleys/pmjkxp6s",
+      "title": "דו משפחתי, מעונה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/pmjkxp6s",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 450,
+      "rooms": 4.5,
+      "city": "מעונה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/jqss4xo6": {
+      "externalId": "north-and-valleys/jqss4xo6",
+      "title": "בית פרטי/ קוטג', בר יוחאי",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/jqss4xo6",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6350,
+      "rooms": 5.5,
+      "city": "בר יוחאי",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/7a5nyi80": {
+      "externalId": "north-and-valleys/7a5nyi80",
+      "title": "בית פרטי/ קוטג', כפר סאלד",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/7a5nyi80",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7800,
+      "rooms": 5,
+      "city": "כפר סאלד",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/bxb6cldf": {
+      "externalId": "north-and-valleys/bxb6cldf",
+      "title": "בית פרטי/ קוטג', מנוף",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/bxb6cldf",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 5,
+      "city": "מנוף",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/dtoqmvpm": {
+      "externalId": "north-and-valleys/dtoqmvpm",
+      "title": "בית פרטי/ קוטג', צבעון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/dtoqmvpm",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6500,
+      "rooms": 4,
+      "city": "צבעון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/wx8628yd": {
+      "externalId": "north-and-valleys/wx8628yd",
+      "title": "בית פרטי/ קוטג', דבורה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/wx8628yd",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 5000,
+      "rooms": 4,
+      "city": "דבורה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/lyanpx68": {
+      "externalId": "north-and-valleys/lyanpx68",
+      "title": "בית פרטי/ קוטג', צבעון",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/lyanpx68",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 6000,
+      "rooms": 4,
+      "city": "צבעון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/sm79doaj": {
+      "externalId": "north-and-valleys/sm79doaj",
+      "title": "דירה, חמדיה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/sm79doaj",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 3500,
+      "rooms": 4,
+      "city": "חמדיה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "north-and-valleys/1sok5a44": {
+      "externalId": "north-and-valleys/1sok5a44",
+      "title": "דירת גן, ספסופה",
+      "link": "https://www.yad2.co.il/realestate/item/north-and-valleys/1sok5a44",
+      "searchId": "north-valleys",
+      "searchLabel": "צפון ועמקים",
+      "districtLabel": "צפון והעמקים",
+      "price": 7500,
+      "rooms": 4.5,
+      "city": "ספסופה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/efvgpvcu": {
+      "externalId": "center-and-sharon/efvgpvcu",
+      "title": "גג/ פנטהאוז, מרכז דרום, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/efvgpvcu",
+      "searchId": "lev-hapark-rent",
+      "searchLabel": "לב הפארק — שכירות",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 13000,
+      "rooms": 5,
+      "city": "רעננה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/smf8lrmx": {
+      "externalId": "center-and-sharon/smf8lrmx",
+      "title": "בית פרטי/ קוטג', רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/smf8lrmx",
+      "searchId": "lev-hapark-sale",
+      "searchLabel": "לב הפארק — מכירה",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 7650000,
+      "rooms": 7,
+      "city": "רעננה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/7wzgu0ju": {
+      "externalId": "center-and-sharon/7wzgu0ju",
+      "title": "דופלקס, לב הפארק, רעננה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7wzgu0ju",
+      "searchId": "lev-hapark-sale",
+      "searchLabel": "לב הפארק — מכירה",
+      "districtLabel": "לב הפארק, רעננה",
+      "price": 4590000,
+      "rooms": 5.5,
+      "city": "רעננה",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/yc5j9805": {
+      "externalId": "center-and-sharon/yc5j9805",
+      "title": "בית פרטי/ קוטג', שאר העיר, הוד השרון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/yc5j9805",
+      "searchId": "rent-in-cities",
+      "searchLabel": "שכירות בערים",
+      "districtLabel": "שכירות בערים — מרכז ושרון",
+      "price": null,
+      "rooms": 4,
+      "city": "הוד השרון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/1f0w7d9t": {
+      "externalId": "center-and-sharon/1f0w7d9t",
+      "title": "בית פרטי/ קוטג', שאר העיר, הוד השרון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/1f0w7d9t",
+      "searchId": "rent-in-cities",
+      "searchLabel": "שכירות בערים",
+      "districtLabel": "שכירות בערים — מרכז ושרון",
+      "price": 8300,
+      "rooms": 4.5,
+      "city": "הוד השרון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/q62mi3u0": {
+      "externalId": "center-and-sharon/q62mi3u0",
+      "title": "בית פרטי/ קוטג', ראשונים, ראשון לציון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/q62mi3u0",
+      "searchId": "rent-in-cities",
+      "searchLabel": "שכירות בערים",
+      "districtLabel": "שכירות בערים — מרכז ושרון",
+      "price": 6800,
+      "rooms": 5,
+      "city": "ראשון לציון",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
+    },
+    "center-and-sharon/9s9e0yg5": {
+      "externalId": "center-and-sharon/9s9e0yg5",
+      "title": "בית פרטי/ קוטג', מרכז, כפר סבא",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9s9e0yg5",
+      "searchId": "rent-in-cities",
+      "searchLabel": "שכירות בערים",
+      "districtLabel": "שכירות בערים — מרכז ושרון",
+      "price": 9000,
+      "rooms": 4,
+      "city": "כפר סבא",
+      "firstSeenAt": "2026-07-13T09:47:56.017Z",
+      "lastSeenAt": "2026-07-13T09:47:56.017Z"
     }
   }
 }
