@@ -23,11 +23,64 @@ const STEALTH_LAUNCH_ARGS = [
 ];
 
 function buildProxyConfig() {
+  // Browser API replaces local proxy entirely — do not stack both.
+  if (env.BRIGHT_DATA_BROWSER_WS) return {};
   if (!env.PROXY_SERVER) return {};
   const proxy = { server: env.PROXY_SERVER };
   if (env.PROXY_USERNAME) proxy.username = env.PROXY_USERNAME;
   if (env.PROXY_PASSWORD) proxy.password = env.PROXY_PASSWORD;
   return { proxy };
+}
+
+function usesBrowserApi() {
+  return Boolean(env.BRIGHT_DATA_BROWSER_WS);
+}
+
+// Open either Bright Data's managed browser (CDP) or a local Chromium
+// with optional ISP proxy. Callers must always browser.close() in finally.
+async function openBrowser({ headless = true } = {}) {
+  if (usesBrowserApi()) {
+    const browser = await chromium.connectOverCDP(env.BRIGHT_DATA_BROWSER_WS);
+    return { browser, remote: true };
+  }
+  const browser = await chromium.launch({
+    headless,
+    args: STEALTH_LAUNCH_ARGS,
+    ...buildProxyConfig()
+  });
+  return { browser, remote: false };
+}
+
+async function openContext(browser, remote, { profile, extraHTTPHeaders } = {}) {
+  if (remote) {
+    // Scraping Browser usually ships with a default context already open.
+    const existing = browser.contexts()[0];
+    if (existing) return existing;
+  }
+  const headers = extraHTTPHeaders || {
+    'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
+    Accept:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
+    ...clientHintsFor(profile || { chromeMajor: 135, secChUaPlatform: 'macOS' })
+  };
+  return browser.newContext({
+    userAgent: (profile && profile.userAgent) || DEFAULT_USER_AGENT,
+    locale: 'he-IL',
+    timezoneId: 'Asia/Jerusalem',
+    viewport: (profile && profile.viewport) || { width: 1440, height: 900 },
+    extraHTTPHeaders: headers
+  });
+}
+
+async function openPage(context) {
+  const existing = context.pages()[0];
+  if (existing && !existing.isClosed()) return existing;
+  return context.newPage();
 }
 
 // Current desktop Chrome user agent. The major version here MUST stay
@@ -1209,44 +1262,34 @@ async function scrapeOneSearchWithFreshBrowser({
   profile,
   extraWarmupMs = 0
 }) {
-  const browser = await chromium.launch({
-    headless,
-    args: STEALTH_LAUNCH_ARGS,
-    ...buildProxyConfig()
-  });
-  const context = await browser.newContext({
-    userAgent: profile.userAgent,
-    locale: 'he-IL',
-    timezoneId: 'Asia/Jerusalem',
-    viewport: profile.viewport,
-    extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
-      'Accept':
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-      'Sec-Fetch-User': '?1',
-      'Upgrade-Insecure-Requests': '1',
-      ...clientHintsFor(profile)
-    }
-  });
+  const { browser, remote } = await openBrowser({ headless });
+  const context = await openContext(browser, remote, { profile });
 
   try {
-    const page = await context.newPage();
-    await warmUpSession(page, timeoutMs, logger);
-    if (extraWarmupMs > 0) {
-      await page.waitForTimeout(extraWarmupMs + Math.floor(Math.random() * 2000));
+    const page = await openPage(context);
+    // Browser API already unlocks; skip the homepage warm-up to save
+    // session time / cost. Local / proxy paths still warm up.
+    if (!remote) {
+      await warmUpSession(page, timeoutMs, logger);
+      if (extraWarmupMs > 0) {
+        await page.waitForTimeout(extraWarmupMs + Math.floor(Math.random() * 2000));
+      }
     }
 
-    logger.info(`Checking ${search.label}: ${search.url}`);
+    logger.info(
+      `Checking ${search.label}: ${search.url}${remote ? ' [Browser API]' : ''}`
+    );
     let result = await scrapeSearch(page, search, timeoutMs, { logger });
     if (result.ads.length === 0) {
       logger.warn?.(
         `  ${search.id}: empty result on first attempt; warming up and retrying once in same browser`
       );
-      await warmUpSession(page, timeoutMs, logger);
-      await page.waitForTimeout(3000 + Math.floor(Math.random() * 2000));
+      if (!remote) {
+        await warmUpSession(page, timeoutMs, logger);
+        await page.waitForTimeout(3000 + Math.floor(Math.random() * 2000));
+      } else {
+        await page.waitForTimeout(2000);
+      }
       result = await scrapeSearch(page, search, timeoutMs, { logger });
     }
     logger.info(`  ${search.id} total: ${result.ads.length}`);
@@ -1255,8 +1298,12 @@ async function scrapeOneSearchWithFreshBrowser({
     logger.error(`Failed scraping ${search.id}: ${error.message}`);
     return { ads: [], error: { searchId: search.id, searchLabel: search.label, message: error.message } };
   } finally {
-    await context.close();
-    await browser.close();
+    // Closing the CDP browser ends the Bright Data session. Do not
+    // close the default remote context separately — it can race.
+    if (!remote) {
+      await context.close().catch(() => null);
+    }
+    await browser.close().catch(() => null);
   }
 }
 
@@ -1374,46 +1421,37 @@ async function enrichAdsWithDetails({
 }) {
   if (!ads.length) return ads;
 
-  const browser = await chromium.launch({
-    headless,
-    args: STEALTH_LAUNCH_ARGS,
-    ...buildProxyConfig()
-  });
-  const context = await browser.newContext({
-    userAgent: DEFAULT_USER_AGENT,
-    locale: 'he-IL',
-    timezoneId: 'Asia/Jerusalem',
-    viewport: { width: 1440, height: 900 },
-    extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
-      Accept:
-        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-      'Sec-Fetch-Dest': 'document',
-      'Sec-Fetch-Mode': 'navigate',
-      'Sec-Fetch-Site': 'none',
-      ...clientHintsFor({ chromeMajor: 135, secChUaPlatform: 'macOS' })
-    }
+  const { browser, remote } = await openBrowser({ headless });
+  const context = await openContext(browser, remote, {
+    profile: BROWSER_PROFILES[0]
   });
 
   // Warm the session by visiting Yad2's homepage first. Without this
   // step Yad2 returns its Radware/ShieldSquare anti-bot challenge
   // ("Are you for real?") for every direct detail-page GET, which
-  // poisons the heal step.
-  try {
-    const warmupPage = await context.newPage();
-    await warmupPage.goto('https://www.yad2.co.il/', {
-      waitUntil: 'domcontentloaded',
-      timeout: timeoutMs
-    });
-    await warmupPage.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
-    await warmupPage.close();
-  } catch (warmupError) {
-    logger.warn?.(`Enrichment warmup failed (continuing anyway): ${warmupError.message}`);
+  // poisons the heal step. Skip when Browser API handles unlocking.
+  if (!remote) {
+    try {
+      const warmupPage = await context.newPage();
+      await warmupPage.goto('https://www.yad2.co.il/', {
+        waitUntil: 'domcontentloaded',
+        timeout: timeoutMs
+      });
+      await warmupPage.waitForTimeout(1500 + Math.floor(Math.random() * 1500));
+      await warmupPage.close();
+    } catch (warmupError) {
+      logger.warn?.(`Enrichment warmup failed (continuing anyway): ${warmupError.message}`);
+    }
   }
 
-  const pages = await Promise.all(
-    Array.from({ length: Math.min(concurrency, ads.length) }, () => context.newPage())
-  );
+  // Browser API sessions are billed; keep concurrency low there.
+  const effectiveConcurrency = remote
+    ? Math.min(2, concurrency, ads.length)
+    : Math.min(concurrency, ads.length);
+  const pages = [];
+  for (let i = 0; i < effectiveConcurrency; i += 1) {
+    pages.push(i === 0 ? await openPage(context) : await context.newPage());
+  }
 
   const queue = ads.slice();
   const enriched = [];
@@ -1499,8 +1537,10 @@ async function enrichAdsWithDetails({
   try {
     await Promise.all(pages.map((page) => worker(page)));
   } finally {
-    await context.close();
-    await browser.close();
+    if (!remote) {
+      await context.close().catch(() => null);
+    }
+    await browser.close().catch(() => null);
   }
 
   return enriched;
@@ -1519,25 +1559,18 @@ async function probeListingsPresence({
 } = {}) {
   if (!Array.isArray(urls) || !urls.length) return [];
 
-  const browser = await chromium.launch({
-    headless,
-    args: STEALTH_LAUNCH_ARGS,
-    ...buildProxyConfig()
-  });
-  const context = await browser.newContext({
-    userAgent: DEFAULT_USER_AGENT,
-    locale: 'he-IL',
-    timezoneId: 'Asia/Jerusalem',
-    viewport: { width: 1440, height: 900 },
-    extraHTTPHeaders: {
-      'Accept-Language': 'he-IL,he;q=0.9,en;q=0.8',
-      ...clientHintsFor({ chromeMajor: 135, secChUaPlatform: 'macOS' })
-    }
+  const { browser, remote } = await openBrowser({ headless });
+  const context = await openContext(browser, remote, {
+    profile: BROWSER_PROFILES[0]
   });
 
-  const pages = await Promise.all(
-    Array.from({ length: Math.min(concurrency, urls.length) }, () => context.newPage())
-  );
+  const effectiveConcurrency = remote
+    ? Math.min(2, concurrency, urls.length)
+    : Math.min(concurrency, urls.length);
+  const pages = [];
+  for (let i = 0; i < effectiveConcurrency; i += 1) {
+    pages.push(i === 0 ? await openPage(context) : await context.newPage());
+  }
 
   const queue = urls.slice();
   const results = [];
@@ -1650,8 +1683,10 @@ async function probeListingsPresence({
   try {
     await Promise.all(pages.map((page) => worker(page)));
   } finally {
-    await context.close();
-    await browser.close();
+    if (!remote) {
+      await context.close().catch(() => null);
+    }
+    await browser.close().catch(() => null);
   }
 
   return results;

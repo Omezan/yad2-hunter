@@ -57,6 +57,7 @@ jobs:
           PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
           PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
           PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+          BRIGHT_DATA_BROWSER_WS: ${{ secrets.BRIGHT_DATA_BROWSER_WS }}
           EMAIL_NOTIFICATIONS_ENABLED: "true"
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_PORT: ${{ secrets.SMTP_PORT }}

@@ -72,6 +72,7 @@ jobs:
           PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
           PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
           PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+          BRIGHT_DATA_BROWSER_WS: ${{ secrets.BRIGHT_DATA_BROWSER_WS }}
           # SMTP transport for the Lev HaPark watch. All five vars
           # must be set as GitHub Actions secrets for the email
           # digest to actually fire; otherwise the email service

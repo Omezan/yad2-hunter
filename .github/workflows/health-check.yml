@@ -69,6 +69,7 @@ jobs:
           PROXY_SERVER: ${{ secrets.PROXY_SERVER }}
           PROXY_USERNAME: ${{ secrets.PROXY_USERNAME }}
           PROXY_PASSWORD: ${{ secrets.PROXY_PASSWORD }}
+          BRIGHT_DATA_BROWSER_WS: ${{ secrets.BRIGHT_DATA_BROWSER_WS }}
           PLAYWRIGHT_HEADLESS: "true"
           STATE_DIR: ${{ github.workspace }}/state
           DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}

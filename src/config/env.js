@@ -69,7 +69,12 @@ const env = {
   TELEGRAM_PROXY_SECRET: process.env.TELEGRAM_PROXY_SECRET || '',
   PROXY_SERVER: process.env.PROXY_SERVER || '',
   PROXY_USERNAME: process.env.PROXY_USERNAME || '',
-  PROXY_PASSWORD: process.env.PROXY_PASSWORD || ''
+  PROXY_PASSWORD: process.env.PROXY_PASSWORD || '',
+  // Bright Data Browser API WebSocket endpoint, e.g.
+  // wss://brd-customer-...-zone-scraping_browser1:PASS@brd.superproxy.io:9222
+  // When set, Playwright connects over CDP to Bright Data's managed
+  // browser (auto unblocking) instead of launching local Chromium.
+  BRIGHT_DATA_BROWSER_WS: (process.env.BRIGHT_DATA_BROWSER_WS || '').trim()
 };
 
 module.exports = {
