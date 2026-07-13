@@ -102,7 +102,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/y1h4jyk9": {
       "externalId": "coastal-north/y1h4jyk9",
@@ -115,7 +115,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/0mbzd44f": {
       "externalId": "coastal-north/0mbzd44f",
@@ -128,7 +128,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/lmk6t8ii": {
       "externalId": "coastal-north/lmk6t8ii",
@@ -141,7 +141,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/w90d2sil": {
       "externalId": "north-and-valleys/w90d2sil",
@@ -1207,7 +1207,7 @@
       "rooms": 6,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-05-20T19:31:45.556Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/f5tq4agc": {
       "externalId": "north-and-valleys/f5tq4agc",
@@ -2208,7 +2208,7 @@
       "rooms": 4,
       "city": "לימן",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/6pgrqmy4": {
       "externalId": "coastal-north/6pgrqmy4",
@@ -2221,7 +2221,7 @@
       "rooms": 6.5,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/eqan7fns": {
       "externalId": "coastal-north/eqan7fns",
@@ -2234,7 +2234,7 @@
       "rooms": 5,
       "city": "רגבה",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/z2cu3kz4": {
       "externalId": "north-and-valleys/z2cu3kz4",
@@ -2455,7 +2455,7 @@
       "rooms": 4.5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-07T06:54:48.392Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/0mfj4wbz": {
       "externalId": "north-and-valleys/0mfj4wbz",
@@ -2637,7 +2637,7 @@
       "rooms": 5,
       "city": "צרופה",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/o7ue1kwb": {
       "externalId": "north-and-valleys/o7ue1kwb",
@@ -3092,7 +3092,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-06-11T09:25:05.831Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "jerusalem-area/u4onusz7": {
       "externalId": "jerusalem-area/u4onusz7",
@@ -3274,7 +3274,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-14T14:02:03.696Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/d3d2e4jj": {
       "externalId": "north-and-valleys/d3d2e4jj",
@@ -3833,7 +3833,7 @@
       "rooms": 4,
       "city": "נתיב השיירה",
       "firstSeenAt": "2026-06-17T11:49:41.919Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/e9jn6ff3": {
       "externalId": "north-and-valleys/e9jn6ff3",
@@ -5250,7 +5250,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/8ifew8tk": {
       "externalId": "north-and-valleys/8ifew8tk",
@@ -5510,7 +5510,7 @@
       "rooms": 4,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-25T09:04:05.579Z",
-      "lastSeenAt": "2026-06-25T11:49:08.207Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "center-and-sharon/ekla9trz": {
       "externalId": "center-and-sharon/ekla9trz",
@@ -5766,11 +5766,11 @@
       "searchId": "coastal-north",
       "searchLabel": "חוף צפוני",
       "districtLabel": "חוף צפוני",
-      "price": 4200,
+      "price": 100,
       "rooms": 4,
       "city": "אחיהוד",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/4fwj2f5j": {
       "externalId": "coastal-north/4fwj2f5j",
@@ -5779,11 +5779,11 @@
       "searchId": "coastal-north",
       "searchLabel": "חוף צפוני",
       "districtLabel": "חוף צפוני",
-      "price": 7000,
+      "price": 6800,
       "rooms": 4.5,
       "city": "לימן",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "coastal-north/ssoanjvl": {
       "externalId": "coastal-north/ssoanjvl",
@@ -5822,7 +5822,7 @@
       "rooms": 4,
       "city": "עמקה",
       "firstSeenAt": "2026-06-29T08:44:42.902Z",
-      "lastSeenAt": "2026-06-30T10:03:27.099Z"
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     },
     "north-and-valleys/18v6e85g": {
       "externalId": "north-and-valleys/18v6e85g",
@@ -6161,6 +6161,32 @@
       "city": "שורש",
       "firstSeenAt": "2026-06-30T09:41:32.090Z",
       "lastSeenAt": "2026-06-30T10:03:27.099Z"
+    },
+    "coastal-north/ic1ahcou": {
+      "externalId": "coastal-north/ic1ahcou",
+      "title": "בית פרטי/ קוטג', כפר ראש הנקרה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/ic1ahcou",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 8000,
+      "rooms": 5,
+      "city": "כפר ראש הנקרה",
+      "firstSeenAt": "2026-07-13T07:28:15.758Z",
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
+    },
+    "coastal-north/lzpshnea": {
+      "externalId": "coastal-north/lzpshnea",
+      "title": "בית פרטי/ קוטג', לימן",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/lzpshnea",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 6000,
+      "rooms": 4,
+      "city": "לימן",
+      "firstSeenAt": "2026-07-13T07:28:15.758Z",
+      "lastSeenAt": "2026-07-13T07:28:15.758Z"
     }
   }
 }
