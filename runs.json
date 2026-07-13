@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-07-13T09:01:21.780Z",
+      "completedAt": "2026-07-13T09:03:39.891Z",
+      "status": "failed",
+      "trigger": "manual-dashboard",
+      "totalAds": 0,
+      "preFilteredAds": 0,
+      "candidateNewAds": 0,
+      "relevantNewAds": 0,
+      "telegramSent": false,
+      "emailSent": false,
+      "errors": [
+        {
+          "message": "browserType.connectOverCDP: Target page, context or browser has been closed\nCall log:\n  - <ws connecting> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/\n  - <ws connected> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/\n  - <ws disconnected> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/ code=1006 reason=\n"
+        }
+      ]
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-07-13T07:46:00.182Z",
       "completedAt": "2026-07-13T07:48:48.838Z",
       "status": "completed",
@@ -2025,24 +2043,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-06-29T08:39:49.415Z",
-      "completedAt": "2026-06-29T08:44:45.577Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 372,
-      "preFilteredAds": 372,
-      "candidateNewAds": 35,
-      "relevantNewAds": 35,
-      "notifiedNewAds": 20,
-      "notifiedEmailAds": 3,
-      "suppressedNewAds": 12,
-      "telegramSent": true,
-      "emailSent": true,
-      "errors": [],
       "cooldownSkipCount": 0
     }
   ]
