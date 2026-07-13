@@ -456,10 +456,20 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
       return { anchors: [], expectedCount: null };
     }
 
-    const hasItems = await page
-      .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
+    let hasItems = await page
+      .waitForSelector('a[href*="/realestate/item/"]', { timeout: 12000 })
       .then(() => true)
       .catch(() => false);
+
+    // Under Browser API, waitForSelector can lose a race with a soft
+    // client-side navigation and return false even when feed cards are
+    // already in the DOM. Double-check with a plain count before giving up.
+    if (!hasItems) {
+      const attachedCount = await page
+        .evaluate(() => document.querySelectorAll('a[href*="/realestate/item/"]').length)
+        .catch(() => 0);
+      hasItems = attachedCount > 0;
+    }
 
     if (!hasItems) {
       const diagnostics = await page.evaluate(() => ({
@@ -569,101 +579,60 @@ async function scrollPageOnce(page) {
   });
 }
 
-async function goToNextPage(page, targetPageNumber, logger) {
-  const beforeFirstId = await page.evaluate(() => {
-    const a = document.querySelector('a[href*="/realestate/item/"]');
-    return a ? a.href : null;
-  });
-
-  const clickResult = await page.evaluate((target) => {
-    const all = Array.from(
-      document.querySelectorAll(
-        'a[aria-label*="עמוד"], button[aria-label*="עמוד"], a[aria-label*="הבא"], button[aria-label*="הבא"], [role="navigation"] a, [role="navigation"] button, nav a, nav button, [class*="pagination"] a, [class*="pagination"] button, [class*="pager"] a, [class*="pager"] button'
-      )
-    );
-    function getText(el) {
-      return ((el.innerText || el.textContent) || '').trim();
+function buildPagedSearchUrl(currentUrl, targetPageNumber) {
+  try {
+    const u = new URL(currentUrl);
+    if (targetPageNumber <= 1) {
+      u.searchParams.delete('page');
+    } else {
+      u.searchParams.set('page', String(targetPageNumber));
     }
-    function isNumberAnchor(el, num) {
-      const text = getText(el);
-      return text === String(num);
-    }
-    const numericTarget = all.find((el) => isNumberAnchor(el, target));
-    if (numericTarget) {
-      numericTarget.scrollIntoView({ block: 'center' });
-      numericTarget.click();
-      return `numeric:${target}`;
-    }
-    const nextArrow = all.find((el) => {
-      const label = (el.getAttribute('aria-label') || '').trim();
-      return /הבא|next/i.test(label);
-    });
-    if (nextArrow && !nextArrow.disabled && nextArrow.getAttribute('aria-disabled') !== 'true') {
-      nextArrow.scrollIntoView({ block: 'center' });
-      nextArrow.click();
-      return 'next-arrow';
-    }
+    return u.toString();
+  } catch {
     return null;
-  }, targetPageNumber);
+  }
+}
 
-  let advancedVia = clickResult;
+async function waitForListingItems(page, timeoutMs = 20000) {
+  return page
+    .waitForSelector('a[href*="/realestate/item/"]', { timeout: timeoutMs })
+    .then(() => true)
+    .catch(() => false);
+}
 
-  if (advancedVia) {
-    const changed = await page
-      .waitForFunction(
-        (prevId) => {
-          const a = document.querySelector('a[href*="/realestate/item/"]');
-          return a && a.href !== prevId;
-        },
-        beforeFirstId,
-        { timeout: 8000 }
-      )
-      .then(() => true)
-      .catch(() => false);
-
-    if (!changed) {
-      logger.warn?.(`    pager: page ${targetPageNumber} did not change after click (${clickResult}); will fallback to direct navigation`);
-      advancedVia = null;
-    }
+async function goToNextPage(page, targetPageNumber, logger) {
+  // Prefer direct URL navigation. Yad2 page-2+ keeps the same sticky
+  // platinum cards at the top, so "first listing href changed" is a bad
+  // signal — and DOM .click() on bare text "2" is flaky under Browser API.
+  const targetUrl = buildPagedSearchUrl(page.url(), targetPageNumber);
+  if (!targetUrl) {
+    logger.warn?.(`    pager: could not build URL for page ${targetPageNumber}`);
+    return false;
   }
 
-  if (!advancedVia) {
-    const currentUrl = page.url();
-    const fallbackUrl = (() => {
-      try {
-        const u = new URL(currentUrl);
-        u.searchParams.set('page', String(targetPageNumber));
-        return u.toString();
-      } catch {
-        return null;
-      }
-    })();
+  try {
+    await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 45000 });
+    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => null);
 
-    if (!fallbackUrl) {
-      logger.warn?.(`    pager: could not build fallback URL for page ${targetPageNumber}`);
+    let hasItems = await waitForListingItems(page, 20000);
+    if (!hasItems) {
+      await page.waitForTimeout(3000);
+      const attachedCount = await page
+        .evaluate(() => document.querySelectorAll('a[href*="/realestate/item/"]').length)
+        .catch(() => 0);
+      hasItems = attachedCount > 0;
+    }
+    if (!hasItems) {
+      logger.warn?.(`    pager: ${targetUrl} returned no items`);
       return false;
     }
 
-    try {
-      await page.goto(fallbackUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await page.waitForLoadState('networkidle', { timeout: 6000 }).catch(() => null);
-      const hasItems = await page
-        .waitForSelector('a[href*="/realestate/item/"]', { timeout: 8000 })
-        .then(() => true)
-        .catch(() => false);
-      if (!hasItems) {
-        logger.warn?.(`    pager: fallback ${fallbackUrl} returned no items`);
-        return false;
-      }
-      advancedVia = `direct:${fallbackUrl}`;
-    } catch (error) {
-      logger.warn?.(`    pager: fallback to ${fallbackUrl} failed: ${error.message}`);
-      return false;
-    }
+    logger.info?.(`    pager: advanced to page ${targetPageNumber} via direct:${targetUrl}`);
+    return true;
+  } catch (error) {
+    logger.warn?.(`    pager: navigation to page ${targetPageNumber} failed: ${error.message}`);
+    return false;
   }
-
-  logger.info?.(`    pager: advanced to page ${targetPageNumber} via ${advancedVia}`);
-  return true;
 }
 
 const DISTRICT_ITEM_URL_RE = /\/realestate\/item\/[a-z][a-z-]+\/[a-z0-9]+/i;
