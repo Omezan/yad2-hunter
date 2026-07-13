@@ -1371,20 +1371,24 @@ async function scrapeAllSearches({
   concurrency
 }) {
   const remote = usesBrowserApi();
-  // Browser API rotates IPs per session and tolerates parallel sessions,
-  // so run several searches at once. Local Chromium stays sequential to
-  // avoid hammering a single residential IP (and the local machine).
-  // Tunable via SCRAPE_CONCURRENCY; default 3 for remote. Pushing higher
-  // starves individual sessions enough that a paginated district can time
-  // out mid-scrape (mitigated now by partial-detection + fresh retry).
+  // Correctness first: default to SEQUENTIAL (concurrency 1). Running
+  // searches in parallel starves individual Bright Data sessions enough
+  // that a paginated district can time out mid-scrape and under-collect
+  // — i.e. miss ads. Sequential never hit that in testing. Parallelism
+  // is opt-in only, via SCRAPE_CONCURRENCY, for when speed matters more.
   const configured = concurrency || env.SCRAPE_CONCURRENCY || 0;
-  const effectiveConcurrency = configured > 0 ? configured : remote ? 3 : 1;
+  const effectiveConcurrency = configured > 0 ? configured : 1;
 
   const allAds = [];
   const allErrors = [];
   const stillEmpty = [];
 
-  if (effectiveConcurrency > 1) {
+  // The robust pool path (partial-detection + fresh-session retry +
+  // keep-best) is used for every Browser API run, even at concurrency 1,
+  // so a stalled session that under-collects is retried and never
+  // silently drops a district. Local Chromium keeps its legacy
+  // sequential path (with anti-bot pauses + profile rotation).
+  if (remote) {
     logger.info?.(
       `Scraping ${searches.length} searches with concurrency=${effectiveConcurrency}${
         remote ? ' [Browser API]' : ''
@@ -1436,11 +1440,19 @@ async function scrapeAllSearches({
     for (const entry of bestBySearchId.values()) {
       if (entry.ads.length > 0) {
         allAds.push(...entry.ads);
-        // A still-partial best result is worth surfacing but not fatal.
+        // Still short after a fresh-session retry: we genuinely could not
+        // reach every ad this run. Surface it as an error so the run is
+        // marked partial and the scrape-warning notification fires —
+        // never let a missed ad pass silently.
         if (entry.partial && entry.expected) {
-          logger.warn?.(
-            `  ${entry.search.id}: kept partial ${entry.ads.length}/${entry.expected} after retry`
+          logger.error(
+            `  ${entry.search.id}: still partial ${entry.ads.length}/${entry.expected} after retry`
           );
+          allErrors.push({
+            searchId: entry.search.id,
+            searchLabel: entry.search.label,
+            message: `partial scrape: got ${entry.ads.length}/${entry.expected} ads`
+          });
         }
       } else {
         stillEmpty.push(entry.search);
