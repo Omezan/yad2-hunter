@@ -1,14 +1,9 @@
 name: Yad2 Scan
 
 on:
-  schedule:
-    # One job per hour. GitHub's scheduler is observably unreliable for
-    # short cron intervals (free-tier accounts can see */30 slip to
-    # 60–240 min gaps under platform load), so we book a single runner
-    # per hour and let the job itself drive scan cadence via an
-    # internal loop — see src/worker/run-loop.js. Effective scan
-    # frequency: ~every 30 minutes.
-    - cron: "0 * * * *"
+  # Periodic cron disabled — scans run only on manual trigger
+  # (dashboard / workflow_dispatch). Re-enable schedule when Yad2
+  # unblocking is working again.
   workflow_dispatch:
 
 concurrency:

@@ -1,13 +1,8 @@
 name: Yad2 Health Check
 
 on:
-  schedule:
-    # Once per day, 17:00 UTC. That maps to ~20:00 Israel time in summer
-    # (DST) and ~19:00 Israel time in winter — close enough to "around
-    # eight in the evening" for this maintenance run. The reconciler
-    # owns deletions across ALL watches (moshav + lev-hapark +
-    # rent-in-cities); the scan workflow is intentionally additive only.
-    - cron: "0 17 * * *"
+  # Daily cron disabled — health-check runs only on manual trigger
+  # until Yad2 scraping is reliable again.
   workflow_dispatch:
 
 concurrency:
