@@ -234,6 +234,9 @@ test('formatDigestMessage includes title, rooms, price, and link', () => {
   assert.match(message, /בית פרטי, לוטם/);
   assert.match(message, /5\.5 חדרים/);
   assert.match(message, /6,100 ₪/);
+  // District/region is appended to each ad's heading line.
+  assert.match(message, /דירה, בת חפר, מרכז והשרון/);
+  assert.match(message, /בית פרטי, לוטם, צפון והעמקים/);
 });
 
 test('parsePublishedDate parses Yad2 פורסם dates', () => {

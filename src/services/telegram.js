@@ -30,7 +30,11 @@ function formatPublished(ad) {
 }
 
 function formatAdLine(ad, index) {
-  const heading = truncateTitle(ad.title || 'מודעה');
+  const baseHeading = truncateTitle(ad.title || 'מודעה');
+  // Append the district/region so each line reads
+  // "PROPERTY_TYPE, CITY, DISTRICT" (e.g. "דירה, צור יצחק, מרכז והשרון").
+  const district = (ad.districtLabel || '').trim();
+  const heading = district ? `${baseHeading}, ${district}` : baseHeading;
   const facts = [
     formatRooms(ad.rooms),
     formatPrice(ad.price, ad.hasExplicitPrice),
