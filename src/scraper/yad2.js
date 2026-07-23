@@ -1444,27 +1444,33 @@ async function scrapeAllSearches({
     });
     pass1.results.forEach(recordResult);
 
-    // Retry empties AND partials once in a fresh session (new exit node).
-    const needsRetry = pass1.results
-      .filter((r) => r.ads.length === 0 || r.partial)
-      .map((r) => r.search);
-    const anySuccess = pass1.results.some((r) => r.ads.length > 0);
-    if (needsRetry.length > 0 && anySuccess) {
+    // Retry empties AND partials in FRESH sessions. Each new Bright Data
+    // session lands a different exit IP, so a search blocked by Radware on
+    // one node often succeeds on the next. Yad2's block is per-IP and
+    // intermittent, so loop several rounds before giving up — correctness
+    // matters more than the extra minutes on a manual run.
+    const maxRetryRounds = remote ? env.SCRAPE_MAX_RETRY_ROUNDS || 4 : 1;
+    for (let round = 1; round <= maxRetryRounds; round += 1) {
+      const needsRetry = Array.from(bestBySearchId.values())
+        .filter((r) => r.ads.length === 0 || r.partial)
+        .map((r) => r.search);
+      if (needsRetry.length === 0) break;
+
       logger.warn?.(
-        `Retrying ${needsRetry.length} empty/partial searches (${needsRetry
+        `Retry round ${round}/${maxRetryRounds}: ${needsRetry.length} empty/partial searches (${needsRetry
           .map((s) => s.id)
-          .join(', ')}) concurrently`
+          .join(', ')}) in fresh sessions`
       );
-      const pass2 = await runSearchPool({
+      const pass = await runSearchPool({
         searches: needsRetry,
         headless,
         timeoutMs,
         logger,
-        profile: BROWSER_PROFILES[1] || BROWSER_PROFILES[0],
+        profile: BROWSER_PROFILES[round % BROWSER_PROFILES.length],
         concurrency: effectiveConcurrency,
         extraWarmupMs: remote ? 0 : 5000
       });
-      pass2.results.forEach(recordResult);
+      pass.results.forEach(recordResult);
     }
 
     for (const entry of bestBySearchId.values()) {

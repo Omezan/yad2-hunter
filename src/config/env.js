@@ -79,7 +79,11 @@ const env = {
   // API path (local Chromium stays sequential). Higher = faster but more
   // Bright Data session contention (slower per-session, more timeouts).
   // 0/unset lets the scraper pick a sensible default (3).
-  SCRAPE_CONCURRENCY: parseInteger(process.env.SCRAPE_CONCURRENCY, 0)
+  SCRAPE_CONCURRENCY: parseInteger(process.env.SCRAPE_CONCURRENCY, 0),
+  // How many extra fresh-session retry rounds to attempt for searches
+  // that came back empty/partial (e.g. Radware blocked that exit IP).
+  // Each round gets new Bright Data exit IPs. Only used on Browser API.
+  SCRAPE_MAX_RETRY_ROUNDS: parseInteger(process.env.SCRAPE_MAX_RETRY_ROUNDS, 4)
 };
 
 module.exports = {
