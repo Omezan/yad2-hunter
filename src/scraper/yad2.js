@@ -22,6 +22,18 @@ const STEALTH_LAUNCH_ARGS = [
   '--no-first-run'
 ];
 
+// Absolute wall-clock deadline (ms epoch) for the current scrape run.
+// 0 = disabled. Set at the start of scrapeAllSearches from
+// SCRAPE_TIME_BUDGET_MS and checked before starting each search and
+// before each pagination step, so a slow Bright Data day can never run
+// the job past the workflow timeout (which hard-cancels and sends no
+// notification). Reaching it ends the run gracefully as "partial".
+let scrapeDeadlineAt = 0;
+
+function pastScrapeDeadline() {
+  return scrapeDeadlineAt > 0 && Date.now() > scrapeDeadlineAt;
+}
+
 function buildProxyConfig() {
   // Browser API replaces local proxy entirely — do not stack both.
   if (env.BRIGHT_DATA_BROWSER_WS) return {};
@@ -580,6 +592,15 @@ async function scrapeSearchPage(page, url, timeoutMs, { attempts = 2, logger = c
     let pageIndex = 1;
     const maxPages = 10;
     while (pageIndex < maxPages && cumulativeDistrictNeedsMore()) {
+      // Stop paginating if the run's overall time budget is spent. Return
+      // what we have (marked partial upstream) so the run finishes and
+      // notifies instead of being hard-cancelled mid-page.
+      if (pastScrapeDeadline()) {
+        logger.warn?.(
+          `    time budget reached; stopping pagination at page ${pageIndex} (district=${seenDistrictIds.size}/${expectedCount ?? '?'})`
+        );
+        break;
+      }
       const advanced = await goToNextPage(page, pageIndex + 1, logger);
       if (!advanced) break;
 
@@ -1335,7 +1356,11 @@ async function scrapeOneSearchWithFreshBrowser({
     // exit node) instead of silently dropping half a district.
     const expected =
       typeof result.expectedCount === 'number' ? result.expectedCount : null;
-    const partial = expected !== null && result.ads.length < expected;
+    // Yad2's headline count drifts a little from paginable district items,
+    // so only treat a shortfall beyond SCRAPE_PARTIAL_TOLERANCE as partial
+    // — otherwise a 152/153 count-quirk forces a full re-scrape every round.
+    const tolerance = env.SCRAPE_PARTIAL_TOLERANCE || 0;
+    const partial = expected !== null && result.ads.length < expected - tolerance;
     if (partial) {
       logger.warn?.(
         `  ${search.id}: partial scrape (${result.ads.length}/${expected}); will retry in fresh session`
@@ -1370,9 +1395,14 @@ async function runSearchPool({ searches, headless, timeoutMs, logger, profile, c
   const queue = searches.slice();
   const results = [];
   const errors = [];
+  const scraped = new Set();
 
   async function worker() {
     while (queue.length) {
+      // Don't START a new search once the time budget is spent — let the
+      // run wind down and notify. Remaining searches are marked skipped
+      // below so a missed district is still surfaced (never silent).
+      if (pastScrapeDeadline()) break;
       const search = queue.shift();
       if (!search) break;
       const result = await scrapeOneSearchWithFreshBrowser({
@@ -1383,6 +1413,7 @@ async function runSearchPool({ searches, headless, timeoutMs, logger, profile, c
         profile,
         extraWarmupMs
       });
+      scraped.add(search.id);
       if (result.error) errors.push(result.error);
       results.push({ search, ...result });
     }
@@ -1390,6 +1421,16 @@ async function runSearchPool({ searches, headless, timeoutMs, logger, profile, c
 
   const workers = Array.from({ length: Math.min(concurrency, searches.length) }, () => worker());
   await Promise.all(workers);
+
+  // Any search never attempted because the budget ran out is recorded as
+  // an empty result so upstream keep-best/flagging treats it as still
+  // empty and the partial-scrape notification fires.
+  for (const search of searches) {
+    if (!scraped.has(search.id)) {
+      logger.warn?.(`  ${search.id}: skipped (time budget exhausted before it ran)`);
+      results.push({ search, ads: [], error: null, partial: false, expected: null });
+    }
+  }
   return { results, errors };
 }
 
@@ -1408,6 +1449,11 @@ async function scrapeAllSearches({
   // is opt-in only, via SCRAPE_CONCURRENCY, for when speed matters more.
   const configured = concurrency || env.SCRAPE_CONCURRENCY || 0;
   const effectiveConcurrency = configured > 0 ? configured : 1;
+
+  // Arm the global time budget for this run. Everything downstream
+  // (pool workers, pagination) checks pastScrapeDeadline() so we always
+  // stop before the workflow timeout and still send notifications.
+  scrapeDeadlineAt = env.SCRAPE_TIME_BUDGET_MS > 0 ? Date.now() + env.SCRAPE_TIME_BUDGET_MS : 0;
 
   const allAds = [];
   const allErrors = [];
@@ -1450,20 +1496,18 @@ async function scrapeAllSearches({
     // intermittent, so loop several rounds before giving up — correctness
     // matters more than the extra minutes on a manual run.
     const maxRetryRounds = remote ? env.SCRAPE_MAX_RETRY_ROUNDS || 4 : 1;
-    const scrapeStartedAt = Date.now();
-    const timeBudgetMs = env.SCRAPE_TIME_BUDGET_MS || 0;
     for (let round = 1; round <= maxRetryRounds; round += 1) {
       const needsRetry = Array.from(bestBySearchId.values())
         .filter((r) => r.ads.length === 0 || r.partial)
         .map((r) => r.search);
       if (needsRetry.length === 0) break;
 
-      // Stop retrying once we're near the workflow timeout so the run can
-      // finish gracefully (dedupe + notify) rather than be hard-cancelled
+      // Stop retrying once the time budget is spent so the run can finish
+      // gracefully (dedupe + notify) rather than be hard-cancelled
       // mid-round, which would send no notification at all.
-      if (timeBudgetMs > 0 && Date.now() - scrapeStartedAt > timeBudgetMs) {
+      if (pastScrapeDeadline()) {
         logger.warn?.(
-          `Time budget (${Math.round(timeBudgetMs / 60000)}m) exhausted; skipping remaining retry rounds for ${needsRetry
+          `Time budget exhausted; skipping remaining retry rounds for ${needsRetry
             .map((s) => s.id)
             .join(', ')}`
         );
