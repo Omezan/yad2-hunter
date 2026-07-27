@@ -25,13 +25,13 @@ permissions:
 jobs:
   scan:
     runs-on: self-hosted
-    # 15-min budget: a fully-blocked day burns ~60-90s/search across
-    # 8 searches × up to 2 browser profiles. The previous 8-min cap
-    # killed the job mid-stride before it could send the partial-
-    # scrape warning. With the pass-2 short-circuit in
-    # scrapeAllSearches (skips when pass-1 found zero ads) we should
-    # land well inside this budget even on the worst-case day.
-    timeout-minutes: 15
+    # 45-min hard cap. On a bad day Bright Data sessions turn very slow
+    # (multi-minute stalls per page) and we retry blocked searches across
+    # several fresh sessions (new exit IPs) to avoid missing ads. The
+    # scraper enforces its own SCRAPE_TIME_BUDGET_MS (< this cap) so it
+    # stops retrying gracefully and still sends the partial-scrape warning
+    # instead of being hard-cancelled mid-run (which sends nothing).
+    timeout-minutes: 45
 
     steps:
       - name: Checkout main

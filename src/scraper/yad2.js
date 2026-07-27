@@ -1450,11 +1450,25 @@ async function scrapeAllSearches({
     // intermittent, so loop several rounds before giving up — correctness
     // matters more than the extra minutes on a manual run.
     const maxRetryRounds = remote ? env.SCRAPE_MAX_RETRY_ROUNDS || 4 : 1;
+    const scrapeStartedAt = Date.now();
+    const timeBudgetMs = env.SCRAPE_TIME_BUDGET_MS || 0;
     for (let round = 1; round <= maxRetryRounds; round += 1) {
       const needsRetry = Array.from(bestBySearchId.values())
         .filter((r) => r.ads.length === 0 || r.partial)
         .map((r) => r.search);
       if (needsRetry.length === 0) break;
+
+      // Stop retrying once we're near the workflow timeout so the run can
+      // finish gracefully (dedupe + notify) rather than be hard-cancelled
+      // mid-round, which would send no notification at all.
+      if (timeBudgetMs > 0 && Date.now() - scrapeStartedAt > timeBudgetMs) {
+        logger.warn?.(
+          `Time budget (${Math.round(timeBudgetMs / 60000)}m) exhausted; skipping remaining retry rounds for ${needsRetry
+            .map((s) => s.id)
+            .join(', ')}`
+        );
+        break;
+      }
 
       logger.warn?.(
         `Retry round ${round}/${maxRetryRounds}: ${needsRetry.length} empty/partial searches (${needsRetry

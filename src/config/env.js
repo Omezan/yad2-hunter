@@ -83,7 +83,13 @@ const env = {
   // How many extra fresh-session retry rounds to attempt for searches
   // that came back empty/partial (e.g. Radware blocked that exit IP).
   // Each round gets new Bright Data exit IPs. Only used on Browser API.
-  SCRAPE_MAX_RETRY_ROUNDS: parseInteger(process.env.SCRAPE_MAX_RETRY_ROUNDS, 4)
+  SCRAPE_MAX_RETRY_ROUNDS: parseInteger(process.env.SCRAPE_MAX_RETRY_ROUNDS, 4),
+  // Overall wall-clock budget (ms) for the scrape phase. When the budget
+  // is exhausted the scraper stops starting new retry rounds, so the run
+  // finishes gracefully (dedupe + notify) instead of being hard-cancelled
+  // by the workflow timeout. Keep this comfortably BELOW the workflow's
+  // timeout-minutes so notifications still send. Default 35 min.
+  SCRAPE_TIME_BUDGET_MS: parseInteger(process.env.SCRAPE_TIME_BUDGET_MS, 35 * 60 * 1000)
 };
 
 module.exports = {
