@@ -24,7 +24,11 @@ permissions:
 
 jobs:
   scan:
-    runs-on: self-hosted
+    # GitHub-hosted: scraping goes through the Bright Data Browser API
+    # (BRIGHT_DATA_BROWSER_WS), so the runner's own IP no longer matters
+    # and we no longer depend on a Mac being awake at home. Phone-triggered
+    # scans now run entirely in the cloud.
+    runs-on: ubuntu-latest
     # 60-min hard cap. On a bad day Bright Data sessions turn very slow
     # (multi-minute stalls per page) and big districts (150+ listings) need
     # many pages. The scraper enforces its own SCRAPE_TIME_BUDGET_MS (50m,
@@ -49,7 +53,7 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Chromium
-        run: npx playwright install chromium
+        run: npx playwright install --with-deps chromium
 
       - name: Restore state from state branch
         run: |
