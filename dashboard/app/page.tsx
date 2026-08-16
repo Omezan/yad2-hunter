@@ -492,9 +492,9 @@ export default function DashboardPage() {
             label={scanButtonLabel}
             disabled={scanTrigger.isDisabled || Boolean(scanDispatch)}
             title="מפעיל סריקה לפי בחירת המחוזות; תוצאות תוך כ-3 דקות"
-            onSubmit={(searchIds) =>
+            onSubmit={(searchIds, maxPrice) =>
               scanTrigger.trigger(
-                searchIds.length > 0 ? { searchIds } : undefined
+                searchIds.length > 0 ? { searchIds, maxPrice } : { maxPrice }
               )
             }
           />

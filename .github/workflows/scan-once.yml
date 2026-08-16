@@ -14,6 +14,13 @@ on:
           north-valleys when the user explicitly asks for it).
         required: false
         default: ""
+      max_price:
+        description: >-
+          Rent budget ceiling (₪) chosen in the dashboard popover.
+          Overrides the maxPrice query param on every price-filtered
+          search for this run. Empty = keep each search's default.
+        required: false
+        default: ""
 
 concurrency:
   group: yad2-scan-once
@@ -97,6 +104,9 @@ jobs:
           # Also acts as the "explicitly requested" override for the
           # Telegram suppression list.
           ENABLED_SEARCH_IDS: ${{ inputs.search_ids }}
+          # Per-run rent budget from the dashboard popover. Empty string
+          # parses to 0 in env.js, which means "keep each URL's default".
+          SCAN_MAX_PRICE: ${{ inputs.max_price }}
           # Marks this run as a manual dashboard trigger so the worker
           # sends a Telegram message even when zero new ads are found.
           SCAN_TRIGGER_LABEL: manual-dashboard

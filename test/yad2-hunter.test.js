@@ -37,7 +37,10 @@ const {
 } = require('../src/worker/run-once');
 const {
   ALL_SEARCHES,
-  getHealthCheckSearches
+  getHealthCheckSearches,
+  applyMaxPriceOverride,
+  withMaxPrice,
+  getFilterLimits
 } = require('../src/config/searches');
 const {
   __testing: emailTesting
@@ -505,6 +508,57 @@ test('ALL_SEARCHES no longer carries the legacy excludeFromHealthCheck flag', ()
       `${search.id} still has excludeFromHealthCheck`
     );
   }
+});
+
+test('withMaxPrice overrides the maxPrice query param on a price-filtered search', () => {
+  const search = {
+    id: 'center-sharon',
+    url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?maxPrice=9500&minRooms=4&settlements=1&zoom=9'
+  };
+  const updated = withMaxPrice(search, 8000);
+  assert.equal(new URL(updated.url).searchParams.get('maxPrice'), '8000');
+  // Other params are preserved.
+  assert.equal(new URL(updated.url).searchParams.get('minRooms'), '4');
+  assert.equal(new URL(updated.url).searchParams.get('settlements'), '1');
+  // Original object is not mutated.
+  assert.equal(new URL(search.url).searchParams.get('maxPrice'), '9500');
+});
+
+test('withMaxPrice leaves searches without a maxPrice param untouched (lev-hapark)', () => {
+  const search = {
+    id: 'lev-hapark-rent',
+    url: 'https://www.yad2.co.il/realestate/rent/center-and-sharon?minRooms=5&area=42&city=8700&neighborhood=807'
+  };
+  const updated = withMaxPrice(search, 8000);
+  assert.equal(updated.url, search.url);
+  assert.equal(updated, search);
+});
+
+test('withMaxPrice is a no-op for invalid / non-positive budgets', () => {
+  const search = {
+    id: 'south',
+    url: 'https://www.yad2.co.il/realestate/rent/south?maxPrice=9500&minRooms=4&settlements=1&zoom=9'
+  };
+  for (const bad of [0, -100, NaN, undefined, null, 'abc']) {
+    assert.equal(withMaxPrice(search, bad).url, search.url);
+  }
+});
+
+test('applyMaxPriceOverride rewrites every price-filtered search and getFilterLimits reflects it', () => {
+  const searches = ALL_SEARCHES.filter((s) => /maxPrice=/.test(s.url)).slice(0, 3);
+  const overridden = applyMaxPriceOverride(searches, 8500);
+  for (const search of overridden) {
+    assert.equal(new URL(search.url).searchParams.get('maxPrice'), '8500');
+    // The relevance/health-check limits parse straight off the URL, so
+    // the override must flow into getFilterLimits automatically.
+    assert.equal(getFilterLimits(search).maxPrice, 8500);
+  }
+});
+
+test('applyMaxPriceOverride returns the list unchanged when no valid budget is given', () => {
+  const searches = ALL_SEARCHES.slice(0, 2);
+  assert.equal(applyMaxPriceOverride(searches, 0), searches);
+  assert.equal(applyMaxPriceOverride(searches, undefined), searches);
 });
 
 test('mergeSeenAds: local-only and remote-only keys are both kept', () => {

@@ -61,10 +61,18 @@ type Props = {
   title?: string;
   /**
    * Called when the user clicks "הרץ" inside the picker. The empty
-   * array means "scan everything" (the workflow handles that).
+   * array means "scan everything" (the workflow handles that). The
+   * second argument is the required rent budget (₪) to use for this run.
    */
-  onSubmit: (searchIds: string[]) => void;
+  onSubmit: (searchIds: string[], maxPrice: number) => void;
 };
+
+// Budget field bounds. Kept in sync with the API route's clamp
+// (dashboard/app/api/trigger/scan/route.ts) so the client and server
+// agree on what a valid budget is.
+const DEFAULT_BUDGET = 9500;
+const MIN_BUDGET = 1000;
+const MAX_BUDGET = 100000;
 
 export default function ScanPicker({ label, disabled, title, onSubmit }: Props) {
   const [open, setOpen] = useState(false);
@@ -73,7 +81,14 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
     []
   );
   const [selected, setSelected] = useState<Set<string>>(() => new Set(allValues));
+  const [budget, setBudget] = useState<string>(String(DEFAULT_BUDGET));
   const ref = useRef<HTMLDivElement | null>(null);
+
+  const budgetValue = Number.parseInt(budget, 10);
+  const budgetValid =
+    Number.isFinite(budgetValue) &&
+    budgetValue >= MIN_BUDGET &&
+    budgetValue <= MAX_BUDGET;
 
   useEffect(() => {
     if (!open) return;
@@ -127,14 +142,14 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
   })();
 
   const handleSubmit = () => {
-    if (noneSelected) return;
+    if (noneSelected || !budgetValid) return;
     setOpen(false);
     // "all selected" is the cron-equivalent path: send an empty list so
     // the worker treats it as "scan everything", which keeps the
     // default Telegram suppression (north-valleys) in place. A strict
     // subset is forwarded as an explicit list, which also bypasses
     // suppression for any of those districts that are normally muted.
-    onSubmit(allSelected ? [] : Array.from(selected));
+    onSubmit(allSelected ? [] : Array.from(selected), budgetValue);
   };
 
   return (
@@ -178,6 +193,31 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
               >
                 ✕
               </button>
+            </div>
+
+            <div className="scan-picker-budget">
+              <label className="scan-picker-budget-label" htmlFor="scan-picker-budget-input">
+                תקציב מקסימלי (₪)
+              </label>
+              <input
+                id="scan-picker-budget-input"
+                className={`scan-picker-budget-input${budgetValid ? '' : ' is-invalid'}`}
+                type="number"
+                inputMode="numeric"
+                min={MIN_BUDGET}
+                max={MAX_BUDGET}
+                step={100}
+                required
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                placeholder={String(DEFAULT_BUDGET)}
+              />
+              {!budgetValid ? (
+                <span className="scan-picker-budget-hint">
+                  יש להזין תקציב בין {MIN_BUDGET.toLocaleString('he-IL')} ל-
+                  {MAX_BUDGET.toLocaleString('he-IL')}₪
+                </span>
+              ) : null}
             </div>
 
             <div className="toolbar-district-actions">
@@ -239,7 +279,7 @@ export default function ScanPicker({ label, disabled, title, onSubmit }: Props) 
                 type="button"
                 className="toolbar-district-done"
                 onClick={handleSubmit}
-                disabled={noneSelected}
+                disabled={noneSelected || !budgetValid}
               >
                 {allSelected
                   ? 'הרץ סריקה לכל החיפושים'

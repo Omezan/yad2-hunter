@@ -28,6 +28,25 @@ function sanitizeSearchIds(raw: unknown): string {
   return Array.from(new Set(cleaned)).join(',');
 }
 
+// Clamp the user-supplied budget to a sane rent range so a typo (or a
+// malicious caller) can't push an absurd maxPrice into the Yad2 URL.
+// Returns '' for missing/invalid input → the workflow keeps each
+// search's default ceiling.
+const MIN_BUDGET = 1000;
+const MAX_BUDGET = 100000;
+
+function sanitizeMaxPrice(raw: unknown): string {
+  const n =
+    typeof raw === 'number'
+      ? raw
+      : typeof raw === 'string'
+        ? Number.parseInt(raw.trim(), 10)
+        : NaN;
+  if (!Number.isFinite(n)) return '';
+  const clamped = Math.min(MAX_BUDGET, Math.max(MIN_BUDGET, Math.round(n)));
+  return String(clamped);
+}
+
 export async function POST(request: Request) {
   const repo = process.env.GITHUB_REPO;
   const token = process.env.GITHUB_TOKEN;
@@ -41,13 +60,15 @@ export async function POST(request: Request) {
   }
 
   // Body is optional — old clients that POST without one keep the
-  // "scan everything" behaviour.
+  // "scan everything" behaviour and each search's default budget.
   let searchIdsCsv = '';
+  let maxPrice = '';
   try {
     const body = await request.json();
     searchIdsCsv = sanitizeSearchIds(body?.searchIds);
+    maxPrice = sanitizeMaxPrice(body?.maxPrice);
   } catch {
-    // No JSON body → scan everything.
+    // No JSON body → scan everything with default budgets.
   }
 
   const dispatchedAt = new Date().toISOString();
@@ -62,18 +83,20 @@ export async function POST(request: Request) {
     },
     body: JSON.stringify({
       ref: branch,
-      inputs: { search_ids: searchIdsCsv }
+      inputs: { search_ids: searchIdsCsv, max_price: maxPrice }
     })
   });
 
   if (res.status === 204) {
+    const budgetNote = maxPrice ? ` (תקציב עד ${Number(maxPrice).toLocaleString('he-IL')}₪)` : '';
     return NextResponse.json({
       ok: true,
       dispatchedAt,
       searchIds: searchIdsCsv ? searchIdsCsv.split(',') : [],
+      maxPrice: maxPrice ? Number(maxPrice) : null,
       message: searchIdsCsv
-        ? `הסריקה הופעלה למחוזות: ${searchIdsCsv.replace(/,/g, ', ')}. תוצאות תוך כ-3 דקות.`
-        : 'הסריקה הופעלה. תוצאות יופיעו תוך כ-3 דקות.'
+        ? `הסריקה הופעלה למחוזות: ${searchIdsCsv.replace(/,/g, ', ')}${budgetNote}. תוצאות תוך כ-3 דקות.`
+        : `הסריקה הופעלה${budgetNote}. תוצאות יופיעו תוך כ-3 דקות.`
     });
   }
 

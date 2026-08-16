@@ -1,5 +1,5 @@
 const { env } = require('../config/env');
-const { getEnabledSearches } = require('../config/searches');
+const { getEnabledSearches, applyMaxPriceOverride } = require('../config/searches');
 const {
   commitAds,
   ensureStateDir,
@@ -163,7 +163,17 @@ function dumpRejectedNewCandidates(ads, options) {
 async function runOnce(options = {}) {
   ensureStateDir();
 
-  const searches = getEnabledSearches(env.ENABLED_SEARCH_IDS);
+  // Apply the per-run budget the user picked in the dashboard popover.
+  // SCAN_MAX_PRICE (0/unset = keep each URL's hardcoded ceiling) rewrites
+  // the maxPrice query param on every price-filtered search so this scan
+  // uses exactly the budget the user entered.
+  const searches = applyMaxPriceOverride(
+    getEnabledSearches(env.ENABLED_SEARCH_IDS),
+    env.SCAN_MAX_PRICE
+  );
+  if (env.SCAN_MAX_PRICE > 0) {
+    console.log(`[run-once] applying budget override: maxPrice=${env.SCAN_MAX_PRICE}`);
+  }
   const startedAt = new Date().toISOString();
   const startedAtMs = Date.parse(startedAt) || Date.now();
   const trigger = options.trigger || 'manual';

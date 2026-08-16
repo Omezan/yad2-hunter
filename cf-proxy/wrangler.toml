@@ -1,0 +1,10 @@
+name = "yad2-proxy"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+AUTH_TOKEN = "f460f9068ce66eb9f8c8a4ea3638a67623d650027bd5e16cdf84fdabf589e029"
+
+[browser]
+binding = "BROWSER"

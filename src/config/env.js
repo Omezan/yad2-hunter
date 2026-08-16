@@ -96,7 +96,13 @@ const env = {
   // within this many of the reported count, so a 152/153 count-quirk does
   // NOT trigger a full multi-page re-scrape every retry round. Set 0 for
   // strict exact-match behavior. Default 2.
-  SCRAPE_PARTIAL_TOLERANCE: parseInteger(process.env.SCRAPE_PARTIAL_TOLERANCE, 2)
+  SCRAPE_PARTIAL_TOLERANCE: parseInteger(process.env.SCRAPE_PARTIAL_TOLERANCE, 2),
+  // Per-run rent budget (₪) chosen by the user in the dashboard's "הרץ
+  // סריקה" popover. When > 0 it overrides the `maxPrice` query param in
+  // every scraped search URL that already filters by price, so a scan
+  // can use a different ceiling than the hardcoded default without a code
+  // change. 0/unset = keep whatever each search URL already encodes.
+  SCAN_MAX_PRICE: parseInteger(process.env.SCAN_MAX_PRICE, 0)
 };
 
 module.exports = {

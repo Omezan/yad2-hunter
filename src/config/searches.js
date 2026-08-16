@@ -78,6 +78,35 @@ const ALL_SEARCHES = [
   }
 ];
 
+// Rewrite a single search's URL so its `maxPrice` query param equals the
+// requested budget. Only touches searches that ALREADY filter by price
+// (the moshav rentals + rent-in-cities) — the Lev HaPark watches filter
+// by neighborhood and carry no maxPrice, so they're left untouched. A
+// non-positive / invalid budget is a no-op so callers can pass through
+// user input without pre-checking.
+function withMaxPrice(search, maxPrice) {
+  const price = Number.parseInt(maxPrice, 10);
+  if (!Number.isFinite(price) || price <= 0) return search;
+  if (!search || typeof search.url !== 'string') return search;
+  let url;
+  try {
+    url = new URL(search.url);
+  } catch {
+    return search;
+  }
+  if (!url.searchParams.has('maxPrice')) return search;
+  url.searchParams.set('maxPrice', String(price));
+  return { ...search, url: url.toString() };
+}
+
+// Apply a per-run budget override to a list of searches. Returns the
+// same list unchanged when no valid override is given.
+function applyMaxPriceOverride(searches, maxPrice) {
+  const price = Number.parseInt(maxPrice, 10);
+  if (!Number.isFinite(price) || price <= 0) return searches;
+  return (searches || []).map((search) => withMaxPrice(search, price));
+}
+
 function getEnabledSearches(enabledIds = '') {
   const requestedIds = enabledIds
     .split(',')
@@ -137,5 +166,7 @@ module.exports = {
   getEnabledSearches,
   getFilterLimits,
   buildFilterLimitsMap,
-  getHealthCheckSearches
+  getHealthCheckSearches,
+  applyMaxPriceOverride,
+  withMaxPrice
 };
