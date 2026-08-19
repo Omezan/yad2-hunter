@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-08-19T10:32:34.146Z",
+      "completedAt": "2026-08-19T10:39:00.171Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 160,
+      "preFilteredAds": 160,
+      "candidateNewAds": 3,
+      "relevantNewAds": 3,
+      "notifiedNewAds": 3,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-08-19T06:17:54.742Z",
       "completedAt": "2026-08-19T06:21:36.092Z",
       "status": "completed",
@@ -1245,30 +1263,6 @@
       "kind": "scan",
       "startedAt": "2026-07-09T14:57:19.659Z",
       "completedAt": "2026-07-09T14:57:48.285Z",
-      "status": "partial",
-      "trigger": "manual-dashboard",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-09T14:54:55.665Z",
-      "completedAt": "2026-07-09T14:55:26.954Z",
       "status": "partial",
       "trigger": "manual-dashboard",
       "totalAds": 0,
