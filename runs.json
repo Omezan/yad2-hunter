@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-08-20T06:52:51.087Z",
+      "completedAt": "2026-08-20T06:56:30.246Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 156,
+      "preFilteredAds": 156,
+      "candidateNewAds": 2,
+      "relevantNewAds": 2,
+      "notifiedNewAds": 2,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-08-19T10:32:34.146Z",
       "completedAt": "2026-08-19T10:39:00.171Z",
       "status": "completed",
@@ -1254,30 +1272,6 @@
         {
           "searchId": "rent-in-cities",
           "searchLabel": "שכירות בערים",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-09T14:57:19.659Z",
-      "completedAt": "2026-07-09T14:57:48.285Z",
-      "status": "partial",
-      "trigger": "manual-dashboard",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "jerusalem",
-          "searchLabel": "ירושלים",
           "message": "blocked by anti-bot after all retries"
         }
       ],
