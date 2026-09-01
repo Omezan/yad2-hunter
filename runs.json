@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-09-01T06:39:11.176Z",
+      "completedAt": "2026-09-01T06:40:52.109Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 149,
+      "preFilteredAds": 149,
+      "candidateNewAds": 6,
+      "relevantNewAds": 6,
+      "notifiedNewAds": 6,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-08-31T07:29:15.478Z",
       "completedAt": "2026-08-31T07:32:18.028Z",
       "status": "completed",
@@ -934,24 +952,6 @@
       "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-13T09:01:21.780Z",
-      "completedAt": "2026-07-13T09:03:39.891Z",
-      "status": "failed",
-      "trigger": "manual-dashboard",
-      "totalAds": 0,
-      "preFilteredAds": 0,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "telegramSent": false,
-      "emailSent": false,
-      "errors": [
-        {
-          "message": "browserType.connectOverCDP: Target page, context or browser has been closed\nCall log:\n  - <ws connecting> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/\n  - <ws connected> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/\n  - <ws disconnected> wss://brd-customer-hl_49d1df51-zone-scraping_browser1:3dses0s99rae@brd.superproxy.io:9222/ code=1006 reason=\n"
-        }
-      ]
     }
   ]
 }
