@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-09-03T07:04:27.750Z",
+      "completedAt": "2026-09-03T07:07:40.161Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 143,
+      "preFilteredAds": 143,
+      "candidateNewAds": 2,
+      "relevantNewAds": 2,
+      "notifiedNewAds": 2,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-09-02T05:55:04.722Z",
       "completedAt": "2026-09-02T06:00:20.124Z",
       "status": "completed",
@@ -932,24 +950,6 @@
       "suppressedNewAds": 0,
       "telegramSent": true,
       "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-14T07:56:55.541Z",
-      "completedAt": "2026-07-14T08:06:24.082Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 398,
-      "preFilteredAds": 398,
-      "candidateNewAds": 17,
-      "relevantNewAds": 17,
-      "notifiedNewAds": 12,
-      "notifiedEmailAds": 1,
-      "suppressedNewAds": 4,
-      "telegramSent": true,
-      "emailSent": true,
       "errors": [],
       "cooldownSkipCount": 0
     }
