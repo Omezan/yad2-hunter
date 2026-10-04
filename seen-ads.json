@@ -24,7 +24,7 @@
       "rooms": 5,
       "city": "פורת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/d0k467j8": {
       "externalId": "center-and-sharon/d0k467j8",
@@ -50,7 +50,7 @@
       "rooms": 7,
       "city": "ארסוף",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/ewyudw5j": {
       "externalId": "south/ewyudw5j",
@@ -102,7 +102,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/y1h4jyk9": {
       "externalId": "coastal-north/y1h4jyk9",
@@ -128,7 +128,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/lmk6t8ii": {
       "externalId": "coastal-north/lmk6t8ii",
@@ -141,7 +141,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "north-and-valleys/w90d2sil": {
       "externalId": "north-and-valleys/w90d2sil",
@@ -999,7 +999,7 @@
       "rooms": 5,
       "city": "לפיד",
       "firstSeenAt": "2026-05-18T10:26:25.730Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "north-and-valleys/iubq5xoo": {
       "externalId": "north-and-valleys/iubq5xoo",
@@ -1064,7 +1064,7 @@
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-05-19T16:49:01.850Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/x50uhawp": {
       "externalId": "south/x50uhawp",
@@ -1207,7 +1207,7 @@
       "rooms": 6,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-05-20T19:31:45.556Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "north-and-valleys/f5tq4agc": {
       "externalId": "north-and-valleys/f5tq4agc",
@@ -1298,7 +1298,7 @@
       "rooms": 5,
       "city": "שער אפרים",
       "firstSeenAt": "2026-05-24T07:06:11.629Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/ulwqaqjp": {
       "externalId": "center-and-sharon/ulwqaqjp",
@@ -1441,7 +1441,7 @@
       "rooms": 4,
       "city": "ישרש",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/g34968s0": {
       "externalId": "center-and-sharon/g34968s0",
@@ -1870,7 +1870,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/4c5vmbh5": {
       "externalId": "center-and-sharon/4c5vmbh5",
@@ -1883,7 +1883,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/wjf5u8ei": {
       "externalId": "south/wjf5u8ei",
@@ -2091,7 +2091,7 @@
       "rooms": 5,
       "city": "אחיסמך",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-09-01T06:40:51.405Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/gmhiac0n": {
       "externalId": "center-and-sharon/gmhiac0n",
@@ -2221,7 +2221,7 @@
       "rooms": 6.5,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/eqan7fns": {
       "externalId": "coastal-north/eqan7fns",
@@ -2624,7 +2624,7 @@
       "rooms": 4.5,
       "city": "גאולים",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/7qcb6zfo": {
       "externalId": "coastal-north/7qcb6zfo",
@@ -2776,11 +2776,11 @@
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
       "districtLabel": "מרכז והשרון",
-      "price": 7100,
+      "price": 6900,
       "rooms": 4,
       "city": "ניצני עוז",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-09-04T09:41:27.500Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/la9e8ylf": {
       "externalId": "center-and-sharon/la9e8ylf",
@@ -6104,11 +6104,11 @@
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
       "districtLabel": "מרכז והשרון",
-      "price": 8500,
+      "price": 7500,
       "rooms": 5,
       "city": "חגור",
       "firstSeenAt": "2026-06-30T09:41:32.090Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/ib4hwnwc": {
       "externalId": "center-and-sharon/ib4hwnwc",
@@ -6602,7 +6602,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-07-13T09:47:56.017Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/9u0rm1qe": {
       "externalId": "center-and-sharon/9u0rm1qe",
@@ -8136,7 +8136,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-07-14T08:06:21.423Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "north-and-valleys/v96z6mlm": {
       "externalId": "north-and-valleys/v96z6mlm",
@@ -8526,7 +8526,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-07-19T09:22:31.701Z",
-      "lastSeenAt": "2026-07-19T09:22:31.701Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/wyi2r6rh": {
       "externalId": "south/wyi2r6rh",
@@ -9319,7 +9319,7 @@
       "rooms": 7,
       "city": "עין איילה",
       "firstSeenAt": "2026-07-30T08:46:33.802Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "jerusalem-area/i3e8vfic": {
       "externalId": "jerusalem-area/i3e8vfic",
@@ -9670,7 +9670,7 @@
       "rooms": 4,
       "city": "אביאל",
       "firstSeenAt": "2026-08-03T07:57:52.465Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "jerusalem-area/rdmn5em9": {
       "externalId": "jerusalem-area/rdmn5em9",
@@ -9813,7 +9813,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-08-06T07:19:18.894Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/hfa3uu4a": {
       "externalId": "center-and-sharon/hfa3uu4a",
@@ -9839,7 +9839,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-08-06T07:19:18.894Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/akm99bw9": {
       "externalId": "center-and-sharon/akm99bw9",
@@ -10060,7 +10060,7 @@
       "rooms": 4,
       "city": "גת רימון",
       "firstSeenAt": "2026-08-09T06:46:08.100Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/ylac0qnd": {
       "externalId": "center-and-sharon/ylac0qnd",
@@ -10437,7 +10437,7 @@
       "rooms": 4,
       "city": "אלישמע",
       "firstSeenAt": "2026-08-16T08:03:48.412Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/18ajlwjb": {
       "externalId": "south/18ajlwjb",
@@ -10550,11 +10550,11 @@
       "searchId": "center-sharon",
       "searchLabel": "מרכז ושרון",
       "districtLabel": "מרכז והשרון",
-      "price": 8700,
+      "price": 8500,
       "rooms": 4,
       "city": "בורגתה",
       "firstSeenAt": "2026-08-16T10:04:25.548Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/1txmibrl": {
       "externalId": "center-and-sharon/1txmibrl",
@@ -10567,7 +10567,7 @@
       "rooms": 5.5,
       "city": "צור משה",
       "firstSeenAt": "2026-08-16T10:04:25.548Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/xon1sara": {
       "externalId": "south/xon1sara",
@@ -11165,7 +11165,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-08-26T15:50:38.488Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/jh1mxfyg": {
       "externalId": "coastal-north/jh1mxfyg",
@@ -11243,7 +11243,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-08-28T08:21:03.287Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/mtgyqt3v": {
       "externalId": "center-and-sharon/mtgyqt3v",
@@ -11343,11 +11343,11 @@
       "searchId": "coastal-north",
       "searchLabel": "חוף צפוני",
       "districtLabel": "חוף צפוני",
-      "price": 4850,
+      "price": 4700,
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-08-30T11:58:18.810Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "coastal-north/xxigy9b3": {
       "externalId": "coastal-north/xxigy9b3",
@@ -11373,7 +11373,7 @@
       "rooms": 6.5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-08-31T07:32:17.449Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "jerusalem-area/wnt9v0o0": {
       "externalId": "jerusalem-area/wnt9v0o0",
@@ -11399,7 +11399,7 @@
       "rooms": 4,
       "city": "בני עטרות",
       "firstSeenAt": "2026-09-01T06:40:51.405Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/sv19s8it": {
       "externalId": "south/sv19s8it",
@@ -11477,7 +11477,7 @@
       "rooms": 5,
       "city": "יגל",
       "firstSeenAt": "2026-09-02T06:00:19.431Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/bmn607wh": {
       "externalId": "south/bmn607wh",
@@ -11542,7 +11542,7 @@
       "rooms": 4,
       "city": "נוף איילון",
       "firstSeenAt": "2026-09-03T07:07:39.493Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "jerusalem-area/xo23h7vn": {
       "externalId": "jerusalem-area/xo23h7vn",
@@ -11620,7 +11620,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-09-06T06:02:22.142Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/iprmm6kp": {
       "externalId": "center-and-sharon/iprmm6kp",
@@ -11646,7 +11646,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-09-06T17:04:40.586Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "center-and-sharon/hwzcl4jp": {
       "externalId": "center-and-sharon/hwzcl4jp",
@@ -11659,7 +11659,7 @@
       "rooms": 4.5,
       "city": "גני יוחנן",
       "firstSeenAt": "2026-09-06T17:04:40.586Z",
-      "lastSeenAt": "2026-09-06T17:04:40.586Z"
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     },
     "south/e96u9o6t": {
       "externalId": "south/e96u9o6t",
@@ -11673,6 +11673,578 @@
       "city": "בית שיקמה",
       "firstSeenAt": "2026-09-06T17:04:40.586Z",
       "lastSeenAt": "2026-09-06T17:04:40.586Z"
+    },
+    "center-and-sharon/5zp3r8ga": {
+      "externalId": "center-and-sharon/5zp3r8ga",
+      "title": "בית פרטי/ קוטג', מתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/5zp3r8ga",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 9,
+      "city": "מתן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/yi8e2pe4": {
+      "externalId": "center-and-sharon/yi8e2pe4",
+      "title": "בית פרטי/ קוטג', זיתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/yi8e2pe4",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7000,
+      "rooms": 4,
+      "city": "זיתן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/fza4bpli": {
+      "externalId": "center-and-sharon/fza4bpli",
+      "title": "בית פרטי/ קוטג', אחיסמך",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/fza4bpli",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9500,
+      "rooms": 6,
+      "city": "אחיסמך",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/6iw5ksfe": {
+      "externalId": "center-and-sharon/6iw5ksfe",
+      "title": "בית פרטי/ קוטג', נווה ימין",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/6iw5ksfe",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "נווה ימין",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/dljy75i9": {
+      "externalId": "center-and-sharon/dljy75i9",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/dljy75i9",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6200,
+      "rooms": 4,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/032r9ggi": {
+      "externalId": "center-and-sharon/032r9ggi",
+      "title": "בית פרטי/ קוטג', יד רמב''ם, יד רמב\"ם",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/032r9ggi",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "יד רמב\"ם",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/bmn5ypkn": {
+      "externalId": "center-and-sharon/bmn5ypkn",
+      "title": "בית פרטי/ קוטג', חדיד",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/bmn5ypkn",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8800,
+      "rooms": 4.5,
+      "city": "חדיד",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/7i6xhm2g": {
+      "externalId": "center-and-sharon/7i6xhm2g",
+      "title": "בית פרטי/ קוטג', צור נתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7i6xhm2g",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 5,
+      "city": "צור נתן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/lu4311kg": {
+      "externalId": "center-and-sharon/lu4311kg",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/lu4311kg",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 6,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/swfm9bnf": {
+      "externalId": "center-and-sharon/swfm9bnf",
+      "title": "בית פרטי/ קוטג', יד חנה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/swfm9bnf",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7900,
+      "rooms": 4,
+      "city": "יד חנה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/0y8ad9s2": {
+      "externalId": "center-and-sharon/0y8ad9s2",
+      "title": "בית פרטי/ קוטג', נופך",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0y8ad9s2",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9000,
+      "rooms": 5,
+      "city": "נופך",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/fn8936uv": {
+      "externalId": "center-and-sharon/fn8936uv",
+      "title": "בית פרטי/ קוטג', יד רמב''ם, יד רמב\"ם",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/fn8936uv",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 4,
+      "city": "יד רמב\"ם",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/9o2nrltt": {
+      "externalId": "center-and-sharon/9o2nrltt",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/9o2nrltt",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9500,
+      "rooms": 6,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/0xydss60": {
+      "externalId": "center-and-sharon/0xydss60",
+      "title": "דירה, פדיה",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/0xydss60",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "פדיה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/sdn4at98": {
+      "externalId": "center-and-sharon/sdn4at98",
+      "title": "בית פרטי/ קוטג', גבעת כ''ח, גבעת כ\"ח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sdn4at98",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6800,
+      "rooms": 4,
+      "city": "גבעת כ\"ח",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/e2m3129q": {
+      "externalId": "center-and-sharon/e2m3129q",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/e2m3129q",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8200,
+      "rooms": 6,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/tnkvaugg": {
+      "externalId": "center-and-sharon/tnkvaugg",
+      "title": "דירה, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/tnkvaugg",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 6,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/kxm8uzxh": {
+      "externalId": "center-and-sharon/kxm8uzxh",
+      "title": "בית פרטי/ קוטג', מגשימים",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/kxm8uzxh",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 5,
+      "city": "מגשימים",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/epng1ruj": {
+      "externalId": "center-and-sharon/epng1ruj",
+      "title": "בית פרטי/ קוטג', מתן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/epng1ruj",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 9500,
+      "rooms": 5,
+      "city": "מתן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/7jrgo2ue": {
+      "externalId": "center-and-sharon/7jrgo2ue",
+      "title": "דו משפחתי, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7jrgo2ue",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7400,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/sqj0bfyf": {
+      "externalId": "center-and-sharon/sqj0bfyf",
+      "title": "בית פרטי/ קוטג', יד רמב\"ם",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sqj0bfyf",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "יד רמב\"ם",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/15dntyw2": {
+      "externalId": "center-and-sharon/15dntyw2",
+      "title": "דירה, חמד",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/15dntyw2",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "חמד",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/wtg29mf3": {
+      "externalId": "center-and-sharon/wtg29mf3",
+      "title": "בית פרטי/ קוטג', בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/wtg29mf3",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7800,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/nkhuy4ew": {
+      "externalId": "center-and-sharon/nkhuy4ew",
+      "title": "בית פרטי/ קוטג', גאולי תימן",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/nkhuy4ew",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8500,
+      "rooms": 4,
+      "city": "גאולי תימן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/xtonuqzh": {
+      "externalId": "center-and-sharon/xtonuqzh",
+      "title": "דירה, מצליח",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/xtonuqzh",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8000,
+      "rooms": 4,
+      "city": "מצליח",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/ktkmarfc": {
+      "externalId": "center-and-sharon/ktkmarfc",
+      "title": "דירה, חניאל",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ktkmarfc",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8000,
+      "rooms": 4,
+      "city": "חניאל",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/7q21el2o": {
+      "externalId": "center-and-sharon/7q21el2o",
+      "title": "בית פרטי/ קוטג', אחיטוב",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/7q21el2o",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "אחיטוב",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/jsw1izro": {
+      "externalId": "center-and-sharon/jsw1izro",
+      "title": "גג/ פנטהאוז, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/jsw1izro",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 5,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/sjr6ofx0": {
+      "externalId": "center-and-sharon/sjr6ofx0",
+      "title": "דירת גן, בית עוזיאל",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/sjr6ofx0",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בית עוזיאל",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/3pakj9w1": {
+      "externalId": "center-and-sharon/3pakj9w1",
+      "title": "דירה, גינתון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/3pakj9w1",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 8000,
+      "rooms": 4,
+      "city": "גינתון",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/013jv1bv": {
+      "externalId": "center-and-sharon/013jv1bv",
+      "title": "דירה, נוף איילון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/013jv1bv",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "נוף איילון",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/3tiylztf": {
+      "externalId": "center-and-sharon/3tiylztf",
+      "title": "בית פרטי/ קוטג', בית עוזיאל",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/3tiylztf",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בית עוזיאל",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/1vvm1f41": {
+      "externalId": "center-and-sharon/1vvm1f41",
+      "title": "בית פרטי/ קוטג', תנובות",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/1vvm1f41",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 6500,
+      "rooms": 4,
+      "city": "תנובות",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "center-and-sharon/ko8w5o2f": {
+      "externalId": "center-and-sharon/ko8w5o2f",
+      "title": "גג/ פנטהאוז, צור יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/ko8w5o2f",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 7500,
+      "rooms": 6,
+      "city": "צור יצחק",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/1cs4g378": {
+      "externalId": "coastal-north/1cs4g378",
+      "title": "בית פרטי/ קוטג', צרופה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/1cs4g378",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 8000,
+      "rooms": 5,
+      "city": "צרופה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/qckmzs8k": {
+      "externalId": "coastal-north/qckmzs8k",
+      "title": "בית פרטי/ קוטג', שדה יצחק",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/qckmzs8k",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 8000,
+      "rooms": 6,
+      "city": "שדה יצחק",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/11llsc7c": {
+      "externalId": "coastal-north/11llsc7c",
+      "title": "בית פרטי/ קוטג', כפר ראש הנקרה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/11llsc7c",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 5000,
+      "rooms": 4,
+      "city": "כפר ראש הנקרה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/5xnlet7s": {
+      "externalId": "coastal-north/5xnlet7s",
+      "title": "בית פרטי/ קוטג', נתיב השיירה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/5xnlet7s",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 9000,
+      "rooms": 5,
+      "city": "נתיב השיירה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/ncqggtrz": {
+      "externalId": "coastal-north/ncqggtrz",
+      "title": "בית פרטי/ קוטג', מאור",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/ncqggtrz",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 8500,
+      "rooms": 5,
+      "city": "מאור",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/o7s77oi0": {
+      "externalId": "coastal-north/o7s77oi0",
+      "title": "בית פרטי/ קוטג', עמקה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/o7s77oi0",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 4000,
+      "rooms": 4,
+      "city": "עמקה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/ibhfayin": {
+      "externalId": "coastal-north/ibhfayin",
+      "title": "בית פרטי/ קוטג', לימן",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/ibhfayin",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 7000,
+      "rooms": 5,
+      "city": "לימן",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/tjunfswf": {
+      "externalId": "coastal-north/tjunfswf",
+      "title": "בית פרטי/ קוטג', עין איילה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/tjunfswf",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": null,
+      "rooms": 5.5,
+      "city": "עין איילה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/upzg8etx": {
+      "externalId": "coastal-north/upzg8etx",
+      "title": "בית פרטי/ קוטג', עין איילה",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/upzg8etx",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": null,
+      "rooms": 7,
+      "city": "עין איילה",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
+    },
+    "coastal-north/bavplb62": {
+      "externalId": "coastal-north/bavplb62",
+      "title": "דירה, בוסתן הגליל",
+      "link": "https://www.yad2.co.il/realestate/item/coastal-north/bavplb62",
+      "searchId": "coastal-north",
+      "searchLabel": "חוף צפוני",
+      "districtLabel": "חוף צפוני",
+      "price": 7500,
+      "rooms": 4,
+      "city": "בוסתן הגליל",
+      "firstSeenAt": "2026-10-04T08:11:40.310Z",
+      "lastSeenAt": "2026-10-04T08:11:40.310Z"
     }
   }
 }
