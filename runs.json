@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-10-07T06:24:27.660Z",
+      "completedAt": "2026-10-07T06:28:35.335Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 110,
+      "preFilteredAds": 110,
+      "candidateNewAds": 16,
+      "relevantNewAds": 16,
+      "notifiedNewAds": 16,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-10-06T10:31:29.781Z",
       "completedAt": "2026-10-06T10:36:11.941Z",
       "status": "completed",
@@ -949,24 +967,6 @@
           "message": "blocked by anti-bot after all retries"
         }
       ],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-22T07:50:49.749Z",
-      "completedAt": "2026-07-22T08:02:48.647Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 175,
-      "preFilteredAds": 175,
-      "candidateNewAds": 9,
-      "relevantNewAds": 9,
-      "notifiedNewAds": 9,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [],
       "cooldownSkipCount": 0
     }
   ]
