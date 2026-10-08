@@ -2,6 +2,24 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-10-08T08:13:55.334Z",
+      "completedAt": "2026-10-08T08:18:11.279Z",
+      "status": "completed",
+      "trigger": "manual-dashboard",
+      "totalAds": 85,
+      "preFilteredAds": 85,
+      "candidateNewAds": 3,
+      "relevantNewAds": 3,
+      "notifiedNewAds": 3,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-10-07T06:24:27.660Z",
       "completedAt": "2026-10-07T06:28:35.335Z",
       "status": "completed",
@@ -938,35 +956,6 @@
       "telegramSent": true,
       "emailSent": false,
       "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-23T07:18:59.830Z",
-      "completedAt": "2026-07-23T07:24:58.384Z",
-      "status": "partial",
-      "trigger": "manual-dashboard",
-      "totalAds": 46,
-      "preFilteredAds": 46,
-      "candidateNewAds": 1,
-      "relevantNewAds": 1,
-      "notifiedNewAds": 1,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [
-        {
-          "searchId": "center-sharon",
-          "searchLabel": "מרכז ושרון",
-          "message": "blocked by anti-bot after all retries"
-        },
-        {
-          "searchId": "south",
-          "searchLabel": "דרום",
-          "message": "blocked by anti-bot after all retries"
-        }
-      ],
       "cooldownSkipCount": 0
     }
   ]
