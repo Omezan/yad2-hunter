@@ -24,7 +24,7 @@
       "rooms": 5,
       "city": "פורת",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/d0k467j8": {
       "externalId": "center-and-sharon/d0k467j8",
@@ -50,7 +50,7 @@
       "rooms": 7,
       "city": "ארסוף",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/ewyudw5j": {
       "externalId": "south/ewyudw5j",
@@ -102,7 +102,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/y1h4jyk9": {
       "externalId": "coastal-north/y1h4jyk9",
@@ -128,7 +128,7 @@
       "rooms": 5,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/lmk6t8ii": {
       "externalId": "coastal-north/lmk6t8ii",
@@ -141,7 +141,7 @@
       "rooms": 4,
       "city": "כפר ראש הנקרה",
       "firstSeenAt": "2026-04-28T09:45:18.174Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "north-and-valleys/w90d2sil": {
       "externalId": "north-and-valleys/w90d2sil",
@@ -999,7 +999,7 @@
       "rooms": 5,
       "city": "לפיד",
       "firstSeenAt": "2026-05-18T10:26:25.730Z",
-      "lastSeenAt": "2026-10-07T06:28:34.758Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "north-and-valleys/iubq5xoo": {
       "externalId": "north-and-valleys/iubq5xoo",
@@ -1064,7 +1064,7 @@
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-05-19T16:49:01.850Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/x50uhawp": {
       "externalId": "south/x50uhawp",
@@ -1207,7 +1207,7 @@
       "rooms": 6,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-05-20T19:31:45.556Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "north-and-valleys/f5tq4agc": {
       "externalId": "north-and-valleys/f5tq4agc",
@@ -1298,7 +1298,7 @@
       "rooms": 5,
       "city": "שער אפרים",
       "firstSeenAt": "2026-05-24T07:06:11.629Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/ulwqaqjp": {
       "externalId": "center-and-sharon/ulwqaqjp",
@@ -1441,7 +1441,7 @@
       "rooms": 4,
       "city": "ישרש",
       "firstSeenAt": "2026-05-31T09:09:51.205Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/g34968s0": {
       "externalId": "center-and-sharon/g34968s0",
@@ -1870,7 +1870,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/4c5vmbh5": {
       "externalId": "center-and-sharon/4c5vmbh5",
@@ -1883,7 +1883,7 @@
       "rooms": 4,
       "city": "צור משה",
       "firstSeenAt": "2026-06-01T07:24:39.667Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/wjf5u8ei": {
       "externalId": "south/wjf5u8ei",
@@ -2091,7 +2091,7 @@
       "rooms": 5,
       "city": "אחיסמך",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/gmhiac0n": {
       "externalId": "center-and-sharon/gmhiac0n",
@@ -2221,7 +2221,7 @@
       "rooms": 6.5,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-06-07T06:20:04.840Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/eqan7fns": {
       "externalId": "coastal-north/eqan7fns",
@@ -2624,7 +2624,7 @@
       "rooms": 4.5,
       "city": "גאולים",
       "firstSeenAt": "2026-06-09T07:12:00.363Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/7qcb6zfo": {
       "externalId": "coastal-north/7qcb6zfo",
@@ -2780,7 +2780,7 @@
       "rooms": 4,
       "city": "ניצני עוז",
       "firstSeenAt": "2026-06-10T09:38:34.732Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/la9e8ylf": {
       "externalId": "center-and-sharon/la9e8ylf",
@@ -5159,7 +5159,7 @@
       "rooms": 4,
       "city": "כפר סירקין",
       "firstSeenAt": "2026-06-25T06:57:38.960Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/le7di4we": {
       "externalId": "center-and-sharon/le7di4we",
@@ -6108,7 +6108,7 @@
       "rooms": 5,
       "city": "חגור",
       "firstSeenAt": "2026-06-30T09:41:32.090Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/ib4hwnwc": {
       "externalId": "center-and-sharon/ib4hwnwc",
@@ -6602,7 +6602,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-07-13T09:47:56.017Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/9u0rm1qe": {
       "externalId": "center-and-sharon/9u0rm1qe",
@@ -8110,7 +8110,7 @@
       "rooms": 4,
       "city": "עין עירון",
       "firstSeenAt": "2026-07-14T08:06:21.423Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/9bqbhggg": {
       "externalId": "coastal-north/9bqbhggg",
@@ -8396,7 +8396,7 @@
       "rooms": 6,
       "city": "בצרה",
       "firstSeenAt": "2026-07-16T07:52:46.956Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/htkj2tu3": {
       "externalId": "center-and-sharon/htkj2tu3",
@@ -8526,7 +8526,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-07-19T09:22:31.701Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/wyi2r6rh": {
       "externalId": "south/wyi2r6rh",
@@ -9813,7 +9813,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-08-06T07:19:18.894Z",
-      "lastSeenAt": "2026-10-07T06:28:34.758Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/hfa3uu4a": {
       "externalId": "center-and-sharon/hfa3uu4a",
@@ -9839,7 +9839,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-08-06T07:19:18.894Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/akm99bw9": {
       "externalId": "center-and-sharon/akm99bw9",
@@ -10060,7 +10060,7 @@
       "rooms": 4,
       "city": "גת רימון",
       "firstSeenAt": "2026-08-09T06:46:08.100Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/ylac0qnd": {
       "externalId": "center-and-sharon/ylac0qnd",
@@ -10437,7 +10437,7 @@
       "rooms": 4,
       "city": "אלישמע",
       "firstSeenAt": "2026-08-16T08:03:48.412Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/18ajlwjb": {
       "externalId": "south/18ajlwjb",
@@ -10554,7 +10554,7 @@
       "rooms": 4,
       "city": "בורגתה",
       "firstSeenAt": "2026-08-16T10:04:25.548Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/1txmibrl": {
       "externalId": "center-and-sharon/1txmibrl",
@@ -10567,7 +10567,7 @@
       "rooms": 5.5,
       "city": "צור משה",
       "firstSeenAt": "2026-08-16T10:04:25.548Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/xon1sara": {
       "externalId": "south/xon1sara",
@@ -11165,7 +11165,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-08-26T15:50:38.488Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/jh1mxfyg": {
       "externalId": "coastal-north/jh1mxfyg",
@@ -11373,7 +11373,7 @@
       "rooms": 6.5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-08-31T07:32:17.449Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "jerusalem-area/wnt9v0o0": {
       "externalId": "jerusalem-area/wnt9v0o0",
@@ -11399,7 +11399,7 @@
       "rooms": 4,
       "city": "בני עטרות",
       "firstSeenAt": "2026-09-01T06:40:51.405Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/sv19s8it": {
       "externalId": "south/sv19s8it",
@@ -11477,7 +11477,7 @@
       "rooms": 5,
       "city": "יגל",
       "firstSeenAt": "2026-09-02T06:00:19.431Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/bmn607wh": {
       "externalId": "south/bmn607wh",
@@ -11542,7 +11542,7 @@
       "rooms": 4,
       "city": "נוף איילון",
       "firstSeenAt": "2026-09-03T07:07:39.493Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "jerusalem-area/xo23h7vn": {
       "externalId": "jerusalem-area/xo23h7vn",
@@ -11620,7 +11620,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-09-06T06:02:22.142Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/iprmm6kp": {
       "externalId": "center-and-sharon/iprmm6kp",
@@ -11646,7 +11646,7 @@
       "rooms": 5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-09-06T17:04:40.586Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/hwzcl4jp": {
       "externalId": "center-and-sharon/hwzcl4jp",
@@ -11659,7 +11659,7 @@
       "rooms": 4.5,
       "city": "גני יוחנן",
       "firstSeenAt": "2026-09-06T17:04:40.586Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "south/e96u9o6t": {
       "externalId": "south/e96u9o6t",
@@ -11685,7 +11685,7 @@
       "rooms": 9,
       "city": "מתן",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/yi8e2pe4": {
       "externalId": "center-and-sharon/yi8e2pe4",
@@ -11698,7 +11698,7 @@
       "rooms": 4,
       "city": "זיתן",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/fza4bpli": {
       "externalId": "center-and-sharon/fza4bpli",
@@ -11711,7 +11711,7 @@
       "rooms": 6,
       "city": "אחיסמך",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/6iw5ksfe": {
       "externalId": "center-and-sharon/6iw5ksfe",
@@ -11724,7 +11724,7 @@
       "rooms": 4,
       "city": "נווה ימין",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/dljy75i9": {
       "externalId": "center-and-sharon/dljy75i9",
@@ -11750,7 +11750,7 @@
       "rooms": 4,
       "city": "יד רמב\"ם",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/bmn5ypkn": {
       "externalId": "center-and-sharon/bmn5ypkn",
@@ -11763,7 +11763,7 @@
       "rooms": 4.5,
       "city": "חדיד",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/7i6xhm2g": {
       "externalId": "center-and-sharon/7i6xhm2g",
@@ -11776,7 +11776,7 @@
       "rooms": 5,
       "city": "צור נתן",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/lu4311kg": {
       "externalId": "center-and-sharon/lu4311kg",
@@ -11802,7 +11802,7 @@
       "rooms": 4,
       "city": "יד חנה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/0y8ad9s2": {
       "externalId": "center-and-sharon/0y8ad9s2",
@@ -11815,7 +11815,7 @@
       "rooms": 5,
       "city": "נופך",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/fn8936uv": {
       "externalId": "center-and-sharon/fn8936uv",
@@ -11841,7 +11841,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/0xydss60": {
       "externalId": "center-and-sharon/0xydss60",
@@ -11854,7 +11854,7 @@
       "rooms": 4,
       "city": "פדיה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/sdn4at98": {
       "externalId": "center-and-sharon/sdn4at98",
@@ -11867,7 +11867,7 @@
       "rooms": 4,
       "city": "גבעת כ\"ח",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/e2m3129q": {
       "externalId": "center-and-sharon/e2m3129q",
@@ -11880,7 +11880,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/tnkvaugg": {
       "externalId": "center-and-sharon/tnkvaugg",
@@ -11893,7 +11893,7 @@
       "rooms": 6,
       "city": "צור יצחק",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/kxm8uzxh": {
       "externalId": "center-and-sharon/kxm8uzxh",
@@ -11906,7 +11906,7 @@
       "rooms": 5,
       "city": "מגשימים",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/epng1ruj": {
       "externalId": "center-and-sharon/epng1ruj",
@@ -11919,7 +11919,7 @@
       "rooms": 5,
       "city": "מתן",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/7jrgo2ue": {
       "externalId": "center-and-sharon/7jrgo2ue",
@@ -11932,7 +11932,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/sqj0bfyf": {
       "externalId": "center-and-sharon/sqj0bfyf",
@@ -11945,7 +11945,7 @@
       "rooms": 4,
       "city": "יד רמב\"ם",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/15dntyw2": {
       "externalId": "center-and-sharon/15dntyw2",
@@ -11958,7 +11958,7 @@
       "rooms": 4,
       "city": "חמד",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/wtg29mf3": {
       "externalId": "center-and-sharon/wtg29mf3",
@@ -11971,7 +11971,7 @@
       "rooms": 4,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/nkhuy4ew": {
       "externalId": "center-and-sharon/nkhuy4ew",
@@ -11997,7 +11997,7 @@
       "rooms": 4,
       "city": "מצליח",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/ktkmarfc": {
       "externalId": "center-and-sharon/ktkmarfc",
@@ -12010,7 +12010,7 @@
       "rooms": 4,
       "city": "חניאל",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/7q21el2o": {
       "externalId": "center-and-sharon/7q21el2o",
@@ -12049,7 +12049,7 @@
       "rooms": 4,
       "city": "בית עוזיאל",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/3pakj9w1": {
       "externalId": "center-and-sharon/3pakj9w1",
@@ -12062,7 +12062,7 @@
       "rooms": 4,
       "city": "גינתון",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/013jv1bv": {
       "externalId": "center-and-sharon/013jv1bv",
@@ -12075,7 +12075,7 @@
       "rooms": 4,
       "city": "נוף איילון",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/3tiylztf": {
       "externalId": "center-and-sharon/3tiylztf",
@@ -12088,7 +12088,7 @@
       "rooms": 4,
       "city": "בית עוזיאל",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/1vvm1f41": {
       "externalId": "center-and-sharon/1vvm1f41",
@@ -12114,7 +12114,7 @@
       "rooms": 6,
       "city": "צור יצחק",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/1cs4g378": {
       "externalId": "coastal-north/1cs4g378",
@@ -12127,7 +12127,7 @@
       "rooms": 5,
       "city": "צרופה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/qckmzs8k": {
       "externalId": "coastal-north/qckmzs8k",
@@ -12140,7 +12140,7 @@
       "rooms": 6,
       "city": "שדה יצחק",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/11llsc7c": {
       "externalId": "coastal-north/11llsc7c",
@@ -12166,7 +12166,7 @@
       "rooms": 5,
       "city": "נתיב השיירה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/ncqggtrz": {
       "externalId": "coastal-north/ncqggtrz",
@@ -12179,7 +12179,7 @@
       "rooms": 5,
       "city": "מאור",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/o7s77oi0": {
       "externalId": "coastal-north/o7s77oi0",
@@ -12192,7 +12192,7 @@
       "rooms": 4,
       "city": "עמקה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/ibhfayin": {
       "externalId": "coastal-north/ibhfayin",
@@ -12205,7 +12205,7 @@
       "rooms": 5,
       "city": "לימן",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/tjunfswf": {
       "externalId": "coastal-north/tjunfswf",
@@ -12218,7 +12218,7 @@
       "rooms": 5.5,
       "city": "עין איילה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/upzg8etx": {
       "externalId": "coastal-north/upzg8etx",
@@ -12231,7 +12231,7 @@
       "rooms": 7,
       "city": "עין איילה",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/bavplb62": {
       "externalId": "coastal-north/bavplb62",
@@ -12244,7 +12244,7 @@
       "rooms": 4,
       "city": "בוסתן הגליל",
       "firstSeenAt": "2026-10-04T08:11:40.310Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/ogwtm0d5": {
       "externalId": "center-and-sharon/ogwtm0d5",
@@ -12257,7 +12257,7 @@
       "rooms": 4,
       "city": "צור יצחק",
       "firstSeenAt": "2026-10-05T06:24:58.373Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/r24ma1gf": {
       "externalId": "center-and-sharon/r24ma1gf",
@@ -12270,7 +12270,7 @@
       "rooms": 4.5,
       "city": "בית עריף",
       "firstSeenAt": "2026-10-05T06:24:58.373Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/odix5sws": {
       "externalId": "center-and-sharon/odix5sws",
@@ -12283,7 +12283,7 @@
       "rooms": 6.5,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-05T06:24:58.373Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/92c8483g": {
       "externalId": "coastal-north/92c8483g",
@@ -12309,7 +12309,7 @@
       "rooms": 4,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-06T10:36:11.319Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/42wqwapt": {
       "externalId": "center-and-sharon/42wqwapt",
@@ -12322,7 +12322,7 @@
       "rooms": 5.5,
       "city": "צור יצחק",
       "firstSeenAt": "2026-10-06T10:36:11.319Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/bw6mxrkw": {
       "externalId": "center-and-sharon/bw6mxrkw",
@@ -12335,7 +12335,7 @@
       "rooms": 6,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-06T10:36:11.319Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/irq3nbc6": {
       "externalId": "center-and-sharon/irq3nbc6",
@@ -12348,7 +12348,7 @@
       "rooms": 4,
       "city": null,
       "firstSeenAt": "2026-10-06T10:36:11.319Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/r9gmro1l": {
       "externalId": "center-and-sharon/r9gmro1l",
@@ -12361,7 +12361,7 @@
       "rooms": 5,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-06T10:36:11.319Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "jerusalem-area/3q7bj5m9": {
       "externalId": "jerusalem-area/3q7bj5m9",
@@ -12569,7 +12569,7 @@
       "rooms": 5.5,
       "city": "בת חפר",
       "firstSeenAt": "2026-10-07T06:28:34.758Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "center-and-sharon/8zwjnij0": {
       "externalId": "center-and-sharon/8zwjnij0",
@@ -12582,7 +12582,7 @@
       "rooms": 6,
       "city": "גבעת כ\"ח",
       "firstSeenAt": "2026-10-08T08:18:10.581Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/0nu8t1g6": {
       "externalId": "coastal-north/0nu8t1g6",
@@ -12595,7 +12595,7 @@
       "rooms": 7,
       "city": "עין איילה",
       "firstSeenAt": "2026-10-08T08:18:10.581Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     },
     "coastal-north/q6brtz9o": {
       "externalId": "coastal-north/q6brtz9o",
@@ -12608,7 +12608,33 @@
       "rooms": 4,
       "city": "בן עמי",
       "firstSeenAt": "2026-10-08T08:18:10.581Z",
-      "lastSeenAt": "2026-10-08T08:18:10.581Z"
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
+    },
+    "center-and-sharon/wc29quvl": {
+      "externalId": "center-and-sharon/wc29quvl",
+      "title": "דירה, בת חפר",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/wc29quvl",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": 5500,
+      "rooms": 4,
+      "city": "בת חפר",
+      "firstSeenAt": "2026-10-11T06:37:08.434Z",
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
+    },
+    "center-and-sharon/icyj7947": {
+      "externalId": "center-and-sharon/icyj7947",
+      "title": "בית פרטי/ קוטג', בני ציון",
+      "link": "https://www.yad2.co.il/realestate/item/center-and-sharon/icyj7947",
+      "searchId": "center-sharon",
+      "searchLabel": "מרכז ושרון",
+      "districtLabel": "מרכז והשרון",
+      "price": null,
+      "rooms": 4,
+      "city": "בני ציון",
+      "firstSeenAt": "2026-10-11T06:37:08.434Z",
+      "lastSeenAt": "2026-10-11T06:37:08.434Z"
     }
   }
 }
