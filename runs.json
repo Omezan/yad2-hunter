@@ -2,6 +2,30 @@
   "runs": [
     {
       "kind": "scan",
+      "startedAt": "2026-10-18T06:37:51.829Z",
+      "completedAt": "2026-10-18T07:15:08.969Z",
+      "status": "partial",
+      "trigger": "manual-dashboard",
+      "totalAds": 77,
+      "preFilteredAds": 77,
+      "candidateNewAds": 3,
+      "relevantNewAds": 3,
+      "notifiedNewAds": 3,
+      "notifiedEmailAds": 0,
+      "suppressedNewAds": 0,
+      "telegramSent": true,
+      "emailSent": false,
+      "errors": [
+        {
+          "searchId": "coastal-north",
+          "searchLabel": "חוף צפוני",
+          "message": "blocked by anti-bot after all retries"
+        }
+      ],
+      "cooldownSkipCount": 0
+    },
+    {
+      "kind": "scan",
       "startedAt": "2026-10-15T13:25:44.622Z",
       "completedAt": "2026-10-15T13:27:20.999Z",
       "status": "completed",
@@ -933,24 +957,6 @@
       "candidateNewAds": 1,
       "relevantNewAds": 1,
       "notifiedNewAds": 1,
-      "notifiedEmailAds": 0,
-      "suppressedNewAds": 0,
-      "telegramSent": true,
-      "emailSent": false,
-      "errors": [],
-      "cooldownSkipCount": 0
-    },
-    {
-      "kind": "scan",
-      "startedAt": "2026-07-27T13:14:39.743Z",
-      "completedAt": "2026-07-27T13:26:28.997Z",
-      "status": "completed",
-      "trigger": "manual-dashboard",
-      "totalAds": 103,
-      "preFilteredAds": 103,
-      "candidateNewAds": 0,
-      "relevantNewAds": 0,
-      "notifiedNewAds": 0,
       "notifiedEmailAds": 0,
       "suppressedNewAds": 0,
       "telegramSent": true,
